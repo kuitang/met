@@ -252,19 +252,41 @@ benchmarks showed retrieval at 90% top-1 / 95% top-5 on real guest photos vs
 17–65% for vision-LLM identification (`docs/llm-bench.md`). The index builder
 is `data/src/embed-images.ts` (incremental; ≈$4 one-time at 34k images).
 
-## Image proxy
+## Images: Tigris CDN first, server proxy as fallback
 
-Measured 2026-06-10: `images.metmuseum.org` sends **no** CORS/CORP headers, so
-under the server's cross-origin-isolated pages (COOP `same-origin` + COEP
-`require-corp`, kept for dev/prod parity) the Met CDN cannot be embedded
-directly on web. `server/src/routes/img.ts:imgRoutes` proxies
-`GET /api/v1/img/{objectID}` with a disk LRU cache (`DATA_DIR/img-cache/`, cap
-`IMG_CACHE_MAX_MB`) and permissive CORP/CORS headers; web clients use it with a
-`?v={dataVersion}` cache-buster, native keeps direct CDN URLs (no COEP, saves
-egress). ObjectImage shows a fixed-height neutral block with a small Met-red
-spinner until the bytes paint (cold proxy fetches read as intentional; zero
-layout shift). See `apps/mobile/src/components/ObjectImage.tsx` and
-`apps/mobile/src/data/apiBase.ts:apiBase`.
+Image bytes do NOT route through the app server on the happy path. The
+thumbnail pipeline (`data/src/thumbnails.ts`) pre-generates JPEG derivatives
+of every catalog image into the PUBLIC Tigris bucket `musewalk-images`
+(anonymous GET, CORS `GET/HEAD from *`), content-addressed as
+`img/{objectID}/{sha256(imageUrl)[:12]}/{t320,c1080}.jpg` and recorded in
+met.sqlite as `objects.thumbKey`. Clients (web AND native — the derivatives
+are smaller than the raw Met CDN files) load
+`https://musewalk-images.fly.storage.tigris.dev/{thumbKey}/{variant}.jpg`
+directly: `t320` for list rows (results, room sheet), `c1080` for the
+object-detail hero. The URL policy lives in ONE module,
+`apps/mobile/src/data/imageCdn.ts`; the components are
+`apps/mobile/src/components/ObjectImage.tsx` (hero `ObjectImage` + list-row
+`ObjectThumb`). On web the bucket `<img>` carries `crossorigin="anonymous"`:
+Tigris sends no CORP header, so under the app's COEP `require-corp` the
+response is only embeddable via a CORS load. The baked bucket base URL is
+origin-independent infra (identical for every deploy origin) and is
+allowlisted by `scripts/check-origin-portability.mjs`.
+
+Fallback (why the proxy stays): measured 2026-06-10, `images.metmuseum.org`
+sends **no** CORS/CORP headers, so under the server's cross-origin-isolated
+pages (COOP `same-origin` + COEP `require-corp`, kept for dev/prod parity)
+the raw Met CDN cannot be embedded directly on web.
+`server/src/routes/img.ts:imgRoutes` (`GET /api/v1/img/{objectID}`, disk LRU
+cache at `DATA_DIR/img-cache/`, cap `IMG_CACHE_MAX_MB`, permissive CORP/CORS
+headers, `?v={dataVersion}` cache-buster) is now FALLBACK-ONLY: web clients
+hit it when an object has no thumbKey yet (newer than the last thumbnail run,
+or a pre-thumbKey met.sqlite artifact — `SqliteDataProvider` detects the
+column and degrades cleanly) or when a bucket fetch errors; native falls back
+to the direct Met CDN URL instead (no COEP there). ObjectImage shows a
+fixed-height neutral block with a small Met-red spinner until the bytes paint
+(zero layout shift). The e2e guard is `e2e/checks/imagecdn.spec.ts`: every
+sampled thumbnail/hero must actually load (naturalWidth > 0) AND zero
+requests may hit `/api/v1/img` during the happy-path sweep.
 
 ## Nightly self-refresh
 

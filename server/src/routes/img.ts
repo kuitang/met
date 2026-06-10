@@ -1,11 +1,17 @@
 /**
  * GET /api/v1/img/:objectID — disk-cached proxy for Met CDN object images.
+ * FALLBACK ONLY: clients load image bytes from the public Tigris bucket of
+ * pre-generated derivatives first (objects.thumbKey →
+ * apps/mobile/src/data/imageCdn.ts) — bytes bypass this server entirely on
+ * the happy path. This route exists for objects without a thumbKey yet
+ * (newer than the last thumbnail run / pre-thumbKey artifacts) and as the
+ * web client's onError fallback when a bucket fetch fails.
  *
- * Why: the web client runs cross-origin isolated (COEP: require-corp for
- * SharedArrayBuffer/expo-sqlite) and images.metmuseum.org sends no CORS/CORP
- * headers (measured 2026-06-10), so the browser cannot embed the CDN
- * directly. We proxy instead (gate-review accepted). Only objectIDs with a
- * non-empty imageUrl in met.sqlite are served — this is not an open proxy.
+ * Why a proxy at all: the web client runs cross-origin isolated (COEP:
+ * require-corp for SharedArrayBuffer/expo-sqlite) and images.metmuseum.org
+ * sends no CORS/CORP headers (measured 2026-06-10), so the browser cannot
+ * embed the Met CDN directly. Only objectIDs with a non-empty imageUrl in
+ * met.sqlite are served — this is not an open proxy.
  *
  * Cache (Fly: single small VM, 1-3 GB volume at DATA_DIR, egress costs
  * money, machine may restart anytime):

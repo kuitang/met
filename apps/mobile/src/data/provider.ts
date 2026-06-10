@@ -29,6 +29,14 @@ export interface MetObject {
   credit: string;
   isHighlight: boolean;
   img: string;
+  /**
+   * Key prefix of the pre-generated image derivatives in the public Tigris
+   * bucket (see ./imageCdn.ts), e.g. "img/35/df74b8631bd3". ''/undefined
+   * (stub objects, objects newer than the last thumbnail run, pre-thumbKey
+   * met.sqlite artifacts) → components fall back to the server image proxy
+   * (web) / direct Met CDN (native).
+   */
+  thumbKey?: string;
 }
 
 /**

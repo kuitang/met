@@ -31,7 +31,6 @@ import { router } from 'expo-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   FlatList,
-  Image,
   Pressable,
   StyleSheet,
   Text,
@@ -47,8 +46,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { objectImageSrc } from '@/components/ObjectImage';
-import { MetObject, Room, useData } from '@/data/provider';
+import { ObjectThumb } from '@/components/ObjectImage';
+import { MetObject, Room } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
 export type SheetDetent = 'header' | 'half' | 'full';
@@ -86,7 +85,6 @@ export default function HomeRoomSheet({
   onImHere,
   onClose,
 }: HomeRoomSheetProps) {
-  const { dataVersion } = useData();
   const { height: winH } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const sheetH = winH - insets.top - FULL_TOP_GAP;
@@ -245,12 +243,8 @@ export default function HomeRoomSheet({
                   testID={`sheet-object-${item.objectID}`}
                 >
                   {item.img ? (
-                    // Proxy on web (COEP blocks the raw CDN) — see objectImageSrc.
-                    <Image
-                      source={{ uri: objectImageSrc(item.img, item.objectID, dataVersion) }}
-                      style={styles.thumb}
-                      resizeMode="cover"
-                    />
+                    // Tigris CDN first, proxy fallback — see data/imageCdn.ts.
+                    <ObjectThumb object={item} style={styles.thumb} />
                   ) : (
                     <View style={[styles.thumb, styles.thumbEmpty]} />
                   )}

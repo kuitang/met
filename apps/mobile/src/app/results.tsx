@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
-  Image,
   Pressable,
   StyleSheet,
   Text,
@@ -12,7 +11,7 @@ import {
 
 import type { components } from '@met/shared';
 
-import { objectImageSrc } from '@/components/ObjectImage';
+import { ObjectThumb } from '@/components/ObjectImage';
 import SearchFilterChips, {
   ResultFilters,
   applyFilters,
@@ -155,11 +154,8 @@ export default function ResultsScreen() {
             testID={`result-${item.objectID}`}
           >
             {item.img ? (
-              // Proxy on web (COEP blocks the raw CDN) — see objectImageSrc.
-              <Image
-                source={{ uri: objectImageSrc(item.img, item.objectID, data.dataVersion) }}
-                style={styles.thumb}
-              />
+              // Tigris CDN first, proxy fallback — see data/imageCdn.ts.
+              <ObjectThumb object={item} style={styles.thumb} />
             ) : (
               <View style={[styles.thumb, styles.thumbEmpty]} />
             )}
