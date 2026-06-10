@@ -8,9 +8,11 @@
     "scheme": "metnav",
     "userInterfaceStyle": "automatic",
     "ios": {
+      "bundleIdentifier": "com.kuitang.metnav",
       "icon": "./assets/expo.icon"
     },
     "android": {
+      "package": "com.kuitang.metnav",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -40,6 +42,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "2503719e-2d3a-4698-abc7-9c56bf51eaf1"
+      }
+    },
+    "owner": "kuitang"
   }
 }
