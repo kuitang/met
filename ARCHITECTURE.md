@@ -28,13 +28,12 @@ server/ (Node + Hono, Fly.io)                          apps/mobile (Expo SDK 56,
   GET  /api/v1/img/{objectID}   (image proxy + LRU)      re-downloads only on version change
   POST /api/v1/search/interpret (Gemini, server-only)    ALL search / map / routing / positioning
   POST /api/v1/locate/photo     (OCR ∥ embedding)        run on-device against the local file
-  POST /api/v1/admin/refresh    (Bearer ADMIN_TOKEN)     (offline after first load; only LLM,
-  GET  /api/v1/health                                     images and refresh need the network)
-  nightly self-refresh: Met delta → rebuild → atomic swap
+  GET  /api/v1/health                                    (offline after first load; only LLM,
+                                                          images and refresh need the network)
 ```
 
 The OpenAPI contract `shared/openapi.yaml` (generated types:
-`shared/api-types.d.ts`) is the **only** client↔server surface; the seven
+`shared/api-types.d.ts`) is the **only** client↔server surface; the six
 routes above are the entire dynamic API. Everything else — autocomplete, full
 search, the floor-plan map, Dijkstra routing, positioning fusion — is
 client-local code in `shared/` and `apps/mobile/` running against the
@@ -374,19 +373,63 @@ fixed-height neutral block with a small Met-red spinner until the bytes paint
 sampled thumbnail/hero must actually load (naturalWidth > 0) AND zero
 requests may hit `/api/v1/img` during the happy-path sweep.
 
-## Nightly self-refresh
+## Deployment & nightly data pipeline
 
-`server/src/refresh.ts`: a 60 s-tick scheduler (`startRefreshScheduler`) fires
-once per UTC day at `REFRESH_CRON_HOUR` (default 4; `RUN_REFRESH=0` disables).
-The job (`runRefresh`): Met API objects delta (`objects?metadataDate=` since
-the snapshot ∩ on-view, ≤10 req/s with WAF-aware backoff) → incremental
-synonyms → `build-db.ts` into a staging dir → **atomic swap** (fsync, previous
-artifact kept as `met.sqlite.prev`, rename, VERSION bump) → in-process handle
-reload (`server/src/routes/interpret.ts:reopenInterpretDb`,
-`server/src/embeddings.ts:reloadEmbeddingIndex`). Any failure aborts before
-the rename; the live artifact is never touched. Manual trigger:
-`POST /api/v1/admin/refresh` (Bearer `ADMIN_TOKEN`; 404 when unset, 409 when
-in-flight). Clients pick the new version up via the version poll + ETag.
+```
+GitHub Actions cron (03:23 UTC)            git (sources: geojson, graph,
+  data/src/nightly.ts                      synonyms, pipelines, app code)
+    │ pull latest/ artifacts                        │
+    │ Met API delta (≤10 req/s)                     │ push to main (squash PR,
+    │ embed only new/changed images                 │ required check: "ci")
+    │ tombstone + compact vectors                   ▼
+    │ build-db → upload v{ver}/            ci.yml: tsc ×4 · vitest (shared+data)
+    │ readback-verify sha256s                · evals · playwright checks
+    ▼                                               │ deploy job (needs: ci)
+Tigris s3://met-artifacts                           ▼
+  v{dataVersion}/{met.sqlite,              flyctl deploy --remote-only
+   image-embeddings/*,manifest.json}                │
+  latest/manifest.json  ◄── atomic ptr              ▼
+    │                                      Docker build BAKES latest/ artifacts
+    └──── build secrets (AWS_*) ─────────► (sha256-verified in-build, fail hard)
+                                                    │
+                                                    ▼
+                                           Fly.io app met-nav (ewr, no volumes,
+                                           min_machines_running=1)
+```
+
+- **Artifacts vs sources**: the bucket holds *built* artifacts under immutable
+  `v{dataVersion}/` prefixes; `latest/manifest.json` (sha256 + bytes for every
+  file, embedding-model version, builtAt) is the atomic commit pointer —
+  uploads are readback-verified before the pointer moves, and versions older
+  than 14 days are GC'd by the nightly job. Reproducible *sources* (snapshot
+  geojson/graph/vocab/synonyms, raw Living Map tiles) stay in git;
+  `data/met.sqlite` + `VERSION` are gitignored (pull via
+  `data/src/fetch-artifacts.ts` or rebuild with `build-db`).
+- **The nightly job** (`data/src/nightly.ts`, GHA `nightly-data.yml`, also
+  locally runnable): last night's met.sqlite from the bucket is the durable
+  objects state; the Met API delta (`metadataDate` ∩ on-view, WAF-aware
+  ≤10 req/s) re-hydrates ~tens of objects; embeddings are content-addressed
+  (objectID + sha256(imageUrl) + model) so only new/changed images hit Gemini
+  — the bucket is the durable embedding cache and the corpus is never
+  re-embedded; `embed-images.ts --compact` tombstones off-view vectors and
+  reclaims stale/duplicate rows (the 3,017 historical re-embed twins were
+  measured and the compactor drops exactly them); `build-db.ts` runs its
+  verify gate; then upload → verify → pointer commit → `flyctl deploy`.
+  Failure anywhere exits non-zero and the pointer never moves; GitHub's
+  scheduled-workflow failure e-mail is the dead-man's switch.
+- **The server has no refresh machinery** (parsimony: the old in-process
+  scheduler + `POST /api/v1/admin/refresh` + `ADMIN_TOKEN` were deleted; data
+  arrives via image rebuilds). The boot path simply reads the baked
+  `DATA_DIR` files; interpret/embeddings still lazy-open per request, so a
+  dev box without artifacts boots degraded instead of crashing. Clients pick
+  new data up via the version poll + ETag.
+- **PR previews** (`fly-preview.yml`, superfly/fly-pr-review-apps@1.5.0): app
+  `met-nav-pr-{n}`, shared-cpu-1x/512 MB, same Dockerfile + Tigris build
+  secrets, real Gemini key with `LLM_DAILY_BUDGET=100`, URL commented on the
+  PR, destroyed on close.
+- **Branch protection** (armed after the first PR merges): require PRs with
+  required status check `ci`, linear history, no force-push/deletion; admin
+  bypass for kuitang. All changes land as squash PRs.
 
 ## Abuse protection
 
@@ -452,9 +495,11 @@ loads whatever shards exist.
 | `server/src/routes/data.ts:dataRoutes` | versioned ETag delivery of met.sqlite |
 | `server/src/routes/img.ts:imgRoutes` | Met-CDN image proxy + disk LRU |
 | `server/src/embeddings.ts:searchByEmbedding` | in-RAM cosine over the sharded vector index |
-| `server/src/refresh.ts:runRefresh` / `adminRefreshRoutes` | nightly delta → rebuild → atomic swap |
 | `server/src/vocab.ts:getVocabulary` | DB-derived vocabulary for the interpret prompt |
-| `data/src/objects.ts` / `geometry.ts` / `graph.ts` / `synonyms.ts` / `build-db.ts` / `embed-images.ts` | pipelines (scripts; also driven by the server refresh job) |
+| `data/src/objects.ts` / `geometry.ts` / `graph.ts` / `synonyms.ts` / `build-db.ts` / `embed-images.ts` | pipelines (scripts; embed-images also does `--compact` tombstone/dedupe) |
+| `data/src/nightly.ts` | nightly delta → embed delta → build → Tigris upload + verified pointer commit + GC |
+| `data/src/artifacts.ts` / `fetch-artifacts.ts` | Tigris manifest helpers · sha256-verified artifact pull (Docker bake, CI) |
+| `Dockerfile` / `fly.toml` / `.github/workflows/` | image bake + Fly config + CI/deploy/preview/nightly automation |
 | `data/src/evals.ts` | regenerates all eval reports (`npm run evals`) |
 | `e2e/checks/` · `e2e/journeys/` | fast assertion gate (incl. HIG sweep) · J1–J15 user-journey videos |
 
@@ -464,6 +509,8 @@ loads whatever shards exist.
   scenario simulator.
 - `npm -w server test` — vitest: og-meta injection matrix (origins, deep
   paths, title dedupe) + shipped share/icon asset dimensions.
+- `npm -w data test` — vitest: nightly manifest build/verify + embedding-index
+  compaction (tombstones, stale-twin dedupe, shard rewrites; no network).
 - `cd e2e && npx playwright test --project=checks` — fast gate: all screens,
   real-map rendering, HIG conformance sweep (≥44 pt targets, ≥16 px inputs,
   no horizontal overflow at 390 px), data-provider spec (gated on

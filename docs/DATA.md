@@ -61,7 +61,8 @@ only as evidence of this.
 Float32Array shards + index.json), loaded into server RAM for
 `/api/v1/locate/photo`. Server-side only; never shipped to clients, and not
 committed to git (≈100 MB at full scale) — regenerate with the incremental
-command below; in prod it lives on the Fly volume.
+command below; in prod it is baked into the Docker image from the Tigris
+artifact bucket.
 
 ## Pipelines (all in `data/src/`, rerun with these commands)
 
@@ -124,10 +125,12 @@ the 2026-06-10 run:
 
 ## Update story
 
-- **Server (production)**: a nightly in-process job re-runs the objects pipeline
-  in incremental mode (`metadataDate` delta against the previous snapshot),
-  rebuilds `met.sqlite` with the *committed* geometry/graph snapshots, and
-  atomically swaps it (last-known-good kept). Clients poll
+- **Production**: a nightly GitHub Actions job (`data/src/nightly.ts`, see
+  ARCHITECTURE.md "Deployment & nightly data pipeline") re-runs the objects
+  pipeline in incremental mode (`metadataDate` delta against last night's
+  bucket artifact), embeds only new/changed images, rebuilds `met.sqlite` with
+  the *committed* geometry/graph snapshots, uploads a verified version to the
+  Tigris bucket, and redeploys (the Docker image bakes the data). Clients poll
   `GET /api/v1/data/version` and re-download on ETag change. Geometry and the
   graph are **not** refreshed nightly — gallery walls don't move; they are
   re-ETL'd manually if the Met renovates (the coverage eval's orphan list is the

@@ -56,7 +56,7 @@ object page says "(gallery not in stub map)".
   `images.metmuseum.org` sends *no* `Access-Control-Allow-Origin` and no CORP
   header (verified live 2026-06-10), so `require-corp` would block its images.
   The server now proxies them at `GET /api/v1/img/{objectID}` (disk LRU cache
-  on the Fly volume, `ACAO *` + `CORP cross-origin`); web clients use the
+  in `DATA_DIR/img-cache`, `ACAO *` + `CORP cross-origin`); web clients use the
   proxy, native uses the CDN directly. The mockup (stub provider, no server)
   still uses plain no-cors `<img>` pointing at the CDN — see
   `apps/mobile/src/components/ObjectImage.tsx`.
