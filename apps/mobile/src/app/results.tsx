@@ -12,6 +12,7 @@ import {
 
 import type { components } from '@met/shared';
 
+import { objectImageSrc } from '@/components/ObjectImage';
 import SearchFilterChips, {
   ResultFilters,
   applyFilters,
@@ -154,7 +155,11 @@ export default function ResultsScreen() {
             testID={`result-${item.objectID}`}
           >
             {item.img ? (
-              <Image source={{ uri: item.img }} style={styles.thumb} />
+              // Proxy on web (COEP blocks the raw CDN) — see objectImageSrc.
+              <Image
+                source={{ uri: objectImageSrc(item.img, item.objectID, data.dataVersion) }}
+                style={styles.thumb}
+              />
             ) : (
               <View style={[styles.thumb, styles.thumbEmpty]} />
             )}

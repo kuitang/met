@@ -6,7 +6,8 @@
 import { router } from 'expo-router';
 import { FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { MetObject, Room } from '@/data/provider';
+import { objectImageSrc } from '@/components/ObjectImage';
+import { MetObject, Room, useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
 export interface HomeRoomSheetProps {
@@ -29,6 +30,7 @@ export default function HomeRoomSheet({
   originId,
   onClose,
 }: HomeRoomSheetProps) {
+  const { dataVersion } = useData();
   return (
     <View style={styles.sheet} testID="room-sheet">
       <View style={styles.grabber} />
@@ -80,7 +82,12 @@ export default function HomeRoomSheet({
               testID={`sheet-object-${item.objectID}`}
             >
               {item.img ? (
-                <Image source={{ uri: item.img }} style={styles.thumb} resizeMode="cover" />
+                // Proxy on web (COEP blocks the raw CDN) — see objectImageSrc.
+                <Image
+                  source={{ uri: objectImageSrc(item.img, item.objectID, dataVersion) }}
+                  style={styles.thumb}
+                  resizeMode="cover"
+                />
               ) : (
                 <View style={[styles.thumb, styles.thumbEmpty]} />
               )}

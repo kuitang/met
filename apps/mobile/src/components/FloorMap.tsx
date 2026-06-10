@@ -502,6 +502,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: spacing.md,
     right: spacing.md,
+    // On short maps (route screen, small phones) a single column of floor
+    // chips is taller than the map and the overflow is clipped — lower
+    // floors became unreachable. Cap the column at the map height and let
+    // it wrap; 'wrap-reverse' puts the first column at the right edge so
+    // extra columns grow leftward over the map instead of off-screen.
+    bottom: spacing.md,
+    flexWrap: 'wrap-reverse',
     gap: spacing.sm,
   },
   // Apple HIG: every tap target ≥44×44 pt.

@@ -125,6 +125,12 @@ export default function SearchFilterChips({
 const styles = StyleSheet.create({
   strip: {
     flexGrow: 0,
+    // RN-web ScrollView defaults to flexShrink:1, and the sibling results
+    // FlatList's flex-basis is its full content height — with a long result
+    // list (e.g. 145 rows for "sphinx" on the real provider) flexbox shrinks
+    // this strip to a few px and the chips render as clipped, label-less top
+    // slivers. The strip must keep its intrinsic height; the list scrolls.
+    flexShrink: 0,
   },
   row: {
     gap: spacing.sm,

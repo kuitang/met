@@ -1,8 +1,14 @@
-import { defineConfig } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Two projects (see README.md):
+ * Three projects (see README.md):
  *  - checks:   fast headless assertion gate. Run after every change.
+ *  - webkit-render: iPhone-engine (WebKit) render guard — runs hig.spec +
+ *              render-sanity.spec ONLY, not the whole checks suite, to keep
+ *              CI runtime sane. Exists because a chip-strip flex collapse
+ *              and COEP-blocked thumbnails shipped invisibly: the
+ *              chromium-only sweep never saw what iOS Safari users saw.
+ *              Requires `npx playwright install webkit`.
  *  - journeys: user-facing demo videos, phone-sized, deliberately paced.
  *              MUST run serially — invoke via `npm run journeys` (forces
  *              --workers=1) or pass --workers=1 yourself; Playwright has no
@@ -35,6 +41,19 @@ export default defineConfig({
       testDir: './checks',
       fullyParallel: true,
       use: {
+        video: 'retain-on-failure',
+        trace: 'retain-on-failure',
+      },
+    },
+    {
+      name: 'webkit-render',
+      testDir: './checks',
+      testMatch: ['hig.spec.ts', 'render-sanity.spec.ts'],
+      fullyParallel: true,
+      use: {
+        // Real iPhone emulation (WebKit engine + UA/DPR/touch); the specs'
+        // own test.use viewport (390×844) still applies on top.
+        ...devices['iPhone 13'],
         video: 'retain-on-failure',
         trace: 'retain-on-failure',
       },

@@ -279,6 +279,17 @@ export default function RouteScreen() {
             <Text style={styles.toastText}>Rerouting…</Text>
           </View>
         )}
+        {/* Debug-only control: overlaid on the map, NOT in the column flow.
+            In the footer it cost 52px of vertical budget, which pushed the
+            footer below the fold on iPhone-size viewports once the step
+            cards stopped (wrongly) absorbing the shortfall. */}
+        <Pressable
+          style={styles.debugBtn}
+          onPress={simulateOffRouteFix}
+          testID="simulate-fix"
+        >
+          <Text style={styles.debugText}>Simulate off-route fix (debug)</Text>
+        </Pressable>
       </View>
 
       <FlatList
@@ -354,13 +365,6 @@ export default function RouteScreen() {
             <Text style={styles.imHereText}>I'm here — next step</Text>
           </Pressable>
         )}
-        <Pressable
-          style={styles.debugBtn}
-          onPress={simulateOffRouteFix}
-          testID="simulate-fix"
-        >
-          <Text style={styles.debugText}>Simulate off-route fix (debug)</Text>
-        </Pressable>
       </View>
     </View>
   );
@@ -430,6 +434,11 @@ const styles = StyleSheet.create({
   },
   cards: {
     flexGrow: 0,
+    // RN-web ScrollView defaults to flexShrink:1 — without this the step
+    // strip gets shrunk below its tallest card on small viewports and long
+    // instructions clip at the card bottom. The map (flex:1) absorbs the
+    // shortfall instead.
+    flexShrink: 0,
   },
   cardsContent: {
     paddingHorizontal: spacing.lg,
@@ -499,6 +508,8 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   debugBtn: {
+    position: 'absolute',
+    bottom: 0,
     alignSelf: 'center',
     minHeight: 44, // HIG tap target
     justifyContent: 'center',
