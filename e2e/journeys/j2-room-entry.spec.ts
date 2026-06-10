@@ -11,6 +11,7 @@ import { loadJourneyFixtures } from '../helpers/db';
 import {
   HAS_REAL_TARGET,
   HIGHLIGHT_STROKE,
+  awaitHeroImage,
   bootReal,
   locateRoom,
   tapRoom,
@@ -48,5 +49,6 @@ test('J2 room entry: gallery number → highlight → objects → synopsis', asy
     await page.getByTestId(`sheet-object-${first.objectID}`).click();
   });
   await expect(page.getByTestId('object-title')).toHaveText(first.title);
+  await awaitHeroImage(page); // recording: hero painted, not the grey block
   await expect(page.getByTestId('object-gallery-chip')).toContainText(F.galleryId);
 });

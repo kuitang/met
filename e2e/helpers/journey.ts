@@ -66,6 +66,35 @@ export async function tapRoom(page: Page, roomId: string): Promise<void> {
   }
 }
 
+/**
+ * Bounded wait for the object page's hero image to finish painting, so the
+ * recorded videos never linger on the grey loading block. The image proxy is
+ * pre-warmed by prewarm-images.ts, so this is normally instant. Non-fatal on
+ * timeout (imageless objects render no <img> at all — resolves immediately;
+ * a slow CDN miss must not fail a journey). Call it only after an
+ * object-page assertion (e.g. object-title) so the <img> has mounted.
+ *
+ * The trailing 600 ms is for the recording itself: tests otherwise end
+ * milliseconds after the bytes decode, before the spinner-clearing repaint
+ * is ever captured — the video's final frames would still show the grey
+ * block even though the image had loaded (observed on a warm cache).
+ */
+export async function awaitHeroImage(page: Page, timeoutMs = 3_000): Promise<void> {
+  await page
+    .waitForFunction(
+      () => {
+        const img = document.querySelector(
+          '[data-testid="object-image"]',
+        ) as HTMLImageElement | null;
+        return !img || (img.complete && img.naturalWidth > 0);
+      },
+      undefined,
+      { timeout: timeoutMs },
+    )
+    .catch(() => undefined);
+  await page.waitForTimeout(600);
+}
+
 /** Set the visitor's room through the locate sheet (the J2 entry mode). */
 export async function locateRoom(page: Page, galleryNumber: string): Promise<void> {
   await page.getByTestId('locate-chip').click();

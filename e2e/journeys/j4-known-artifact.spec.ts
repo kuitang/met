@@ -7,7 +7,7 @@
 import { expect, test } from '@playwright/test';
 
 import { loadJourneyFixtures } from '../helpers/db';
-import { HAS_REAL_TARGET, bootReal } from '../helpers/journey';
+import { HAS_REAL_TARGET, awaitHeroImage, bootReal } from '../helpers/journey';
 import { step } from '../helpers/steps';
 
 test.skip(!HAS_REAL_TARGET, 'set JOURNEY_TARGET — see helpers/journey.ts');
@@ -31,6 +31,7 @@ test('J4 known artifact: title search → gallery inline → object page', async
     await row.click();
   });
   await expect(page.getByTestId('object-title')).toHaveText(F.artifact.title);
+  await awaitHeroImage(page); // recording: hero painted, not the grey block
   await expect(page.getByTestId('object-gallery-chip')).toContainText(
     F.artifact.galleryNumber,
   );

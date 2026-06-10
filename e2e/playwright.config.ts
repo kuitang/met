@@ -18,6 +18,9 @@ const baseURL = journeyTarget ?? 'http://localhost:8081';
 
 export default defineConfig({
   outputDir: 'test-results',
+  // Pre-warms the image-proxy cache for the journey recordings; a no-op
+  // unless JOURNEY_TARGET is set (see prewarm-images.ts).
+  globalSetup: './prewarm-images.ts',
   timeout: 60_000,
   reporter: [['list']],
   use: {

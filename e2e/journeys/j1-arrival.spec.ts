@@ -19,8 +19,10 @@ test('J1 arrival: entrance GPS → wing-level anchor, floor 1, no room claim', a
   await fix(context, FIFTH_AVE_ENTRANCE.lat, FIFTH_AVE_ENTRANCE.lon, 40);
   await bootReal(page);
 
-  // Before any fix the chip is the red "unknown" call to action.
+  // Before any fix the chip is the red "unknown" call to action; its second
+  // line always shows the active venue (venue is location state).
   await expect(page.getByTestId('locate-chip')).toContainText('Location unknown');
+  await expect(page.getByTestId('locate-chip-venue')).toHaveText('Fifth Avenue');
 
   await step(page, 'Just arrived at the Met — checking my location (GPS, ±40 m)', async () => {
     await page.getByTestId('locate-chip').click();

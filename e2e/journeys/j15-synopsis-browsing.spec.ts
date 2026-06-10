@@ -7,7 +7,7 @@
 import { expect, test } from '@playwright/test';
 
 import { loadJourneyFixtures } from '../helpers/db';
-import { HAS_REAL_TARGET, bootReal } from '../helpers/journey';
+import { HAS_REAL_TARGET, awaitHeroImage, bootReal } from '../helpers/journey';
 import { step } from '../helpers/steps';
 
 test.skip(!HAS_REAL_TARGET, 'set JOURNEY_TARGET — see helpers/journey.ts');
@@ -22,6 +22,7 @@ test('J15 synopsis browsing: next/previous through the room, no re-search', asyn
 
   await bootReal(page, `/object/${objs[0].objectID}`);
   await expect(page.getByTestId('object-title')).toHaveText(objs[0].title);
+  await awaitHeroImage(page); // recording: each page turn shows a painted hero
   await expect(page.getByTestId('object-position')).toHaveText(
     `1 of ${n} in Gallery ${F.galleryId}`,
   );
@@ -30,6 +31,7 @@ test('J15 synopsis browsing: next/previous through the room, no re-search', asyn
     await page.getByTestId('object-next').click();
   });
   await expect(page.getByTestId('object-title')).toHaveText(objs[1].title);
+  await awaitHeroImage(page);
   await expect(page.getByTestId('object-position')).toHaveText(
     `2 of ${n} in Gallery ${F.galleryId}`,
   );
@@ -39,6 +41,7 @@ test('J15 synopsis browsing: next/previous through the room, no re-search', asyn
     await page.getByTestId('object-next').click();
   });
   await expect(page.getByTestId('object-title')).toHaveText(objs[2].title);
+  await awaitHeroImage(page);
   await expect(page.getByTestId('object-position')).toHaveText(
     `3 of ${n} in Gallery ${F.galleryId}`,
   );
@@ -47,6 +50,7 @@ test('J15 synopsis browsing: next/previous through the room, no re-search', asyn
     await page.getByTestId('object-prev').click();
   });
   await expect(page.getByTestId('object-title')).toHaveText(objs[1].title);
+  await awaitHeroImage(page);
   await expect(page.getByTestId('object-position')).toHaveText(
     `2 of ${n} in Gallery ${F.galleryId}`,
   );

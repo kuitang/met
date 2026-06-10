@@ -24,6 +24,10 @@ test('J14 Cloisters: venue switch, in-venue route, site isolation', async ({ pag
     await page.getByTestId('venue-cloisters').click();
     await page.goBack();
   });
+  // The home chip's second line reflects the new venue; a manual pick is the
+  // user's own action, so no auto-switch toast appears.
+  await expect(page.getByTestId('locate-chip-venue')).toHaveText('The Cloisters');
+  await expect(page.getByTestId('venue-toast')).toHaveCount(0);
   // Data-driven floors: the Cloisters has G and 1 only.
   await expect(page.getByTestId('floor-chip-1')).toBeVisible();
   await expect(page.getByTestId('floor-chip-G')).toBeVisible();

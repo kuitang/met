@@ -6,7 +6,7 @@
 import { expect, test } from '@playwright/test';
 
 import { loadJourneyFixtures } from '../helpers/db';
-import { HAS_REAL_TARGET, bootReal } from '../helpers/journey';
+import { HAS_REAL_TARGET, awaitHeroImage, bootReal } from '../helpers/journey';
 import { step } from '../helpers/steps';
 
 test.skip(!HAS_REAL_TARGET, 'set JOURNEY_TARGET — see helpers/journey.ts');
@@ -23,6 +23,7 @@ test('J13 deep links: cold object + route URLs hydrate; share copies canonical U
     await bootReal(page, `/object/${F.artifact.objectID}`);
   });
   await expect(page.getByTestId('object-title')).toHaveText(F.artifact.title);
+  await awaitHeroImage(page); // recording: hero painted, not the grey block
   await expect(page.getByTestId('object-gallery-chip')).toContainText(
     F.artifact.galleryNumber,
   );
@@ -40,6 +41,7 @@ test('J13 deep links: cold object + route URLs hydrate; share copies canonical U
     await bootReal(page, new URL(copied).pathname);
   });
   await expect(page.getByTestId('object-title')).toHaveText(F.artifact.title);
+  await awaitHeroImage(page);
 
   // --- /route/131/822?avoid=stairs cold --------------------------------------
   await step(page, 'Cold deep link: /route/131/822?avoid=stairs', async () => {
