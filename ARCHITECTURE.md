@@ -106,6 +106,13 @@ The provider:
 - runs autocomplete/full search through the shared builders
   (`shared/search.ts:buildAutocompleteQuery` / `buildFullQuery`) with
   rank-preserving hydration;
+- `objectsInGallery` is a CAPPED display list (500 rows; the densest gallery
+  holds ~4.5k objects) in the canonical `shared/search.ts:GALLERY_ORDER`
+  (`isHighlight DESC, objectID` — deterministic). Counts and positions are
+  never derived from it: `galleryObjectCount` (true COUNT), and the object
+  page's "n of N" counter + ‹/› neighbors run as keyed SQL over the full
+  ordering (`buildGalleryPositionQuery` / `buildGalleryNeighborsQuery`,
+  wraparound at the true ends; no row materialization);
 - loads galleries/amenities/graph/geometry once in `create()`;
 - `route()` delegates to `shared/routing.ts:buildRouteGraph` + `route` and
   emits `Route.geo` — the node path projected into the map's meter space plus
