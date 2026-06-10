@@ -1,20 +1,22 @@
 {
-  "fetchedAt": "2026-06-10T02:39:08.464Z",
+  "fetchedAt": "2026-06-10T12:54:50.222Z",
   "searchTotalOnView": 45502,
   "searchTotalWithImages": 34027,
-  "hydrated": 120,
-  "rows": 120,
+  "hydrated": 45502,
+  "rows": 44842,
   "skipped": {
-    "noGallery": 0,
-    "notFound": 0
+    "noGallery": 202,
+    "notFound": 458
   },
   "bySite": {
-    "fifthAve": 120
+    "fifthAve": 43717,
+    "cloisters": 1125
   },
   "byRotation": {
-    "permanent": 120
+    "permanent": 44405,
+    "exhibition": 437
   },
   "floorUnknown": null,
-  "distinctGalleryNumbers": 52,
-  "runtimeSeconds": 126
+  "distinctGalleryNumbers": 415,
+  "runtimeSeconds": 36904
 }
