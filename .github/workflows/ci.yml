@@ -42,10 +42,11 @@ jobs:
           npm -w shared run gen
           git diff --exit-code shared/api-types.d.ts
 
-      - name: Unit tests (shared + data)
+      - name: Unit tests (shared + data + server)
         run: |
           npm -w shared test
           npm -w data test
+          npm -w server test
 
       # Origin portability gate: export the real web bundle exactly like the
       # Docker build does (EXPO_PUBLIC_DATA=real, no EXPO_PUBLIC_API_URL) and
@@ -66,11 +67,16 @@ jobs:
       - name: Data evals
         run: npm run evals
 
-      - name: Playwright checks (stub mode)
+      # CHECKS_STATIC: `expo serve` of a pre-built stub export — the Metro
+      # dev-server compile alone takes ~25 min on a 2-core runner and timed
+      # out the job. webkit-render runs alongside checks (iPhone-engine
+      # render guard; +~80MB browser download, +~5s test time).
+      - name: Playwright checks (stub mode, static export) + webkit render guard
         run: |
+          EXPO_PUBLIC_DATA=stub npm -w apps/mobile run export:web
           cd e2e
-          npx playwright install chromium --with-deps
-          npx playwright test --project=checks
+          npx playwright install chromium webkit --with-deps
+          CHECKS_STATIC=1 npx playwright test --project=checks --project=webkit-render
 
       - name: Upload playwright artifacts on failure
         if: failure()
