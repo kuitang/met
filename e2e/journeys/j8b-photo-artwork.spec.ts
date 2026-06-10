@@ -2,8 +2,10 @@
  * J8b — Photo localization via artwork photo (no label in frame). Upload a
  * visitor photo of Wheat Field with Cypresses (436535_photo.jpg, ground
  * truth: Gallery 822, Floor 2) → embedding retrieval returns candidates →
- * the visitor confirms → room anchor set. @live variant runs the real
- * embedding index.
+ * the visitor confirms → room anchor set. Holds for both server modes: live
+ * gemini-embedding retrieval against the real index must offer 436535 (the
+ * canonical recording mode); LLM_MOCK=1 serves the same candidate from a
+ * hash-keyed fixture.
  */
 import { expect, test } from '@playwright/test';
 import path from 'node:path';
@@ -51,15 +53,8 @@ async function runArtworkJourney(page: import('@playwright/test').Page) {
   );
 }
 
-test('J8b photo artwork: upload → candidates → confirm → room anchor (mock)', async ({
+test('J8b photo artwork: upload → candidates → confirm → room anchor', async ({
   page,
 }) => {
-  await runArtworkJourney(page);
-});
-
-test('J8b @live: real embedding retrieval (needs LLM_LIVE=1 + non-mock server)', async ({
-  page,
-}) => {
-  test.skip(process.env.LLM_LIVE !== '1', 'live LLM smoke runs only with LLM_LIVE=1');
   await runArtworkJourney(page);
 });

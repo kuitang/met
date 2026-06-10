@@ -1,9 +1,11 @@
 /**
  * J8 — Photo localization via wall label. Upload a label photo
  * (e2e/fixtures/544442_label.jpg, ground truth: Gallery 131, Floor 1) →
- * POST /api/v1/locate/photo OCRs the label (LLM_MOCK=1: canned fixture keyed
- * by the image hash) → deterministic catalog match → one tap anchors the
- * visitor in the label's gallery. @live variant exercises real OCR.
+ * POST /api/v1/locate/photo OCRs the label → deterministic catalog match →
+ * one tap anchors the visitor in the label's gallery. Ground truth holds for
+ * both server modes: live Gemini OCR reads the real label's accession
+ * (→ Gallery 131, the canonical recording mode); LLM_MOCK=1 serves the same
+ * answer from a hash-keyed fixture.
  */
 import { expect, test } from '@playwright/test';
 import path from 'node:path';
@@ -51,11 +53,6 @@ async function runLabelJourney(page: import('@playwright/test').Page) {
   );
 }
 
-test('J8 photo label: upload → OCR match → room anchor (mock)', async ({ page }) => {
-  await runLabelJourney(page);
-});
-
-test('J8 @live: real label OCR (needs LLM_LIVE=1 + non-mock server)', async ({ page }) => {
-  test.skip(process.env.LLM_LIVE !== '1', 'live LLM smoke runs only with LLM_LIVE=1');
+test('J8 photo label: upload → OCR match → room anchor', async ({ page }) => {
   await runLabelJourney(page);
 });

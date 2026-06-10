@@ -28,11 +28,13 @@ Real-stack boot (journeys + the gated `dataprovider`/realmap specs run against t
 
 ```sh
 npm -w server run build && EXPO_PUBLIC_DATA=real npm -w apps/mobile run export:web
-LLM_MOCK=1 RUN_REFRESH=0 RATE_LIMIT_RPM=120 RATE_LIMIT_BURST=60 DATA_DIR=$PWD/data PORT=8789 node server/dist/index.js
+GEMINI_API_KEY=$(cat ~/.gemini_key) RUN_REFRESH=0 RATE_LIMIT_RPM=120 RATE_LIMIT_BURST=60 DATA_DIR=$PWD/data PORT=8789 node server/dist/index.js
 JOURNEY_TARGET=http://localhost:8789 npm -w e2e run journeys     # then: node e2e/collect-videos.mjs
 ```
 
-E2E notes: if :8081 is busy, point tests at any running instance with `JOURNEY_TARGET=http://localhost:PORT` (skips the managed webServer). `@live`-tagged specs hit real Gemini only under `LLM_LIVE=1`. `REAL_TARGET=http://localhost:PORT` arms `e2e/checks/dataprovider.spec.ts` (boot recipe in its header). `npm -w server run dev` runs with cwd `server/` — pass an absolute `DATA_DIR`.
+Canonical journey recordings use the LIVE LLM (no `LLM_MOCK` — the videos show the whole app, Gemini included; pennies per run). The same journey suite also passes against an `LLM_MOCK=1` server for free deterministic re-runs.
+
+E2E notes: if :8081 is busy, point tests at any running instance with `JOURNEY_TARGET=http://localhost:PORT` (skips the managed webServer). `REAL_TARGET=http://localhost:PORT` arms `e2e/checks/dataprovider.spec.ts` (boot recipe in its header). `npm -w server run dev` runs with cwd `server/` — pass an absolute `DATA_DIR`.
 
 ## Keys and secrets (never commit)
 

@@ -3,8 +3,13 @@
  *
  *   npm -w server run build
  *   EXPO_PUBLIC_DATA=real npm -w apps/mobile run export:web
- *   DATA_DIR=$PWD/data LLM_MOCK=1 PORT=8789 RUN_REFRESH=0 node server/dist/index.js
+ *   GEMINI_API_KEY=$(cat ~/.gemini_key) DATA_DIR=$PWD/data PORT=8789 \
+ *     RUN_REFRESH=0 node server/dist/index.js
  *   cd e2e && JOURNEY_TARGET=http://localhost:8789 npm run journeys
+ *
+ * Canonical recordings run with the LIVE LLM (no LLM_MOCK — the videos show
+ * the whole app, Gemini included; cost is pennies). The same suite also
+ * passes against an LLM_MOCK=1 server for free deterministic re-runs.
  *
  * (JOURNEY_TARGET skips the stub-data expo webServer in playwright.config.ts;
  * the prod server serves the real-provider web export AND /api same-origin.)
@@ -40,13 +45,19 @@ export const HIGHLIGHT_STROKE = '#e4002b';
 
 /**
  * Tap a room polygon. A plain click targets the bbox center, which can fall
- * outside a concave polygon (and onto a neighbor) — fall back to dispatching
- * the click straight on the path when the room sheet doesn't open.
+ * outside a concave polygon (onto a neighbor) or under a fixed overlay (the
+ * floor chips intercept pointer events, stalling click retries forever) —
+ * bound the attempt and fall back to dispatching the click straight on the
+ * path when the room sheet doesn't open.
  */
 export async function tapRoom(page: Page, roomId: string): Promise<void> {
   const room = page.getByTestId(`room-${roomId}`);
   await expect(room).toBeVisible();
-  await room.click();
+  try {
+    await room.click({ timeout: 5_000 });
+  } catch {
+    /* center unclickable (overlay/concave) — the dispatchEvent fallback below covers it */
+  }
   try {
     await expect(page.getByTestId('room-sheet')).toBeVisible({ timeout: 2_000 });
   } catch {

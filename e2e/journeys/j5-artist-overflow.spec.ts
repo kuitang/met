@@ -41,7 +41,12 @@ test('J5 artist overflow: suggestions w/ galleries → full results page', async
     await link.click();
   });
   await expect(page.getByText(new RegExp(`^${total} results? ·`))).toBeVisible();
+  // The list is virtualized (FlatList windowing): the DOM holds the initial
+  // render window, not all `total` rows. Assert the window is populated and
+  // never exceeds the advertised total.
   const resultRows = page.locator('[data-testid^="result-"]');
-  expect(await resultRows.count()).toBe(Math.min(total, 200));
+  const rendered = await resultRows.count();
+  expect(rendered).toBeGreaterThanOrEqual(Math.min(total, 10));
+  expect(rendered).toBeLessThanOrEqual(total);
   await expect(resultRows.first()).toContainText(/Gallery \d+|Not on view/);
 });

@@ -151,10 +151,14 @@ export function loadJourneyFixtures(): JourneyFixtures {
     if (!top) throw new Error('no open mapped gallery with objects');
     const galleryId = top.galleryNumber;
     const galleryFloorNumeric = openMapped.get(galleryId)!.floor;
+    // Mirrors SqliteDataProvider.getGalleryObjects: same ordering AND the same
+    // GALLERY_OBJECTS_LIMIT=500 cap — the app's room sheet count and "i of n"
+    // browser are defined over this capped list (full hydration put >4k
+    // objects in the densest gallery).
     const galleryObjects = db
       .prepare(
         `SELECT objectID, title, artist, galleryNumber FROM objects
-         WHERE galleryNumber = ? ORDER BY isHighlight DESC, objectID`,
+         WHERE galleryNumber = ? ORDER BY isHighlight DESC, objectID LIMIT 500`,
       )
       .all(galleryId) as FixtureObject[];
 
