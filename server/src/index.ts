@@ -1,9 +1,12 @@
 import { serve } from '@hono/node-server'
 import { serveStatic } from '@hono/node-server/serve-static'
 import { Hono } from 'hono'
+import type { Context } from 'hono'
 import { cors } from 'hono/cors'
+import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { injectOgMeta, requestOrigin } from './meta.js'
 import { imgRateLimit, llmRateLimit } from './middleware/ratelimit.js'
 import { dataRoutes, getDataVersion } from './routes/data.js'
 import { healthRoutes } from './routes/health.js'
@@ -67,23 +70,33 @@ app.all('/api/*', (c) =>
 // Static Expo web export (apps/mobile: `npm run export:web`), SPA fallback.
 // serveStatic roots are resolved against cwd, so compute relative to this file.
 //
-// OG-META INJECTION SEAM (for the share-preview workstream): social-preview
-// meta tags (og:url, og:image, canonical) MUST be emitted with the *request*
-// origin — the same build serves a custom domain, met-nav.fly.dev, and PR
-// preview apps, so nothing absolute may be baked into dist/index.html.
-// Implementation point: replace the SPA-fallback line below with a handler
-// that reads dist/index.html once, then per request injects tags built from
-// the request origin: host = new URL(c.req.url).host (@hono/node-server
-// derives it from the Host header, which Fly's single trusted proxy
-// preserves as the public hostname), scheme = c.req.header(
-// 'x-forwarded-proto') ?? 'http' (the Node socket is plain http behind
-// Fly's TLS termination, so c.req.url's scheme is NOT trustworthy).
-const distRoot = path.relative(
-  process.cwd(),
-  fileURLToPath(new URL('../../apps/mobile/dist', import.meta.url)),
-)
+// OG-META INJECTION (share-preview workstream): index.html is never served
+// raw — the template is read once at boot and every response gets the
+// social-preview meta block injected with the *request* origin (Host header
+// + x-forwarded-proto; see meta.ts for why), because the same build serves a
+// custom domain, met-nav.fly.dev, and PR preview apps — nothing absolute may
+// live in dist/index.html itself (scripts/check-origin-portability.mjs
+// enforces).
+const distRootAbs = fileURLToPath(new URL('../../apps/mobile/dist', import.meta.url))
+const distRoot = path.relative(process.cwd(), distRootAbs)
+
+let indexTemplate: string | null = null
+try {
+  indexTemplate = readFileSync(path.join(distRootAbs, 'index.html'), 'utf8')
+} catch {
+  console.warn(`no web export at ${distRootAbs} — serving API only (run \`npm run export:web\`)`)
+}
+const serveIndex = (c: Context) => {
+  if (indexTemplate === null) return c.notFound()
+  const url = new URL(c.req.url)
+  const origin = requestOrigin(url.host, c.req.header('x-forwarded-proto'))
+  c.header('Cache-Control', 'no-cache') // SPA shell: always revalidate so deploys propagate
+  return c.html(injectOgMeta(indexTemplate, origin, url.pathname))
+}
+app.get('/', serveIndex) // before serveStatic, which would otherwise serve dist/index.html raw for '/'
+app.get('/index.html', serveIndex)
 app.use('*', serveStatic({ root: distRoot }))
-app.get('*', serveStatic({ root: distRoot, path: 'index.html' }))
+app.get('*', serveIndex) // SPA fallback: deep links (/object/123) get path-correct og:url
 
 app.notFound((c) =>
   c.json({ error: { code: 'not_found', message: 'Not found' } }, 404),

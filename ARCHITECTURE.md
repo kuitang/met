@@ -327,6 +327,7 @@ loads whatever shards exist.
 | `apps/mobile/src/components/RoutePolyline.tsx` | route overlay from `Route.geo` |
 | `apps/mobile/src/components/LocateState.tsx:setAnchor` / `useAnchor` / `useVenue` / `applyVenue` | global anchor + venue state for the UI (and the venue-switch toast) |
 | `server/src/index.ts` | Hono wiring: COOP/COEP, x-data-version, rate limits, static SPA |
+| `server/src/meta.ts:injectOgMeta` / `requestOrigin` | per-request og/twitter meta injection into index.html with absolute URLs from the request origin (Host + x-forwarded-proto) — keeps the export origin-portable; assets authored in `assets/share/`, served from `apps/mobile/public/` |
 | `server/src/gemini.ts:createGemini` | the one Gemini client (rewrite, agentic loop, OCR, embeddings) |
 | `server/src/routes/interpret.ts:interpretRoutes` | tier-3 search: rewrite → score-aware agentic escalation |
 | `server/src/routes/locate.ts:locateRoutes` | photo localization (OCR ∥ embedding retrieval) |
@@ -343,6 +344,8 @@ loads whatever shards exist.
 
 - `npm -w shared test` — vitest: routing, search builders, positioning unit +
   scenario simulator.
+- `npm -w server test` — vitest: og-meta injection matrix (origins, deep
+  paths, title dedupe) + shipped share/icon asset dimensions.
 - `cd e2e && npx playwright test --project=checks` — fast gate: all screens,
   real-map rendering, HIG conformance sweep (≥44 pt targets, ≥16 px inputs,
   no horizontal overflow at 390 px), data-provider spec (gated on
