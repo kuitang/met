@@ -61,7 +61,7 @@ describe("buildAutocompleteQuery", () => {
   it("builds weighted-bm25, highlight-boosted, gallery-joined, LIMIT 8 SQL", () => {
     const q = buildAutocompleteQuery("Monet")!;
     expect(q.params).toEqual(['"monet"*']);
-    expect(q.sql).toContain("bm25(objects_fts, 10, 8, 3, 5, 2, 4)");
+    expect(q.sql).toContain("bm25(objects_fts, 10, 8, 3, 5, 2, 4, 1)");
     expect(q.sql).toContain("o.isHighlight * 2");
     expect(q.sql).toContain("LEFT JOIN galleries g");
     expect(q.sql).toContain("objects_fts MATCH ?");
@@ -146,9 +146,9 @@ function fixtureDb(): { db: DbHandle; raw: InstanceType<typeof Database> } {
       objectID INTEGER PRIMARY KEY, accession TEXT, title TEXT, artist TEXT,
       culture TEXT, period TEXT, classification TEXT, medium TEXT, tags TEXT,
       galleryNumber TEXT, site TEXT, rotation TEXT, isHighlight INTEGER,
-      imageUrl TEXT, metadataDate TEXT);
+      imageUrl TEXT, metadataDate TEXT, synonyms TEXT);
     CREATE VIRTUAL TABLE objects_fts USING fts5(
-      title, artist, culture, classification, medium, tags,
+      title, artist, culture, classification, medium, tags, synonyms,
       content='objects', content_rowid='objectID',
       tokenize='porter unicode61', prefix='2 3 4');
     CREATE TABLE galleries(galleryNumber TEXT, site TEXT, floor TEXT,
@@ -157,12 +157,12 @@ function fixtureDb(): { db: DbHandle; raw: InstanceType<typeof Database> } {
   const insObj = raw.prepare(
     `INSERT INTO objects(objectID, accession, title, artist, culture, period,
        classification, medium, tags, galleryNumber, site, rotation, isHighlight,
-       imageUrl, metadataDate)
-     VALUES (?, ?, ?, ?, '', '', ?, ?, '', ?, 'fifthAve', 'permanent', ?, ?, '')`,
+       imageUrl, metadataDate, synonyms)
+     VALUES (?, ?, ?, ?, '', '', ?, ?, '', ?, 'fifthAve', 'permanent', ?, ?, '', '')`,
   );
   const insFts = raw.prepare(
-    `INSERT INTO objects_fts(rowid, title, artist, culture, classification, medium, tags)
-     VALUES (?, ?, ?, '', ?, ?, '')`,
+    `INSERT INTO objects_fts(rowid, title, artist, culture, classification, medium, tags, synonyms)
+     VALUES (?, ?, ?, '', ?, ?, '', '')`,
   );
   const insGal = raw.prepare(
     `INSERT OR IGNORE INTO galleries(galleryNumber, site, floor) VALUES (?, 'fifthAve', ?)`,

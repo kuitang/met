@@ -1,8 +1,9 @@
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
-import { MetObject, Room, useData } from '@/data/provider';
+import { useAnchor } from '@/components/LocateState';
+import { DataProvider, MetObject, Room, useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
 // Chosen to hit stub data: "gold swords" deliberately under-matches locally
@@ -32,12 +33,36 @@ function matchAmenities(amenities: Room[], query: string): Room[] {
   );
 }
 
+/**
+ * Nearest-first amenity ranking: walking (graph) distance from the visitor's
+ * anchor — or the Great Hall before any fix exists. Unreachable rooms (other
+ * site, no graph) sink to the end. ~0.6 ms per route on the full graph,
+ * computed once per (anchor, amenity-set).
+ */
+function rankAmenities(
+  data: DataProvider,
+  matched: Room[],
+  originId: string,
+): { room: Room; distance?: number }[] {
+  return matched
+    .map((room) => ({ room, distance: data.route(originId, room.id)?.distance }))
+    .sort((a, b) => (a.distance ?? Infinity) - (b.distance ?? Infinity));
+}
+
 export default function SearchScreen() {
   const data = useData();
+  const anchor = useAnchor();
   const [query, setQuery] = useState('');
   const suggestions = data.searchAutocomplete(query, 8);
   const total = data.searchAll(query).length;
-  const amenities = matchAmenities(data.amenities(), query);
+  const matchedAmenities = matchAmenities(data.amenities(), query);
+  const originId = anchor?.roomId ?? 'great-hall';
+  const amenities = useMemo(
+    () => rankAmenities(data, matchedAmenities, originId),
+    // matchedAmenities is identity-unstable per keystroke; key on its ids.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [data, originId, matchedAmenities.map((r) => r.id).join(',')],
+  );
   const hasQuery = query.trim().length > 0;
 
   const galleryChip = (o: MetObject) => {
@@ -65,7 +90,7 @@ export default function SearchScreen() {
         ListHeaderComponent={
           amenities.length > 0 ? (
             <View>
-              {amenities.map((r) => (
+              {amenities.map(({ room: r, distance }) => (
                 <Pressable
                   key={r.id}
                   style={styles.row}
@@ -77,7 +102,9 @@ export default function SearchScreen() {
                       {r.name}
                     </Text>
                     <Text style={type.meta} numberOfLines={1}>
-                      Amenity · tap to see on map
+                      {distance !== undefined
+                        ? `~${Math.round(distance)} m walk · tap to see on map`
+                        : 'Amenity · tap to see on map'}
                     </Text>
                   </View>
                   <Text style={styles.galleryChip}>
@@ -138,7 +165,7 @@ export default function SearchScreen() {
         ListEmptyComponent={
           hasQuery ? (
             amenities.length > 0 ? null : (
-              <Text style={styles.empty}>No quick matches in stub data.</Text>
+              <Text style={styles.empty}>No quick matches on view.</Text>
             )
           ) : (
             <View style={styles.hint}>

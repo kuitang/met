@@ -14,26 +14,70 @@ import {
 } from 'react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 
-import { Anchor, anchorForRoom, setAnchor } from '@/components/LocateState';
+import type { components } from '@met/shared';
+import {
+  GPS_MAX_CONFIDENCE,
+  applyInput,
+  resolveGpsArea,
+  type Anchor as SharedAnchor,
+} from '@met/shared/positioning';
+
+import { floorLabel, floorNumber } from '@/components/MapGeometry';
+import { Anchor, anchorForRoom, getAnchor, setAnchor } from '@/components/LocateState';
+import { apiBase } from '@/data/apiBase';
 import { MetObject, useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
+
+type LocatePhotoResponse = components['schemas']['LocatePhotoResponse'];
 
 type GpsState =
   | { phase: 'resolving' }
   | { phase: 'resolved'; anchor: Anchor }
+  /** Fix was usable, but a FRESH room anchor outranks it (fusion rules). */
+  | { phase: 'kept'; anchor: Anchor }
   | { phase: 'unavailable' };
 
 /**
- * Stub GPS confidence model: a fix near the museum is confident at *wing*
- * level only — GPS indoors can never name a specific room, so the resolved
- * anchor is the area around the Great Hall entrance, never a gallery.
+ * Photo localization (POST /api/v1/locate/photo): one round trip; the server
+ * OCRs any wall label in frame (deterministic catalog match) and runs
+ * embedding retrieval for top-3 candidates. The client only uploads bytes.
  */
-const GPS_STUB_ANCHOR: Anchor = {
-  roomId: 'great-hall',
-  label: 'Near Great Hall · Floor 1',
-  floor: 1,
-  source: 'gps',
-};
+type PhotoState =
+  | { phase: 'matching'; uri: string }
+  | { phase: 'done'; uri: string; res: LocatePhotoResponse }
+  | { phase: 'failed'; uri: string };
+
+/**
+ * UI store anchor → shared/positioning anchor, so the locator's GPS fix runs
+ * through the real fusion rules (applyInput): a fresh room claim beats the
+ * fix; a stale one (> ROOM_ANCHOR_DECAY_MS) is superseded with its floor
+ * retained as "(assumed)".
+ */
+function sharedAnchorOf(a: Anchor | undefined): SharedAnchor | undefined {
+  if (!a) return undefined;
+  if (a.source === 'gps') {
+    return {
+      kind: 'area',
+      site: 'fifthAve',
+      label: a.label,
+      place: 'Near Great Hall',
+      assumedFloor: a.assumedFloor,
+      source: 'gps',
+      confidence: GPS_MAX_CONFIDENCE,
+      timestamp: a.timestamp ?? 0,
+    };
+  }
+  if (!a.roomId) return undefined;
+  return {
+    kind: 'room',
+    gallery: a.roomId,
+    floor: floorLabel(a.floor ?? 1),
+    site: 'fifthAve',
+    source: a.source === 'gallery' ? 'manual' : a.source,
+    confidence: 1,
+    timestamp: a.timestamp ?? 0,
+  };
+}
 
 /**
  * Locate sheet (modal) — one display, no tabs. GPS resolves first and
@@ -46,21 +90,55 @@ export default function LocateScreen() {
   const [input, setInput] = useState('');
   const [error, setError] = useState('');
   const [artifactHits, setArtifactHits] = useState<MetObject[]>([]);
-  const [photoUri, setPhotoUri] = useState<string | undefined>();
+  const [photo, setPhoto] = useState<PhotoState | undefined>();
   // Set once a manual override applied (or the sheet closed): a late GPS fix
   // must never clobber an explicit room/artifact/photo anchor.
   const overridden = useRef(false);
 
+  // Opening the locator always re-resolves GPS (freshness beats precision):
+  // the fix is folded through shared/positioning.applyInput, so it supersedes
+  // a STALE room anchor (keeping its floor as "(assumed)") but never a fresh
+  // one — and by type it can only ever claim a wing, never a gallery.
   useEffect(() => {
     (async () => {
       try {
         const perm = await Location.requestForegroundPermissionsAsync();
         if (!perm.granted) throw new Error('denied');
-        await Location.getCurrentPositionAsync({});
+        const pos = await Location.getCurrentPositionAsync({});
         if (overridden.current) return;
-        // Confident wing-level fix → show it and auto-apply as the anchor.
-        setGps({ phase: 'resolved', anchor: GPS_STUB_ANCHOR });
-        setAnchor(GPS_STUB_ANCHOR);
+        const now = Date.now();
+        const fix = {
+          lat: pos.coords.latitude,
+          lon: pos.coords.longitude,
+          accuracyM: pos.coords.accuracy ?? 0,
+        };
+        if (!resolveGpsArea(fix, now)) {
+          // Rejected outright: poor accuracy or an off-campus outlier.
+          setGps({ phase: 'unavailable' });
+          return;
+        }
+        const next = applyInput(sharedAnchorOf(getAnchor()), { type: 'gps', fix, at: now });
+        if (next?.kind === 'area') {
+          const anchor: Anchor = {
+            // Wing-level only: highlight the entrance hall, never a gallery.
+            roomId: next.site === 'fifthAve' ? 'great-hall' : undefined,
+            label: next.label,
+            floor:
+              next.assumedFloor !== undefined
+                ? floorNumber(next.assumedFloor)
+                : next.site === 'fifthAve'
+                  ? 1
+                  : undefined,
+            assumedFloor: next.assumedFloor,
+            source: 'gps',
+            timestamp: now,
+          };
+          setAnchor(anchor);
+          setGps({ phase: 'resolved', anchor });
+        } else {
+          // Usable fix, but the current room anchor is still fresh — keep it.
+          setGps({ phase: 'kept', anchor: getAnchor()! });
+        }
       } catch {
         if (!overridden.current) setGps({ phase: 'unavailable' });
       }
@@ -87,7 +165,7 @@ export default function LocateScreen() {
     const room = id ? data.getGallery(id) : undefined;
     if (!room) {
       setArtifactHits([]);
-      setError(`Gallery “${id}” is not on the stub map — check the number posted at the room entrance.`);
+      setError(`Gallery “${id}” isn't on the map — check the number posted at the room entrance.`);
       return;
     }
     apply(anchorForRoom(room, 'gallery'));
@@ -98,7 +176,7 @@ export default function LocateScreen() {
     apply(
       room
         ? anchorForRoom(room, 'artifact')
-        : { label: `Gallery ${o.gallery}`, source: 'artifact' },
+        : { label: `Gallery ${o.gallery}`, source: 'artifact', timestamp: Date.now() },
     );
   };
 
@@ -122,27 +200,49 @@ export default function LocateScreen() {
     setArtifactHits(hits);
   };
 
-  // Fake "top-3 candidates": deterministic stub stand-in for the Phase 2
-  // server-side embedding match — one highlight from each of three different
-  // galleries on the stub map.
-  const photoCandidates: MetObject[] = [];
-  if (photoUri) {
-    for (const g of data.galleries()) {
-      const hit = data.objectsInGallery(g.id).find((o) => o.isHighlight && o.img);
-      if (hit) photoCandidates.push(hit);
-      if (photoCandidates.length === 3) break;
+  /** Photo anchor for a gallery number the server matched. */
+  const applyPhotoGallery = (galleryNumber: string, floor: string) => {
+    const room = data.getGallery(galleryNumber);
+    apply(
+      room
+        ? anchorForRoom(room, 'photo')
+        : {
+            label: `Gallery ${galleryNumber}${floor ? ` · Floor ${floor}` : ''}`,
+            floor: floor ? floorNumber(floor) : undefined,
+            source: 'photo',
+            timestamp: Date.now(),
+          },
+    );
+  };
+
+  const locateByPhoto = async (uri: string, base64: string) => {
+    setPhoto({ phase: 'matching', uri });
+    try {
+      const res = await fetch(`${apiBase()}/api/v1/locate/photo`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ imageBase64: base64 }),
+      });
+      if (!res.ok) throw new Error(`locate/photo ${res.status}`);
+      setPhoto({ phase: 'done', uri, res: (await res.json()) as LocatePhotoResponse });
+    } catch {
+      setPhoto({ phase: 'failed', uri });
     }
-  }
+  };
 
   const choosePhoto = async () => {
+    // base64: true — the exact picked bytes go to the server (no re-encode);
+    // the server downscales/decodes; contract caps decoded size at 4 MB.
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
-      quality: 0.7,
+      base64: true,
     });
     if (!result.canceled) {
       setError('');
       setArtifactHits([]);
-      setPhotoUri(result.assets[0].uri);
+      const asset = result.assets[0];
+      const base64 = asset.base64 ?? asset.uri.replace(/^data:[^,]*,/, '');
+      locateByPhoto(asset.uri, base64);
     }
   };
 
@@ -162,7 +262,19 @@ export default function LocateScreen() {
             <Text style={styles.gpsKicker}>Your location</Text>
             <Text style={styles.gpsAnchor}>{gps.anchor.label}</Text>
             <Text style={type.meta}>
-              Set from GPS — wing-level only. For an exact room, override below.
+              {gps.anchor.assumedFloor !== undefined
+                ? 'Set from GPS — wing-level only; floor assumed from your last fix. For an exact room, override below.'
+                : 'Set from GPS — wing-level only. For an exact room, override below.'}
+            </Text>
+          </>
+        )}
+        {gps.phase === 'kept' && (
+          <>
+            <Text style={styles.gpsKicker}>Your location</Text>
+            <Text style={styles.gpsAnchor}>{gps.anchor.label}</Text>
+            <Text style={type.meta}>
+              GPS confirms you're at the museum — keeping your recent room fix.
+              Moved since? Override below.
             </Text>
           </>
         )}
@@ -171,27 +283,33 @@ export default function LocateScreen() {
         )}
       </View>
 
-      <TextInput
-        style={styles.input}
-        value={input}
-        onChangeText={onInput}
-        placeholder="Gallery # — or artifact name / accession #"
-        placeholderTextColor={colors.inkFaint}
-        autoFocus
-        autoCorrect={false}
-        onSubmitEditing={() => (/^\d+$/.test(input.trim()) ? locateRoom() : locateArtifact())}
-        testID="locate-input"
-      />
-      <View style={styles.btnRow}>
-        <Pressable style={[styles.btn, styles.btnRoom]} onPress={locateRoom} testID="locate-room-btn">
-          <Text style={styles.btnText}>Locate room</Text>
-        </Pressable>
-        <Pressable
-          style={[styles.btn, styles.btnArtifact]}
-          onPress={locateArtifact}
-          testID="locate-artifact-btn"
-        >
-          <Text style={styles.btnText}>Locate artifact</Text>
+      <View style={styles.actionCard} testID="locate-action-card">
+        <TextInput
+          style={styles.input}
+          value={input}
+          onChangeText={onInput}
+          placeholder="Gallery # — or artifact name / accession #"
+          placeholderTextColor={colors.inkFaint}
+          autoFocus
+          autoCorrect={false}
+          onSubmitEditing={() => (/^\d+$/.test(input.trim()) ? locateRoom() : locateArtifact())}
+          testID="locate-input"
+        />
+        <View style={styles.btnRow}>
+          <Pressable style={[styles.btn, styles.btnRoom]} onPress={locateRoom} testID="locate-room-btn">
+            <Text style={styles.btnText}>Locate room</Text>
+          </Pressable>
+          <Pressable
+            style={[styles.btn, styles.btnArtifact]}
+            onPress={locateArtifact}
+            testID="locate-artifact-btn"
+          >
+            <Text style={styles.btnText}>Locate artifact</Text>
+          </Pressable>
+        </View>
+        <Pressable style={styles.photoBtn} onPress={choosePhoto} testID="locate-photo-btn">
+          <CameraIcon color={colors.ink} />
+          <Text style={styles.photoBtnText}>Locate by photo</Text>
         </Pressable>
       </View>
       {error ? (
@@ -220,51 +338,77 @@ export default function LocateScreen() {
           </Pressable>
         ))}
 
-        {photoUri ? (
+        {photo ? (
           <>
             <View style={styles.photoHeader}>
-              <Image source={{ uri: photoUri }} style={styles.photoThumb} resizeMode="cover" />
+              <Image source={{ uri: photo.uri }} style={styles.photoThumb} resizeMode="cover" />
               <Text style={[type.meta, styles.flex1]}>
-                Best matches (stub data — not a real match):
+                {photo.phase === 'matching'
+                  ? 'Matching your photo against the collection…'
+                  : photo.phase === 'failed'
+                    ? 'Photo lookup needs a connection — try again, or set your room above.'
+                    : photo.res.label
+                      ? 'Wall label read — you are next to:'
+                      : photo.res.candidates.length > 0
+                        ? 'Best matches:'
+                        : 'No match — try a clearer photo, or include the wall label.'}
               </Text>
             </View>
-            {photoCandidates.map((o) => (
+            {photo.phase === 'matching' && (
+              <ActivityIndicator color={colors.red} style={styles.photoSpinner} />
+            )}
+            {photo.phase === 'done' && photo.res.label && (
               <Pressable
-                key={o.objectID}
                 style={styles.row}
-                onPress={() => {
-                  const room = data.getGallery(o.gallery)!;
-                  apply(anchorForRoom(room, 'photo'));
-                }}
-                testID={`locate-photo-candidate-${o.objectID}`}
+                onPress={() => applyPhotoGallery(photo.res.label!.gallery, photo.res.label!.floor)}
+                testID="locate-photo-label"
               >
-                <Image source={{ uri: o.img }} style={styles.candidateThumb} resizeMode="cover" />
                 <View style={styles.rowText}>
                   <Text style={styles.rowTitle} numberOfLines={1}>
-                    {o.title}
+                    {data.getObject(photo.res.label.objectID)?.title ??
+                      `Object ${photo.res.label.accession}`}
                   </Text>
                   <Text style={type.meta} numberOfLines={1}>
-                    Gallery {o.gallery}
+                    Wall label · Gallery {photo.res.label.gallery}
+                    {photo.res.label.floor ? ` · Floor ${photo.res.label.floor}` : ''}
                   </Text>
                 </View>
-                <Text style={styles.rowAction}>This one</Text>
+                <Text style={styles.rowAction}>I'm here</Text>
               </Pressable>
-            ))}
-            <Pressable
-              style={styles.linkBtn}
-              onPress={() => setPhotoUri(undefined)}
-              testID="locate-photo-retry"
-            >
-              <Text style={styles.linkBtnText}>None of these — try another photo</Text>
-            </Pressable>
+            )}
+            {photo.phase === 'done' &&
+              !photo.res.label &&
+              photo.res.candidates.map((c) => (
+                <Pressable
+                  key={c.objectID}
+                  style={styles.row}
+                  onPress={() => applyPhotoGallery(c.gallery, c.floor)}
+                  testID={`locate-photo-candidate-${c.objectID}`}
+                >
+                  <View style={styles.rowText}>
+                    <Text style={styles.rowTitle} numberOfLines={1}>
+                      {c.title}
+                    </Text>
+                    <Text style={type.meta} numberOfLines={1}>
+                      {c.artist ? `${c.artist} · ` : ''}Gallery {c.gallery}
+                      {c.floor ? ` · Floor ${c.floor}` : ''}
+                    </Text>
+                  </View>
+                  <Text style={styles.rowAction}>This one</Text>
+                </Pressable>
+              ))}
+            {photo.phase !== 'matching' && (
+              <Pressable
+                style={styles.linkBtn}
+                onPress={() => setPhoto(undefined)}
+                testID="locate-photo-retry"
+              >
+                <Text style={styles.linkBtnText}>None of these — try another photo</Text>
+              </Pressable>
+            )}
           </>
         ) : null}
       </ScrollView>
-
-      <Pressable style={styles.photoBtn} onPress={choosePhoto} testID="locate-photo-btn">
-        <CameraIcon />
-        <Text style={styles.photoBtnText}>Locate by photo</Text>
-      </Pressable>
     </View>
   );
 }
@@ -309,6 +453,14 @@ const styles = StyleSheet.create({
   },
   gpsAnchor: {
     ...type.title,
+  },
+  // One visual group for all three locate methods: text input, the
+  // room/artifact pair below it, and the photo button full-width underneath —
+  // same button family, hierarchy through weight (outlined vs filled).
+  actionCard: {
+    backgroundColor: colors.surface,
+    padding: spacing.md,
+    gap: spacing.sm,
   },
   input: {
     ...type.body,
@@ -379,23 +531,23 @@ const styles = StyleSheet.create({
     height: 56,
     backgroundColor: colors.surface,
   },
-  candidateThumb: {
-    width: 44,
-    height: 44,
-    backgroundColor: colors.surface,
+  photoSpinner: {
+    paddingVertical: spacing.md,
   },
+  // Outlined/ink variant of the .btn family — same size, lighter weight.
   photoBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.sm,
     paddingVertical: spacing.md,
-    borderTopWidth: 1,
-    borderTopColor: colors.hairline,
+    borderWidth: 1,
+    borderColor: colors.ink,
+    backgroundColor: colors.white,
   },
   photoBtnText: {
     ...type.label,
-    color: colors.red,
+    color: colors.ink,
   },
   flex1: {
     flex: 1,

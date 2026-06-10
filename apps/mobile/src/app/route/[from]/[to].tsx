@@ -2,16 +2,22 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   FlatList,
-  Platform,
   Pressable,
   StyleSheet,
-  Switch,
   Text,
   useWindowDimensions,
   View,
 } from 'react-native';
 
+import {
+  initialRouteProgress,
+  onRouteAnchor,
+  type RoomAnchor,
+  type RouteProgress,
+} from '@met/shared/positioning';
+
 import FloorMap from '@/components/FloorMap';
+import { Anchor, anchorForRoom, getAnchor, setAnchor, useAnchor } from '@/components/LocateState';
 import RoutePolyline from '@/components/RoutePolyline';
 import { Room, RouteStep, useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
@@ -29,6 +35,24 @@ function direction(a: Room, b: Room): string {
   const dy = by - ay;
   if (Math.abs(dx) >= Math.abs(dy)) return dx >= 0 ? 'east' : 'west';
   return dy >= 0 ? 'south' : 'north';
+}
+
+/**
+ * UI location anchor → positioning-machine RoomAnchor. GPS anchors map to
+ * undefined: shared/positioning's AreaAnchor carries no gallery by design, so
+ * a GPS fix can neither advance a checkpoint nor trigger a reroute.
+ */
+function roomAnchorOf(a: Anchor | undefined): RoomAnchor | undefined {
+  if (!a || a.source === 'gps' || !a.roomId) return undefined;
+  return {
+    kind: 'room',
+    gallery: a.roomId,
+    floor: String(a.floor ?? ''),
+    site: 'fifthAve',
+    source: a.source === 'gallery' ? 'manual' : a.source,
+    confidence: 1,
+    timestamp: a.timestamp ?? Date.now(),
+  };
 }
 
 function shortName(room: Room): string {
@@ -63,12 +87,22 @@ function displayInstruction(steps: RouteStep[], i: number): string {
 export default function RouteScreen() {
   const data = useData();
   const { width } = useWindowDimensions();
-  const { from, to } = useLocalSearchParams<{ from: string; to: string }>();
+  const { from, to, avoid } = useLocalSearchParams<{
+    from: string;
+    to: string;
+    avoid?: string; // deep link: /route/131/822?avoid=stairs
+  }>();
 
   // The route origin is state, not just the URL param: a confident location
   // fix mid-route (stub: the debug button below) re-anchors and re-routes.
   const [origin, setOrigin] = useState(from);
-  const [avoidStairs, setAvoidStairs] = useState(false);
+  const [avoidStairs, setAvoidStairs] = useState(avoid === 'stairs');
+  // Cold deep links: in the static web export the search params hydrate a
+  // render after mount — sync the toggle when ?avoid= (first) appears. User
+  // toggles afterwards don't re-run this (the param itself is unchanged).
+  useEffect(() => {
+    if (avoid !== undefined) setAvoidStairs(avoid === 'stairs');
+  }, [avoid]);
   const route = useMemo(
     () => data.route(origin, to, { avoidStairs }),
     [data, origin, to, avoidStairs],
@@ -82,55 +116,112 @@ export default function RouteScreen() {
 
   const cardWidth = width - spacing.lg * 2;
   const snap = cardWidth + spacing.sm;
+  const lastStep = route ? route.steps.length - 1 : 0;
 
-  if (!route) {
-    return (
-      <View style={styles.center}>
-        <Text style={type.body}>
-          No route found between “{from}” and “{to}” in stub data.
-        </Text>
-      </View>
-    );
-  }
-
-  const lastStep = route.steps.length - 1;
-  const arrived = activeStep >= lastStep;
-  const routeRoomIds = route.steps.map((s) => s.room.id);
-  const currentRoom = route.steps[Math.min(activeStep, lastStep)].room;
-  const destObjects = data.objectsInGallery(route.to.id);
+  // ---- positioning state machine wiring -----------------------------------
+  // The global anchor (Locate sheet, artifact taps, "I'm here") drives the
+  // checkpoint via shared/positioning's onRouteAnchor: a fix ahead on the
+  // route auto-advances; an off-route fix recalcs from the new anchor (once
+  // per deviation); GPS area anchors can do neither by construction.
+  const anchor = useAnchor();
+  // Seed the dedupe with whatever anchor existed when the screen opened, so a
+  // stale off-route anchor doesn't trigger an instant reroute on mount.
+  const progressRef = useRef<RouteProgress>(initialRouteProgress(getAnchor()));
+  // Debounce for the known step/scroll regression (docs/mockup/README.md):
+  // goToStep animates the card list, and onScroll would round a mid-flight
+  // offset back to an earlier step. Ignore scroll-sync while a programmatic
+  // scroll is settling.
+  const scrollQuietUntil = useRef(0);
 
   const goToStep = (index: number) => {
+    if (!route) return;
     const i = Math.max(0, Math.min(index, lastStep));
+    // Keep the machine's notion of the reached checkpoint monotone with the UI.
+    progressRef.current = {
+      ...progressRef.current,
+      stepIndex: Math.max(progressRef.current.stepIndex, i),
+    };
+    scrollQuietUntil.current = Date.now() + 700;
     setActiveStep(i);
     setFloor(route.steps[i].room.floor);
     listRef.current?.scrollToOffset({ offset: i * snap, animated: true });
   };
 
   const restart = (firstFloor: number) => {
+    progressRef.current = { stepIndex: 0, offRouteGallery: null };
+    scrollQuietUntil.current = Date.now() + 700;
     setActiveStep(0);
     setFloor(firstFloor);
     listRef.current?.scrollToOffset({ offset: 0, animated: false });
   };
 
-  // Stub stand-in for a confident off-route location fix (room entry, photo,
-  // artifact tap): re-anchor at the nearest gallery NOT on the current route.
+  useEffect(() => {
+    if (!route) return;
+    const roomAnchor = roomAnchorOf(anchor);
+    if (!roomAnchor) return; // GPS/unknown: never advances, never reroutes
+    const ids = route.steps.map((s) => s.room.id);
+    const { progress, signal } = onRouteAnchor(progressRef.current, roomAnchor, ids);
+    progressRef.current = progress;
+    if (signal.type === 'advance') {
+      goToStep(signal.stepIndex);
+    } else if (signal.type === 'reroute') {
+      const fixRoom = data.getGallery(signal.fromGallery);
+      if (!fixRoom || data.route(fixRoom.id, to, { avoidStairs }) === undefined) return;
+      setRerouting(true);
+      clearTimeout(toastTimer.current);
+      toastTimer.current = setTimeout(() => setRerouting(false), 1600);
+      setOrigin(fixRoom.id);
+      restart(fixRoom.floor);
+    }
+    // goToStep/restart are stable per render; the machine must run exactly
+    // once per anchor change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [anchor]);
+
+  if (!route) {
+    return (
+      <View style={styles.center}>
+        <Text style={type.body} testID="route-not-found">
+          No route found between “{from}” and “{to}” — routes never cross
+          between the Fifth Avenue building and The Cloisters.
+        </Text>
+      </View>
+    );
+  }
+
+  const arrived = activeStep >= lastStep;
+  const routeRoomIds = route.steps.map((s) => s.room.id);
+  const currentRoom = route.steps[Math.min(activeStep, lastStep)].room;
+  const destObjects = data.objectsInGallery(route.to.id);
+
+  // Checkpoint button: advance the step, and publish the reached room as the
+  // user's anchor when it is a real gallery (keeps the home map/locate chip
+  // honest; the machine sees it as an on-route fix at the current step).
+  const confirmHere = () => {
+    const i = Math.min(activeStep + 1, lastStep);
+    goToStep(i);
+    const room = route.steps[i].room;
+    if (room.kind === 'gallery' && data.getGallery(room.id)) {
+      setAnchor(anchorForRoom(room, 'gallery'));
+    }
+  };
+
+  // Debug stand-in for a confident off-route location fix (room entry, photo,
+  // artifact tap): publish an anchor at the nearest gallery NOT on the current
+  // route and let the positioning machine drive the reroute.
   const simulateOffRouteFix = () => {
     const onRoute = new Set(routeRoomIds);
     const [cx, cy] = center(currentRoom);
     const fix = data
       .galleries()
-      .filter((r) => !onRoute.has(r.id))
+      .filter((r) => !onRoute.has(r.id) && data.route(r.id, to, { avoidStairs }) !== undefined)
       .sort((a, b) => {
         const da = Math.hypot(center(a)[0] - cx, center(a)[1] - cy) + (a.floor !== currentRoom.floor ? 1000 : 0);
         const db = Math.hypot(center(b)[0] - cx, center(b)[1] - cy) + (b.floor !== currentRoom.floor ? 1000 : 0);
         return da - db;
       })[0];
     if (!fix) return;
-    setRerouting(true);
-    clearTimeout(toastTimer.current);
-    toastTimer.current = setTimeout(() => setRerouting(false), 1600);
-    setOrigin(fix.id);
-    restart(fix.floor);
+    setAnchor(anchorForRoom(fix, 'gallery'));
   };
 
   return (
@@ -143,20 +234,25 @@ export default function RouteScreen() {
           <Text style={type.meta}>
             {route.steps.length} steps · ~{Math.round(route.distance)} m
           </Text>
-          <View style={styles.toggle}>
-            <Text style={type.label}>Avoid stairs</Text>
-            <Switch
-              value={avoidStairs}
-              onValueChange={(v) => {
-                setAvoidStairs(v);
-                restart(route.from.floor);
-              }}
-              trackColor={{ true: colors.red }}
-              // react-native-web-only prop: keep the "on" thumb white, not teal
-              {...(Platform.OS === 'web' ? { activeThumbColor: colors.white } : null)}
-              testID="avoid-stairs"
-            />
-          </View>
+          {/* Chip toggle, not RN Switch: the web Switch renders a 40×20
+              checkbox that can never meet the 44pt HIG tap target. */}
+          <Pressable
+            style={[styles.toggle, avoidStairs && styles.toggleActive]}
+            onPress={() => {
+              setAvoidStairs(!avoidStairs);
+              restart(route.from.floor);
+            }}
+            accessibilityRole="switch"
+            // aria-checked (not accessibilityState): RN-web 0.21 does not
+            // project accessibilityState.checked onto the DOM; the aria prop
+            // maps to accessibilityState on native.
+            aria-checked={avoidStairs}
+            testID="avoid-stairs"
+          >
+            <Text style={[type.label, avoidStairs && styles.toggleTextActive]}>
+              Avoid stairs{avoidStairs ? ' ✓' : ''}
+            </Text>
+          </Pressable>
         </View>
       </View>
 
@@ -190,6 +286,9 @@ export default function RouteScreen() {
         // web too, where RNW does not reliably emit momentum events.
         scrollEventThrottle={16}
         onScroll={(e) => {
+          // Programmatic goToStep scrolls animate through intermediate
+          // offsets; syncing those would regress the just-advanced step.
+          if (Date.now() < scrollQuietUntil.current) return;
           const i = Math.max(
             0,
             Math.min(Math.round(e.nativeEvent.contentOffset.x / snap), lastStep),
@@ -239,7 +338,7 @@ export default function RouteScreen() {
         ) : (
           <Pressable
             style={styles.imHereBtn}
-            onPress={() => goToStep(activeStep + 1)}
+            onPress={confirmHere}
             testID="im-here"
           >
             <Text style={styles.imHereText}>I'm here — next step</Text>
@@ -285,9 +384,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   toggle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
+    minHeight: 44, // HIG tap target
+    justifyContent: 'center',
+    paddingHorizontal: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.hairline,
+    backgroundColor: colors.white,
+  },
+  toggleActive: {
+    borderColor: colors.red,
+    backgroundColor: colors.red,
+  },
+  toggleTextActive: {
+    color: colors.white,
   },
   mapWrap: {
     flex: 1,
@@ -381,7 +490,9 @@ const styles = StyleSheet.create({
   },
   debugBtn: {
     alignSelf: 'center',
-    paddingVertical: spacing.xs,
+    minHeight: 44, // HIG tap target
+    justifyContent: 'center',
+    paddingHorizontal: spacing.md,
   },
   debugText: {
     ...type.meta,

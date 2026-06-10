@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
+    "build": "tsc && cp src/routes/locate-mock.json dist/routes/",
     "start": "node dist/index.js"
   },
   "dependencies": {

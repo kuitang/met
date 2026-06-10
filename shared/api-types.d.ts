@@ -72,7 +72,7 @@ export interface paths {
         put?: never;
         /**
          * LLM query interpretation, executed and ranked server-side
-         * @description One client round trip. The server rewrites the natural-language query to an FTS query (escalating to a bounded agentic loop when the rewrite yields <3 rows), executes it against its met.sqlite, and returns final ranked results.
+         * @description One client round trip. The server rewrites the natural-language query to an FTS query (escalating to a bounded agentic loop when the rewrite yields <3 rows or only low-signal bm25 scores), executes it against its met.sqlite, and returns final ranked results.
          */
         post: operations["interpretSearch"];
         delete?: never;
@@ -95,6 +95,26 @@ export interface paths {
          * @description Two concurrent server-side paths: wall-label OCR (deterministic met.sqlite match when legible) and image-embedding retrieval against the on-view index (top-3 candidates). Clients downscale before upload; decoded image must be ≤4 MB.
          */
         post: operations["locatePhoto"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Manually trigger the data self-refresh job
+         * @description Starts the same job the in-process scheduler runs nightly (Met API delta by metadataDate → synonyms top-up → build-db → atomic met.sqlite swap → server handle reload). Returns immediately; progress is in the server log. Guarded by the ADMIN_TOKEN env var — the route answers 404 when no token is configured.
+         */
+        post: operations["triggerRefresh"];
         delete?: never;
         options?: never;
         head?: never;
@@ -142,6 +162,10 @@ export interface components {
             dataVersion: string;
             /** @enum {string} */
             llm: "up" | "degraded";
+        };
+        RefreshAccepted: {
+            /** @description Always true — the job was started in the background */
+            started: boolean;
         };
         InterpretRequest: {
             query: string;
@@ -390,6 +414,46 @@ export interface operations {
                 };
             };
             429: components["responses"]["RateLimited"];
+            default: components["responses"]["Error"];
+        };
+    };
+    triggerRefresh: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Refresh started (or queued) in the background */
+            202: {
+                headers: {
+                    "x-data-version": components["headers"]["XDataVersion"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RefreshAccepted"];
+                };
+            };
+            /** @description Missing or wrong bearer token */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            /** @description A refresh is already running */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
             default: components["responses"]["Error"];
         };
     };

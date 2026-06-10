@@ -50,3 +50,8 @@ data/raw/met-objects/
 
 # Image-proxy disk cache (server/src/routes/img.ts; lives on the Fly volume in prod)
 data/img-cache/
+
+# Image-embedding vector index (~100 MB at full scale, rebuilt incrementally by
+# data/src/embed-images.ts; server loads it from DATA_DIR — lives on the Fly
+# volume in prod, never in git)
+data/snapshots/image-embeddings/

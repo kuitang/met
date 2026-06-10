@@ -1,9 +1,20 @@
 /**
  * DataProvider — the single data surface the UI talks to.
- * Gate A ships StubDataProvider over stub.json; Phase 2 swaps in a real
- * provider backed by met.sqlite + the server API behind the same interface.
+ *
+ * Two implementations:
+ *  - StubDataProvider (below) over stub.json — the Gate A mockup dataset.
+ *  - SqliteDataProvider (./SqliteDataProvider.ts) over the downloaded
+ *    met.sqlite artifact, opened through the ./sqlite seam (native:
+ *    expo-sqlite; web: official sqlite-wasm in memory + Cache API).
+ *
+ * Selection (see ./DataGate.tsx): the app boots with SqliteDataProvider when
+ * EXPO_PUBLIC_DATA=real (production builds set this); anything else — notably
+ * plain `npm run web` dev and the existing e2e checks — gets the stub.
  */
 import { createContext, useContext } from 'react';
+
+import type { SearchFilters } from '@met/shared/search';
+
 import stub from './stub.json';
 
 export interface MetObject {
@@ -20,7 +31,25 @@ export interface MetObject {
   img: string;
 }
 
-export type RoomKind = 'gallery' | 'hall' | 'restroom' | 'elevator' | 'stairs';
+/**
+ * Stub kinds plus the real amenities-table type vocabulary (met.sqlite
+ * `amenities.type`). UI code must not switch exhaustively on this.
+ */
+export type RoomKind =
+  | 'gallery'
+  | 'hall'
+  | 'restroom'
+  | 'elevator'
+  | 'stairs'
+  | 'escalator'
+  | 'dining'
+  | 'water'
+  | 'info'
+  | 'entrance'
+  | 'shop'
+  | 'tickets'
+  | 'cloakroom'
+  | 'firstAid';
 
 export interface Room {
   id: string; // gallery number or amenity id, e.g. '131', 'restroom-1'
@@ -43,6 +72,18 @@ export interface Route {
   steps: RouteStep[];
   /** Total path length in stub coordinate units (~meters). */
   distance: number;
+  /**
+   * Real-geometry overlay payload (routing ⇄ real-provider contract): the
+   * graph node path from shared/routing (RouteResult.path) projected into
+   * FloorMap's meter space, plus the SVG viewBox of that projection (the real
+   * map's MapGeometry buildSiteGeometry().viewBox) — so RoutePolyline overlays
+   * the real FloorMap without re-deriving the projection. The stub provider
+   * omits it and RoutePolyline falls back to room-center segments.
+   */
+  geo?: {
+    path: { x: number; y: number; floor: number }[];
+    view: { x: number; y: number; w: number; h: number };
+  };
 }
 
 export interface DataProvider {
@@ -54,8 +95,12 @@ export interface DataProvider {
   readonly dataVersion: string;
   /** Prefix/substring suggestions for the omnibar (objects + rooms). */
   searchAutocomplete(query: string, limit?: number): MetObject[];
-  /** Full result list for the All Results screen. */
-  searchAll(query: string): MetObject[];
+  /**
+   * Full result list for the All Results screen. Optional SQL-level filters
+   * (site / floor / rotation / hasImage) — the stub ignores them; the UI's
+   * SearchFilterChips post-filter still applies either way.
+   */
+  searchAll(query: string, filters?: SearchFilters): MetObject[];
   getObject(objectID: number): MetObject | undefined;
   getGallery(id: string): Room | undefined;
   objectsInGallery(galleryId: string): MetObject[];

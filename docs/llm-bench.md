@@ -69,6 +69,25 @@ All 13 goldens resolved via the cheap rewrite path; the two failures ("Lar",
 they fail identically on every model class because the words simply do not occur
 in the catalog text.
 
+### 2b. Phase 2 re-measure (same day): synonyms column + score-aware escalation
+
+After the gate-approved upgrades (index-time `synonyms` FTS column from
+`data/src/synonyms.ts`; escalation on `rows < 3 OR top-1 bm25 > −11.5`), live
+re-run against the rebuilt full-scale DB:
+
+| Measurement | Value |
+|---|---|
+| llm-tier golden pass rate | **13/13 (100%)**; 50/50 across all tiers |
+| Rewrite-path latency (cold, n=13) | p50 ~610 ms (unchanged) |
+| Escalation rate on goldens | still 0/13 — the threshold adds no cost on healthy queries |
+| Synonyms batch (3,501 vocab values + 3,577 titles, ~177 flash-lite calls) | **≈$0.30 one-time** (estimated from output volume at $0.25/$1.50 per 1M; run log not retained) |
+| Synonyms nightly incremental rerun, unchanged catalog | **$0.000 measured** (0 calls — the json is a cache keyed by value/title) |
+
+The escalation threshold experiment (healthy top-1 −12.60…−53.98 vs. low-signal
+−5.59…−12.12) is documented in `data/evals/reports/search-eval.md`; the
+weak-score path only fires on queries whose terms barely occur in the catalog,
+adding the ~$0.003 agentic cost exactly where the cheap path is known-bad.
+
 ## 3. Photo localization at full index scale — **pending**
 
 The Gate C photo eval (real handheld photos vs. the production embedding index)
@@ -91,6 +110,7 @@ Prices: flash-lite $0.25/1M in, $1.50/1M out; gemini-embedding-2 ~$0.00012/image
 | Label OCR (`media_resolution: LOW`, 280 tok/image) | ~0.5k in + ~50 out | ~$0.0004 |
 | Photo embed (query image) | 1 image | ~$0.00012 |
 | One-time image index (34k on-view images) | — | ~$4 one-time, incremental nightly |
+| Synonyms batch (7,078 terms, 40/call) | ~550 in + ~1k out per call | ≈$0.30 one-time, **$0 measured** nightly incremental |
 
 Planning bench measured $0.00010/interpret with its toy ~10-entry vocabulary; the
 full-scale 2.1k-token vocabulary raises it to ~$0.00065. If the vocab block ever

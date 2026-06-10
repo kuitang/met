@@ -21,6 +21,18 @@ export interface Anchor {
   label: string;
   floor?: number;
   source: AnchorSource;
+  /**
+   * When the fix was taken (epoch ms). shared/positioning's fusion rules use
+   * this for freshness: a room claim decays to wing-level after
+   * ROOM_ANCHOR_DECAY_MS and may then be superseded by a fresh GPS fix.
+   */
+  timestamp?: number;
+  /**
+   * GPS anchors only: floor retained from a superseded room anchor, surfaced
+   * as "(assumed)" in the label (GPS itself carries no floor). Floor label
+   * vocabulary of shared/positioning ("G", "1", "1M", ...).
+   */
+  assumedFloor?: string;
 }
 
 let anchor: Anchor | undefined;
@@ -52,5 +64,6 @@ export function anchorForRoom(room: Room, source: AnchorSource): Anchor {
     label: `${name} · Floor ${room.floor}`,
     floor: room.floor,
     source,
+    timestamp: Date.now(),
   };
 }

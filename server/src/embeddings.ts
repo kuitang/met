@@ -78,6 +78,16 @@ async function load(): Promise<EmbeddingIndex | null> {
   return { dims, count, matrix, objects }
 }
 
+/**
+ * Refresh hook (server/src/refresh.ts): drop the in-RAM index so the next
+ * query lazily reloads whatever shards the embedding pipeline has written —
+ * also useful while data/src/embed-images.ts is still filling shards.
+ */
+export function reloadEmbeddingIndex(): void {
+  index = null
+  loading = null
+}
+
 /** Memoized lazy load; resolves null (and allows a retry) while the index is absent. */
 export function loadEmbeddingIndex(): Promise<EmbeddingIndex | null> {
   if (index) return Promise.resolve(index)

@@ -57,6 +57,24 @@ function getDb(): Database.Database | null {
   return db
 }
 
+/**
+ * Refresh hook (server/src/refresh.ts): after the nightly job atomically swaps
+ * met.sqlite, close the old handle and drop the response cache. The next
+ * request reopens the new file; vocab.ts is keyed by handle so its cache
+ * invalidates with it.
+ */
+export function reopenInterpretDb(): void {
+  if (db) {
+    try {
+      db.close()
+    } catch {
+      /* already closed */
+    }
+  }
+  db = null
+  cache.clear()
+}
+
 // ---------------------------------------------------------------------------
 // Gemini client (mocked at this boundary when LLM_MOCK=1)
 // ---------------------------------------------------------------------------
@@ -66,6 +84,25 @@ const llm: GeminiClient =
 // ---------------------------------------------------------------------------
 // Query execution: shared/search.ts builders + relaxQuery, run on better-sqlite3
 // ---------------------------------------------------------------------------
+
+/**
+ * Score-aware escalation threshold (gate-review approved upgrade): escalate to
+ * the agentic loop when the rewrite's top hit is low-signal, not only when it
+ * returns <3 rows. SQLite bm25 is negative (more negative = better), so
+ * "weaker than 11.5" means score > -11.5.
+ *
+ * Measured 2026-06-10 against data/evals/search-cases.json llm-tier cases on
+ * the full-scale (44,468-object, synonyms-indexed) DB, live flash-lite:
+ *   - all 13 healthy llm-tier rewrites: top-1 between -12.60 and -53.98
+ *   - genuinely low-signal/out-of-catalog probes ("mona lisa" -5.59,
+ *     "dinosaur bones" -10.42): top-1 always weaker than -10.5
+ * -11.5 sits mid-gap → 0 false escalations on the golden set, catches the
+ * query-terms-barely-in-catalog failure mode. The OTHER Gate C failure mode
+ * (strong-but-wrong rows, e.g. pre-synonyms "roman household god" at -29.33)
+ * is NOT score-separable and is fixed at the index instead (synonyms column,
+ * data/src/synonyms.ts). Full experiment: docs/SEARCH.md.
+ */
+const WEAK_TOP_SCORE = -11.5
 
 /**
  * Execute an interpreted query. Filter values (artist, classification, …)
@@ -179,16 +216,16 @@ interpretRoutes.post('/', async (c) => {
     // Tier 3a: structured rewrite, executed relaxed.
     const interpreted = await llm.interpretQuery(query, vocab)
     const rows = searchRows(database, interpreted, maxResults)
-    if (rows.length >= 3) {
+    if (rows.length >= 3 && rows[0].score <= WEAK_TOP_SCORE) {
       body = {
         results: rows.map(toResult),
         method: 'rewrite',
         interpretedQuery: interpreted,
       }
     } else {
-      // Tier 3b: bounded agentic escalation. The tool runs the same executor;
-      // rows seen by the model are the only candidates the final ranking may
-      // cite (hallucinated objectIDs are dropped).
+      // Tier 3b: bounded agentic escalation (<3 rows OR weak top score). The
+      // tool runs the same executor; rows seen by the model are the only
+      // candidates the final ranking may cite (hallucinated IDs are dropped).
       const seen = new Map<number, SearchRow>()
       const classificationStmt = (ids: number[]) =>
         database

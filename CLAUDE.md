@@ -14,16 +14,25 @@ npm run web                 # Expo dev server (web) on :8081
 npm run export:web          # static web build -> apps/mobile/dist
 npm run server              # Hono dev server (tsx watch), default :8787
 npm -w server run build && node server/dist/index.js   # prod server (serves /api + apps/mobile/dist)
-npm run e2e                 # Playwright "checks" project (starts Expo web itself)
-npm -w e2e run journeys     # journey videos -> e2e/recordings/
-npm run evals               # data evals (stub until Gate B/C)
-npm -w data run objects|geometry|graph|build-db        # pipelines (stubs until Gate B)
+npm run e2e                 # Playwright "checks" project (starts Expo web itself, stub provider)
+npm -w e2e run journeys     # J1-J15 journey videos -> e2e/recordings/ (needs the real-stack boot below)
+npm run evals               # data evals -> data/evals/reports/ (exit != 0 on hard failures)
+npm -w data run objects|geometry|graph|build-db        # pipelines (objects hydration is hours-long; resumable)
 npm -w shared run gen       # regenerate shared/api-types.d.ts from openapi.yaml
+npm -w shared test          # vitest: search/routing/positioning (+ scenario simulator)
 ```
 
-Type checks: `npx tsc --noEmit` inside `apps/mobile` and `server`.
+Type checks: `npx tsc --noEmit` inside `apps/mobile`, `server`, `e2e` (and `shared` via its test run).
 
-E2E note: if :8081 is busy, point tests at any running instance with `JOURNEY_TARGET=http://localhost:PORT` (skips the managed webServer).
+Real-stack boot (journeys + the gated `dataprovider`/realmap specs run against this):
+
+```sh
+npm -w server run build && EXPO_PUBLIC_DATA=real npm -w apps/mobile run export:web
+LLM_MOCK=1 RUN_REFRESH=0 RATE_LIMIT_RPM=120 RATE_LIMIT_BURST=60 DATA_DIR=$PWD/data PORT=8789 node server/dist/index.js
+JOURNEY_TARGET=http://localhost:8789 npm -w e2e run journeys     # then: node e2e/collect-videos.mjs
+```
+
+E2E notes: if :8081 is busy, point tests at any running instance with `JOURNEY_TARGET=http://localhost:PORT` (skips the managed webServer). `@live`-tagged specs hit real Gemini only under `LLM_LIVE=1`. `REAL_TARGET=http://localhost:PORT` arms `e2e/checks/dataprovider.spec.ts` (boot recipe in its header). `npm -w server run dev` runs with cwd `server/` — pass an absolute `DATA_DIR`.
 
 ## Keys and secrets (never commit)
 
@@ -31,9 +40,9 @@ E2E note: if :8081 is busy, point tests at any running instance with `JOURNEY_TA
 - `source ~/openai_key.sh` — OpenAI, legacy/planning benchmarks only; the product uses NO OpenAI.
 - `~/expo_key.txt` — EAS token for mobile builds (Phase 3).
 
-Server env: `PORT` (8787), `DATA_DIR` (default `data/`, expects `met.sqlite` + `VERSION`), `DATA_VERSION`, `RATE_LIMIT_RPM` (10), `RATE_LIMIT_BURST` (5), `LLM_DAILY_BUDGET` (2000/UTC-day), `IMG_CACHE_MAX_MB` (512), `IMG_RATE_LIMIT_RPM` (120), `IMG_RATE_LIMIT_BURST` (60).
+Server env: `PORT` (8787), `DATA_DIR` (default `data/`, expects `met.sqlite` + `VERSION`), `DATA_VERSION`, `RATE_LIMIT_RPM` (10), `RATE_LIMIT_BURST` (5), `LLM_DAILY_BUDGET` (2000/UTC-day), `IMG_CACHE_MAX_MB` (512), `IMG_RATE_LIMIT_RPM` (120), `IMG_RATE_LIMIT_BURST` (60), `LLM_MOCK` (1 = deterministic fixtures, no Gemini), `RUN_REFRESH` (0 disables the nightly self-refresh), `REFRESH_CRON_HOUR` (UTC hour, default 4), `ADMIN_TOKEN` (enables `POST /api/v1/admin/refresh`; endpoint 404s when unset).
 
-Client env: `EXPO_PUBLIC_API_URL` — API origin override (needed for metro-web-dev against a separate API server, and for native release builds); see `apps/mobile/src/data/apiBase.ts`.
+Client env: `EXPO_PUBLIC_API_URL` — API origin override (needed for metro-web-dev against a separate API server, and for native release builds); see `apps/mobile/src/data/apiBase.ts`. `EXPO_PUBLIC_DATA=real` — bundle-time switch to `SqliteDataProvider` (downloads + queries met.sqlite locally); default is the stub provider. `export:web` defaults to real.
 
 ## Deploy
 
@@ -44,17 +53,20 @@ Fly.io app name: `met-nav` (not yet created; Phase 3). Image = web export + Node
 - **The OpenAPI contract is the only client↔server surface**: `shared/openapi.yaml` (+ generated `shared/api-types.d.ts`). Change the yaml first, regenerate, then implement.
 - **LLM = Gemini only**, via `@google/genai`, **all LLM calls server-side** (`server/src/gemini.ts`). No OpenAI SDK, no provider abstractions.
 - **Parsimony**: no speculative flexibility, minimal deps, one artifact (`met.sqlite`) not fragments.
-- **Update ARCHITECTURE.md in the same commit as any structural change** (once it exists, Phase 2).
-- expo-sqlite on web needs SharedArrayBuffer: the server sends `Cross-Origin-Opener-Policy: same-origin` + `Cross-Origin-Embedder-Policy: require-corp` on everything. **Measured 2026-06-10: `images.metmuseum.org` sends NO CORS/CORP headers**, so the Met CDN cannot be embedded under require-corp. **RESOLVED (gate review): the server proxies images** at `GET /api/v1/img/{objectID}` — disk LRU cache on the Fly volume (`DATA_DIR/img-cache/`, cap `IMG_CACHE_MAX_MB`), responses carry `Access-Control-Allow-Origin: *` + `Cross-Origin-Resource-Policy: cross-origin` so the cross-origin metro dev setup (page :8081, API :8787) also works under COEP. Web clients use the proxy with a `?v={dataVersion}` cache-buster; native keeps direct CDN URLs (no COEP, saves egress); the stub-provider mockup falls back to direct no-cors `<img>` (see `apps/mobile/src/components/ObjectImage.tsx` and `apps/mobile/src/data/apiBase.ts`).
+- **Update ARCHITECTURE.md in the same commit as any structural change.**
+- Web SQLite = official `@sqlite.org/sqlite-wasm`, main-thread in-memory (no SharedArrayBuffer needed) — expo-sqlite's web backend is unusable (no FTS5 in its wasm; sync bridge corrupts results >255 bytes; both measured, see ARCHITECTURE.md). Native = expo-sqlite. Both behind the `apps/mobile/src/data/sqlite.ts` seam.
+- The server still sends `Cross-Origin-Opener-Policy: same-origin` + `Cross-Origin-Embedder-Policy: require-corp` on everything (kept for parity and because the image-proxy design assumes isolation). **Measured 2026-06-10: `images.metmuseum.org` sends NO CORS/CORP headers**, so the Met CDN cannot be embedded under require-corp. **RESOLVED (gate review): the server proxies images** at `GET /api/v1/img/{objectID}` — disk LRU cache on the Fly volume (`DATA_DIR/img-cache/`, cap `IMG_CACHE_MAX_MB`), responses carry `Access-Control-Allow-Origin: *` + `Cross-Origin-Resource-Policy: cross-origin` so the cross-origin metro dev setup (page :8081, API :8787) also works under COEP. Web clients use the proxy with a `?v={dataVersion}` cache-buster; native keeps direct CDN URLs (no COEP, saves egress); the stub-provider mockup falls back to direct no-cors `<img>` (see `apps/mobile/src/components/ObjectImage.tsx` and `apps/mobile/src/data/apiBase.ts`). Known SDK 56 limit: `expo start` dev mode does not honor `metro.config.js` `server.enhanceMiddleware` headers — use the prod-server boot for real-provider work needing strict header parity.
 
 ## Data refresh model
 
-- Server runs a nightly self-refresh: Met API delta → rebuild `met.sqlite` → atomic swap (last-known-good kept). Clients poll `GET /api/v1/data/version` and re-download via ETag.
+- Server runs a nightly self-refresh (`server/src/refresh.ts`, fires at `REFRESH_CRON_HOUR` UTC): Met API objects delta (`metadataDate`) → incremental synonyms → `build-db.ts` into a staging dir → atomic swap (previous artifact kept as `met.sqlite.prev`) → in-process handle reload. Manual trigger: `POST /api/v1/admin/refresh` with `Authorization: Bearer $ADMIN_TOKEN`. Clients poll `GET /api/v1/data/version` and re-download via ETag.
+- Deploy note (Phase 3): the server image must ship `data/src` + `tsx` (refresh spawns the pipeline scripts) and set `GEMINI_API_KEY` + `ADMIN_TOKEN`.
 - The same pipeline code is runnable locally via the `data` workspace scripts; dated snapshots go in `data/snapshots/`.
+- Transient state (2026-06-10): committed `data/met.sqlite` is a partial (120-object) snapshot; the full 45.5k hydration + an image-embedding index build run in the background with watchers that rebuild the DB and re-run evals/goldens when done. All code and tests are row-count-independent.
 
 ## Etiquette (external services)
 
-- **Met Open Access API**: ≤80 req/s hard cap; pipelines run at ~40 req/s. No auth, CC0.
+- **Met Open Access API**: published cap 80 req/s, but an Imperva WAF throttles sustained traffic to ~1.3 req/s effective — **pipelines must stay ≤10 req/s nominal with backoff and resume** (see `docs/DATA.md`). No auth, CC0.
 - **Living Map ETL**: reuse the committed raw tiles in the repo; do not re-crawl tile servers.
 - **NEVER scrape metmuseum.org** — it is bot-blocked (Vercel checkpoint). Use the Open Access API only.
 

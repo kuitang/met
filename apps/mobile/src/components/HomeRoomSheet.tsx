@@ -83,7 +83,7 @@ export default function HomeRoomSheet({ room, objects, originId, onClose }: Home
           )}
         />
       ) : (
-        <Text style={styles.empty}>No stub objects recorded in this room.</Text>
+        <Text style={styles.empty}>No objects recorded in this room yet.</Text>
       )}
     </View>
   );

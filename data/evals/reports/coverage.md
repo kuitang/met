@@ -1,8 +1,8 @@
 # Coverage: on-view objects ↔ gallery polygons
 
 - Status: **WARN**
-- Generated: 2026-06-10T03:29:34.442Z by `data/src/evals.ts`
-- Data version: 2026-06-10-a5015024
+- Generated: 2026-06-10T06:02:53.660Z by `data/src/evals.ts`
+- Data version: 2026-06-10-fad8a4e2
 
 > **Partial snapshot**: objects.json.gz holds 120 of 45502 on-view objects (full hydration pending — the Met API WAF throttles well below the published 80 req/s). Percentages below are over the partial set; rerun after the objects pipeline completes.
 

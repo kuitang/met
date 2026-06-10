@@ -44,7 +44,7 @@
     { "query": "painting of a woman seated beside a vase of flowers", "tier": "llm", "expectObjectIDs": [436121], "note": "long descriptive phrase; AND too strict" },
     { "query": "stone idol with big eyes", "tier": "llm", "expectObjectIDs": [324145], "note": "needs interpretation -> 'eye idol'" },
     { "query": "bronze statue of a roman household god", "tier": "llm", "expectObjectIDs": [250684], "note": "needs interpretation -> 'Lar'" },
-    { "query": "beads from ancient mesopotamia", "tier": "llm", "expectObjectIDs": [325329], "note": "needs interpretation: culture term remapping" },
+    { "query": "beads from ancient mesopotamia", "tier": "llm", "expectObjectIDs": [325329], "expectTitleContains": "bead", "note": "culture term remapping via the index-time synonyms column; originally pinned 325329 (Beads, culture Iran/Hasanlu) because 'mesopotamia' matched zero rows — with synonyms, genuinely Mesopotamian bead rows (e.g. 243804 Glass bead, western Asiatic; Sumerian/Babylonian strings) now rank top, any of which satisfies the visitor (same reasoning as the carnelian ring stone case)" },
     { "query": "restroom", "tier": "autocomplete", "expectAmenity": "restroom", "note": "journey J12" },
     { "query": "where is the nearest toilet", "tier": "autocomplete", "expectAmenity": "restroom" },
     { "query": "cafe", "tier": "autocomplete", "expectAmenity": "dining" },

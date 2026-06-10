@@ -59,7 +59,9 @@ only as evidence of this.
 `data/src/embed-images.ts` embeds each on-view object's primary image with
 `gemini-embedding-2` (768d) into `data/snapshots/image-embeddings/` (flat
 Float32Array shards + index.json), loaded into server RAM for
-`/api/v1/locate/photo`. Server-side only; never shipped to clients.
+`/api/v1/locate/photo`. Server-side only; never shipped to clients, and not
+committed to git (≈100 MB at full scale) — regenerate with the incremental
+command below; in prod it lives on the Fly volume.
 
 ## Pipelines (all in `data/src/`, rerun with these commands)
 

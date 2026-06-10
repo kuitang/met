@@ -1,7 +1,38 @@
-# Phase 1 gate review — Gates A · B · C
+# Gate review — Gates A · B · C (Phase 1) · D (Phase 2)
 
 One page. Every number below was measured on this machine on 2026-06-10; commands to
-reproduce are inline. Three open questions for you are at the bottom.
+reproduce are inline.
+
+## Gate D — architecture + full integration (Phase 2) — READY FOR REVIEW
+
+**Look at:** [`ARCHITECTURE.md`](ARCHITECTURE.md) — the system as actually built
+(one-artifact data flow, positioning design with the GPS eval evidence, LLM
+integration, refresh job, module map with verified `path:symbol` references).
+
+**Watch:** the 16 journey videos in `e2e/recordings/` (J1–J15 + J8b, 390×844,
+real provider + real map + mocked LLM; J9 navigate/auto-advance/reroute is the
+centerpiece). The directory is gitignored (videos are delivered with this
+review); re-record any time: `npm -w e2e run journeys` (boot recipe in
+`e2e/README.md` and CLAUDE.md).
+
+**Phase 2 resolutions of the Phase 1 open questions (below):**
+1. Non-CC0 images → server image proxy `GET /api/v1/img/{objectID}` for what the
+   API does provide, "view on metmuseum.org" link on the object page for the rest.
+2. COEP → **image proxy** (not `credentialless`), headers kept on everything;
+   web SQLite moved to the official `@sqlite.org/sqlite-wasm` (expo-sqlite's web
+   backend shipped without FTS5 and with a sync-bridge corruption bug — measured,
+   documented in ARCHITECTURE.md).
+3. Score-aware escalation → implemented (`rows < 3 OR top-1 bm25 > −11.5`), plus
+   an index-time LLM synonyms column: offline goldens now **50/50 (100%)**.
+
+**Phase 2 status headline:** checks 33/33 passing (+3 conditionally skipped),
+journeys 16/16 with videos, shared unit tests 90 passing, tsc clean everywhere;
+`data/met.sqlite` still the partial (120-object) snapshot — full 45.5k hydration
++ auto rebuild/re-eval running in the background (see ARCHITECTURE.md "Known state").
+
+---
+
+# Phase 1 gates (historical, all reviewed)
 
 ---
 

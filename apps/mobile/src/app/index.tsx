@@ -41,7 +41,9 @@ export default function HomeScreen() {
         />
       </View>
 
-      <View style={styles.topOverlay} pointerEvents="box-none">
+      {/* pointerEvents lives in style: the prop form is deprecated on RN-web
+          and logs a dev warning (LogBox badge → HIG sweep failure). */}
+      <View style={styles.topOverlay}>
         <View style={styles.header}>
           <Text style={styles.wordmark}>The Met</Text>
           <Text style={styles.headerLabel}>Navigator</Text>
@@ -55,7 +57,7 @@ export default function HomeScreen() {
         </Pressable>
       </View>
 
-      <View style={styles.bottomOverlay} pointerEvents="box-none">
+      <View style={styles.bottomOverlay}>
         <Pressable
           style={[styles.locateChip, !anchor && styles.locateChipUnknown]}
           onPress={() => router.push('/locate')}
@@ -92,6 +94,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   topOverlay: {
+    pointerEvents: 'box-none',
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.md,
     gap: spacing.sm,
@@ -112,8 +115,9 @@ const styles = StyleSheet.create({
     color: colors.red,
   },
   searchBar: {
-    // Leave the right edge clear for the FloorMap floor chips underneath.
-    marginRight: 48,
+    // Leave the right edge clear for the FloorMap floor chips underneath
+    // (44pt chips + spacing.md inset).
+    marginRight: 60,
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.md,
     borderWidth: 1,
@@ -125,6 +129,7 @@ const styles = StyleSheet.create({
     color: colors.inkFaint,
   },
   bottomOverlay: {
+    pointerEvents: 'box-none',
     position: 'absolute',
     left: 0,
     right: 0,
@@ -136,6 +141,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.md,
+    minHeight: 44, // HIG tap target
+    justifyContent: 'center',
     backgroundColor: colors.ink,
   },
   locateChipUnknown: {

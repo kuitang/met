@@ -6,17 +6,23 @@
  * Expected met.sqlite schema (the B4 build-db contract this module queries):
  *   objects(objectID INTEGER PRIMARY KEY, accession, title, artist, culture,
  *           period, classification, medium, tags, galleryNumber, site,
- *           rotation, isHighlight INTEGER 0/1, imageUrl, metadataDate)
+ *           rotation, isHighlight INTEGER 0/1, imageUrl, metadataDate,
+ *           synonyms)
  *   objects_fts — FTS5(title, artist, culture, classification, medium, tags,
- *           content='objects', content_rowid='objectID',
+ *           synonyms, content='objects', content_rowid='objectID',
  *           tokenize='porter unicode61', prefix='2 3 4')
  *   galleries(galleryNumber, site, floor, ...) — PK (galleryNumber, site)
  *   amenities(..., type IN ('restroom','dining','elevator','water','info'), ...)
  *
- * bm25 column weights (title, artist, culture, classification, medium, tags)
- * = (10, 8, 3, 5, 2, 4). SQLite bm25() returns NEGATIVE numbers where more
- * negative = better match, so `score` is ordered ASC and highlights get a
- * constant subtracted as a boost.
+ * bm25 column weights (title, artist, culture, classification, medium, tags,
+ * synonyms) = (10, 8, 3, 5, 2, 4, 1). synonyms is the LLM-generated
+ * index-time expansion column (data/src/synonyms.ts → build-db) — weighted
+ * minimally (1) so it adds recall without outranking literal matches
+ * (weights 2-3 measurably regressed "blue ming vases": period-synonym noise
+ * outranked literal "vase" titles; weight 1 keeps all 50 goldens green).
+ * SQLite bm25() returns NEGATIVE numbers where more negative = better match,
+ * so `score` is ordered ASC and highlights get a constant subtracted as a
+ * boost.
  */
 
 export interface DbHandle {
@@ -50,7 +56,7 @@ export interface BuiltQuery {
   params: Array<string | number>;
 }
 
-const BM25 = "bm25(objects_fts, 10, 8, 3, 5, 2, 4)";
+const BM25 = "bm25(objects_fts, 10, 8, 3, 5, 2, 4, 1)";
 const HIGHLIGHT_BOOST = 2.0;
 
 /** Lowercase, strip everything but letters/digits to spaces, collapse runs. */

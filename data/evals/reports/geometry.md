@@ -1,8 +1,8 @@
 # Geometry sanity: polygons, overlaps, centroids, floors
 
 - Status: **PASS**
-- Generated: 2026-06-10T03:29:34.557Z by `data/src/evals.ts`
-- Data version: 2026-06-10-a5015024
+- Generated: 2026-06-10T06:02:53.749Z by `data/src/evals.ts`
+- Data version: 2026-06-10-fad8a4e2
 
 ## Polygon validity
 

@@ -2,15 +2,13 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { DataContext, StubDataProvider } from '@/data/provider';
+import { DataGate } from '@/data/DataGate';
 import { colors, type } from '@/theme';
-
-const provider = new StubDataProvider();
 
 export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }} testID="app-root">
-      <DataContext.Provider value={provider}>
+      <DataGate>
         <StatusBar style="dark" />
         <Stack
           screenOptions={{
@@ -35,7 +33,7 @@ export default function RootLayout() {
             options={{ title: 'FIND MY LOCATION', presentation: 'modal' }}
           />
         </Stack>
-      </DataContext.Provider>
+      </DataGate>
     </GestureHandlerRootView>
   );
 }

@@ -137,6 +137,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     paddingVertical: spacing.xs,
     paddingHorizontal: spacing.md,
+    minHeight: 44, // HIG tap target
+    justifyContent: 'center',
   },
   chipActive: {
     borderColor: colors.red,

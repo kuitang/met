@@ -9,13 +9,16 @@ import { healthRoutes } from './routes/health.js'
 import { imgRoutes } from './routes/img.js'
 import { interpretRoutes } from './routes/interpret.js'
 import { locateRoutes } from './routes/locate.js'
+import { adminRefreshRoutes, startRefreshScheduler } from './refresh.js'
 
 const app = new Hono()
 
-// Cross-origin isolation on EVERY response: expo-sqlite's wasm backend needs
-// SharedArrayBuffer on web. The Met image CDN sends no CORS/CORP headers, so
-// require-corp would block it — web clients load images through our
-// /api/v1/img proxy instead (gate-review accepted).
+// Cross-origin isolation on EVERY response. The web SQLite backend no longer
+// needs SharedArrayBuffer (main-thread @sqlite.org/sqlite-wasm — see
+// ARCHITECTURE.md), but the headers stay for dev/prod parity and because the
+// image design assumes isolation: the Met image CDN sends no CORS/CORP
+// headers, so require-corp would block it — web clients load images through
+// our /api/v1/img proxy instead (gate-review accepted).
 app.use('*', async (c, next) => {
   await next()
   c.res.headers.set('Cross-Origin-Opener-Policy', 'same-origin')
@@ -38,6 +41,7 @@ app.route('/api/v1/data', dataRoutes)
 app.route('/api/v1/img', imgRoutes)
 app.route('/api/v1/search/interpret', interpretRoutes)
 app.route('/api/v1/locate/photo', locateRoutes)
+app.route('/api/v1/admin/refresh', adminRefreshRoutes)
 
 // Unknown API paths get the error envelope, not the SPA fallback
 app.all('/api/*', (c) =>
@@ -65,3 +69,6 @@ const port = Number(process.env.PORT ?? 8787)
 serve({ fetch: app.fetch, port }, (info) => {
   console.log(`met-navigator server listening on :${info.port} (static: ${distRoot})`)
 })
+
+// Nightly data self-refresh (RUN_REFRESH=0 disables; see server/src/refresh.ts)
+startRefreshScheduler()

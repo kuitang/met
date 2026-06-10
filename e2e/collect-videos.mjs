@@ -5,9 +5,11 @@
  *
  * Contract: journey spec files are named e2e/journeys/j{n}-{slug}.spec.ts
  * (e.g. j9-navigate-reroute.spec.ts → J9-navigate-reroute.webm). Playwright
- * names each result directory starting with the dashified spec path
- * ("journeys-j9-navigate-reroute-…"), which is how videos are matched back
- * to their spec. Multiple videos for one spec get -2, -3… suffixes.
+ * 1.58 names each result directory "{spec-stem}-{dashified test title}-
+ * {project}" (e.g. "j9-navigate-reroute-J9-nav-…-journeys"), which is how
+ * videos are matched back to their spec. Longer spec stems are matched first
+ * so "j8-…" never swallows "j8b-…". Multiple videos per spec get -2, -3…
+ * suffixes.
  *
  * Usage: node collect-videos.mjs   (runs automatically via `npm run journeys`)
  */
@@ -51,14 +53,18 @@ const resultEntries = readdirSync(resultsDir).filter((d) =>
 );
 
 let copied = 0;
-for (const spec of specs) {
+// Longest stem first so e.g. "j8b-photo-artwork" claims its dirs before
+// "j8-photo-label" is considered (prefix matching below).
+const orderedSpecs = [...specs].sort((a, b) => b.length - a.length);
+const claimed = new Set();
+for (const spec of orderedSpecs) {
   // j9-navigate-reroute.spec.ts → n="9", slug="navigate-reroute"
   const m = spec.match(/^j(\d+[a-z]?)-(.+)\.spec\.ts$/i);
   const [, n, slug] = m;
-  // Playwright dashifies the spec path into the result dir name prefix.
-  const prefix = `journeys-${spec.replace(/\.spec\.ts$/i, '')}-`;
+  // Playwright result dir: "{spec stem}-{dashified test title}-{project}".
+  const prefix = `${spec.replace(/\.spec\.ts$/i, '')}-`;
   const videos = resultEntries
-    .filter((d) => d.startsWith(prefix))
+    .filter((d) => d.startsWith(prefix) && !claimed.has(d) && (claimed.add(d), true))
     .flatMap((d) => findWebms(path.join(resultsDir, d)));
 
   videos.forEach((video, i) => {

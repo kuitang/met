@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "dependencies": {
     "@expo/ui": "~56.0.16",
+    "@sqlite.org/sqlite-wasm": "^3.53.0-build1",
     "expo": "~56.0.9",
+    "expo-asset": "^56.0.16",
     "expo-constants": "~56.0.17",
     "expo-device": "~56.0.4",
     "expo-font": "~56.0.5",
@@ -20,6 +22,7 @@
     "expo-symbols": "~56.0.6",
     "expo-system-ui": "~56.0.5",
     "expo-web-browser": "~56.0.5",
+    "fflate": "^0.8.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.85.3",
@@ -41,7 +44,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "export:web": "expo export -p web",
+    "export:web": "EXPO_PUBLIC_DATA=${EXPO_PUBLIC_DATA:-real} expo export -p web",
     "lint": "expo lint"
   },
   "private": true

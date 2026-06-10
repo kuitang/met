@@ -1,5 +1,15 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import {
+  Linking,
+  Platform,
+  Pressable,
+  ScrollView,
+  Share,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 import ObjectImage from '@/components/ObjectImage';
 import { useData } from '@/data/provider';
@@ -10,6 +20,7 @@ export default function ObjectScreen() {
   // `anchor` (optional) = the visitor's last confirmed room, threaded through
   // so "Navigate here" starts from where they actually are.
   const { id, anchor } = useLocalSearchParams<{ id: string; anchor?: string }>();
+  const [copied, setCopied] = useState(false); // share-button feedback
   const object = data.getObject(Number(id));
 
   if (!object) {
@@ -37,6 +48,21 @@ export default function ObjectScreen() {
   };
 
   const objectURL = `https://www.metmuseum.org/art/collection/search/${object.objectID}`;
+
+  // Share = copy the canonical deep link (web clipboard; native share sheet).
+  const canonicalURL =
+    Platform.OS === 'web' && typeof window !== 'undefined'
+      ? `${window.location.origin}/object/${object.objectID}`
+      : objectURL;
+  const onShare = async () => {
+    if (Platform.OS === 'web' && navigator.clipboard) {
+      await navigator.clipboard.writeText(canonicalURL);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } else {
+      await Share.share({ message: canonicalURL });
+    }
+  };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -97,6 +123,10 @@ export default function ObjectScreen() {
         </Pressable>
       )}
 
+      <Pressable style={styles.linkOut} onPress={onShare} testID="object-share">
+        <Text style={styles.linkOutText}>{copied ? 'Link copied ✓' : 'Share'}</Text>
+      </Pressable>
+
       <Pressable
         style={styles.linkOut}
         onPress={() => Linking.openURL(objectURL)}
@@ -128,8 +158,8 @@ const styles = StyleSheet.create({
     marginBottom: spacing.xs,
   },
   cycleBtn: {
-    width: 40,
-    height: 40,
+    width: 44, // HIG tap target
+    height: 44,
     borderWidth: 1,
     borderColor: colors.ink,
     alignItems: 'center',
@@ -178,7 +208,9 @@ const styles = StyleSheet.create({
   linkOut: {
     marginTop: spacing.sm,
     paddingVertical: spacing.sm,
+    minHeight: 44, // HIG tap target
     alignItems: 'center',
+    justifyContent: 'center',
     borderWidth: 1,
     borderColor: colors.ink,
   },

@@ -56,15 +56,21 @@ test('search amenity intent surfaces restrooms', async ({ page }) => {
   await expect(page.getByTestId('amenity-restroom-2')).toBeVisible();
 });
 
-test('weak query offers Ask differently → interpreted results', async ({ page }) => {
+test('weak query offers Ask differently → interpret flow (offline degrade here)', async ({
+  page,
+}) => {
   await page.goto('/search');
   await page
     .getByTestId('search-input')
     .fill('that huge painting of washington crossing a river in a boat', FIRST_PAINT);
   await page.getByTestId('ask-differently').click();
   await expect(page.getByTestId('interpreted-banner')).toBeVisible();
-  // Washington Crossing the Delaware must rank first (planning-bench golden).
-  await expect(page.getByTestId('result-11417')).toBeVisible();
+  // Interpretation is server-side (POST /api/v1/search/interpret) since the
+  // Phase-2 integration. The stub-mode checks environment has no API server,
+  // so the flow must degrade to the graceful offline notice; the full
+  // server-ranked path (Washington Crossing the Delaware first on the real
+  // catalog) is asserted by journeys/j7-llm-fallback.spec.ts.
+  await expect(page.getByTestId('interpret-offline')).toBeVisible();
 });
 
 test('results page renders rows and all filter chips', async ({ page }) => {

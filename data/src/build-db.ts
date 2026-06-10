@@ -4,6 +4,10 @@
  *
  *   snapshots/objects.json.gz   → objects + objects_fts (FTS5 external-content,
  *                                 porter unicode61, prefix 2/3/4, sync triggers)
+ *   snapshots/synonyms.json     → (optional) LLM-generated synonyms column on
+ *                                 objects, FTS-indexed: vocab entries keyed by
+ *                                 culture/period/classification value + title
+ *                                 entries keyed by exact title (src/synonyms.ts)
  *   snapshots/galleries.geojson → galleries (centroids) + gzipped blob
  *   snapshots/amenities.geojson → amenities + gzipped blob
  *   snapshots/graph.json        → graph_nodes/graph_edges + per-floor rendering
@@ -17,6 +21,9 @@
  * objects↔galleries coverage join (orphans both ways).
  *
  * Usage: tsx src/build-db.ts
+ *   MET_DATA_DIR=<dir> overrides the data root (snapshots read from
+ *   $MET_DATA_DIR/snapshots, met.sqlite + VERSION written to $MET_DATA_DIR) —
+ *   used by the server's nightly self-refresh (server/src/refresh.ts).
  */
 import Database from "better-sqlite3";
 import { createHash } from "node:crypto";
@@ -25,7 +32,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import zlib from "node:zlib";
 
-const DATA_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const DATA_DIR = process.env.MET_DATA_DIR
+  ? path.resolve(process.env.MET_DATA_DIR)
+  : path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SNAP_DIR = path.join(DATA_DIR, "snapshots");
 const DB_PATH = path.join(DATA_DIR, "met.sqlite");
 const TMP_PATH = DB_PATH + ".tmp";
@@ -122,8 +131,26 @@ function main(): void {
   const galleriesRaw = fs.readFileSync(path.join(SNAP_DIR, "galleries.geojson"));
   const amenitiesRaw = fs.readFileSync(path.join(SNAP_DIR, "amenities.geojson"));
   const graphRaw = fs.readFileSync(path.join(SNAP_DIR, "graph.json"));
+  const synonymsPath = path.join(SNAP_DIR, "synonyms.json");
+  const synonymsRaw = fs.existsSync(synonymsPath) ? fs.readFileSync(synonymsPath) : null;
 
   const objects: ObjectRow[] = JSON.parse(zlib.gunzipSync(objectsGz).toString("utf8"));
+  // Optional index-time synonym expansion (src/synonyms.ts): vocab entries
+  // keyed by exact culture/period/classification value, title entries keyed by
+  // exact title. Missing file = empty synonyms column (build stays runnable).
+  const synonyms: { vocab: Record<string, string>; titles: Record<string, string> } =
+    synonymsRaw ? JSON.parse(synonymsRaw.toString("utf8")) : { vocab: {}, titles: {} };
+  const synFor = (o: ObjectRow): string =>
+    [
+      ...new Set(
+        [
+          synonyms.vocab[o.culture],
+          synonyms.vocab[o.period],
+          synonyms.vocab[o.classification],
+          synonyms.titles[o.title],
+        ].filter(Boolean),
+      ),
+    ].join(" ");
   const galleriesGeo: { features: Feature[] } = JSON.parse(galleriesRaw.toString("utf8"));
   const amenitiesGeo: { features: Feature[] } = JSON.parse(amenitiesRaw.toString("utf8"));
   const graph: { nodes: GraphNode[]; edges: GraphEdge[] } = JSON.parse(graphRaw.toString("utf8"));
@@ -131,6 +158,7 @@ function main(): void {
   const builtAt = new Date().toISOString();
   const hash = createHash("sha256");
   for (const buf of [objectsGz, galleriesRaw, amenitiesRaw, graphRaw]) hash.update(buf);
+  if (synonymsRaw) hash.update(synonymsRaw);
   const dataVersion = `${builtAt.slice(0, 10)}-${hash.digest("hex").slice(0, 8)}`;
 
   // ---- build ---------------------------------------------------------------
@@ -155,28 +183,29 @@ function main(): void {
       rotation       TEXT NOT NULL,
       isHighlight    INTEGER NOT NULL,
       imageUrl       TEXT NOT NULL,
-      metadataDate   TEXT NOT NULL
+      metadataDate   TEXT NOT NULL,
+      synonyms       TEXT NOT NULL
     );
     CREATE INDEX objects_gallery ON objects(galleryNumber);
 
     CREATE VIRTUAL TABLE objects_fts USING fts5(
-      title, artist, culture, classification, medium, tags,
+      title, artist, culture, classification, medium, tags, synonyms,
       content=objects, content_rowid=objectID,
       tokenize='porter unicode61', prefix='2 3 4'
     );
     CREATE TRIGGER objects_ai AFTER INSERT ON objects BEGIN
-      INSERT INTO objects_fts(rowid, title, artist, culture, classification, medium, tags)
-      VALUES (new.objectID, new.title, new.artist, new.culture, new.classification, new.medium, new.tags);
+      INSERT INTO objects_fts(rowid, title, artist, culture, classification, medium, tags, synonyms)
+      VALUES (new.objectID, new.title, new.artist, new.culture, new.classification, new.medium, new.tags, new.synonyms);
     END;
     CREATE TRIGGER objects_ad AFTER DELETE ON objects BEGIN
-      INSERT INTO objects_fts(objects_fts, rowid, title, artist, culture, classification, medium, tags)
-      VALUES ('delete', old.objectID, old.title, old.artist, old.culture, old.classification, old.medium, old.tags);
+      INSERT INTO objects_fts(objects_fts, rowid, title, artist, culture, classification, medium, tags, synonyms)
+      VALUES ('delete', old.objectID, old.title, old.artist, old.culture, old.classification, old.medium, old.tags, old.synonyms);
     END;
     CREATE TRIGGER objects_au AFTER UPDATE ON objects BEGIN
-      INSERT INTO objects_fts(objects_fts, rowid, title, artist, culture, classification, medium, tags)
-      VALUES ('delete', old.objectID, old.title, old.artist, old.culture, old.classification, old.medium, old.tags);
-      INSERT INTO objects_fts(rowid, title, artist, culture, classification, medium, tags)
-      VALUES (new.objectID, new.title, new.artist, new.culture, new.classification, new.medium, new.tags);
+      INSERT INTO objects_fts(objects_fts, rowid, title, artist, culture, classification, medium, tags, synonyms)
+      VALUES ('delete', old.objectID, old.title, old.artist, old.culture, old.classification, old.medium, old.tags, old.synonyms);
+      INSERT INTO objects_fts(rowid, title, artist, culture, classification, medium, tags, synonyms)
+      VALUES (new.objectID, new.title, new.artist, new.culture, new.classification, new.medium, new.tags, new.synonyms);
     END;
 
     -- Schema below is the shared/search.ts contract: galleries PK is
@@ -232,7 +261,7 @@ function main(): void {
   const insObject = db.prepare(
     `INSERT INTO objects VALUES (@objectID, @accession, @title, @artist, @culture, @period,
      @classification, @medium, @tags, @galleryNumber, @site, @rotation, @isHighlight,
-     @imageUrl, @metadataDate)`,
+     @imageUrl, @metadataDate, @synonyms)`,
   );
   // Recompute site from the geometry join: the snapshot's site column can be stale
   // (early hydration-cache rows used a department heuristic that cannot distinguish
@@ -254,6 +283,7 @@ function main(): void {
         ...o,
         site: authoritativeSite(o.galleryNumber, o.site),
         isHighlight: o.isHighlight ? 1 : 0,
+        synonyms: synFor(o),
       });
   })();
   db.exec("INSERT INTO objects_fts(objects_fts) VALUES ('optimize')");
@@ -354,7 +384,7 @@ function main(): void {
   const v = new Database(DB_PATH, { readonly: true });
   const search = v.prepare(`
     SELECT o.objectID, o.title, o.artist, o.galleryNumber, g.floor,
-           round(bm25(objects_fts, 10, 8, 3, 5, 2, 4), 2) AS score
+           round(bm25(objects_fts, 10, 8, 3, 5, 2, 4, 1), 2) AS score
     FROM objects_fts
     JOIN objects o ON o.objectID = objects_fts.rowid
     LEFT JOIN galleries g ON g.galleryNumber = o.galleryNumber AND g.site = o.site

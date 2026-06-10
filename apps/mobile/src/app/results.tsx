@@ -1,49 +1,57 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
-import { FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+
+import type { components } from '@met/shared';
 
 import SearchFilterChips, {
   ResultFilters,
   applyFilters,
 } from '@/components/SearchFilterChips';
+import { apiBase } from '@/data/apiBase';
 import { DataProvider, MetObject, useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
+type InterpretResponse = components['schemas']['InterpretResponse'];
+
 /**
- * Stub for the server-side LLM interpret flow (Phase 2:
- * POST /api/v1/search/interpret). Strips filler words, then OR-merges
- * per-word hits ranked by how many words each object matched.
+ * Server-side LLM interpret flow (POST /api/v1/search/interpret): the server
+ * rewrites the natural-language query (escalating to a bounded agentic loop),
+ * executes it against its met.sqlite, and returns final ranked results in one
+ * round trip. Offline / server-down degrades to plain local search with a
+ * notice — the local index keeps working.
  */
-const FILLER = new Set([
-  'a', 'an', 'the', 'that', 'this', 'those', 'these', 'of', 'in', 'on', 'at',
-  'with', 'by', 'for', 'to', 'and', 'or', 'is', 'are', 'it', 'its', 'his',
-  'her', 'their', 'huge', 'big', 'large', 'famous', 'old', 'really', 'very',
-  'some', 'painting', 'paintings', 'picture', 'pictures', 'artwork', 'piece',
-  'show', 'me', 'find', 'where', 'can', 'i', 'see', 'looking',
-]);
+type InterpretState =
+  | { phase: 'loading' }
+  | { phase: 'done'; body: InterpretResponse }
+  | { phase: 'offline' };
 
-function interpretQuery(q: string): string {
-  return q
-    .toLowerCase()
-    .split(/[^\p{L}\p{N}]+/u)
-    .filter((w) => w.length > 1 && !FILLER.has(w))
-    .join(' ');
-}
-
-function interpretedSearch(data: DataProvider, q: string): MetObject[] {
-  const words = interpretQuery(q).split(' ').filter(Boolean);
-  const hits = new Map<number, { o: MetObject; words: number; bestRank: number }>();
-  for (const w of words) {
-    data.searchAll(w).forEach((o, rank) => {
-      const h = hits.get(o.objectID) ?? { o, words: 0, bestRank: rank };
-      h.words += 1;
-      h.bestRank = Math.min(h.bestRank, rank);
-      hits.set(o.objectID, h);
-    });
-  }
-  return [...hits.values()]
-    .sort((a, b) => b.words - a.words || a.bestRank - b.bestRank)
-    .map((h) => h.o);
+/** Ranked server results → full local objects (hit the local DB for images). */
+function hydrateResults(data: DataProvider, body: InterpretResponse): MetObject[] {
+  return body.results.map(
+    (r) =>
+      data.getObject(r.objectID) ?? {
+        objectID: r.objectID,
+        title: r.title,
+        artist: r.artist,
+        date: '',
+        medium: '',
+        accession: '',
+        gallery: r.galleryNumber,
+        dept: '',
+        credit: '',
+        isHighlight: false,
+        img: '',
+      },
+  );
 }
 
 /** All Results — a full-text search (?q=), a gallery's objects (?gallery=),
@@ -58,10 +66,36 @@ export default function ResultsScreen() {
   const [filters, setFilters] = useState<ResultFilters>({});
 
   const isInterpreted = interpreted === '1' && !!q;
+  const [interp, setInterp] = useState<InterpretState>({ phase: 'loading' });
+  useEffect(() => {
+    if (!isInterpreted) return;
+    let cancelled = false;
+    setInterp({ phase: 'loading' });
+    (async () => {
+      const res = await fetch(`${apiBase()}/api/v1/search/interpret`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ query: q, maxResults: 20 }),
+      });
+      if (!res.ok) throw new Error(`interpret ${res.status}`);
+      const body = (await res.json()) as InterpretResponse;
+      if (!cancelled) setInterp({ phase: 'done', body });
+    })().catch(() => {
+      if (!cancelled) setInterp({ phase: 'offline' });
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [isInterpreted, q]);
+
   const base = gallery
     ? data.objectsInGallery(gallery)
     : isInterpreted
-      ? interpretedSearch(data, q ?? '')
+      ? interp.phase === 'done'
+        ? hydrateResults(data, interp.body)
+        : interp.phase === 'offline'
+          ? data.searchAll(q ?? '') // graceful degrade: local index still works
+          : []
       : data.searchAll(q ?? '');
   const floorOf = (galleryId: string) => data.getGallery(galleryId)?.floor;
   const results = applyFilters(base, filters, floorOf);
@@ -80,13 +114,30 @@ export default function ResultsScreen() {
       {isInterpreted && (
         <View style={styles.banner} testID="interpreted-banner">
           <Text style={styles.bannerLabel}>Ask differently</Text>
-          <Text style={styles.bannerText}>
-            Interpreted: “{interpretQuery(q ?? '') || q}”
-          </Text>
-          <Text style={type.meta}>
-            Mockup — Phase 2 sends this to the server LLM
-            (/api/v1/search/interpret) and returns ranked results.
-          </Text>
+          {interp.phase === 'loading' && (
+            <View style={styles.bannerRow}>
+              <ActivityIndicator size="small" color={colors.red} />
+              <Text style={type.meta}>Interpreting your words…</Text>
+            </View>
+          )}
+          {interp.phase === 'done' && (
+            <>
+              <Text style={styles.bannerText} testID="interpreted-query">
+                Interpreted: “{interp.body.interpretedQuery.ftsQuery}”
+              </Text>
+              <Text style={type.meta}>
+                {interp.body.method === 'agentic' && interp.body.why
+                  ? interp.body.why
+                  : 'Your words were rewritten into a catalog query and re-searched.'}
+              </Text>
+            </>
+          )}
+          {interp.phase === 'offline' && (
+            <Text style={type.meta} testID="interpret-offline">
+              You're offline — smart interpretation needs a connection. Showing
+              plain matches from the on-device index instead.
+            </Text>
+          )}
         </View>
       )}
       <Text style={styles.heading}>
@@ -142,6 +193,11 @@ const styles = StyleSheet.create({
   bannerLabel: {
     ...type.label,
     color: colors.red,
+  },
+  bannerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
   },
   bannerText: {
     ...type.body,

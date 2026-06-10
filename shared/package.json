@@ -10,7 +10,9 @@
       "types": "./api-types.d.ts"
     },
     "./openapi.yaml": "./openapi.yaml",
-    "./search": "./search.ts"
+    "./search": "./search.ts",
+    "./routing": "./routing.ts",
+    "./positioning": "./positioning.ts"
   },
   "scripts": {
     "gen": "openapi-typescript openapi.yaml -o api-types.d.ts",

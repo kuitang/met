@@ -33,6 +33,26 @@ async function sqliteStat() {
 
 export const dataRoutes = new Hono()
 
+// CORS for the cross-origin metro dev setup (page :8081/:8082 → API :8787/:8788):
+// the client downloads met.sqlite with fetch() (cors mode) and sends
+// If-None-Match on update checks, which triggers a preflight. Same opt-in the
+// /api/v1/img proxy already carries (see routes/img.ts). Prod is same-origin
+// and unaffected.
+dataRoutes.use('*', async (c, next) => {
+  if (c.req.method === 'OPTIONS') {
+    return c.body(null, 204, {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET',
+      'Access-Control-Allow-Headers': 'If-None-Match',
+      'Access-Control-Max-Age': '86400',
+    })
+  }
+  await next()
+  c.res.headers.set('Access-Control-Allow-Origin', '*')
+  c.res.headers.set('Access-Control-Expose-Headers', 'ETag, x-data-version')
+  c.res.headers.set('Cross-Origin-Resource-Policy', 'cross-origin')
+})
+
 dataRoutes.get('/version', async (c) => {
   const s = await sqliteStat()
   const body: components['schemas']['DataVersion'] = {
