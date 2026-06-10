@@ -29,6 +29,23 @@ import { apiBase } from '@/data/apiBase';
 import { useData } from '@/data/provider';
 import { colors } from '@/theme';
 
+/**
+ * Resolve the URL an object picture loads from. Web (real provider) MUST go
+ * through the server image proxy: the prod server's COEP `require-corp`
+ * blocks the CORP-less Met CDN outright, so direct images.metmuseum.org
+ * URLs render as permanently blank boxes (reproduced live on result-row
+ * thumbnails, both engines). Stub mockup and native keep the direct CDN URL
+ * (no COEP there; see header comment).
+ */
+export function objectImageSrc(
+  uri: string,
+  objectID: number,
+  dataVersion: string,
+): string {
+  if (Platform.OS !== 'web' || dataVersion === 'stub') return uri;
+  return `${apiBase()}/api/v1/img/${objectID}?v=${encodeURIComponent(dataVersion)}`;
+}
+
 export default function ObjectImage({
   uri,
   objectID,
@@ -43,10 +60,7 @@ export default function ObjectImage({
 
   let img: React.ReactNode;
   if (Platform.OS === 'web') {
-    const src =
-      dataVersion === 'stub'
-        ? uri
-        : `${apiBase()}/api/v1/img/${objectID}?v=${encodeURIComponent(dataVersion)}`;
+    const src = objectImageSrc(uri, objectID, dataVersion);
     img = (
       <img
         src={src}
