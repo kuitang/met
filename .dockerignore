@@ -1,0 +1,26 @@
+# Keep the build context small: the Docker build needs workspace manifests,
+# shared/ server/ apps/mobile/ source, and data/src (artifact fetcher). Data
+# artifacts come from Tigris, never from the context.
+.git
+.github
+.expo
+.playwright-mcp
+node_modules
+**/node_modules
+**/dist
+*.png
+*.log
+
+data/met.sqlite
+data/VERSION
+data/snapshots
+data/raw
+data/img-cache
+data/evals
+data/.nightly
+
+e2e/recordings
+e2e/test-results
+e2e/fixtures
+
+docs

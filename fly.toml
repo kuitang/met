@@ -1,0 +1,33 @@
+# Fly.io config for the production app (app + region fixed by the infra
+# setup: app `met-nav`, org `personal`, region ewr). PR preview apps clone
+# this config via superfly/fly-pr-review-apps with --app met-nav-pr-{n} and
+# their own vm sizing (see .github/workflows/fly-preview.yml).
+app = 'met-nav'
+primary_region = 'ewr'
+
+[build]
+  # Dockerfile at the repo root; artifacts are baked in at build time via
+  # Tigris build secrets (see Dockerfile header). No volumes anywhere.
+
+[http_service]
+  internal_port = 8787
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  # Keep one machine warm: LLM endpoints + the image-proxy disk cache prefer a
+  # live process (the cache is ephemeral and refills, but a cold boot also
+  # reloads the ~100 MB embedding index).
+  min_machines_running = 1
+
+[[vm]]
+  size = 'shared-cpu-1x'
+  # 512 MB is too tight: the photo-locate embedding index alone is ~100 MB
+  # in RAM (plus a transient shard copy while loading) on top of node + sqlite.
+  memory = '1gb'
+
+  [[http_service.checks]]
+    method = 'GET'
+    path = '/api/v1/health'
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '30s'
