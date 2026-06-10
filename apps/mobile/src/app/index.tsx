@@ -75,48 +75,56 @@ export default function HomeScreen() {
         </Pressable>
       </View>
 
-      <View style={styles.bottomOverlay}>
-        {/* Dismissible toast raised by automatic venue switches (GPS fix at
+      {/* Bottom chrome hides while a room sheet is open: the sheet owns the
+          bottom band across all three detents (it would cover the chip at
+          half/full and crowd the map readout at header-only); the chip
+          returns — with any anchor change — when the sheet closes. */}
+      {!selected && (
+        <View style={styles.bottomOverlay}>
+          {/* Dismissible toast raised by automatic venue switches (GPS fix at
             the other venue, or tapping a cross-venue search result). */}
-        {venueToast ? (
-          <Pressable style={styles.venueToast} onPress={dismissVenueToast} testID="venue-toast">
-            <Text style={styles.venueToastText}>{venueToast}</Text>
-            <Text style={styles.venueToastClose}>✕</Text>
+          {venueToast ? (
+            <Pressable style={styles.venueToast} onPress={dismissVenueToast} testID="venue-toast">
+              <Text style={styles.venueToastText}>{venueToast}</Text>
+              <Text style={styles.venueToastClose}>✕</Text>
+            </Pressable>
+          ) : null}
+          <Pressable
+            style={[styles.locateChip, !anchor && styles.locateChipUnknown]}
+            onPress={() => router.push('/locate')}
+            testID="locate-chip"
+          >
+            <Text style={styles.locateChipText}>
+              {anchor ? anchor.label : 'Location unknown — tap to set'}
+            </Text>
+            <Text style={styles.locateChipVenue} testID="locate-chip-venue">
+              {VENUE_NAMES[venue.venue]}
+            </Text>
           </Pressable>
-        ) : null}
-        <Pressable
-          style={[styles.locateChip, !anchor && styles.locateChipUnknown]}
-          onPress={() => router.push('/locate')}
-          testID="locate-chip"
-        >
-          <Text style={styles.locateChipText}>
-            {anchor ? anchor.label : 'Location unknown — tap to set'}
-          </Text>
-          <Text style={styles.locateChipVenue} testID="locate-chip-venue">
-            {VENUE_NAMES[venue.venue]}
-          </Text>
-        </Pressable>
 
-        {/* Brand-required disclosure: nominative use of the museum's name in
+          {/* Brand-required disclosure: nominative use of the museum's name in
             descriptive copy only — never in the wordmark. */}
-        <Text style={styles.unofficialNote}>
-          An unofficial companion for The Metropolitan Museum of Art
-        </Text>
+          <Text style={styles.unofficialNote}>
+            An unofficial companion for The Metropolitan Museum of Art
+          </Text>
+        </View>
+      )}
 
-        {selected && (
-          <HomeRoomSheet
-            room={selected}
-            objects={data.objectsInGallery(selected.id)}
-            totalCount={data.galleryObjectCount(selected.id)}
-            originId={anchor?.roomId ?? 'great-hall'}
-            onImHere={() => {
-              setAnchor(anchorForRoom(selected, 'gallery'));
-              setSelected(undefined);
-            }}
-            onClose={() => setSelected(undefined)}
-          />
-        )}
-      </View>
+      {/* The room sheet is its own full-screen clipping layer (not part of
+          the bottom column) so its FULL detent can rise past the chrome. */}
+      {selected && (
+        <HomeRoomSheet
+          room={selected}
+          objects={data.objectsInGallery(selected.id)}
+          totalCount={data.galleryObjectCount(selected.id)}
+          originId={anchor?.roomId ?? 'great-hall'}
+          onImHere={() => {
+            setAnchor(anchorForRoom(selected, 'gallery'));
+            setSelected(undefined);
+          }}
+          onClose={() => setSelected(undefined)}
+        />
+      )}
     </SafeAreaView>
   );
 }
