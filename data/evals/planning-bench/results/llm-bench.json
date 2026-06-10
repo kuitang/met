@@ -1,0 +1,1226 @@
+[
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "gold swords",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "monet",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "that huge painting of washington crossing a river in a boat",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "blue ming vases",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "ancient egyptian cat statues",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "armor for horses",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "tiffany stained glass",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "paintings of the sea by dutch artists",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "sphinx",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "impressionist gardens",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "label_ocr",
+  "caseId": "11417",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "label_ocr",
+  "caseId": "24423",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "label_ocr",
+  "caseId": "250684",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "label_ocr",
+  "caseId": "325329",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "label_ocr",
+  "caseId": "40681",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "label_ocr",
+  "caseId": "436535",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "label_ocr",
+  "caseId": "544442",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "label_ocr",
+  "caseId": "74832",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "436535",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "11417",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "544442",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "436121",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "437853",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "435882",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "24423",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "22393",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "74832",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "40681",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "250684",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "252406",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "473295",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "466296",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "325329",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "324145",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-mini HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "gold swords",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "monet",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "that huge painting of washington crossing a river in a boat",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "blue ming vases",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "ancient egyptian cat statues",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "armor for horses",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "tiffany stained glass",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "paintings of the sea by dutch artists",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "sphinx",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "impressionist gardens",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "label_ocr",
+  "caseId": "11417",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "label_ocr",
+  "caseId": "24423",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "label_ocr",
+  "caseId": "250684",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "label_ocr",
+  "caseId": "325329",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "label_ocr",
+  "caseId": "40681",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "label_ocr",
+  "caseId": "436535",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "label_ocr",
+  "caseId": "544442",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "label_ocr",
+  "caseId": "74832",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "436535",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "11417",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "544442",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "436121",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "437853",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "435882",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "24423",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "22393",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "74832",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "40681",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "250684",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "252406",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "473295",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "466296",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "325329",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "324145",
+  "ok": false,
+  "ms": null,
+  "error": "Error: gpt-5.4-nano HTTP 400: {\"error\":{\"message\":\"Response input messages must contain the word 'json' in some form to use 'text.format' of type 'json_object'.\",\"type\":\"invalid_request_error\",\"param\""
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "interpret",
+  "caseId": "gold swords",
+  "ok": true,
+  "ms": 1463,
+  "inTok": 79,
+  "outTok": 52,
+  "out": "{\n  \"keywords\": [\n    \"sword\"\n  ],\n  \"artist\": null,\n  \"classification\": \"Arms and Armor\",\n  \"material\": \"gold\",\n  \"culture_or_period\": null\n}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "interpret",
+  "caseId": "monet",
+  "ok": true,
+  "ms": 1455,
+  "inTok": 78,
+  "outTok": 50,
+  "out": "{\n  \"keywords\": [\n    \"painting\"\n  ],\n  \"artist\": \"Claude Monet\",\n  \"classification\": null,\n  \"material\": null,\n  \"culture_or_period\": null\n}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "interpret",
+  "caseId": "that huge painting of washington crossing a river in a boat",
+  "ok": true,
+  "ms": 1145,
+  "inTok": 88,
+  "outTok": 70,
+  "out": "{\n  \"keywords\": [\n    \"washington\",\n    \"river\",\n    \"boat\"\n  ],\n  \"artist\": \"Emanuel Leutze\",\n  \"classification\": \"Paintings\",\n  \"material\": \"Oil on canvas\",\n  \"culture_or_period\": \"American\"\n}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "interpret",
+  "caseId": "blue ming vases",
+  "ok": true,
+  "ms": 1037,
+  "inTok": 80,
+  "outTok": 61,
+  "out": "{\n  \"keywords\": [\n    \"vase\",\n    \"blue\"\n  ],\n  \"artist\": null,\n  \"classification\": \"Ceramics\",\n  \"material\": \"Porcelain\",\n  \"culture_or_period\": \"Ming dynasty\"\n}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "interpret",
+  "caseId": "ancient egyptian cat statues",
+  "ok": true,
+  "ms": 1097,
+  "inTok": 81,
+  "outTok": 59,
+  "out": "{\n  \"keywords\": [\n    \"cat\",\n    \"statue\"\n  ],\n  \"artist\": null,\n  \"classification\": \"Sculpture\",\n  \"material\": null,\n  \"culture_or_period\": \"Ancient Egypt\"\n}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "interpret",
+  "caseId": "armor for horses",
+  "ok": true,
+  "ms": 974,
+  "inTok": 80,
+  "outTok": 54,
+  "out": "{\n  \"keywords\": [\n    \"armor\",\n    \"horse\"\n  ],\n  \"artist\": null,\n  \"classification\": \"Armor\",\n  \"material\": null,\n  \"culture_or_period\": null\n}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "interpret",
+  "caseId": "tiffany stained glass",
+  "ok": true,
+  "ms": 1031,
+  "inTok": 81,
+  "outTok": 61,
+  "out": "{\n  \"keywords\": [\n    \"stained glass\",\n    \"window\"\n  ],\n  \"artist\": \"Louis Comfort Tiffany\",\n  \"classification\": \"Glass\",\n  \"material\": \"Glass\",\n  \"culture_or_period\": \"American\"\n}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "interpret",
+  "caseId": "paintings of the sea by dutch artists",
+  "ok": true,
+  "ms": 1042,
+  "inTok": 84,
+  "outTok": 57,
+  "out": "{\n  \"keywords\": [\n    \"sea\",\n    \"painting\"\n  ],\n  \"artist\": null,\n  \"classification\": \"Paintings\",\n  \"material\": null,\n  \"culture_or_period\": \"Dutch\"\n}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "interpret",
+  "caseId": "sphinx",
+  "ok": true,
+  "ms": 1021,
+  "inTok": 78,
+  "outTok": 48,
+  "out": "{\n  \"keywords\": [\n    \"sphinx\"\n  ],\n  \"artist\": null,\n  \"classification\": null,\n  \"material\": null,\n  \"culture_or_period\": null\n}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "interpret",
+  "caseId": "impressionist gardens",
+  "ok": true,
+  "ms": 1007,
+  "inTok": 80,
+  "outTok": 58,
+  "out": "{\n  \"keywords\": [\n    \"impressionist\",\n    \"garden\"\n  ],\n  \"artist\": null,\n  \"classification\": null,\n  \"material\": null,\n  \"culture_or_period\": \"Impressionism\"\n}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "label_ocr",
+  "caseId": "11417",
+  "ok": true,
+  "ms": 1300,
+  "inTok": 1138,
+  "outTok": 41,
+  "out": "{\"title\": \"Washington Crossing the Delaware\", \"artist\": \"Emanuel Leutze\", \"date\": \"1851\", \"accession_number\": \"97.34\"}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "label_ocr",
+  "caseId": "24423",
+  "ok": true,
+  "ms": 1230,
+  "inTok": 1155,
+  "outTok": 41,
+  "out": "{\"title\": \"Ceremonial Mace\", \"artist\": null, \"date\": \"18th century\", \"accession_number\": \"36.25.1884\"}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "label_ocr",
+  "caseId": "250684",
+  "ok": true,
+  "ms": 1499,
+  "inTok": 1138,
+  "outTok": 59,
+  "out": "{\n  \"title\": \"Bronze statuette of a Lar\",\n  \"artist\": null,\n  \"date\": \"ca. 1st–2nd century CE\",\n  \"accession_number\": \"18.145.19\"\n}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "label_ocr",
+  "caseId": "325329",
+  "ok": true,
+  "ms": 1315,
+  "inTok": 1138,
+  "outTok": 42,
+  "out": "{\"title\": \"Beads\", \"artist\": null, \"date\": \"ca. 9th century BCE\", \"accession_number\": \"61.100.154\"}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "label_ocr",
+  "caseId": "40681",
+  "ok": true,
+  "ms": 1403,
+  "inTok": 1129,
+  "outTok": 36,
+  "out": "{\"title\": \"Bowl with auspicious symbols\", \"artist\": null, \"date\": null, \"accession_number\": \"29.110.18\"}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "label_ocr",
+  "caseId": "436535",
+  "ok": true,
+  "ms": 2278,
+  "inTok": 1138,
+  "outTok": 54,
+  "out": "{\n  \"title\": \"Wheat Field with Cypresses\",\n  \"artist\": \"Vincent van Gogh\",\n  \"date\": \"1889\",\n  \"accession_number\": \"1993.132\"\n}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "label_ocr",
+  "caseId": "544442",
+  "ok": true,
+  "ms": 2080,
+  "inTok": 1138,
+  "outTok": 53,
+  "out": "{\"title\": \"Sphinx of Hatshepsut\", \"artist\": null, \"date\": \"ca. 1479–1458 B.C.\", \"accession_number\": \"31.3.166\"}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "label_ocr",
+  "caseId": "74832",
+  "ok": true,
+  "ms": 1522,
+  "inTok": 1155,
+  "outTok": 52,
+  "out": "{\n  \"title\": \"Buddha Expounding the Dharma\",\n  \"artist\": null,\n  \"date\": \"late 8th century\",\n  \"accession_number\": \"2009.60\"\n}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "artwork_id",
+  "caseId": "436535",
+  "ok": true,
+  "ms": 1049,
+  "inTok": 1170,
+  "outTok": 24,
+  "out": "{\"title\": \"Wheat Field with Cypresses\", \"artist\": \"Vincent van Gogh\", \"confidence\": 1}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "artwork_id",
+  "caseId": "11417",
+  "ok": true,
+  "ms": 1317,
+  "inTok": 1152,
+  "outTok": 25,
+  "out": "{\"title\": \"Washington Crossing the Delaware\", \"artist\": \"Emanuel Leutze\", \"confidence\": 1}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "artwork_id",
+  "caseId": "544442",
+  "ok": true,
+  "ms": 1049,
+  "inTok": 1133,
+  "outTok": 24,
+  "out": "{\"title\": \"Sphinx of Hatshepsut\", \"artist\": \"Unknown\", \"confidence\": 1}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "artwork_id",
+  "caseId": "436121",
+  "ok": true,
+  "ms": 1000,
+  "inTok": 1140,
+  "outTok": 44,
+  "out": "{\n  \"title\": \"A Woman Seated beside a Vase of Flowers (Madame Paul Valpinçon?)\",\n  \"artist\": \"Edgar Degas\",\n  \"confidence\": 1\n}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "artwork_id",
+  "caseId": "437853",
+  "ok": true,
+  "ms": 1058,
+  "inTok": 1133,
+  "outTok": 32,
+  "out": "{\"title\": \"Venice, from the Porch of Madonna della Salute\", \"artist\": \"Joseph Mallord William Turner\", \"confidence\": 1}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "artwork_id",
+  "caseId": "435882",
+  "ok": true,
+  "ms": 1045,
+  "inTok": 1133,
+  "outTok": 30,
+  "out": "{\"title\": \"Still Life with Apples and a Pot of Primroses\", \"artist\": \"Paul Cézanne\", \"confidence\": 1}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "artwork_id",
+  "caseId": "24423",
+  "ok": false,
+  "ms": 885,
+  "inTok": 1140,
+  "outTok": 24,
+  "out": "{\"title\": \"Wand\", \"artist\": \"Mughal artist\", \"confidence\": 0.9}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "artwork_id",
+  "caseId": "22393",
+  "ok": true,
+  "ms": 1431,
+  "inTok": 1162,
+  "outTok": 24,
+  "out": "{\"title\": \"Priming Flask\", \"artist\": \"Friedrich Hillebrand\", \"confidence\": 1}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "artwork_id",
+  "caseId": "74832",
+  "ok": false,
+  "ms": 925,
+  "inTok": 1133,
+  "outTok": 26,
+  "out": "{\"title\": \"Seated Buddha Shakyamuni\", \"artist\": \"Unknown\", \"confidence\": 0.95}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "artwork_id",
+  "caseId": "40681",
+  "ok": true,
+  "ms": 862,
+  "inTok": 1133,
+  "outTok": 25,
+  "out": "{\"title\": \"Bowl with flowers of the four seasons\", \"artist\": null, \"confidence\": 0.9}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "artwork_id",
+  "caseId": "250684",
+  "ok": true,
+  "ms": 981,
+  "inTok": 1148,
+  "outTok": 25,
+  "out": "{\"title\": \"Bronze statuette of a Lar\", \"artist\": null, \"confidence\": 0.95}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "artwork_id",
+  "caseId": "252406",
+  "ok": false,
+  "ms": 1088,
+  "inTok": 1152,
+  "outTok": 22,
+  "out": "{\"title\": \"Dagger blade\", \"artist\": \"null\", \"confidence\": 0.9}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "artwork_id",
+  "caseId": "473295",
+  "ok": false,
+  "ms": 869,
+  "inTok": 1148,
+  "outTok": 21,
+  "out": "{\"title\": \"Terret\", \"artist\": \"Celtic\", \"confidence\": 0.9}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "artwork_id",
+  "caseId": "466296",
+  "ok": false,
+  "ms": 997,
+  "inTok": 1170,
+  "outTok": 27,
+  "out": "{\"title\": \"Cylindrical Box\", \"artist\": \"probably by Ajami\", \"confidence\": 0.95}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "artwork_id",
+  "caseId": "325329",
+  "ok": true,
+  "ms": 1869,
+  "inTok": 1133,
+  "outTok": 21,
+  "out": "{\"title\": \"Glass beads\", \"artist\": \"Roman\", \"confidence\": 0.9}"
+ },
+ {
+  "model": "gemini-3-flash-preview",
+  "task": "artwork_id",
+  "caseId": "324145",
+  "ok": true,
+  "ms": 1253,
+  "inTok": 1162,
+  "outTok": 26,
+  "out": "{\"title\": \"Eye idol\", \"artist\": \"Ancient Near Eastern (Syrian)\", \"confidence\": 1.0}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "interpret",
+  "caseId": "gold swords",
+  "ok": true,
+  "ms": 1019,
+  "inTok": 79,
+  "outTok": 51,
+  "out": "{\n  \"keywords\": [\n    \"sword\"\n  ],\n  \"artist\": null,\n  \"classification\": \"swords\",\n  \"material\": \"gold\",\n  \"culture_or_period\": null\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "interpret",
+  "caseId": "monet",
+  "ok": true,
+  "ms": 804,
+  "inTok": 78,
+  "outTok": 51,
+  "out": "{\n  \"keywords\": [\n    \"monet\"\n  ],\n  \"artist\": \"Claude Monet\",\n  \"classification\": null,\n  \"material\": null,\n  \"culture_or_period\": null\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "interpret",
+  "caseId": "that huge painting of washington crossing a river in a boat",
+  "ok": true,
+  "ms": 950,
+  "inTok": 88,
+  "outTok": 74,
+  "out": "{\n  \"keywords\": [\n    \"Washington\",\n    \"crossing\",\n    \"river\",\n    \"boat\"\n  ],\n  \"artist\": \"Emanuel Leutze\",\n  \"classification\": \"Painting\",\n  \"material\": \"oil on canvas\",\n  \"culture_or_period\": \"American\"\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "interpret",
+  "caseId": "blue ming vases",
+  "ok": true,
+  "ms": 587,
+  "inTok": 80,
+  "outTok": 52,
+  "out": "{\n  \"keywords\": [\n    \"vase\"\n  ],\n  \"artist\": null,\n  \"classification\": \"Vases\",\n  \"material\": null,\n  \"culture_or_period\": \"Ming\"\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "interpret",
+  "caseId": "ancient egyptian cat statues",
+  "ok": true,
+  "ms": 568,
+  "inTok": 81,
+  "outTok": 59,
+  "out": "{\n  \"keywords\": [\n    \"cat\",\n    \"statue\"\n  ],\n  \"artist\": null,\n  \"classification\": \"sculpture\",\n  \"material\": null,\n  \"culture_or_period\": \"Egyptian\"\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "interpret",
+  "caseId": "armor for horses",
+  "ok": true,
+  "ms": 551,
+  "inTok": 80,
+  "outTok": 54,
+  "out": "{\n  \"keywords\": [\n    \"horse\",\n    \"armor\"\n  ],\n  \"artist\": null,\n  \"classification\": \"Armor\",\n  \"material\": null,\n  \"culture_or_period\": null\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "interpret",
+  "caseId": "tiffany stained glass",
+  "ok": true,
+  "ms": 599,
+  "inTok": 81,
+  "outTok": 52,
+  "out": "{\n  \"keywords\": [\"tiffany\", \"stained glass\"],\n  \"artist\": \"Louis Comfort Tiffany\",\n  \"classification\": \"Glass\",\n  \"material\": \"glass\",\n  \"culture_or_period\": null\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "interpret",
+  "caseId": "paintings of the sea by dutch artists",
+  "ok": true,
+  "ms": 563,
+  "inTok": 84,
+  "outTok": 62,
+  "out": "{\n  \"keywords\": [\n    \"sea\",\n    \"ocean\",\n    \"marine\"\n  ],\n  \"artist\": null,\n  \"classification\": \"Paintings\",\n  \"material\": null,\n  \"culture_or_period\": \"Dutch\"\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "interpret",
+  "caseId": "sphinx",
+  "ok": true,
+  "ms": 566,
+  "inTok": 78,
+  "outTok": 42,
+  "out": "{\n  \"keywords\": [\"sphinx\"],\n  \"artist\": null,\n  \"classification\": null,\n  \"material\": null,\n  \"culture_or_period\": null\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "interpret",
+  "caseId": "impressionist gardens",
+  "ok": true,
+  "ms": 551,
+  "inTok": 80,
+  "outTok": 46,
+  "out": "{\n  \"keywords\": [\"garden\"],\n  \"artist\": null,\n  \"classification\": null,\n  \"material\": null,\n  \"culture_or_period\": \"Impressionist\"\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "label_ocr",
+  "caseId": "11417",
+  "ok": true,
+  "ms": 995,
+  "inTok": 1138,
+  "outTok": 52,
+  "out": "{\n  \"title\": \"Washington Crossing the Delaware\",\n  \"artist\": \"Emanuel Leutze\",\n  \"date\": \"1851\",\n  \"accession_number\": \"97.34\"\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "label_ocr",
+  "caseId": "24423",
+  "ok": true,
+  "ms": 1197,
+  "inTok": 1155,
+  "outTok": 52,
+  "out": "{\n  \"title\": \"Ceremonial Mace\",\n  \"artist\": null,\n  \"date\": \"18th century\",\n  \"accession_number\": \"36.25.1884\"\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "label_ocr",
+  "caseId": "250684",
+  "ok": true,
+  "ms": 1346,
+  "inTok": 1138,
+  "outTok": 59,
+  "out": "{\n  \"title\": \"Bronze statuette of a Lar\",\n  \"artist\": null,\n  \"date\": \"ca. 1st–2nd century CE\",\n  \"accession_number\": \"18.145.19\"\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "label_ocr",
+  "caseId": "325329",
+  "ok": true,
+  "ms": 1445,
+  "inTok": 1138,
+  "outTok": 53,
+  "out": "{\n  \"title\": \"Beads\",\n  \"artist\": null,\n  \"date\": \"ca. 9th century BCE\",\n  \"accession_number\": \"61.100.154\"\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "label_ocr",
+  "caseId": "40681",
+  "ok": true,
+  "ms": 1178,
+  "inTok": 1129,
+  "outTok": 48,
+  "out": "{\n  \"title\": \"Bowl with auspicious symbols\",\n  \"artist\": null,\n  \"date\": null,\n  \"accession_number\": \"29.110.18\"\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "label_ocr",
+  "caseId": "436535",
+  "ok": true,
+  "ms": 1272,
+  "inTok": 1138,
+  "outTok": 55,
+  "out": "{\n  \"title\": \"Wheat Field with Cypresses\",\n  \"artist\": \"Vincent van Gogh\",\n  \"date\": \"1889\",\n  \"accession_number\": \"1993.132\"\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "label_ocr",
+  "caseId": "544442",
+  "ok": true,
+  "ms": 1158,
+  "inTok": 1138,
+  "outTok": 53,
+  "out": "{\"title\": \"Sphinx of Hatshepsut\", \"artist\": null, \"date\": \"ca. 1479-1458 B.C.\", \"accession_number\": \"31.3.166\"}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "label_ocr",
+  "caseId": "74832",
+  "ok": true,
+  "ms": 1149,
+  "inTok": 1155,
+  "outTok": 52,
+  "out": "{\n  \"title\": \"Buddha Expounding the Dharma\",\n  \"artist\": null,\n  \"date\": \"late 8th century\",\n  \"accession_number\": \"2009.60\"\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "artwork_id",
+  "caseId": "436535",
+  "ok": true,
+  "ms": 1260,
+  "inTok": 1170,
+  "outTok": 32,
+  "out": "{\n  \"title\": \"Wheat Field with Cypresses\",\n  \"artist\": \"Vincent van Gogh\",\n  \"confidence\": 1\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "artwork_id",
+  "caseId": "11417",
+  "ok": true,
+  "ms": 862,
+  "inTok": 1152,
+  "outTok": 25,
+  "out": "{\"title\": \"Washington Crossing the Delaware\", \"artist\": \"Emanuel Leutze\", \"confidence\": 1}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "artwork_id",
+  "caseId": "544442",
+  "ok": true,
+  "ms": 931,
+  "inTok": 1133,
+  "outTok": 27,
+  "out": "{\"title\": \"Sphinx of Hatshepsut\", \"artist\": \"unknown\", \"confidence\": 0.95}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "artwork_id",
+  "caseId": "436121",
+  "ok": false,
+  "ms": 848,
+  "inTok": 1140,
+  "outTok": 26,
+  "out": "{\"title\": \"Chrysanthemums\", \"artist\": \"Edgar Degas\", \"confidence\": 0.95}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "artwork_id",
+  "caseId": "437853",
+  "ok": true,
+  "ms": 940,
+  "inTok": 1133,
+  "outTok": 36,
+  "out": "{\"title\": \"Venice, from the Porch of Madonna della Salute\", \"artist\": \"J.M.W. Turner\", \"confidence\": 1.0}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "artwork_id",
+  "caseId": "435882",
+  "ok": true,
+  "ms": 1085,
+  "inTok": 1133,
+  "outTok": 32,
+  "out": "{\"title\": \"Still Life with Apples and a Pot of Primroses\", \"artist\": \"Paul Cézanne\", \"confidence\": 1.0}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "artwork_id",
+  "caseId": "24423",
+  "ok": false,
+  "ms": 876,
+  "inTok": 1140,
+  "outTok": 21,
+  "out": "{\"title\": \"Staff finial\", \"artist\": null, \"confidence\": 0.9}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "artwork_id",
+  "caseId": "22393",
+  "ok": true,
+  "ms": 931,
+  "inTok": 1162,
+  "outTok": 31,
+  "out": "{\n  \"title\": \"Powder flask\",\n  \"artist\": \"unknown\",\n  \"confidence\": 0.95\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "artwork_id",
+  "caseId": "74832",
+  "ok": false,
+  "ms": 962,
+  "inTok": 1133,
+  "outTok": 30,
+  "out": "{\n  \"title\": \"Seated Buddha\",\n  \"artist\": null,\n  \"confidence\": 0.95\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "artwork_id",
+  "caseId": "40681",
+  "ok": true,
+  "ms": 1197,
+  "inTok": 1133,
+  "outTok": 31,
+  "out": "{\n  \"title\": \"Bowl with floral scrolls\",\n  \"artist\": null,\n  \"confidence\": 0.95\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "artwork_id",
+  "caseId": "250684",
+  "ok": true,
+  "ms": 889,
+  "inTok": 1148,
+  "outTok": 26,
+  "out": "{\"title\": \"Bronze statuette of a Lar\", \"artist\": \"Roman\", \"confidence\": 0.95}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "artwork_id",
+  "caseId": "252406",
+  "ok": false,
+  "ms": 967,
+  "inTok": 1152,
+  "outTok": 23,
+  "out": "{\"title\": \"Bronze blade of a sword\", \"artist\": null, \"confidence\": 0.9}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "artwork_id",
+  "caseId": "473295",
+  "ok": false,
+  "ms": 966,
+  "inTok": 1148,
+  "outTok": 23,
+  "out": "{\"title\": \"Openwork strap junction\", \"artist\": null, \"confidence\": 0.95}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "artwork_id",
+  "caseId": "466296",
+  "ok": false,
+  "ms": 903,
+  "inTok": 1170,
+  "outTok": 30,
+  "out": "{\"title\": \"Openwork ornament (sarpech) with geometric patterns\", \"artist\": null, \"confidence\": 0.95}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "artwork_id",
+  "caseId": "325329",
+  "ok": true,
+  "ms": 936,
+  "inTok": 1133,
+  "outTok": 33,
+  "out": "{\n  \"title\": \"Group of Nine Glass Beads\",\n  \"artist\": \"Unknown\",\n  \"confidence\": 0.95\n}"
+ },
+ {
+  "model": "gemini-3.1-flash-lite",
+  "task": "artwork_id",
+  "caseId": "324145",
+  "ok": true,
+  "ms": 848,
+  "inTok": 1162,
+  "outTok": 29,
+  "out": "{\n  \"title\": \"Eye Idol\",\n  \"artist\": null,\n  \"confidence\": 0.95\n}"
+ }
+]

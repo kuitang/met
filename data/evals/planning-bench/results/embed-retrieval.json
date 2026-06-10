@@ -1,0 +1,130 @@
+[
+ {
+  "id": 436535,
+  "title": "Wheat Field with Cypresses",
+  "famous": true,
+  "rank": 1,
+  "best": "Wheat Field with Cypresses",
+  "sim": 0.887
+ },
+ {
+  "id": 11417,
+  "title": "Washington Crossing the Delaware",
+  "famous": true,
+  "rank": 1,
+  "best": "Washington Crossing the Delaware",
+  "sim": 0.89
+ },
+ {
+  "id": 544442,
+  "title": "Sphinx of Hatshepsut",
+  "famous": true,
+  "rank": 1,
+  "best": "Sphinx of Hatshepsut",
+  "sim": 0.906
+ },
+ {
+  "id": 436121,
+  "title": "A Woman Seated beside a Vase of Flowers (Madame Pa",
+  "famous": true,
+  "rank": 1,
+  "best": "A Woman Seated beside a Vase of Flowers ",
+  "sim": 0.907
+ },
+ {
+  "id": 437853,
+  "title": "Venice, from the Porch of Madonna della Salute",
+  "famous": false,
+  "rank": 1,
+  "best": "Venice, from the Porch of Madonna della ",
+  "sim": 0.887
+ },
+ {
+  "id": 435882,
+  "title": "Still Life with Apples and a Pot of Primroses",
+  "famous": true,
+  "rank": 1,
+  "best": "Still Life with Apples and a Pot of Prim",
+  "sim": 0.907
+ },
+ {
+  "id": 24423,
+  "title": "Ceremonial Mace",
+  "famous": false,
+  "rank": 1,
+  "best": "Ceremonial Mace",
+  "sim": 0.93
+ },
+ {
+  "id": 22393,
+  "title": "Powder Flask",
+  "famous": false,
+  "rank": 1,
+  "best": "Powder Flask",
+  "sim": 0.93
+ },
+ {
+  "id": 74832,
+  "title": "Buddha Expounding the Dharma",
+  "famous": true,
+  "rank": 1,
+  "best": "Buddha Expounding the Dharma",
+  "sim": 0.902
+ },
+ {
+  "id": 40681,
+  "title": "Bowl with auspicious symbols",
+  "famous": false,
+  "rank": 1,
+  "best": "Bowl with auspicious symbols",
+  "sim": 0.92
+ },
+ {
+  "id": 250684,
+  "title": "Bronze statuette of a Lar",
+  "famous": false,
+  "rank": 1,
+  "best": "Bronze statuette of a Lar",
+  "sim": 0.925
+ },
+ {
+  "id": 252406,
+  "title": "Bronze spatulate knife",
+  "famous": false,
+  "rank": 1,
+  "best": "Bronze spatulate knife",
+  "sim": 0.903
+ },
+ {
+  "id": 473295,
+  "title": "Attachment for a Strap",
+  "famous": false,
+  "rank": 1,
+  "best": "Attachment for a Strap",
+  "sim": 0.908
+ },
+ {
+  "id": 466296,
+  "title": "Tip of a Pointer",
+  "famous": true,
+  "rank": 1,
+  "best": "Tip of a Pointer",
+  "sim": 0.894
+ },
+ {
+  "id": 325329,
+  "title": "Beads",
+  "famous": false,
+  "rank": 1,
+  "best": "Beads",
+  "sim": 0.915
+ },
+ {
+  "id": 324145,
+  "title": "Eye idol",
+  "famous": false,
+  "rank": 1,
+  "best": "Eye idol",
+  "sim": 0.925
+ }
+]

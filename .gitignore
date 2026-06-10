@@ -4,7 +4,6 @@ node_modules/
 .expo-shared/
 dist/
 web-build/
-expo-env.d.ts
 
 # Native build output
 ios/

@@ -1,0 +1,682 @@
+[
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "gold swords",
+  "ok": true,
+  "ms": 1961,
+  "inTok": 88,
+  "outTok": 83,
+  "out": "{\"keywords\":[\"sword\"],\"artist\":null,\"classification\":\"weapons\",\"material\":\"gold\",\"culture_or_period\":null}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "monet",
+  "ok": true,
+  "ms": 926,
+  "inTok": 87,
+  "outTok": 44,
+  "out": "{\"keywords\":[\"monet\"],\"artist\":\"Monet\",\"classification\":null,\"material\":null,\"culture_or_period\":null}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "that huge painting of washington crossing a river in a boat",
+  "ok": true,
+  "ms": 1548,
+  "inTok": 97,
+  "outTok": 125,
+  "out": "{\"keywords\":[\"Washington\",\"Delaware\",\"boat\",\"river\"],\"artist\":null,\"classification\":\"Paintings\",\"material\":null,\"culture_or_period\":\"American\"}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "blue ming vases",
+  "ok": true,
+  "ms": 2163,
+  "inTok": 90,
+  "outTok": 84,
+  "out": "{\"keywords\":[\"blue\",\"vase\"],\"artist\":null,\"classification\":\"Vases\",\"material\":\"porcelain\",\"culture_or_period\":\"Ming dynasty\"}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "ancient egyptian cat statues",
+  "ok": true,
+  "ms": 1160,
+  "inTok": 91,
+  "outTok": 81,
+  "out": "{\"keywords\":[\"cat\",\"statue\"],\"artist\":null,\"classification\":\"Sculpture\",\"material\":null,\"culture_or_period\":\"Ancient Egyptian\"}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "armor for horses",
+  "ok": true,
+  "ms": 1279,
+  "inTok": 89,
+  "outTok": 55,
+  "out": "{\"keywords\":[\"armor\",\"horse\"],\"artist\":null,\"classification\":\"Armor\",\"material\":null,\"culture_or_period\":null}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "tiffany stained glass",
+  "ok": true,
+  "ms": 2845,
+  "inTok": 90,
+  "outTok": 180,
+  "out": "{\"keywords\":[\"glass\",\"Tiffany\"],\"artist\":\"Louis Comfort Tiffany\",\"classification\":\"Glass\",\"material\":\"stained glass\",\"culture_or_period\":null}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "paintings of the sea by dutch artists",
+  "ok": true,
+  "ms": 1262,
+  "inTok": 94,
+  "outTok": 91,
+  "out": "{\"keywords\":[\"sea\",\"painting\"],\"artist\":null,\"classification\":\"Paintings\",\"material\":null,\"culture_or_period\":\"Dutch\"}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "sphinx",
+  "ok": true,
+  "ms": 1082,
+  "inTok": 88,
+  "outTok": 61,
+  "out": "{\"keywords\":[\"sphinx\"],\"artist\":null,\"classification\":null,\"material\":null,\"culture_or_period\":null}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "interpret",
+  "caseId": "impressionist gardens",
+  "ok": true,
+  "ms": 1685,
+  "inTok": 89,
+  "outTok": 85,
+  "out": "{\"keywords\":[\"garden\"],\"artist\":null,\"classification\":null,\"material\":null,\"culture_or_period\":\"Impressionism\"}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "label_ocr",
+  "caseId": "11417",
+  "ok": true,
+  "ms": 4067,
+  "inTok": 957,
+  "outTok": 82,
+  "out": "{\"title\":\"Washington Crossing the Delaware\",\"artist\":\"Emanuel Leutze\",\"date\":\"1851\",\"accession_number\":\"97.34\"}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "label_ocr",
+  "caseId": "24423",
+  "ok": true,
+  "ms": 1729,
+  "inTok": 999,
+  "outTok": 110,
+  "out": "{\"title\":\"Ceremonial Mace\",\"artist\":null,\"date\":\"18th century\",\"accession_number\":\"36.25.1884\"}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "label_ocr",
+  "caseId": "250684",
+  "ok": true,
+  "ms": 2188,
+  "inTok": 957,
+  "outTok": 99,
+  "out": "{\"title\":\"Bronze statuette of a Lar\",\"artist\":null,\"date\":\"ca. 1st–2nd century CE\",\"accession_number\":\"18.145.19\"}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "label_ocr",
+  "caseId": "325329",
+  "ok": true,
+  "ms": 1125,
+  "inTok": 957,
+  "outTok": 74,
+  "out": "{\"title\":\"Beads\",\"artist\":null,\"date\":\"ca. 9th century BCE\",\"accession_number\":\"61.100.154\"}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "label_ocr",
+  "caseId": "40681",
+  "ok": true,
+  "ms": 2526,
+  "inTok": 999,
+  "outTok": 213,
+  "out": "{\"title\":\"Bowl with auspicious symbols\",\"artist\":null,\"date\":\"1929\",\"accession_number\":\"29.110.18\"}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "label_ocr",
+  "caseId": "436535",
+  "ok": true,
+  "ms": 1607,
+  "inTok": 957,
+  "outTok": 82,
+  "out": "{\"title\":\"Wheat Field with Cypresses\",\"artist\":\"Vincent van Gogh\",\"date\":\"1889\",\"accession_number\":\"1993.132\"}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "label_ocr",
+  "caseId": "544442",
+  "ok": true,
+  "ms": 1469,
+  "inTok": 957,
+  "outTok": 121,
+  "out": "{\"title\":\"Sphinx of Hatshepsut\",\"artist\":null,\"date\":\"ca. 1479–1458 B.C.\",\"accession_number\":\"31.3.166\"}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "label_ocr",
+  "caseId": "74832",
+  "ok": true,
+  "ms": 1868,
+  "inTok": 957,
+  "outTok": 113,
+  "out": "{\"title\":\"Buddha Expounding the Dharma\",\"artist\":null,\"date\":\"late 8th century\",\"accession_number\":\"2009.60\"}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "436535",
+  "ok": true,
+  "ms": 1332,
+  "inTok": 651,
+  "outTok": 89,
+  "out": "{\"title\":\"Wheat Field with Cypresses\",\"artist\":\"Vincent van Gogh\",\"confidence\":0.98}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "11417",
+  "ok": true,
+  "ms": 1340,
+  "inTok": 555,
+  "outTok": 78,
+  "out": "{\"title\":\"Washington Crossing the Delaware\",\"artist\":\"Emanuel Leutze\",\"confidence\":0.99}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "544442",
+  "ok": true,
+  "ms": 3293,
+  "inTok": 675,
+  "outTok": 293,
+  "out": "{\"title\":\"Sphinx of Hatshepsut\",\"artist\":\"Ancient Egyptian\",\"confidence\":0.56}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "436121",
+  "ok": false,
+  "ms": 5277,
+  "inTok": 761,
+  "outTok": 584,
+  "out": "{\"title\":null,\"artist\":null,\"confidence\":0.13}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "437853",
+  "ok": false,
+  "ms": 2976,
+  "inTok": 675,
+  "outTok": 236,
+  "out": "{\"title\":\"The Grand Canal, Venice\",\"artist\":\"J. M. W. Turner\",\"confidence\":0.76}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "435882",
+  "ok": true,
+  "ms": 1974,
+  "inTok": 622,
+  "outTok": 147,
+  "out": "{\"title\":\"Still Life with Apples and a Pot of Primroses\",\"artist\":\"Paul Cézanne\",\"confidence\":0.89}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "24423",
+  "ok": false,
+  "ms": 5029,
+  "inTok": 761,
+  "outTok": 429,
+  "out": "{\"title\":null,\"artist\":null,\"confidence\":0.09}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "22393",
+  "ok": false,
+  "ms": 4760,
+  "inTok": 699,
+  "outTok": 389,
+  "out": "{\"title\":\"Dagger and scabbard\",\"artist\":null,\"confidence\":0.34}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "74832",
+  "ok": false,
+  "ms": 2798,
+  "inTok": 755,
+  "outTok": 180,
+  "out": "{\"title\":\"Buddha Shakyamuni\",\"artist\":null,\"confidence\":0.44}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "40681",
+  "ok": true,
+  "ms": 2420,
+  "inTok": 675,
+  "outTok": 218,
+  "out": "{\"title\":\"Bowl\",\"artist\":null,\"confidence\":0.63}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "250684",
+  "ok": false,
+  "ms": 3300,
+  "inTok": 855,
+  "outTok": 280,
+  "out": "{\"title\":\"Statuette of a Young Man\",\"artist\":null,\"confidence\":0.23}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "252406",
+  "ok": false,
+  "ms": 4887,
+  "inTok": 645,
+  "outTok": 442,
+  "out": "{\"title\":\"Axe\",\"artist\":null,\"confidence\":0.18}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "473295",
+  "ok": false,
+  "ms": 2431,
+  "inTok": 825,
+  "outTok": 142,
+  "out": "{\"title\":\"Buckle\",\"artist\":\"Unknown\",\"confidence\":0.41}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "466296",
+  "ok": false,
+  "ms": 2846,
+  "inTok": 675,
+  "outTok": 192,
+  "out": "{\"title\":null,\"artist\":null,\"confidence\":0.19}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "325329",
+  "ok": true,
+  "ms": 2311,
+  "inTok": 675,
+  "outTok": 164,
+  "out": "{\"title\":\"Beads\",\"artist\":null,\"confidence\":0.27}"
+ },
+ {
+  "model": "gpt-5.4-mini",
+  "task": "artwork_id",
+  "caseId": "324145",
+  "ok": false,
+  "ms": 2054,
+  "inTok": 699,
+  "outTok": 163,
+  "out": "{\"title\":\"Owl-shaped figurine\",\"artist\":null,\"confidence\":0.27}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "gold swords",
+  "ok": true,
+  "ms": 1475,
+  "inTok": 88,
+  "outTok": 34,
+  "out": "{\"keywords\":[\"gold\",\"sword\"],\"artist\":null,\"classification\":null,\"material\":\"gold\",\"culture_or_period\":null}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "monet",
+  "ok": true,
+  "ms": 1069,
+  "inTok": 87,
+  "outTok": 33,
+  "out": "{\"keywords\":[\"Monet\"],\"artist\":\"Claude Monet\",\"classification\":null,\"material\":null,\"culture_or_period\":null}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "that huge painting of washington crossing a river in a boat",
+  "ok": true,
+  "ms": 1248,
+  "inTok": 97,
+  "outTok": 40,
+  "out": "{\"keywords\":[\"Washington\",\"crossing\",\"river\",\"boat\",\"painting\"],\"artist\":null,\"classification\":null,\"material\":null,\"culture_or_period\":null}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "blue ming vases",
+  "ok": true,
+  "ms": 1925,
+  "inTok": 90,
+  "outTok": 109,
+  "out": "{\"keywords\":[\"blue\",\"vase\",\"Ming\"],\"artist\":null,\"classification\":\"vase\",\"material\":null,\"culture_or_period\":\"Ming dynasty\"}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "ancient egyptian cat statues",
+  "ok": true,
+  "ms": 1713,
+  "inTok": 91,
+  "outTok": 48,
+  "out": "{\"keywords\":[\"ancient\",\"egyptian\",\"cat\",\"statue\",\"cat statue\"],\"artist\":null,\"classification\":\"sculpture\",\"material\":null,\"culture_or_period\":\"Ancient Egypt\"}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "armor for horses",
+  "ok": true,
+  "ms": 896,
+  "inTok": 89,
+  "outTok": 33,
+  "out": "{\"keywords\":[\"horse\",\"armor\"],\"artist\":null,\"classification\":\"armor\",\"material\":null,\"culture_or_period\":null}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "tiffany stained glass",
+  "ok": true,
+  "ms": 1207,
+  "inTok": 90,
+  "outTok": 39,
+  "out": "{\"keywords\":[\"tiffany\",\"stained glass\"],\"artist\":null,\"classification\":\"stained glass\",\"material\":\"glass\",\"culture_or_period\":\"Art Nouveau\"}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "paintings of the sea by dutch artists",
+  "ok": true,
+  "ms": 932,
+  "inTok": 94,
+  "outTok": 40,
+  "out": "{\"keywords\":[\"painting\",\"sea\",\"seascape\",\"ocean\"],\"artist\":null,\"classification\":\"painting\",\"material\":null,\"culture_or_period\":\"Dutch\"}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "sphinx",
+  "ok": true,
+  "ms": 1048,
+  "inTok": 88,
+  "outTok": 32,
+  "out": "{\"keywords\":[\"sphinx\"],\"artist\":null,\"classification\":null,\"material\":null,\"culture_or_period\":null}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "interpret",
+  "caseId": "impressionist gardens",
+  "ok": true,
+  "ms": 1303,
+  "inTok": 89,
+  "outTok": 37,
+  "out": "{\"keywords\":[\"impressionist\",\"garden\"],\"artist\":null,\"classification\":\"painting\",\"material\":null,\"culture_or_period\":\"Impressionism\"}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "label_ocr",
+  "caseId": "11417",
+  "ok": true,
+  "ms": 1551,
+  "inTok": 957,
+  "outTok": 69,
+  "out": "{\"title\":\"Washington Crossing the Delaware\",\"artist\":\"Emanuel Leutze\",\"date\":\"1851\",\"accession_number\":\"97.34\"}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "label_ocr",
+  "caseId": "24423",
+  "ok": true,
+  "ms": 2106,
+  "inTok": 999,
+  "outTok": 155,
+  "out": "{\"title\":\"Ceremonial Mace\",\"artist\":null,\"date\":\"18th century\",\"accession_number\":\"36.25.1884\"}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "label_ocr",
+  "caseId": "250684",
+  "ok": true,
+  "ms": 1227,
+  "inTok": 957,
+  "outTok": 46,
+  "out": "{\"title\":\"Bronze Statuette of a Lar\",\"artist\":null,\"date\":\"ca. 1st–2nd century CE\",\"accession_number\":\"18.145.19\"}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "label_ocr",
+  "caseId": "325329",
+  "ok": true,
+  "ms": 1283,
+  "inTok": 957,
+  "outTok": 78,
+  "out": "{\"title\":\"Beads\",\"artist\":null,\"date\":\"ca. 9th century BCE\",\"accession_number\":\"61.100.154\"}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "label_ocr",
+  "caseId": "40681",
+  "ok": true,
+  "ms": 1745,
+  "inTok": 999,
+  "outTok": 101,
+  "out": "{\"title\":\"Bowl with auspicious symbols\",\"artist\":null,\"date\":\"1929\",\"accession_number\":\"29.110.18\"}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "label_ocr",
+  "caseId": "436535",
+  "ok": true,
+  "ms": 1304,
+  "inTok": 957,
+  "outTok": 38,
+  "out": "{\"title\":\"Wheat Field with Cypresses\",\"artist\":\"Vincent van Gogh\",\"date\":\"1889\",\"accession_number\":\"1993.132\"}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "label_ocr",
+  "caseId": "544442",
+  "ok": true,
+  "ms": 2481,
+  "inTok": 957,
+  "outTok": 229,
+  "out": "{\"title\":\"Sphinx of Hatshepsut\",\"artist\":null,\"date\":\"ca. 1479–1458 B.C.\",\"accession_number\":\"31.3.166\"}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "label_ocr",
+  "caseId": "74832",
+  "ok": true,
+  "ms": 1785,
+  "inTok": 957,
+  "outTok": 82,
+  "out": "{\"title\":\"Sudhana Expounding the Dharma\",\"artist\":null,\"date\":\"late 8th century\",\"accession_number\":\"2009.60\"}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "436535",
+  "ok": true,
+  "ms": 1645,
+  "inTok": 651,
+  "outTok": 112,
+  "out": "{\"title\":\"Wheatfield with Cypresses\",\"artist\":\"Vincent van Gogh\",\"confidence\":0.86}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "11417",
+  "ok": true,
+  "ms": 1313,
+  "inTok": 555,
+  "outTok": 73,
+  "out": "{\"title\":\"Washington Crossing the Delaware\",\"artist\":\"Emanuel Gottlieb Leutze\",\"confidence\":0.86}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "544442",
+  "ok": true,
+  "ms": 2237,
+  "inTok": 675,
+  "outTok": 157,
+  "out": "{\"title\":\"Sphinx\",\"artist\":null,\"confidence\":0.22}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "436121",
+  "ok": false,
+  "ms": 3421,
+  "inTok": 761,
+  "outTok": 338,
+  "out": "{\"title\":null,\"artist\":null,\"confidence\":0.1}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "437853",
+  "ok": false,
+  "ms": 2752,
+  "inTok": 675,
+  "outTok": 245,
+  "out": "{\"title\":\"The Grand Canal at Venice\",\"artist\":\"Canaletto (Giovanni Antonio Canal)\",\"confidence\":0.28}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "435882",
+  "ok": false,
+  "ms": 2409,
+  "inTok": 622,
+  "outTok": 220,
+  "out": "{\"title\":null,\"artist\":null,\"confidence\":0.12}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "24423",
+  "ok": false,
+  "ms": 1493,
+  "inTok": 761,
+  "outTok": 93,
+  "out": "{\"title\":null,\"artist\":null,\"confidence\":0.05}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "22393",
+  "ok": false,
+  "ms": 1268,
+  "inTok": 699,
+  "outTok": 108,
+  "out": "{\"title\":null,\"artist\":null,\"confidence\":0.05}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "74832",
+  "ok": false,
+  "ms": 1838,
+  "inTok": 755,
+  "outTok": 148,
+  "out": "{\"title\":null,\"artist\":null,\"confidence\":0.15}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "40681",
+  "ok": false,
+  "ms": 1742,
+  "inTok": 675,
+  "outTok": 133,
+  "out": "{\"title\":null,\"artist\":null,\"confidence\":0.05}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "250684",
+  "ok": false,
+  "ms": 1365,
+  "inTok": 855,
+  "outTok": 113,
+  "out": "{\"title\":null,\"artist\":null,\"confidence\":0.12}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "252406",
+  "ok": false,
+  "ms": 1517,
+  "inTok": 645,
+  "outTok": 83,
+  "out": "{\"title\":null,\"artist\":null,\"confidence\":0.12}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "473295",
+  "ok": false,
+  "ms": 1993,
+  "inTok": 825,
+  "outTok": 155,
+  "out": "{\"title\":null,\"artist\":null,\"confidence\":0.12}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "466296",
+  "ok": false,
+  "ms": 2133,
+  "inTok": 675,
+  "outTok": 213,
+  "out": "{\"title\":null,\"artist\":null,\"confidence\":0.08}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "325329",
+  "ok": false,
+  "ms": 1257,
+  "inTok": 675,
+  "outTok": 69,
+  "out": "{\"title\":null,\"artist\":null,\"confidence\":0.02}"
+ },
+ {
+  "model": "gpt-5.4-nano",
+  "task": "artwork_id",
+  "caseId": "324145",
+  "ok": false,
+  "ms": 2085,
+  "inTok": 699,
+  "outTok": 171,
+  "out": "{\"title\":null,\"artist\":null,\"confidence\":0.05}"
+ }
+]

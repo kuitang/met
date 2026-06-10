@@ -1,0 +1,22 @@
+{
+  "name": "met-navigator",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "workspaces": [
+    "apps/*",
+    "server",
+    "shared",
+    "data",
+    "e2e"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "web": "npm -w apps/mobile run web",
+    "export:web": "npm -w apps/mobile run export:web",
+    "server": "npm -w server run dev",
+    "e2e": "npm -w e2e run test",
+    "evals": "npm -w data run evals"
+  }
+}

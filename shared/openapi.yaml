@@ -1,0 +1,345 @@
+openapi: 3.1.0
+info:
+  title: Met Navigator API
+  version: 1.0.0
+  description: >
+    The entire dynamic API for Met Navigator. Everything else (autocomplete,
+    FTS search, routing, map, positioning fusion) runs client-local against the
+    downloaded met.sqlite artifact. All LLM use is encapsulated server-side
+    behind these routes.
+  license:
+    name: AGPL-3.0-only
+    url: https://www.gnu.org/licenses/agpl-3.0.html
+
+paths:
+  /api/v1/data/version:
+    get:
+      operationId: getDataVersion
+      summary: Current met.sqlite artifact version
+      responses:
+        "200":
+          description: Artifact version metadata
+          headers:
+            x-data-version:
+              $ref: "#/components/headers/XDataVersion"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DataVersion"
+        default:
+          $ref: "#/components/responses/Error"
+
+  /api/v1/data/met.sqlite:
+    get:
+      operationId: getDatabase
+      summary: Download the met.sqlite artifact
+      description: >
+        Versioned binary download. ETag equals dataVersion; clients send
+        If-None-Match and re-download only on version change.
+      parameters:
+        - name: If-None-Match
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The SQLite database file
+          headers:
+            ETag:
+              description: Equals the current dataVersion
+              schema:
+                type: string
+            x-data-version:
+              $ref: "#/components/headers/XDataVersion"
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                contentMediaType: application/octet-stream
+        "304":
+          description: Client copy is current (If-None-Match matched)
+          headers:
+            x-data-version:
+              $ref: "#/components/headers/XDataVersion"
+        default:
+          $ref: "#/components/responses/Error"
+
+  /api/v1/search/interpret:
+    post:
+      operationId: interpretSearch
+      summary: LLM query interpretation, executed and ranked server-side
+      description: >
+        One client round trip. The server rewrites the natural-language query
+        to an FTS query (escalating to a bounded agentic loop when the rewrite
+        yields <3 rows), executes it against its met.sqlite, and returns final
+        ranked results.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InterpretRequest"
+      responses:
+        "200":
+          description: Final ranked results
+          headers:
+            x-data-version:
+              $ref: "#/components/headers/XDataVersion"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InterpretResponse"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        default:
+          $ref: "#/components/responses/Error"
+
+  /api/v1/locate/photo:
+    post:
+      operationId: locatePhoto
+      summary: Locate the user from a photo
+      description: >
+        Two concurrent server-side paths: wall-label OCR (deterministic
+        met.sqlite match when legible) and image-embedding retrieval against
+        the on-view index (top-3 candidates). Clients downscale before upload;
+        decoded image must be ≤4 MB.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LocatePhotoRequest"
+      responses:
+        "200":
+          description: Label match (if a label was legible) and retrieval candidates
+          headers:
+            x-data-version:
+              $ref: "#/components/headers/XDataVersion"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LocatePhotoResponse"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        default:
+          $ref: "#/components/responses/Error"
+
+  /api/v1/health:
+    get:
+      operationId: getHealth
+      summary: Liveness and dependency status
+      responses:
+        "200":
+          description: Server status
+          headers:
+            x-data-version:
+              $ref: "#/components/headers/XDataVersion"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Health"
+        default:
+          $ref: "#/components/responses/Error"
+
+components:
+  headers:
+    XDataVersion:
+      description: >
+        Current met.sqlite dataVersion. Sent on every API response so a stale
+        client knows to re-pull /api/v1/data/met.sqlite.
+      schema:
+        type: string
+
+  responses:
+    Error:
+      description: >
+        Standard error envelope. Codes include invalid_request (400),
+        not_found (404), payload_too_large (413), not_implemented (501),
+        budget_exhausted (503, daily LLM cap tripped), internal (500).
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+    RateLimited:
+      description: Per-IP rate limit exceeded; retry after the indicated delay.
+      headers:
+        Retry-After:
+          description: Seconds to wait before retrying
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorEnvelope"
+
+  schemas:
+    ErrorEnvelope:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            retryAfter:
+              type: integer
+              description: Seconds until retry is sensible (present on 429/503)
+
+    DataVersion:
+      type: object
+      required: [dataVersion, sqliteBytes, builtAt]
+      properties:
+        dataVersion:
+          type: string
+        sqliteBytes:
+          type: integer
+          description: Size of met.sqlite in bytes (0 until first build)
+        builtAt:
+          type: string
+          format: date-time
+
+    Health:
+      type: object
+      required: [ok, dataVersion, llm]
+      properties:
+        ok:
+          type: boolean
+        dataVersion:
+          type: string
+        llm:
+          type: string
+          enum: [up, degraded]
+
+    InterpretRequest:
+      type: object
+      required: [query]
+      properties:
+        query:
+          type: string
+          minLength: 1
+          maxLength: 500
+        maxResults:
+          type: integer
+          minimum: 1
+          maximum: 50
+          default: 10
+
+    InterpretedQuery:
+      type: object
+      required: [ftsQuery, filters]
+      properties:
+        ftsQuery:
+          type: string
+          description: The FTS5 query the server executed
+        filters:
+          type: object
+          properties:
+            artist:
+              type: string
+            classification:
+              type: string
+            material:
+              type: string
+            culture_or_period:
+              type: string
+
+    SearchResult:
+      type: object
+      required: [objectID, title, artist, galleryNumber, floor, site, score]
+      properties:
+        objectID:
+          type: integer
+        title:
+          type: string
+        artist:
+          type: string
+        galleryNumber:
+          type: string
+        floor:
+          type: string
+        site:
+          type: string
+          enum: [fifthAve, cloisters]
+        score:
+          type: number
+
+    InterpretResponse:
+      type: object
+      required: [results, method, interpretedQuery]
+      properties:
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/SearchResult"
+        method:
+          type: string
+          enum: [rewrite, agentic]
+        interpretedQuery:
+          $ref: "#/components/schemas/InterpretedQuery"
+        why:
+          type: string
+          description: One-line explanation (agentic path only)
+
+    LocatePhotoRequest:
+      type: object
+      required: [imageBase64]
+      properties:
+        imageBase64:
+          type: string
+          contentEncoding: base64
+          description: JPEG/PNG bytes, base64-encoded; decoded size ≤4 MB
+          maxLength: 5592416
+
+    LabelMatch:
+      type: object
+      required: [objectID, gallery, floor, accession, confidence]
+      properties:
+        objectID:
+          type: integer
+        gallery:
+          type: string
+        floor:
+          type: string
+        accession:
+          type: string
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+
+    LocateCandidate:
+      type: object
+      required: [objectID, title, artist, gallery, floor, similarity]
+      properties:
+        objectID:
+          type: integer
+        title:
+          type: string
+        artist:
+          type: string
+        gallery:
+          type: string
+        floor:
+          type: string
+        similarity:
+          type: number
+
+    LocatePhotoResponse:
+      type: object
+      required: [candidates]
+      properties:
+        label:
+          oneOf:
+            - $ref: "#/components/schemas/LabelMatch"
+            - type: "null"
+          description: Deterministic wall-label match; null if no label legible
+        candidates:
+          type: array
+          maxItems: 3
+          items:
+            $ref: "#/components/schemas/LocateCandidate"

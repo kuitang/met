@@ -1,0 +1,1606 @@
+{
+ "emb": [
+  {
+   "model": "gemini-embedding-2",
+   "id": 472849,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 911
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 472849,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 1018
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 472849,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 957
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 203914,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 2350
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 544776,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 3722
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 207813,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 2545
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 466334,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 2486
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 238971,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 1134
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 10238,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 762
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 207813,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 1056
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 467679,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 815
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 4623,
+   "rank": 2,
+   "top1": false,
+   "top5": true,
+   "ms": 864
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 206321,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 831
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 39326,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 731
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 466652,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 774
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 466649,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 803
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 198644,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 833
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 464438,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 954
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 4622,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 1403
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 464438,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 564
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 325955,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 809
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 325865,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 781
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 26450,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 855
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 437372,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 824
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 450719,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 854
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 22270,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 761
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 547257,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 722
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 547820,
+   "rank": 9,
+   "top1": false,
+   "top5": false,
+   "ms": 915
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 451802,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 843
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 459046,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 721
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 24696,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 794
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 460138,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 993
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 461330,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 783
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 452670,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 624
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 460135,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 770
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 547257,
+   "rank": 21,
+   "top1": false,
+   "top5": false,
+   "ms": 819
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 436571,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 932
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 23936,
+   "rank": 2,
+   "top1": false,
+   "top5": true,
+   "ms": 575
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 23084,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 876
+  },
+  {
+   "model": "gemini-embedding-2",
+   "id": 451794,
+   "rank": 1,
+   "top1": true,
+   "top5": true,
+   "ms": 1038
+  }
+ ],
+ "llm": [
+  {
+   "model": "gpt-5.4-mini",
+   "id": 472849,
+   "ok": true,
+   "ms": 3063,
+   "cost": 0.0010252500000000001,
+   "got": "Panel with Winged Horse"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 472849,
+   "ok": false,
+   "ms": 3295,
+   "cost": 0.00141675,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 472849,
+   "ok": false,
+   "ms": 4758,
+   "cost": 0.00233925,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 203914,
+   "ok": false,
+   "ms": 3105,
+   "cost": 0.00129975,
+   "got": "Silenus"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 544776,
+   "ok": false,
+   "ms": 5001,
+   "cost": 0.0026317500000000004,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 207813,
+   "ok": true,
+   "ms": 4329,
+   "cost": 0.00219075,
+   "got": "Flora"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 466334,
+   "ok": false,
+   "ms": 5463,
+   "cost": 0.00240225,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 238971,
+   "ok": false,
+   "ms": 4081,
+   "cost": 0.00198825,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 10238,
+   "ok": false,
+   "ms": 2361,
+   "cost": 0.00109275,
+   "got": "Portrait of a Young Man"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 207813,
+   "ok": false,
+   "ms": 4560,
+   "cost": 0.00212325,
+   "got": "Caryatid"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 467679,
+   "ok": true,
+   "ms": 3130,
+   "cost": 0.00152025,
+   "got": "Virgin and Child"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 4623,
+   "ok": false,
+   "ms": 3534,
+   "cost": 0.00161475,
+   "got": "Commode"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 206321,
+   "ok": false,
+   "ms": 2901,
+   "cost": 0.00137175,
+   "got": "Christ Pantocrator"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 39326,
+   "ok": false,
+   "ms": 3191,
+   "cost": 0.00179925,
+   "got": "Shiva, Lord of the Dance (Nataraja)"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 466652,
+   "ok": false,
+   "ms": 3070,
+   "cost": 0.00151575,
+   "got": "Tomb Effigy of a Scholar"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 466649,
+   "ok": false,
+   "ms": 3121,
+   "cost": 0.00151575,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 198644,
+   "ok": false,
+   "ms": 4903,
+   "cost": 0.00257325,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 464438,
+   "ok": false,
+   "ms": 9253,
+   "cost": 0.0027802499999999997,
+   "got": "Bucket (Situla)"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 4622,
+   "ok": false,
+   "ms": 3960,
+   "cost": 0.00202875,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 464438,
+   "ok": false,
+   "ms": 6312,
+   "cost": 0.00321225,
+   "got": "Reliquary"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 325955,
+   "ok": false,
+   "ms": 3040,
+   "cost": 0.00170025,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 325865,
+   "ok": true,
+   "ms": 3482,
+   "cost": 0.00180825,
+   "got": "Ewer"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 26450,
+   "ok": false,
+   "ms": 3531,
+   "cost": 0.00151575,
+   "got": "Helmet"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 437372,
+   "ok": true,
+   "ms": 6292,
+   "cost": 0.0030592500000000003,
+   "got": "Madonna and Child with Saints"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 450719,
+   "ok": false,
+   "ms": 2785,
+   "cost": 0.00089475,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 22270,
+   "ok": false,
+   "ms": 2321,
+   "cost": 0.00098475,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 547257,
+   "ok": false,
+   "ms": 2508,
+   "cost": 0.00121425,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 547820,
+   "ok": false,
+   "ms": 4230,
+   "cost": 0.00219075,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 451802,
+   "ok": false,
+   "ms": 4104,
+   "cost": 0.00204225,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 459046,
+   "ok": true,
+   "ms": 1561,
+   "cost": 0.00076425,
+   "got": "Saints Peter and Paul"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 24696,
+   "ok": true,
+   "ms": 7212,
+   "cost": 0.00369825,
+   "got": "Armor"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 460138,
+   "ok": false,
+   "ms": 1636,
+   "cost": 0.00080025,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 461330,
+   "ok": false,
+   "ms": 3855,
+   "cost": 0.00210525,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 452670,
+   "ok": false,
+   "ms": 2543,
+   "cost": 0.0012052500000000002,
+   "got": "The Prophet Muhammad’s Ascension (Mi'raj)"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 460135,
+   "ok": false,
+   "ms": 3737,
+   "cost": 0.00168225,
+   "got": "Amphora"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 547257,
+   "ok": false,
+   "ms": 2081,
+   "cost": 0.00091275,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 436571,
+   "ok": false,
+   "ms": 3682,
+   "cost": 0.00208275,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 23936,
+   "ok": false,
+   "ms": 2646,
+   "cost": 0.00129075,
+   "got": "Armor (Tosei gusoku)"
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 23084,
+   "ok": false,
+   "ms": 5156,
+   "cost": 0.0026587499999999997,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-mini",
+   "id": 451794,
+   "ok": false,
+   "ms": 2094,
+   "cost": 0.00105675,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 472849,
+   "ok": false,
+   "ms": 2640,
+   "cost": 0.00025975,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 472849,
+   "ok": false,
+   "ms": 1666,
+   "cost": 0.00020725,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 472849,
+   "ok": false,
+   "ms": 2389,
+   "cost": 0.00033975000000000005,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 203914,
+   "ok": false,
+   "ms": 4280,
+   "cost": 0.0004035,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 544776,
+   "ok": false,
+   "ms": 2706,
+   "cost": 0.000246,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 207813,
+   "ok": true,
+   "ms": 3322,
+   "cost": 0.000576,
+   "got": "Flora"
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 466334,
+   "ok": false,
+   "ms": 3706,
+   "cost": 0.000296,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 238971,
+   "ok": false,
+   "ms": 1756,
+   "cost": 0.00021224999999999998,
+   "got": "The Thinker"
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 10238,
+   "ok": false,
+   "ms": 1992,
+   "cost": 0.00028975,
+   "got": "Bust of Augustus"
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 207813,
+   "ok": false,
+   "ms": 3969,
+   "cost": 0.0005035,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 467679,
+   "ok": false,
+   "ms": 2087,
+   "cost": 0.00034475,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 4623,
+   "ok": false,
+   "ms": 1700,
+   "cost": 0.00027100000000000003,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 206321,
+   "ok": false,
+   "ms": 1859,
+   "cost": 0.0002685,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 39326,
+   "ok": false,
+   "ms": 1077,
+   "cost": 0.00011224999999999999,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 466652,
+   "ok": false,
+   "ms": 3629,
+   "cost": 0.00040225,
+   "got": "Cumaean Sibyl (Roman marble statue, after a Greek original)"
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 466649,
+   "ok": false,
+   "ms": 2271,
+   "cost": 0.0003085,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 198644,
+   "ok": false,
+   "ms": 4681,
+   "cost": 0.00036975,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 464438,
+   "ok": false,
+   "ms": 1597,
+   "cost": 0.00021975,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 4622,
+   "ok": false,
+   "ms": 2195,
+   "cost": 0.0003685,
+   "got": "Senet game board (Egyptian board game)"
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 464438,
+   "ok": false,
+   "ms": 3304,
+   "cost": 0.00022975,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 325955,
+   "ok": false,
+   "ms": 3112,
+   "cost": 0.0005585,
+   "got": "Orant figure (standing worshipper with arms raised)"
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 325865,
+   "ok": false,
+   "ms": 2471,
+   "cost": 0.00040975,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 26450,
+   "ok": false,
+   "ms": 2199,
+   "cost": 0.00033225,
+   "got": "Helmet"
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 437372,
+   "ok": false,
+   "ms": 2468,
+   "cost": 0.0004135,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 450719,
+   "ok": false,
+   "ms": 1307,
+   "cost": 0.0001835,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 22270,
+   "ok": false,
+   "ms": 1602,
+   "cost": 0.00021725,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 547257,
+   "ok": false,
+   "ms": 2186,
+   "cost": 0.00028725,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 547820,
+   "ok": false,
+   "ms": 1702,
+   "cost": 0.00024725,
+   "got": "Ammonite fossil (likely shell)"
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 451802,
+   "ok": false,
+   "ms": 1887,
+   "cost": 0.00024475,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 459046,
+   "ok": false,
+   "ms": 3536,
+   "cost": 0.00025475,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 24696,
+   "ok": false,
+   "ms": 3289,
+   "cost": 0.00050725,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 460138,
+   "ok": false,
+   "ms": 1795,
+   "cost": 0.00027475,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 461330,
+   "ok": false,
+   "ms": 2936,
+   "cost": 0.00042100000000000004,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 452670,
+   "ok": false,
+   "ms": 2739,
+   "cost": 0.0004435,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 460135,
+   "ok": false,
+   "ms": 2459,
+   "cost": 0.00040975,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 547257,
+   "ok": false,
+   "ms": 1123,
+   "cost": 0.00011975,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 436571,
+   "ok": false,
+   "ms": 1495,
+   "cost": 0.000206,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 23936,
+   "ok": false,
+   "ms": 1660,
+   "cost": 0.000181,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 23084,
+   "ok": false,
+   "ms": 1572,
+   "cost": 0.000241,
+   "got": null
+  },
+  {
+   "model": "gpt-5.4-nano",
+   "id": 451794,
+   "ok": false,
+   "ms": 3886,
+   "cost": 0.00039475,
+   "got": null
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 472849,
+   "ok": true,
+   "ms": 1699,
+   "cost": 0.000643,
+   "got": "Parapet Slab with a Griffin"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 472849,
+   "ok": true,
+   "ms": 1512,
+   "cost": 0.0006399999999999999,
+   "got": "Parapet Slab with a Griffin"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 472849,
+   "ok": true,
+   "ms": 1315,
+   "cost": 0.000637,
+   "got": "Panel with a Griffin"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 203914,
+   "ok": false,
+   "ms": 1022,
+   "cost": 0.000682,
+   "got": "Satyr holding a lamp"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 544776,
+   "ok": false,
+   "ms": 1184,
+   "cost": 0.000634,
+   "got": "Stela of Iki"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 207813,
+   "ok": true,
+   "ms": 1691,
+   "cost": 0.000625,
+   "got": "Flora"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 466334,
+   "ok": true,
+   "ms": 953,
+   "cost": 0.0006490000000000001,
+   "got": "Capital with the Resurrection of Lazarus"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 238971,
+   "ok": false,
+   "ms": 974,
+   "cost": 0.00067,
+   "got": "Spinario (Boy Withdrawing a Thorn)"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 10238,
+   "ok": false,
+   "ms": 980,
+   "cost": 0.000637,
+   "got": "Alexander Hamilton"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 207813,
+   "ok": true,
+   "ms": 983,
+   "cost": 0.000634,
+   "got": "Spring"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 467679,
+   "ok": true,
+   "ms": 1115,
+   "cost": 0.000643,
+   "got": "Enthroned Virgin and Child"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 4623,
+   "ok": true,
+   "ms": 1007,
+   "cost": 0.000631,
+   "got": "Knife Box"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 206321,
+   "ok": true,
+   "ms": 899,
+   "cost": 0.000628,
+   "got": "The Mandylion"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 39326,
+   "ok": true,
+   "ms": 955,
+   "cost": 0.000634,
+   "got": "Vishnu Riding on Garuda"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 466652,
+   "ok": true,
+   "ms": 1189,
+   "cost": 0.000643,
+   "got": "Saint Nicholas"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 466649,
+   "ok": false,
+   "ms": 1836,
+   "cost": 0.000637,
+   "got": "Enthroned King"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 198644,
+   "ok": false,
+   "ms": 999,
+   "cost": 0.000634,
+   "got": "Mars and Venus"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 464438,
+   "ok": true,
+   "ms": 978,
+   "cost": 0.000658,
+   "got": "Situla"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 4622,
+   "ok": true,
+   "ms": 1111,
+   "cost": 0.000631,
+   "got": "Communion Token Box"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 464438,
+   "ok": false,
+   "ms": 1149,
+   "cost": 0.000661,
+   "got": "Reliquary of the Holy Women at the Tomb"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 325955,
+   "ok": false,
+   "ms": 1121,
+   "cost": 0.000652,
+   "got": "Censer stand with a figure and two lions"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 325865,
+   "ok": true,
+   "ms": 857,
+   "cost": 0.00067,
+   "got": "Ewer with dancing female motifs"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 26450,
+   "ok": true,
+   "ms": 1189,
+   "cost": 0.000634,
+   "got": "Morion"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 437372,
+   "ok": true,
+   "ms": 1309,
+   "cost": 0.000643,
+   "got": "Madonna and Child with Saints"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 450719,
+   "ok": true,
+   "ms": 1247,
+   "cost": 0.000628,
+   "got": "Textile Fragment"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 22270,
+   "ok": true,
+   "ms": 961,
+   "cost": 0.000652,
+   "got": "Elements of a Field Armor"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 547257,
+   "ok": true,
+   "ms": 1007,
+   "cost": 0.0006399999999999999,
+   "got": "Mummy Mask"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 547820,
+   "ok": false,
+   "ms": 1021,
+   "cost": 0.000628,
+   "got": "Head of a woman"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 451802,
+   "ok": true,
+   "ms": 1462,
+   "cost": 0.0006399999999999999,
+   "got": "Bowl with Kufic Inscription"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 459046,
+   "ok": false,
+   "ms": 932,
+   "cost": 0.0006399999999999999,
+   "got": "The Pentecost"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 24696,
+   "ok": true,
+   "ms": 1760,
+   "cost": 0.000655,
+   "got": "Armor for Field and Tilt"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 460138,
+   "ok": false,
+   "ms": 1200,
+   "cost": 0.000643,
+   "got": "Jar with the arms of the Pucci family"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 461330,
+   "ok": true,
+   "ms": 1008,
+   "cost": 0.000679,
+   "got": "Aquamanile in the Form of a Griffin"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 452670,
+   "ok": true,
+   "ms": 1298,
+   "cost": 0.0006670000000000001,
+   "got": "The Night Journey of Muhammad on His Steed, Buraq"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 460135,
+   "ok": true,
+   "ms": 1387,
+   "cost": 0.0006850000000000001,
+   "got": "Armorial jug (boccale) with the Salviati arms"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 547257,
+   "ok": false,
+   "ms": 1020,
+   "cost": 0.000646,
+   "got": "The Coronation of the Virgin"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 436571,
+   "ok": true,
+   "ms": 1893,
+   "cost": 0.000637,
+   "got": "The Adoration of the Shepherds"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 23936,
+   "ok": false,
+   "ms": 1334,
+   "cost": 0.000655,
+   "got": "Armor of Henry II, King of France"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 23084,
+   "ok": true,
+   "ms": 1226,
+   "cost": 0.000676,
+   "got": "Portions of a Field Armor"
+  },
+  {
+   "model": "gemini-3-flash-preview",
+   "id": 451794,
+   "ok": false,
+   "ms": 1248,
+   "cost": 0.000631,
+   "got": "Footed Bowl with Lions"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 472849,
+   "ok": true,
+   "ms": 1423,
+   "cost": 0.0003185,
+   "got": "Marble relief with a griffin"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 472849,
+   "ok": true,
+   "ms": 1189,
+   "cost": 0.0003305,
+   "got": "Marble relief with a griffin"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 472849,
+   "ok": true,
+   "ms": 1125,
+   "cost": 0.0003275,
+   "got": "Panel with a Griffin"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 203914,
+   "ok": false,
+   "ms": 1205,
+   "cost": 0.0003395,
+   "got": "Satyr with a Lamp"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 544776,
+   "ok": false,
+   "ms": 1187,
+   "cost": 0.0003305,
+   "got": "Stela of Amenemhat"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 207813,
+   "ok": true,
+   "ms": 1111,
+   "cost": 0.000332,
+   "got": "Flora"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 466334,
+   "ok": true,
+   "ms": 1165,
+   "cost": 0.000329,
+   "got": "Capital with the Resurrection"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 238971,
+   "ok": true,
+   "ms": 1016,
+   "cost": 0.000332,
+   "got": "Spinario (Boy Pulling a Thorn from His Foot)"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 10238,
+   "ok": false,
+   "ms": 872,
+   "cost": 0.000317,
+   "got": "George Washington"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 207813,
+   "ok": true,
+   "ms": 955,
+   "cost": 0.000332,
+   "got": "Flora"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 467679,
+   "ok": true,
+   "ms": 909,
+   "cost": 0.000326,
+   "got": "Virgin and Child"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 4623,
+   "ok": true,
+   "ms": 961,
+   "cost": 0.00031999999999999997,
+   "got": "Knife Case"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 206321,
+   "ok": false,
+   "ms": 919,
+   "cost": 0.0003155,
+   "got": "Christ Pantokrator"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 39326,
+   "ok": false,
+   "ms": 889,
+   "cost": 0.0003275,
+   "got": "Shiva Nataraja"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 466652,
+   "ok": true,
+   "ms": 976,
+   "cost": 0.0003185,
+   "got": "Saint Nicholas"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 466649,
+   "ok": true,
+   "ms": 917,
+   "cost": 0.000335,
+   "got": "Statuette of a Seated King"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 198644,
+   "ok": false,
+   "ms": 918,
+   "cost": 0.0003365,
+   "got": "Dioscuri (Castor and Pollux)"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 464438,
+   "ok": true,
+   "ms": 1069,
+   "cost": 0.0003125,
+   "got": "Situla"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 4622,
+   "ok": false,
+   "ms": 968,
+   "cost": 0.000317,
+   "got": "Coin cabinet"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 464438,
+   "ok": false,
+   "ms": 1158,
+   "cost": 0.000326,
+   "got": "Oliphant with Scenes of the Life of Christ"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 325955,
+   "ok": false,
+   "ms": 849,
+   "cost": 0.000317,
+   "got": "Terracotta incense burner"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 325865,
+   "ok": true,
+   "ms": 991,
+   "cost": 0.0003185,
+   "got": "Ewer with dancing female artists"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 26450,
+   "ok": true,
+   "ms": 991,
+   "cost": 0.000335,
+   "got": "Morion of the Guard of the Prince-Electors of Saxony"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 437372,
+   "ok": true,
+   "ms": 920,
+   "cost": 0.00035,
+   "got": "Madonna and Child with Saint John the Baptist, Saint Elizabe"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 450719,
+   "ok": false,
+   "ms": 1036,
+   "cost": 0.000317,
+   "got": "Fragment of a Tiraz"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 22270,
+   "ok": true,
+   "ms": 927,
+   "cost": 0.000323,
+   "got": "Armor of Emperor Ferdinand I"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 547257,
+   "ok": true,
+   "ms": 1002,
+   "cost": 0.0003185,
+   "got": "Mummy Portrait of a Woman"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 547820,
+   "ok": false,
+   "ms": 934,
+   "cost": 0.0003275,
+   "got": "Head of a Goddess"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 451802,
+   "ok": true,
+   "ms": 844,
+   "cost": 0.0003215,
+   "got": "Bowl with Kufic Calligraphy"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 459046,
+   "ok": false,
+   "ms": 1008,
+   "cost": 0.00032450000000000003,
+   "got": "The Apostles Peter and Paul"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 24696,
+   "ok": false,
+   "ms": 1008,
+   "cost": 0.000359,
+   "got": "Armor of Anne de Montmorency (1493–1567), Constable of Franc"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 460138,
+   "ok": false,
+   "ms": 1173,
+   "cost": 0.000317,
+   "got": "Jar (albarello)"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 461330,
+   "ok": true,
+   "ms": 1172,
+   "cost": 0.000335,
+   "got": "Aquamanile in the Form of a Griffin"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 452670,
+   "ok": true,
+   "ms": 1230,
+   "cost": 0.00033350000000000003,
+   "got": "The Prophet Muhammad on His Steed, Buraq"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 460135,
+   "ok": false,
+   "ms": 1118,
+   "cost": 0.000317,
+   "got": "Jug with coat of arms"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 547257,
+   "ok": false,
+   "ms": 1224,
+   "cost": 0.0003215,
+   "got": "The Coronation of the Virgin"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 436571,
+   "ok": true,
+   "ms": 1152,
+   "cost": 0.0003275,
+   "got": "The Vision of Saint John"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 23936,
+   "ok": false,
+   "ms": 1207,
+   "cost": 0.000332,
+   "got": "Armor of Galiot de Genouilhac"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 23084,
+   "ok": false,
+   "ms": 1282,
+   "cost": 0.0003185,
+   "got": "Breastplate with Tassets"
+  },
+  {
+   "model": "gemini-3.1-flash-lite",
+   "id": 451794,
+   "ok": false,
+   "ms": 1304,
+   "cost": 0.000338,
+   "got": "Basin with three feet in the shape of animals"
+  }
+ ]
+}

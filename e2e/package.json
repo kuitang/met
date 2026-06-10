@@ -1,0 +1,14 @@
+{
+  "name": "@met/e2e",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "test": "playwright test --project=checks",
+    "checks": "playwright test --project=checks",
+    "journeys": "playwright test --project=journeys --workers=1 && node collect-videos.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.58.1",
+    "@types/node": "^22.18.0"
+  }
+}

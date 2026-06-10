@@ -1,0 +1,20 @@
+{
+  "name": "@met/shared",
+  "version": "1.0.0",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "type": "module",
+  "types": "./api-types.d.ts",
+  "exports": {
+    ".": {
+      "types": "./api-types.d.ts"
+    },
+    "./openapi.yaml": "./openapi.yaml"
+  },
+  "scripts": {
+    "gen": "openapi-typescript openapi.yaml -o api-types.d.ts"
+  },
+  "devDependencies": {
+    "openapi-typescript": "^7.13.0"
+  }
+}
