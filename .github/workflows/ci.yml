@@ -23,9 +23,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Node pinned to 24.14.0: under 24.16.0 (current latest LTS) `npx
+      # playwright install` hangs forever during zip extraction (~18 MB into
+      # chrome-linux64.zip, zero CPU) — reproduced deterministically on
+      # 24.16.0 and absent on 24.14.0 in side-by-side local runs (2026-06-11);
+      # this caused the 3x "browser download stalled" CI failures.
+      # Re-test before unpinning.
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 24.14.0
           cache: npm
 
       - run: npm ci
