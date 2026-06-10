@@ -234,8 +234,27 @@ function main(): void {
      @classification, @medium, @tags, @galleryNumber, @site, @rotation, @isHighlight,
      @imageUrl, @metadataDate)`,
   );
+  // Recompute site from the geometry join: the snapshot's site column can be stale
+  // (early hydration-cache rows used a department heuristic that cannot distinguish
+  // the merged "Medieval Art and The Cloisters" department). galleryNumber → site
+  // from Living Map geometry is authoritative.
+  const siteByGallery = new Map<string, string>();
+  for (const f of galleriesGeo.features) {
+    const n = String(f.properties.galleryNumber ?? "").trim();
+    if (n) {
+      siteByGallery.set(n, String(f.properties.site));
+      siteByGallery.set(n.replace(/^0+/, ""), String(f.properties.site));
+    }
+  }
+  const authoritativeSite = (g: string, fallback: string): string =>
+    siteByGallery.get(g) ?? siteByGallery.get(g.replace(/^0+/, "")) ?? fallback;
   db.transaction(() => {
-    for (const o of objects) insObject.run({ ...o, isHighlight: o.isHighlight ? 1 : 0 });
+    for (const o of objects)
+      insObject.run({
+        ...o,
+        site: authoritativeSite(o.galleryNumber, o.site),
+        isHighlight: o.isHighlight ? 1 : 0,
+      });
   })();
   db.exec("INSERT INTO objects_fts(objects_fts) VALUES ('optimize')");
 

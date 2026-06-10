@@ -110,6 +110,28 @@ async function pooledHydrate(
   await Promise.all(Array.from({ length: CONCURRENCY }, worker));
 }
 
+// galleryNumber → site from Living Map geometry (authoritative; the API's merged
+// "Medieval Art and The Cloisters" department cannot distinguish the two sites).
+let gallerySiteMap: Map<string, "fifthAve" | "cloisters"> | null = null;
+function siteForGallery(gallery: string): "fifthAve" | "cloisters" {
+  if (!gallerySiteMap) {
+    gallerySiteMap = new Map();
+    try {
+      const gj = JSON.parse(readFileSync(join(SNAPSHOT_DIR, "galleries.geojson"), "utf8"));
+      for (const f of gj.features) {
+        const n = String(f.properties.galleryNumber ?? "").trim();
+        if (n && (f.properties.site === "fifthAve" || f.properties.site === "cloisters")) {
+          gallerySiteMap.set(n, f.properties.site);
+          gallerySiteMap.set(n.replace(/^0+/, ""), f.properties.site);
+        }
+      }
+    } catch {
+      console.warn("galleries.geojson unavailable — defaulting site to fifthAve");
+    }
+  }
+  return gallerySiteMap.get(gallery) ?? gallerySiteMap.get(gallery.replace(/^0+/, "")) ?? "fifthAve";
+}
+
 function toRow(obj: any): ObjectRow {
   const gallery = String(obj.GalleryNumber ?? "").trim();
   return {
@@ -123,7 +145,7 @@ function toRow(obj: any): ObjectRow {
     medium: obj.medium ?? "",
     tags: Array.isArray(obj.tags) ? obj.tags.map((t: any) => t.term).join("|") : "",
     galleryNumber: gallery,
-    site: obj.department === "The Cloisters" ? "cloisters" : "fifthAve",
+    site: siteForGallery(gallery),
     rotation: EXHIBITION_GALLERIES.has(gallery) ? "exhibition" : "permanent",
     isHighlight: Boolean(obj.isHighlight),
     imageUrl: obj.primaryImageSmall ?? "",
