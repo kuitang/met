@@ -1,9 +1,31 @@
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { Pressable, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+import { HomeGlyph } from '@/components/MapMarkers';
 import { DataGate } from '@/data/DataGate';
 import { colors, type } from '@/theme';
+
+/**
+ * One-tap return to the home map from any deep screen (user mandate): a
+ * persistent house-glyph button in every non-home header, opposite the back
+ * arrow. dismissTo('/') unwinds the stack to the map (or navigates there on a
+ * cold deep link); the location anchor lives in the LocateState module store,
+ * so it survives the dismissal untouched.
+ */
+function HomeHeaderButton() {
+  return (
+    <Pressable
+      style={styles.homeBtn}
+      onPress={() => router.dismissTo('/')}
+      accessibilityLabel="Back to the map"
+      testID="home-button"
+    >
+      <HomeGlyph size={22} color={colors.ink} />
+    </Pressable>
+  );
+}
 
 export default function RootLayout() {
   return (
@@ -21,6 +43,7 @@ export default function RootLayout() {
               fontWeight: type.label.fontWeight,
             },
             contentStyle: { backgroundColor: colors.background },
+            headerRight: () => <HomeHeaderButton />,
           }}
         >
           <Stack.Screen name="index" options={{ headerShown: false }} />
@@ -37,3 +60,13 @@ export default function RootLayout() {
     </GestureHandlerRootView>
   );
 }
+
+const styles = StyleSheet.create({
+  // Apple HIG: ≥44×44 pt tap target.
+  homeBtn: {
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

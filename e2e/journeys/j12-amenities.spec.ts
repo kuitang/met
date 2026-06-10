@@ -1,7 +1,9 @@
 /**
  * J12 — Amenities. Anchored in a gallery, search "restroom": results are
- * ranked nearest-first by graph (walking) distance from the anchor, each row
- * shows the distance, and the nearest one is routable.
+ * ranked nearest-first by graph (walking) distance from the anchor, TAPPING
+ * the nearest row opens DIRECTIONS to it (it must never silently move the
+ * visitor's location — that's the explicit "I'm here" secondary action), and
+ * the header HOME button is the one-tap way back with the anchor intact.
  */
 import { expect, test } from '@playwright/test';
 
@@ -24,10 +26,17 @@ test('J12 amenities: "restroom" → nearest-first by walking distance → route'
     await page.getByTestId('search-input').fill('restroom');
   });
 
-  const rows = page.locator('[data-testid^="amenity-"]');
+  // Main rows only ("I'm here" secondary buttons carry their own testID).
+  const rows = page.locator(
+    '[data-testid^="amenity-"]:not([data-testid^="amenity-im-here-"])',
+  );
   await expect(rows.first()).toBeVisible();
   const count = await rows.count();
   expect(count).toBeGreaterThanOrEqual(2);
+
+  // Each row offers the explicit secondary re-anchor action.
+  const firstRowId = (await rows.first().getAttribute('data-testid'))!.replace(/^amenity-/, '');
+  await expect(page.getByTestId(`amenity-im-here-${firstRowId}`)).toBeVisible();
 
   // Sorted by graph distance: the "~N m walk" labels must be non-decreasing.
   const distances: number[] = [];
@@ -40,11 +49,19 @@ test('J12 amenities: "restroom" → nearest-first by walking distance → route'
     expect(distances[i]).toBeGreaterThanOrEqual(distances[i - 1]);
   }
 
-  // The nearest restroom routes from the anchor.
-  const nearestId = (await rows.first().getAttribute('data-testid'))!.replace(/^amenity-/, '');
-  await step(page, `Nearest is ~${distances[0]} m away — directions`, async () => {
-    await bootReal(page, `/route/${F.galleryId}/${nearestId}`);
+  // TAPPING the nearest row offers directions from the anchor to that row.
+  await step(page, `Nearest is ~${distances[0]} m away — tap for directions`, async () => {
+    await rows.first().click();
   });
+  await expect(page).toHaveURL(new RegExp(`/route/${F.galleryId}/${firstRowId}`));
   await expect(page.getByTestId('route-summary')).toContainText(/Restroom/i);
   await expect(page.getByTestId('route-step-0')).toContainText('Start in');
+
+  // The tap did NOT relocate the visitor: one tap on the header HOME button
+  // lands back on the map with the Gallery anchor untouched.
+  await step(page, 'One tap home — my location never moved', async () => {
+    await page.getByTestId('home-button').last().click();
+  });
+  await expect(page.getByTestId('home-search-bar')).toBeVisible();
+  await expect(page.getByTestId('locate-chip')).toContainText(`Gallery ${F.galleryId}`);
 });

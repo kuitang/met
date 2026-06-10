@@ -1,7 +1,8 @@
 /**
  * HomeRoomSheet — bottom sheet shown when a room is tapped on the Home map.
- * Gallery title + the objects in that room (stub data); tap an object for
- * its detail page, or get directions from the current anchor.
+ * Gallery title + the objects in that room; tap an object for its detail
+ * page. Two equal-weight actions (user mandate): DIRECTIONS routes there
+ * from the current anchor; I'M HERE resets the anchor to this room.
  */
 import { router } from 'expo-router';
 import { FlatList, Image, Pressable, StyleSheet, Text, View } from 'react-native';
@@ -18,6 +19,8 @@ export interface HomeRoomSheetProps {
   totalCount: number;
   /** Route origin (current anchor room, or the Great Hall fallback). */
   originId: string;
+  /** "I'm here" — reset the visitor's anchor to this room. */
+  onImHere: () => void;
   onClose: () => void;
 }
 
@@ -28,6 +31,7 @@ export default function HomeRoomSheet({
   objects,
   totalCount,
   originId,
+  onImHere,
   onClose,
 }: HomeRoomSheetProps) {
   const { dataVersion } = useData();
@@ -59,15 +63,24 @@ export default function HomeRoomSheet({
         </Pressable>
       </View>
 
-      {originId !== room.id && (
+      <View style={styles.actionRow}>
+        {originId !== room.id && (
+          <Pressable
+            style={[styles.actionBtn, styles.directionsBtn]}
+            onPress={() => router.push(`/route/${originId}/${room.id}`)}
+            testID="room-directions"
+          >
+            <Text style={styles.actionText}>Directions</Text>
+          </Pressable>
+        )}
         <Pressable
-          style={styles.directionsBtn}
-          onPress={() => router.push(`/route/${originId}/${room.id}`)}
-          testID="room-directions"
+          style={[styles.actionBtn, styles.imHereBtn]}
+          onPress={onImHere}
+          testID="room-im-here"
         >
-          <Text style={styles.directionsText}>Directions</Text>
+          <Text style={styles.actionText}>I'm here</Text>
         </Pressable>
-      )}
+      </View>
 
       {objects.length > 0 ? (
         <FlatList
@@ -153,14 +166,26 @@ const styles = StyleSheet.create({
     ...type.label,
     letterSpacing: 0,
   },
-  directionsBtn: {
-    alignSelf: 'flex-start',
-    backgroundColor: colors.red,
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.md,
+  // Equal-weight action pair, ≥44pt tap targets (HIG).
+  actionRow: {
+    flexDirection: 'row',
+    gap: spacing.sm,
     marginTop: spacing.sm,
   },
-  directionsText: {
+  actionBtn: {
+    flex: 1,
+    minHeight: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: spacing.md,
+  },
+  directionsBtn: {
+    backgroundColor: colors.red,
+  },
+  imHereBtn: {
+    backgroundColor: colors.homeBlue,
+  },
+  actionText: {
     ...type.label,
     color: colors.white,
   },

@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 import ObjectImage from '@/components/ObjectImage';
-import { applyVenue, getVenue } from '@/components/LocateState';
+import { applyVenue, getAnchor, getVenue } from '@/components/LocateState';
 import { useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
@@ -138,7 +138,13 @@ export default function ObjectScreen() {
           onPress={() =>
             router.push({
               pathname: '/route/[from]/[to]',
-              params: { from: anchor ?? 'great-hall', to: gallery.id },
+              // Origin precedence: explicit ?anchor= deep-link param, then the
+              // visitor's live anchor, then the Great Hall fallback — routes
+              // start from where the visitor actually is.
+              params: {
+                from: anchor ?? getAnchor()?.roomId ?? 'great-hall',
+                to: gallery.id,
+              },
             })
           }
           testID="navigate-here"

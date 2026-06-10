@@ -201,6 +201,13 @@ export default function RouteScreen() {
   const currentRoom = route.steps[Math.min(activeStep, lastStep)].room;
   const destObjects = data.objectsInGallery(route.to.id);
 
+  // HOME marker = the visitor's anchor room when it's at this route's venue
+  // (it advances with "I'm here" checkpoints); else the active step room.
+  const routeSite = route.from.site ?? 'fifthAve';
+  const anchorRoom = anchor?.roomId ? data.getGallery(anchor.roomId) : undefined;
+  const homeRoom =
+    anchorRoom && (anchorRoom.site ?? 'fifthAve') === routeSite ? anchorRoom : currentRoom;
+
   // Checkpoint button: advance the step, and publish the reached room as the
   // user's anchor when it is a real gallery (keeps the home map/locate chip
   // honest; the machine sees it as an on-route fix at the current step).
@@ -272,8 +279,14 @@ export default function RouteScreen() {
           // Routes never cross venues (site isolation, J14): the origin room's
           // venue is the route's venue. Fall back to the app venue state.
           site={route.from.site ?? getVenue().venue}
+          // HOME = where the visitor is; STAR = the destination. Both inside
+          // the map transform + as floor-chip bubbles, so cross-floor routes
+          // read at a glance.
+          homeRoom={homeRoom}
+          targetRoom={route.to}
+          // Overlay slot: polyline + dots render inside the pan/zoom transform.
+          overlay={<RoutePolyline route={route} floor={floor} activeStep={activeStep} />}
         />
-        <RoutePolyline route={route} floor={floor} activeStep={activeStep} />
         {rerouting && (
           <View style={styles.toast} testID="rerouting-toast">
             <Text style={styles.toastText}>Rerouting…</Text>
