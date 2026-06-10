@@ -39,3 +39,11 @@ yarn-error.*
 coverage/
 playwright-report/
 test-results/
+.playwright-mcp/
+
+# Planning-session browser screenshots (competitive-study scratch, not deliverables)
+/met-explorer-*.png
+
+# Large local caches (re-fetchable; see data/src/embed-images.ts)
+data/raw/met-images/
+data/raw/met-objects/

@@ -1,0 +1,443 @@
+[
+  {
+    "query": "great wave",
+    "ok": true,
+    "method": "rewrite",
+    "ms": 940,
+    "interpretedQuery": {
+      "ftsQuery": "great OR wave",
+      "filters": {}
+    },
+    "top5": [
+      {
+        "objectID": 437105,
+        "title": "The Green Wave"
+      },
+      {
+        "objectID": 11130,
+        "title": "Northeaster"
+      },
+      {
+        "objectID": 39857,
+        "title": "清早期  犀角雕龍濤杯|Cup with two dragons in waves"
+      },
+      {
+        "objectID": 436004,
+        "title": "The Woman in the Waves"
+      },
+      {
+        "objectID": 50562,
+        "title": "清雍正  景德鎮窯盖雪紅波濤杯|Cup with design of waves"
+      }
+    ]
+  },
+  {
+    "query": "sake bottle willow",
+    "ok": true,
+    "method": "rewrite",
+    "ms": 630,
+    "interpretedQuery": {
+      "ftsQuery": "sake OR bottle OR willow",
+      "filters": {
+        "classification": "Ceramics-Containers"
+      }
+    },
+    "top5": [
+      {
+        "objectID": 666594,
+        "title": "色絵松竹梅文徳利　二口|Pair of Sake Bottles with Pine, Bamboo, and Plum"
+      },
+      {
+        "objectID": 52945,
+        "title": "染付柳岩鳥文徳利|Wine Bottle with a Bird on a Rock under a Willow Tree"
+      },
+      {
+        "objectID": 307474,
+        "title": "Seated Figure Bottle"
+      },
+      {
+        "objectID": 314682,
+        "title": "Squash Bottle"
+      },
+      {
+        "objectID": 317793,
+        "title": "Bottle in the shape of a feline"
+      }
+    ]
+  },
+  {
+    "query": "that huge painting of washington crossing a river in a boat",
+    "ok": true,
+    "method": "rewrite",
+    "ms": 597,
+    "interpretedQuery": {
+      "ftsQuery": "washington OR crossing OR river OR boat",
+      "filters": {
+        "classification": "Paintings"
+      }
+    },
+    "top5": [
+      {
+        "objectID": 493552,
+        "title": "We crossed the River at McKonkey's Ferry 9 miles above Trenton ... the night was excessively severe ... which the men bore without the least murmur...-Tench Tilghman, 27 December 1776/Struggle Series - No. 10: Washington Crossing the Delaware"
+      },
+      {
+        "objectID": 11417,
+        "title": "Washington Crossing the Delaware"
+      },
+      {
+        "objectID": 437519,
+        "title": "A River Landscape"
+      },
+      {
+        "objectID": 436241,
+        "title": "Cows Crossing a Ford"
+      },
+      {
+        "objectID": 436420,
+        "title": "Arabs Crossing a Ford"
+      }
+    ]
+  },
+  {
+    "query": "blue ming vases",
+    "ok": true,
+    "method": "rewrite",
+    "ms": 614,
+    "interpretedQuery": {
+      "ftsQuery": "blue OR ming OR vases",
+      "filters": {
+        "classification": "Vases"
+      }
+    },
+    "top5": [
+      {
+        "objectID": 553934,
+        "title": "Blue-painted ware vase"
+      },
+      {
+        "objectID": 437148,
+        "title": "Flowers in a Blue Vase"
+      },
+      {
+        "objectID": 186072,
+        "title": "Blue and golden-toned aventurine glass vase"
+      },
+      {
+        "objectID": 771068,
+        "title": "Miniature orb vase in blue and white"
+      },
+      {
+        "objectID": 544013,
+        "title": "Toilet vase"
+      }
+    ]
+  },
+  {
+    "query": "ancient egyptian cat statues",
+    "ok": true,
+    "method": "rewrite",
+    "ms": 613,
+    "interpretedQuery": {
+      "ftsQuery": "egyptian OR cat OR statue",
+      "filters": {
+        "culture_or_period": "Egyptian"
+      }
+    },
+    "top5": [
+      {
+        "objectID": 243770,
+        "title": "Faience amulet in the form of a cat"
+      },
+      {
+        "objectID": 555096,
+        "title": "Statue foot fragment"
+      },
+      {
+        "objectID": 554287,
+        "title": "Head from a Royal Statue or Shabti"
+      },
+      {
+        "objectID": 557800,
+        "title": "Dragging a Statue of Thutmose I"
+      },
+      {
+        "objectID": 548231,
+        "title": "Pair Statue of Amenemhat and Ahmose-Baketamun"
+      }
+    ]
+  },
+  {
+    "query": "armor for horses",
+    "ok": true,
+    "method": "rewrite",
+    "ms": 566,
+    "interpretedQuery": {
+      "ftsQuery": "armor OR horse OR horses",
+      "filters": {
+        "classification": "Armor for Horse and Man"
+      }
+    },
+    "top5": [
+      {
+        "objectID": 23360,
+        "title": "Armor for Man and Horse"
+      },
+      {
+        "objectID": 35952,
+        "title": "Armor for Man and Horse"
+      },
+      {
+        "objectID": 35739,
+        "title": "Armor for Man and Horse"
+      },
+      {
+        "objectID": 35772,
+        "title": "Armor for Man and Horse"
+      },
+      {
+        "objectID": 35773,
+        "title": "Armor for Man and Horse"
+      }
+    ]
+  },
+  {
+    "query": "samurai sword",
+    "ok": true,
+    "method": "rewrite",
+    "ms": 612,
+    "interpretedQuery": {
+      "ftsQuery": "samurai OR sword",
+      "filters": {
+        "classification": "Swords"
+      }
+    },
+    "top5": [
+      {
+        "objectID": 23367,
+        "title": "Sword"
+      },
+      {
+        "objectID": 24832,
+        "title": "Viking Sword"
+      },
+      {
+        "objectID": 22914,
+        "title": "Hunting Sword with Scabbard"
+      },
+      {
+        "objectID": 470298,
+        "title": "Sword and Scabbard"
+      },
+      {
+        "objectID": 25653,
+        "title": "Sword"
+      }
+    ]
+  },
+  {
+    "query": "impressionist gardens",
+    "ok": true,
+    "method": "rewrite",
+    "ms": 556,
+    "interpretedQuery": {
+      "ftsQuery": "impressionist OR garden",
+      "filters": {
+        "classification": "Paintings"
+      }
+    },
+    "top5": [
+      {
+        "objectID": 437133,
+        "title": "Garden at Sainte-Adresse"
+      },
+      {
+        "objectID": 455082,
+        "title": "Garden Gathering"
+      },
+      {
+        "objectID": 437656,
+        "title": "The Gardener"
+      },
+      {
+        "objectID": 492745,
+        "title": "Garden"
+      },
+      {
+        "objectID": 495841,
+        "title": "Lydia Crocheting in the Garden"
+      }
+    ]
+  },
+  {
+    "query": "tiffany stained glass",
+    "ok": true,
+    "method": "rewrite",
+    "ms": 568,
+    "interpretedQuery": {
+      "ftsQuery": "tiffany OR stained",
+      "filters": {
+        "classification": "Glass-Stained"
+      }
+    },
+    "top5": [
+      {
+        "objectID": 460397,
+        "title": "Stained Glass Dome"
+      },
+      {
+        "objectID": 467259,
+        "title": "Stained Glass Fragment"
+      },
+      {
+        "objectID": 14440,
+        "title": "Stained Glass Window"
+      },
+      {
+        "objectID": 14441,
+        "title": "Stained Glass Window"
+      },
+      {
+        "objectID": 14442,
+        "title": "Stained Glass Window"
+      }
+    ]
+  },
+  {
+    "query": "painting of a woman seated beside a vase of flowers",
+    "ok": true,
+    "method": "rewrite",
+    "ms": 651,
+    "interpretedQuery": {
+      "ftsQuery": "painting OR woman OR seated OR vase OR flowers",
+      "filters": {
+        "classification": "Paintings"
+      }
+    },
+    "top5": [
+      {
+        "objectID": 436121,
+        "title": "A Woman Seated beside a Vase of Flowers (Madame Paul Valpinçon?)"
+      },
+      {
+        "objectID": 437160,
+        "title": "Young Woman Seated on a Sofa"
+      },
+      {
+        "objectID": 239511,
+        "title": "Tankard with woman seated"
+      },
+      {
+        "objectID": 437073,
+        "title": "A Woman Seated at a Window"
+      },
+      {
+        "objectID": 555946,
+        "title": "Relief Showing a Seated Woman Smelling the Blossom of a Water Lily"
+      }
+    ]
+  },
+  {
+    "query": "stone idol with big eyes",
+    "ok": true,
+    "method": "rewrite",
+    "ms": 560,
+    "interpretedQuery": {
+      "ftsQuery": "stone OR idol OR eye",
+      "filters": {
+        "classification": "Sculpture-Stone"
+      }
+    },
+    "top5": [
+      {
+        "objectID": 324155,
+        "title": "Eye idol"
+      },
+      {
+        "objectID": 324150,
+        "title": "Eye idol"
+      },
+      {
+        "objectID": 324145,
+        "title": "Eye idol"
+      },
+      {
+        "objectID": 324146,
+        "title": "Eye idol"
+      },
+      {
+        "objectID": 324147,
+        "title": "Eye idol"
+      }
+    ]
+  },
+  {
+    "query": "bronze statue of a roman household god",
+    "ok": false,
+    "method": "rewrite",
+    "ms": 687,
+    "interpretedQuery": {
+      "ftsQuery": "bronze OR statue OR household OR god",
+      "filters": {
+        "classification": "Sculpture-Bronze",
+        "culture_or_period": "Roman"
+      }
+    },
+    "top5": [
+      {
+        "objectID": 587598,
+        "title": "Statue of the God Ptah"
+      },
+      {
+        "objectID": 248891,
+        "title": "Bronze statue of an aristocratic boy"
+      },
+      {
+        "objectID": 247117,
+        "title": "Bronze statue of the emperor Trebonianus Gallus"
+      },
+      {
+        "objectID": 551965,
+        "title": "Household ring"
+      },
+      {
+        "objectID": 551971,
+        "title": "Household ring"
+      }
+    ]
+  },
+  {
+    "query": "beads from ancient mesopotamia",
+    "ok": false,
+    "method": "rewrite",
+    "ms": 582,
+    "interpretedQuery": {
+      "ftsQuery": "beads mesopotamia",
+      "filters": {
+        "culture_or_period": "Ancient"
+      }
+    },
+    "top5": [
+      {
+        "objectID": 544032,
+        "title": "Cypriote Juglet Replicated in Stone by Ancient Egyptian Craftsman"
+      },
+      {
+        "objectID": 437244,
+        "title": "Ancient Rome"
+      },
+      {
+        "objectID": 813193,
+        "title": "A modern reconstruction of a sickle using ancient flint inserts"
+      },
+      {
+        "objectID": 560258,
+        "title": "Gilded wax on a reconstructed body of ancient linen"
+      },
+      {
+        "objectID": 39345,
+        "title": ""
+      }
+    ]
+  }
+]

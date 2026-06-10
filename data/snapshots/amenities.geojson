@@ -1,0 +1,2630 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9316741,
+     40.8650426
+    ]
+   },
+   "properties": {
+    "kind": "entrance",
+    "name": null,
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.8650426,
+    "lon": -73.9316741,
+    "site": "cloisters",
+    "lmId": "1aa0e7b9c28df398b9b401bba57c2eb8",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9630917,
+     40.7785215
+    ]
+   },
+   "properties": {
+    "kind": "entrance",
+    "name": null,
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7785215,
+    "lon": -73.9630917,
+    "site": "fifthAve",
+    "lmId": "3388f119af0ea0aa582bf0cd6e050efa",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9630659,
+     40.780552
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Accessible Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.780552,
+    "lon": -73.9630659,
+    "site": "fifthAve",
+    "lmId": "21101987ba5e37d9801525d8718e3656",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9636823,
+     40.7784059
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Accessible Elevator",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7784059,
+    "lon": -73.9636823,
+    "site": "fifthAve",
+    "lmId": "388bda66f1ba691a1804ba774d44029f",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9316556,
+     40.8650079
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Accessible Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.8650079,
+    "lon": -73.9316556,
+    "site": "cloisters",
+    "lmId": "5560a01b1081812c346c16def203a6c7",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9627217,
+     40.7805535
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Accessible Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7805535,
+    "lon": -73.9627217,
+    "site": "fifthAve",
+    "lmId": "99582d06a72208747e846273f56b23fe",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9640316,
+     40.779729
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": "Accessible Restroom",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.779729,
+    "lon": -73.9640316,
+    "site": "fifthAve",
+    "lmId": "36ed74d8a02fad3c5658ab66769b05c6",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9639849,
+     40.7793461
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": "Accessible Restroom",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7793461,
+    "lon": -73.9639849,
+    "site": "fifthAve",
+    "lmId": "c0076fe56379cd29d87d033111e4a32b",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9640696,
+     40.7796523
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": "Accessible Restroom",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7796523,
+    "lon": -73.9640696,
+    "site": "fifthAve",
+    "lmId": "aa3a97f563ead3f82f5fc3defff58be4",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.963025,
+     40.780567
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": "Accessible Restroom",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.780567,
+    "lon": -73.963025,
+    "site": "fifthAve",
+    "lmId": "0264dfb96ac154f45dbeb58e7a6e2ef3",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9626036,
+     40.7799372
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": "Accessible Restroom",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7799372,
+    "lon": -73.9626036,
+    "site": "fifthAve",
+    "lmId": "526ff95fe4af700517b39db48d41e1a8",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9640193,
+     40.7798192
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": "Accessible Restroom",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7798192,
+    "lon": -73.9640193,
+    "site": "fifthAve",
+    "lmId": "7ae2cb3bcc884779f39f3ddf729d3dfa",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9634438,
+     40.7785607
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": "Accessible Restroom",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7785607,
+    "lon": -73.9634438,
+    "site": "fifthAve",
+    "lmId": "bac3f6990b7119dfba99544a9c7348cd",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9643201,
+     40.778808
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": "Accessible Restroom",
+    "floor": 4,
+    "floorName": "Floor 4",
+    "lat": 40.778808,
+    "lon": -73.9643201,
+    "site": "fifthAve",
+    "lmId": "65eccbafeb31f02348a96a3f81708a38",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.962541,
+     40.779629
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": "Accessible Restroom",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.779629,
+    "lon": -73.962541,
+    "site": "fifthAve",
+    "lmId": "12a07c1c1d52af44e494c973190454a1",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9634725,
+     40.7781363
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": "Accessible Restroom",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7781363,
+    "lon": -73.9634725,
+    "site": "fifthAve",
+    "lmId": "66fa6315ff4e54def7f9d054b2867f1a",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9636951,
+     40.7801595
+    ]
+   },
+   "properties": {
+    "kind": "dining",
+    "name": "American Wing Cafe",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7801595,
+    "lon": -73.9636951,
+    "site": "fifthAve",
+    "lmId": "869e86c0f0ef65866faf79d4b6aa8fd5",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9316138,
+     40.8650935
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": "Baby Change",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.8650935,
+    "lon": -73.9316138,
+    "site": "cloisters",
+    "lmId": "55ad923206435b660090d4534151b034",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9628379,
+     40.7790015
+    ]
+   },
+   "properties": {
+    "kind": "cloakroom",
+    "name": "Coat check",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7790015,
+    "lon": -73.9628379,
+    "site": "fifthAve",
+    "lmId": "10cc32d47299b64ccaa07aae4e28d7d7",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9642245,
+     40.7787897
+    ]
+   },
+   "properties": {
+    "kind": "cloakroom",
+    "name": "Coat check",
+    "floor": 4,
+    "floorName": "Floor 4",
+    "lat": 40.7787897,
+    "lon": -73.9642245,
+    "site": "fifthAve",
+    "lmId": "43c8446d3fb39115410ab3396473b3ab",
+    "closed": true
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9315411,
+     40.8649067
+    ]
+   },
+   "properties": {
+    "kind": "cloakroom",
+    "name": "Coat check",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.8649067,
+    "lon": -73.9315411,
+    "site": "cloisters",
+    "lmId": "dc83a36c63ef7be14086993ddd146dd0",
+    "closed": true
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9642146,
+     40.7788279
+    ]
+   },
+   "properties": {
+    "kind": "firstAid",
+    "name": "Defibrillator",
+    "floor": 4,
+    "floorName": "Floor 4",
+    "lat": 40.7788279,
+    "lon": -73.9642146,
+    "site": "fifthAve",
+    "lmId": "2ef79f89b6e7a6f7bc524046ee3f8f35",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9630867,
+     40.77919
+    ]
+   },
+   "properties": {
+    "kind": "firstAid",
+    "name": "Defibrillator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.77919,
+    "lon": -73.9630867,
+    "site": "fifthAve",
+    "lmId": "62813b25752f19f03dbdbe22f0200c71",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9642624,
+     40.7787665
+    ]
+   },
+   "properties": {
+    "kind": "firstAid",
+    "name": "Defibrillator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7787665,
+    "lon": -73.9642624,
+    "site": "fifthAve",
+    "lmId": "cae36231e2dc0c30b744890bf0bd99a1",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9624309,
+     40.7801
+    ]
+   },
+   "properties": {
+    "kind": "firstAid",
+    "name": "Defibrillator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7801,
+    "lon": -73.9624309,
+    "site": "fifthAve",
+    "lmId": "c29274534a00b1fcb5766241d72ac8a7",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9639484,
+     40.7796772
+    ]
+   },
+   "properties": {
+    "kind": "firstAid",
+    "name": "Defibrillator",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7796772,
+    "lon": -73.9639484,
+    "site": "fifthAve",
+    "lmId": "b0371faba9e5e2817be2d604180b0dfd",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.964213,
+     40.7788347
+    ]
+   },
+   "properties": {
+    "kind": "firstAid",
+    "name": "Defibrillator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7788347,
+    "lon": -73.964213,
+    "site": "fifthAve",
+    "lmId": "4b29ee690b01b4a33dcd483adc85e2b9",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.963136,
+     40.7803908
+    ]
+   },
+   "properties": {
+    "kind": "firstAid",
+    "name": "Defibrillator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7803908,
+    "lon": -73.963136,
+    "site": "fifthAve",
+    "lmId": "d57e45f056b3148b53256da9d66333e1",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9634485,
+     40.7792945
+    ]
+   },
+   "properties": {
+    "kind": "firstAid",
+    "name": "Defibrillator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7792945,
+    "lon": -73.9634485,
+    "site": "fifthAve",
+    "lmId": "f05b97386bd334643270d92a343db1cb",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9632237,
+     40.7784391
+    ]
+   },
+   "properties": {
+    "kind": "firstAid",
+    "name": "Defibrillator",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7784391,
+    "lon": -73.9632237,
+    "site": "fifthAve",
+    "lmId": "397fd06ef7b3f2510091a7e976ff4b34",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9632669,
+     40.7784368
+    ]
+   },
+   "properties": {
+    "kind": "firstAid",
+    "name": "Defibrillator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7784368,
+    "lon": -73.9632669,
+    "site": "fifthAve",
+    "lmId": "5260dc0a5531dc61e7585cacfdd31951",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9630331,
+     40.7805265
+    ]
+   },
+   "properties": {
+    "kind": "firstAid",
+    "name": "Defibrillator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7805265,
+    "lon": -73.9630331,
+    "site": "fifthAve",
+    "lmId": "fbe17b0b734a62d4ef6e3934c43f101c",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9635962,
+     40.7785329
+    ]
+   },
+   "properties": {
+    "kind": "firstAid",
+    "name": "Defibrillator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7785329,
+    "lon": -73.9635962,
+    "site": "fifthAve",
+    "lmId": "303003b3ad6d1c7800ef56459e973816",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9632559,
+     40.7783741
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1.5,
+    "floorName": "Floor 1M",
+    "lat": 40.7783741,
+    "lon": -73.9632559,
+    "site": "fifthAve",
+    "lmId": "bb39b70d9d321881beb93921d029c827",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9639375,
+     40.7797639
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7797639,
+    "lon": -73.9639375,
+    "site": "fifthAve",
+    "lmId": "ce44a5f6550c6357a02768784e2c9996",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9622892,
+     40.7799653
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7799653,
+    "lon": -73.9622892,
+    "site": "fifthAve",
+    "lmId": "84dea4ffc48f69674e346ec88f9fac16",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9642778,
+     40.7788914
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 4,
+    "floorName": "Floor 4",
+    "lat": 40.7788914,
+    "lon": -73.9642778,
+    "site": "fifthAve",
+    "lmId": "9a2571b3ff949b5843ff1aea73cd5f17",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9635531,
+     40.7785396
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7785396,
+    "lon": -73.9635531,
+    "site": "fifthAve",
+    "lmId": "7fe8b34cc3e4cd4666405851358a0b43",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.963244,
+     40.7783905
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1.5,
+    "floorName": "Floor 1M",
+    "lat": 40.7783905,
+    "lon": -73.963244,
+    "site": "fifthAve",
+    "lmId": "b76504c8a02c1b6ab39c9a5230abd8dd",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9621938,
+     40.7803793
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 3,
+    "floorName": "Floor 3",
+    "lat": 40.7803793,
+    "lon": -73.9621938,
+    "site": "fifthAve",
+    "lmId": "2b6fe8c57cb5d733939ace5963dae362",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.962186,
+     40.7803865
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7803865,
+    "lon": -73.962186,
+    "site": "fifthAve",
+    "lmId": "509a4c22c853f67d62c895e608e63499",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9631563,
+     40.7803443
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 3,
+    "floorName": "Floor 3",
+    "lat": 40.7803443,
+    "lon": -73.9631563,
+    "site": "fifthAve",
+    "lmId": "02a3b5e7d3bf2339d1be6ece78623ce3",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9643987,
+     40.7787013
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7787013,
+    "lon": -73.9643987,
+    "site": "fifthAve",
+    "lmId": "43c1806334237bb9c5ae308f58993e92",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9640723,
+     40.7795789
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7795789,
+    "lon": -73.9640723,
+    "site": "fifthAve",
+    "lmId": "b1f8d2ac235d62d8a23d09c80ba65a1a",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9637932,
+     40.7782135
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7782135,
+    "lon": -73.9637932,
+    "site": "fifthAve",
+    "lmId": "59c13e3ce9a6aa4853ebc5c7aebbd067",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9618364,
+     40.7801165
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 3,
+    "floorName": "Floor 3",
+    "lat": 40.7801165,
+    "lon": -73.9618364,
+    "site": "fifthAve",
+    "lmId": "f6414c1cc947d7f7149e0bbd39f56bb7",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9618364,
+     40.7801165
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7801165,
+    "lon": -73.9618364,
+    "site": "fifthAve",
+    "lmId": "d583bde1554014adee52ec1ad42dc3b8",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9643826,
+     40.7787233
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7787233,
+    "lon": -73.9643826,
+    "site": "fifthAve",
+    "lmId": "904ca253c84596b64a9f073f3d9f40c4",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9631564,
+     40.7803444
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7803444,
+    "lon": -73.9631564,
+    "site": "fifthAve",
+    "lmId": "e1788c53517a2b34f363f6d4e7b72db4",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9648314,
+     40.7786687
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1.5,
+    "floorName": "Floor 1M",
+    "lat": 40.7786687,
+    "lon": -73.9648314,
+    "site": "fifthAve",
+    "lmId": "e84ad5c100acfef591ada140624082e2",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.963244,
+     40.7783905
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7783905,
+    "lon": -73.963244,
+    "site": "fifthAve",
+    "lmId": "afb294bddc3665b917292dd268b12dba",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9632562,
+     40.7783738
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7783738,
+    "lon": -73.9632562,
+    "site": "fifthAve",
+    "lmId": "723c63ed92ac29b0e6758be5900779a7",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9628659,
+     40.7794821
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7794821,
+    "lon": -73.9628659,
+    "site": "fifthAve",
+    "lmId": "f575bce1f6e9f3117dbb77aca363197e",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9635531,
+     40.7785396
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7785396,
+    "lon": -73.9635531,
+    "site": "fifthAve",
+    "lmId": "ae10f98babf20c1b3fdc46da0b5558c7",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9642802,
+     40.7788879
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 5,
+    "floorName": "Floor 5",
+    "lat": 40.7788879,
+    "lon": -73.9642802,
+    "site": "fifthAve",
+    "lmId": "d0f7f9d4a20462a622e76e0177397c58",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9632562,
+     40.7783738
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7783738,
+    "lon": -73.9632562,
+    "site": "fifthAve",
+    "lmId": "33a348445372db06cff23d25db977e1e",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9631564,
+     40.7803444
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7803444,
+    "lon": -73.9631564,
+    "site": "fifthAve",
+    "lmId": "b9dda329a73376b9190aa3d6ce14e236",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9643898,
+     40.7787264
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 4,
+    "floorName": "Floor 4",
+    "lat": 40.7787264,
+    "lon": -73.9643898,
+    "site": "fifthAve",
+    "lmId": "3959ce8af17761c2ae991e14e2ceda7c",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9639374,
+     40.7797639
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7797639,
+    "lon": -73.9639374,
+    "site": "fifthAve",
+    "lmId": "0e3d44ef30e1b3d038e8d70f7a326d5a",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.963244,
+     40.7783905
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7783905,
+    "lon": -73.963244,
+    "site": "fifthAve",
+    "lmId": "f93b26acb8a71f9bd57fbc50fdb749c5",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9643826,
+     40.7787233
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7787233,
+    "lon": -73.9643826,
+    "site": "fifthAve",
+    "lmId": "51e7e3bd4eb4a3ad5865c862abba05b8",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9635742,
+     40.7785485
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7785485,
+    "lon": -73.9635742,
+    "site": "fifthAve",
+    "lmId": "21c358d9df195002971d73c818024ac7",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9642711,
+     40.7788911
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7788911,
+    "lon": -73.9642711,
+    "site": "fifthAve",
+    "lmId": "fc95f156585941869edf470a625d853a",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9640785,
+     40.7795704
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7795704,
+    "lon": -73.9640785,
+    "site": "fifthAve",
+    "lmId": "f9432ff171a155d27abe54dbca5d009c",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9635859,
+     40.7798752
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7798752,
+    "lon": -73.9635859,
+    "site": "fifthAve",
+    "lmId": "0b149cc30f60b7e0f1b801303d72a0f0",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9638225,
+     40.7781734
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7781734,
+    "lon": -73.9638225,
+    "site": "fifthAve",
+    "lmId": "691b84308a751a4d39bf16045938ad72",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9644059,
+     40.7787043
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 4,
+    "floorName": "Floor 4",
+    "lat": 40.7787043,
+    "lon": -73.9644059,
+    "site": "fifthAve",
+    "lmId": "9c97a82188a6bb25960d7a345beb82fe",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9638225,
+     40.7781734
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7781734,
+    "lon": -73.9638225,
+    "site": "fifthAve",
+    "lmId": "a2860617b53fd15feedecffac65a0323",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.963244,
+     40.7783905
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7783905,
+    "lon": -73.963244,
+    "site": "fifthAve",
+    "lmId": "21bf16826a70a4b5481e0b8b388aebae",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9638165,
+     40.7781709
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1.5,
+    "floorName": "Floor 1M",
+    "lat": 40.7781709,
+    "lon": -73.9638165,
+    "site": "fifthAve",
+    "lmId": "2529cfbbed4681f6a37f0c812cbc324a",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9622892,
+     40.7799653
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7799653,
+    "lon": -73.9622892,
+    "site": "fifthAve",
+    "lmId": "b624804abcb8fda5cb2f88de74aae9ac",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9643987,
+     40.7787013
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7787013,
+    "lon": -73.9643987,
+    "site": "fifthAve",
+    "lmId": "90ce12513215715e19cc22156e9f8b4c",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9632562,
+     40.7783738
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7783738,
+    "lon": -73.9632562,
+    "site": "fifthAve",
+    "lmId": "80efb0357a1cdbe73c0d456422df53ad",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9642573,
+     40.7789194
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 4,
+    "floorName": "Floor 4",
+    "lat": 40.7789194,
+    "lon": -73.9642573,
+    "site": "fifthAve",
+    "lmId": "47c545793644243281516fe3104ca84f",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9622892,
+     40.7799653
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7799653,
+    "lon": -73.9622892,
+    "site": "fifthAve",
+    "lmId": "ec44196958a8fef9e711406f760d7873",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9637932,
+     40.7782135
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7782135,
+    "lon": -73.9637932,
+    "site": "fifthAve",
+    "lmId": "53d22f538b68331814e78ec359d9d041",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9631564,
+     40.7803444
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1.5,
+    "floorName": "Floor 1M",
+    "lat": 40.7803444,
+    "lon": -73.9631564,
+    "site": "fifthAve",
+    "lmId": "4ee511b4a5a377477e412b21d50280fc",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9642581,
+     40.7789182
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 5,
+    "floorName": "Floor 5",
+    "lat": 40.7789182,
+    "lon": -73.9642581,
+    "site": "fifthAve",
+    "lmId": "84bfb56ed5e735c7055b98da8193d84e",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9628408,
+     40.7802021
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7802021,
+    "lon": -73.9628408,
+    "site": "fifthAve",
+    "lmId": "f4392c4ee06972938f2f07978e6d60fc",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9642543,
+     40.7789141
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7789141,
+    "lon": -73.9642543,
+    "site": "fifthAve",
+    "lmId": "87550f3d02ec2d9614b24e792440c600",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9628659,
+     40.7794821
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7794821,
+    "lon": -73.9628659,
+    "site": "fifthAve",
+    "lmId": "11fa08211231b08a752ca4e9bf6ccaf4",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9639312,
+     40.7797723
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7797723,
+    "lon": -73.9639312,
+    "site": "fifthAve",
+    "lmId": "bf694be799d3e25fbf6b30f33bef47da",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9628408,
+     40.7802021
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7802021,
+    "lon": -73.9628408,
+    "site": "fifthAve",
+    "lmId": "71dfebfdf5fa664e2af62caaaee3c37e",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9635742,
+     40.7785485
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": "Elevator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7785485,
+    "lon": -73.9635742,
+    "site": "fifthAve",
+    "lmId": "db4d7bfdd7b1644096ffb9a75631b9ea",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9629666,
+     40.7791891
+    ]
+   },
+   "properties": {
+    "kind": "dining",
+    "name": "Great Hall Balcony Cafe",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7791891,
+    "lon": -73.9629666,
+    "site": "fifthAve",
+    "lmId": "fe55904f6b6b6a5b1bf78ded4755f5aa",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9633389,
+     40.7800301
+    ]
+   },
+   "properties": {
+    "kind": "information",
+    "name": "Information desk",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7800301,
+    "lon": -73.9633389,
+    "site": "fifthAve",
+    "lmId": "18d043ba0315a774f227a65d722c568e",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9632898,
+     40.7784362
+    ]
+   },
+   "properties": {
+    "kind": "information",
+    "name": "Information desk",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7784362,
+    "lon": -73.9632898,
+    "site": "fifthAve",
+    "lmId": "7446760cdc6fa012f1caa6336c400ea1",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9633279,
+     40.7784526
+    ]
+   },
+   "properties": {
+    "kind": "information",
+    "name": "Information desk",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7784526,
+    "lon": -73.9633279,
+    "site": "fifthAve",
+    "lmId": "fd96584e6e9fe2da842bc971220839db",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9642433,
+     40.7788324
+    ]
+   },
+   "properties": {
+    "kind": "information",
+    "name": "Information desk",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7788324,
+    "lon": -73.9642433,
+    "site": "fifthAve",
+    "lmId": "ab5ceb4024023f72dd12a9daa4fc0c10",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9627465,
+     40.7795577
+    ]
+   },
+   "properties": {
+    "kind": "information",
+    "name": "Information desk",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7795577,
+    "lon": -73.9627465,
+    "site": "fifthAve",
+    "lmId": "5bdd059fa023f63c905b6ecffd5b4492",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9628054,
+     40.779166
+    ]
+   },
+   "properties": {
+    "kind": "information",
+    "name": "Information desk",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.779166,
+    "lon": -73.9628054,
+    "site": "fifthAve",
+    "lmId": "f9b10b176cf6c27ae7196c14d96f9431",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9315899,
+     40.864972
+    ]
+   },
+   "properties": {
+    "kind": "information",
+    "name": "Information desk",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.864972,
+    "lon": -73.9315899,
+    "site": "cloisters",
+    "lmId": "b22556ed6b9de82cb89e22629b2eda16",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.963785,
+     40.7794612
+    ]
+   },
+   "properties": {
+    "kind": "information",
+    "name": "Information desk",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7794612,
+    "lon": -73.963785,
+    "site": "fifthAve",
+    "lmId": "0fcd9ca3da388c0cff35dca47b4d9b60",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9633601,
+     40.7793331
+    ]
+   },
+   "properties": {
+    "kind": "information",
+    "name": "Information desk",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7793331,
+    "lon": -73.9633601,
+    "site": "fifthAve",
+    "lmId": "d571a691d80c6aae899a845d4f26750e",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9641889,
+     40.7789529
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": "Lactation Room",
+    "floor": 4,
+    "floorName": "Floor 4",
+    "lat": 40.7789529,
+    "lon": -73.9641889,
+    "site": "fifthAve",
+    "lmId": "01d1e1e533f00dcc0978ffcded779c09",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9640373,
+     40.7798207
+    ]
+   },
+   "properties": {
+    "kind": "dining",
+    "name": "Lehman Cafe Cart",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7798207,
+    "lon": -73.9640373,
+    "site": "fifthAve",
+    "lmId": "ef4c44f4a2d19083415b250b19e69602",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9645648,
+     40.7786908
+    ]
+   },
+   "properties": {
+    "kind": "dining",
+    "name": "Patrons Lounge",
+    "floor": 4,
+    "floorName": "Floor 4",
+    "lat": 40.7786908,
+    "lon": -73.9645648,
+    "site": "fifthAve",
+    "lmId": "251c85443b99b13c99406668c67960b7",
+    "closed": true
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9645075,
+     40.779045
+    ]
+   },
+   "properties": {
+    "kind": "dining",
+    "name": "Petrie Court Cafe",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.779045,
+    "lon": -73.9645075,
+    "site": "fifthAve",
+    "lmId": "bdae78625d1684605f4662d85f15f6b1",
+    "closed": true
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9630355,
+     40.7805563
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": "Restroom",
+    "floor": 1.5,
+    "floorName": "Floor 1M",
+    "lat": 40.7805563,
+    "lon": -73.9630355,
+    "site": "fifthAve",
+    "lmId": "3a85ea42a9cf4efe4d2a1ba9cffc522b",
+    "closed": true
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9316757,
+     40.8651107
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": "Restroom",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.8651107,
+    "lon": -73.9316757,
+    "site": "cloisters",
+    "lmId": "de7534117bc80c80e1d9678538d1fd21",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9643107,
+     40.7788219
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": "Restroom",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7788219,
+    "lon": -73.9643107,
+    "site": "fifthAve",
+    "lmId": "5b62fae162c8f8b4947e5f0e68394d5a",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9643107,
+     40.7788219
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": "Restroom",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7788219,
+    "lon": -73.9643107,
+    "site": "fifthAve",
+    "lmId": "8a6b5d6c43921f9e3402ae632e5d70fb",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.931178,
+     40.8653265
+    ]
+   },
+   "properties": {
+    "kind": "entrance",
+    "name": "Shuttle to Accessible Entrance",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.8653265,
+    "lon": -73.931178,
+    "site": "cloisters",
+    "lmId": "dda42059749979da785f6559a5795a7b",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9630452,
+     40.7794209
+    ]
+   },
+   "properties": {
+    "kind": "dining",
+    "name": "The Balcony Lounge",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7794209,
+    "lon": -73.9630452,
+    "site": "fifthAve",
+    "lmId": "5405a2e7400188281f3e2e9776cbfbf5",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9637033,
+     40.7795443
+    ]
+   },
+   "properties": {
+    "kind": "dining",
+    "name": "The Eatery",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7795443,
+    "lon": -73.9637033,
+    "site": "fifthAve",
+    "lmId": "e14c3b66441dfb902f4588af1462afa6",
+    "closed": true
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9631497,
+     40.779115
+    ]
+   },
+   "properties": {
+    "kind": "escalator",
+    "name": "The Great Hall Escalator",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.779115,
+    "lon": -73.9631497,
+    "site": "fifthAve",
+    "lmId": "7ff7782f604412a3a4e0349cb41f738d",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9644005,
+     40.7788804
+    ]
+   },
+   "properties": {
+    "kind": "dining",
+    "name": "The Iris and B.Gerald Cantor Roof Garden Bar",
+    "floor": 5,
+    "floorName": "Floor 5",
+    "lat": 40.7788804,
+    "lon": -73.9644005,
+    "site": "fifthAve",
+    "lmId": "31e305b4e98639f6dd5fea2fcb0d1f75",
+    "closed": true
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9633142,
+     40.7785616
+    ]
+   },
+   "properties": {
+    "kind": "shop",
+    "name": "The Met Store",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7785616,
+    "lon": -73.9633142,
+    "site": "fifthAve",
+    "lmId": "748c6b7e9feed71f00c6509f98ad8fed",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.931579,
+     40.8650468
+    ]
+   },
+   "properties": {
+    "kind": "shop",
+    "name": "The Met Store",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.8650468,
+    "lon": -73.931579,
+    "site": "cloisters",
+    "lmId": "323bf219d1bcd365d518b379c6e5d9c6",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9631036,
+     40.7804088
+    ]
+   },
+   "properties": {
+    "kind": "shop",
+    "name": "The Met Store: American Wing",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7804088,
+    "lon": -73.9631036,
+    "site": "fifthAve",
+    "lmId": "4bbfcf264859cbd8b200032f2b040e7e",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9643238,
+     40.7786927
+    ]
+   },
+   "properties": {
+    "kind": "shop",
+    "name": "The Met Store: Michael C. Rockefeller Wing",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7786927,
+    "lon": -73.9643238,
+    "site": "fifthAve",
+    "lmId": "7dad16793e47f176aa30f5bf7bcd83fb",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9632044,
+     40.7795145
+    ]
+   },
+   "properties": {
+    "kind": "shop",
+    "name": "The Met Store: Second Floor Fifth Avenue",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7795145,
+    "lon": -73.9632044,
+    "site": "fifthAve",
+    "lmId": "597f8cad48a25165259cd8064dd778e2",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9643604,
+     40.7786498
+    ]
+   },
+   "properties": {
+    "kind": "shop",
+    "name": "The Met Store: Special Exhibitions",
+    "floor": 2,
+    "floorName": "Floor 2",
+    "lat": 40.7786498,
+    "lon": -73.9643604,
+    "site": "fifthAve",
+    "lmId": "6f8b8c16d5722ce5da841a11125fb864",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9316072,
+     40.8649363
+    ]
+   },
+   "properties": {
+    "kind": "tickets",
+    "name": "Ticket desk",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.8649363,
+    "lon": -73.9316072,
+    "site": "cloisters",
+    "lmId": "7f5da57284cffd9091511674cbd6b465",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9633698,
+     40.7783895
+    ]
+   },
+   "properties": {
+    "kind": "tickets",
+    "name": "Ticket desk",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7783895,
+    "lon": -73.9633698,
+    "site": "fifthAve",
+    "lmId": "4978e99556848b2d46f2a072813d5d37",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9632788,
+     40.7783255
+    ]
+   },
+   "properties": {
+    "kind": "tickets",
+    "name": "Ticket desk",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7783255,
+    "lon": -73.9632788,
+    "site": "fifthAve",
+    "lmId": "2abac39b146d433420872a27810c6d82",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9630975,
+     40.7790668
+    ]
+   },
+   "properties": {
+    "kind": "tickets",
+    "name": "Ticket desk",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7790668,
+    "lon": -73.9630975,
+    "site": "fifthAve",
+    "lmId": "7211dc0a436e6c3d65227670004d60af",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9317179,
+     40.8645913
+    ]
+   },
+   "properties": {
+    "kind": "dining",
+    "name": "Trie Cafe",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.8645913,
+    "lon": -73.9317179,
+    "site": "cloisters",
+    "lmId": "aa1d936f9e52faffc57b8be531a2d5ce",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9635197,
+     40.7781561
+    ]
+   },
+   "properties": {
+    "kind": "water",
+    "name": "Water Fountain",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7781561,
+    "lon": -73.9635197,
+    "site": "fifthAve",
+    "lmId": "4bdaaf59e3d37ac18e230cc187d99a0e",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9640437,
+     40.7793709
+    ]
+   },
+   "properties": {
+    "kind": "water",
+    "name": "Water Fountain",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7793709,
+    "lon": -73.9640437,
+    "site": "fifthAve",
+    "lmId": "4c8bf029870bcbb619a383389fc59871",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9640073,
+     40.7797188
+    ]
+   },
+   "properties": {
+    "kind": "water",
+    "name": "Water Fountain",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7797188,
+    "lon": -73.9640073,
+    "site": "fifthAve",
+    "lmId": "148f366935402e20047d8883460d59e7",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.963409,
+     40.7786083
+    ]
+   },
+   "properties": {
+    "kind": "water",
+    "name": "Water Fountain",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.7786083,
+    "lon": -73.963409,
+    "site": "fifthAve",
+    "lmId": "d148ddb23a2b05cf9608f38685be4e3e",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9623997,
+     40.7800871
+    ]
+   },
+   "properties": {
+    "kind": "water",
+    "name": "Water Fountain",
+    "floor": 1,
+    "floorName": "Floor 1",
+    "lat": 40.7800871,
+    "lon": -73.9623997,
+    "site": "fifthAve",
+    "lmId": "2605e9cdb24e24136b4ce32721c26581",
+    "closed": true
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9630091,
+     40.7805925
+    ]
+   },
+   "properties": {
+    "kind": "water",
+    "name": "Water Fountain",
+    "floor": 1.5,
+    "floorName": "Floor 1M",
+    "lat": 40.7805925,
+    "lon": -73.9630091,
+    "site": "fifthAve",
+    "lmId": "464d89d97398aff41e21a161562aa59d",
+    "closed": true
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -73.9316414,
+     40.8650336
+    ]
+   },
+   "properties": {
+    "kind": "water",
+    "name": "Water Fountain",
+    "floor": 0,
+    "floorName": "Floor G",
+    "lat": 40.8650336,
+    "lon": -73.9316414,
+    "site": "cloisters",
+    "lmId": "478687d389024ac20bcb787e34169b0c",
+    "closed": true
+   }
+  }
+ ]
+}

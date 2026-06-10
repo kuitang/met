@@ -1,0 +1,1 @@
+{"model":"gemini-embedding-2","dims":768,"normalized":true,"shardSize":1024,"count":2,"objects":{"435882":{"shard":0,"offset":0,"title":"Still Life with Apples and a Pot of Primroses","artist":"Paul Cézanne","gallery":"826"},"437853":{"shard":0,"offset":1,"title":"Venice, from the Porch of Madonna della Salute","artist":"Joseph Mallord William Turner","gallery":"808"}}}

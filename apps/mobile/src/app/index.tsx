@@ -1,98 +1,148 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+import FloorMap from '@/components/FloorMap';
+import HomeRoomSheet from '@/components/HomeRoomSheet';
+import { anchorForRoom, setAnchor, useAnchor } from '@/components/LocateState';
+import { Room, useData } from '@/data/provider';
+import { colors, spacing, type } from '@/theme';
 
 export default function HomeScreen() {
+  const data = useData();
+  const anchor = useAnchor();
+  // Deep-link support: `/?room=131` anchors directly (also kept for e2e).
+  const { room: roomParam } = useLocalSearchParams<{ room?: string }>();
+  useEffect(() => {
+    if (!roomParam) return;
+    const room = data.getGallery(roomParam);
+    if (room) setAnchor(anchorForRoom(room, 'gallery'));
+  }, [roomParam, data]);
+
+  const [selected, setSelected] = useState<Room | undefined>();
+  const [floor, setFloor] = useState(1);
+
+  // Follow the anchor's floor when it changes (e.g. set via the Locate sheet).
+  useEffect(() => {
+    if (anchor?.floor !== undefined) setFloor(anchor.floor);
+  }, [anchor]);
+
+  const highlightId = selected?.id ?? anchor?.roomId;
+
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <SafeAreaView style={styles.safe} edges={['top']}>
+      <View style={styles.mapFill}>
+        <FloorMap
+          floor={floor}
+          onFloorChange={setFloor}
+          highlightId={highlightId}
+          onRoomPress={setSelected}
+        />
+      </View>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+      <View style={styles.topOverlay} pointerEvents="box-none">
+        <View style={styles.header}>
+          <Text style={styles.wordmark}>The Met</Text>
+          <Text style={styles.headerLabel}>Navigator</Text>
+        </View>
+        <Pressable
+          style={styles.searchBar}
+          onPress={() => router.push('/search')}
+          testID="home-search-bar"
+        >
+          <Text style={styles.searchPlaceholder}>Search art, artists, galleries…</Text>
+        </Pressable>
+      </View>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
+      <View style={styles.bottomOverlay} pointerEvents="box-none">
+        <Pressable
+          style={[styles.locateChip, !anchor && styles.locateChipUnknown]}
+          onPress={() => router.push('/locate')}
+          testID="locate-chip"
+        >
+          <Text style={styles.locateChipText}>
+            {anchor ? anchor.label : 'Location unknown — tap to set'}
+          </Text>
+        </Pressable>
+
+        {selected && (
+          <HomeRoomSheet
+            room={selected}
+            objects={data.objectsInGallery(selected.id)}
+            originId={anchor?.roomId ?? 'great-hall'}
+            onClose={() => setSelected(undefined)}
           />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+        )}
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safe: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: colors.background,
+  },
+  mapFill: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  topOverlay: {
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.md,
+    gap: spacing.sm,
+  },
+  header: {
     flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: spacing.sm,
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
+  wordmark: {
+    ...type.display,
+    fontSize: 28,
+    lineHeight: 34,
     textTransform: 'uppercase',
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+  headerLabel: {
+    ...type.label,
+    color: colors.red,
+  },
+  searchBar: {
+    // Leave the right edge clear for the FloorMap floor chips underneath.
+    marginRight: 48,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.ink,
+    backgroundColor: colors.white,
+  },
+  searchPlaceholder: {
+    ...type.body,
+    color: colors.inkFaint,
+  },
+  bottomOverlay: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  locateChip: {
+    alignSelf: 'flex-start',
+    marginLeft: spacing.lg,
+    marginBottom: spacing.md,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    backgroundColor: colors.ink,
+  },
+  locateChipUnknown: {
+    backgroundColor: colors.red,
+  },
+  locateChipText: {
+    ...type.label,
+    color: colors.white,
   },
 });

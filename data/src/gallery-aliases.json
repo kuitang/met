@@ -1,0 +1,19 @@
+{
+  "_comment": "Manual mappings: Met API GalleryNumber -> Living Map polygon (matched against the polygon's galleryNumber, falling back to its `name`). Site is authoritative when it disagrees with the object row (the objects pipeline keys site off department === 'The Cloisters', but the merged department is named 'Medieval Art and The Cloisters', so Cloisters objects can arrive site=fifthAve). Plain zero-padded Cloisters numbers (e.g. '010' -> '10') are handled by a generic rule in evals.ts, not listed here.",
+  "964": { "site": "fifthAve", "polygon": "Exhibition Galleries 964 & 965" },
+  "965": { "site": "fifthAve", "polygon": "Exhibition Galleries 964 & 965" },
+  "999": { "site": "fifthAve", "polygon": "Exhibition Galleries 999" },
+  "899": { "site": "fifthAve", "polygon": "Exhibition Galleries 899" },
+  "099": { "site": "fifthAve", "polygon": "Exhibition Gallery 099" },
+  "199": { "site": "fifthAve", "polygon": "Exhibition Gallery 199" },
+  "746": {
+    "site": "fifthAve",
+    "polygon": "746 North",
+    "note": "Living Map splits 746 into '746 North'/'746 South'; the API says just '746'. North chosen as the anchor (Diker Collection main room) — room-level ambiguity of one wall."
+  },
+  "Petrie Ct. Café": {
+    "site": "fifthAve",
+    "polygon": "Petrie Court Cafe",
+    "note": "Sculpture displayed inside the café; the polygon is type=restaurant so it carries no galleryNumber, matched by name."
+  }
+}

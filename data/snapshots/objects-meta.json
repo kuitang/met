@@ -1,0 +1,20 @@
+{
+  "fetchedAt": "2026-06-10T02:39:08.464Z",
+  "searchTotalOnView": 45502,
+  "searchTotalWithImages": 34027,
+  "hydrated": 120,
+  "rows": 120,
+  "skipped": {
+    "noGallery": 0,
+    "notFound": 0
+  },
+  "bySite": {
+    "fifthAve": 120
+  },
+  "byRotation": {
+    "permanent": 120
+  },
+  "floorUnknown": null,
+  "distinctGalleryNumbers": 52,
+  "runtimeSeconds": 126
+}

@@ -1,0 +1,1739 @@
+{
+ "_comment": "STUB DATA for the Gate A mockup. Geometry is hand-drawn schematic rectangles (NOT real Met floor plans); real Living Map geometry replaces this in Phase 2. Objects are 79 real Met Open Access records (16 curated planning-bench objects + 63 enriched from the Met API on 2026-06-10; the 3 Monets carry no image because the Met flags them isPublicDomain=false).",
+ "floors": [
+  1,
+  2
+ ],
+ "rooms": [
+  {
+   "id": "171",
+   "name": "Gallery 171 · Greek and Roman Art",
+   "floor": 1,
+   "kind": "gallery",
+   "rect": [
+    10,
+    10,
+    20,
+    25
+   ]
+  },
+  {
+   "id": "164",
+   "name": "Gallery 164 · Greek and Roman Art",
+   "floor": 1,
+   "kind": "gallery",
+   "rect": [
+    30,
+    10,
+    20,
+    25
+   ]
+  },
+  {
+   "id": "great-hall",
+   "name": "The Great Hall",
+   "floor": 1,
+   "kind": "hall",
+   "rect": [
+    50,
+    10,
+    30,
+    25
+   ]
+  },
+  {
+   "id": "130",
+   "name": "Gallery 130 · Egyptian Art",
+   "floor": 1,
+   "kind": "gallery",
+   "rect": [
+    80,
+    10,
+    20,
+    25
+   ]
+  },
+  {
+   "id": "131",
+   "name": "Gallery 131 · The Temple of Dendur",
+   "floor": 1,
+   "kind": "gallery",
+   "rect": [
+    100,
+    0,
+    20,
+    45
+   ]
+  },
+  {
+   "id": "stairs-1",
+   "name": "Grand Staircase",
+   "floor": 1,
+   "kind": "stairs",
+   "rect": [
+    52,
+    35,
+    8,
+    10
+   ]
+  },
+  {
+   "id": "elevator-1",
+   "name": "Elevator",
+   "floor": 1,
+   "kind": "elevator",
+   "rect": [
+    62,
+    35,
+    6,
+    10
+   ]
+  },
+  {
+   "id": "restroom-1",
+   "name": "Restrooms",
+   "floor": 1,
+   "kind": "restroom",
+   "rect": [
+    70,
+    35,
+    8,
+    10
+   ]
+  },
+  {
+   "id": "375",
+   "name": "Gallery 375 · Arms and Armor",
+   "floor": 1,
+   "kind": "gallery",
+   "rect": [
+    10,
+    45,
+    20,
+    25
+   ]
+  },
+  {
+   "id": "379",
+   "name": "Gallery 379 · Arms and Armor",
+   "floor": 1,
+   "kind": "gallery",
+   "rect": [
+    30,
+    45,
+    20,
+    25
+   ]
+  },
+  {
+   "id": "371",
+   "name": "Gallery 371 · Arms and Armor",
+   "floor": 1,
+   "kind": "gallery",
+   "rect": [
+    50,
+    45,
+    20,
+    25
+   ]
+  },
+  {
+   "id": "301",
+   "name": "Gallery 301 · Medieval Art",
+   "floor": 1,
+   "kind": "gallery",
+   "rect": [
+    70,
+    45,
+    20,
+    25
+   ]
+  },
+  {
+   "id": "303",
+   "name": "Gallery 303 · Medieval Art",
+   "floor": 1,
+   "kind": "gallery",
+   "rect": [
+    90,
+    45,
+    20,
+    25
+   ]
+  },
+  {
+   "id": "202",
+   "name": "Gallery 202 · Asian Art",
+   "floor": 2,
+   "kind": "gallery",
+   "rect": [
+    10,
+    10,
+    20,
+    25
+   ]
+  },
+  {
+   "id": "207",
+   "name": "Gallery 207 · Asian Art",
+   "floor": 2,
+   "kind": "gallery",
+   "rect": [
+    30,
+    10,
+    20,
+    25
+   ]
+  },
+  {
+   "id": "800",
+   "name": "Gallery 800 · European Paintings Landing",
+   "floor": 2,
+   "kind": "gallery",
+   "rect": [
+    50,
+    10,
+    30,
+    25
+   ]
+  },
+  {
+   "id": "220",
+   "name": "Gallery 220 · Asian Art",
+   "floor": 2,
+   "kind": "gallery",
+   "rect": [
+    80,
+    10,
+    20,
+    25
+   ]
+  },
+  {
+   "id": "242",
+   "name": "Gallery 242 · Asian Art",
+   "floor": 2,
+   "kind": "gallery",
+   "rect": [
+    100,
+    10,
+    20,
+    25
+   ]
+  },
+  {
+   "id": "stairs-2",
+   "name": "Grand Staircase",
+   "floor": 2,
+   "kind": "stairs",
+   "rect": [
+    52,
+    35,
+    8,
+    10
+   ]
+  },
+  {
+   "id": "elevator-2",
+   "name": "Elevator",
+   "floor": 2,
+   "kind": "elevator",
+   "rect": [
+    62,
+    35,
+    6,
+    10
+   ]
+  },
+  {
+   "id": "restroom-2",
+   "name": "Restrooms",
+   "floor": 2,
+   "kind": "restroom",
+   "rect": [
+    70,
+    35,
+    8,
+    10
+   ]
+  },
+  {
+   "id": "760",
+   "name": "Gallery 760 · The American Wing",
+   "floor": 2,
+   "kind": "gallery",
+   "rect": [
+    10,
+    45,
+    18,
+    25
+   ]
+  },
+  {
+   "id": "761",
+   "name": "Gallery 761 · The American Wing",
+   "floor": 2,
+   "kind": "gallery",
+   "rect": [
+    28,
+    45,
+    18,
+    25
+   ]
+  },
+  {
+   "id": "802",
+   "name": "Gallery 802 · European Paintings",
+   "floor": 2,
+   "kind": "gallery",
+   "rect": [
+    46,
+    45,
+    18,
+    25
+   ]
+  },
+  {
+   "id": "808",
+   "name": "Gallery 808 · European Paintings",
+   "floor": 2,
+   "kind": "gallery",
+   "rect": [
+    64,
+    45,
+    18,
+    25
+   ]
+  },
+  {
+   "id": "810",
+   "name": "Gallery 810 · European Paintings",
+   "floor": 2,
+   "kind": "gallery",
+   "rect": [
+    82,
+    45,
+    14,
+    25
+   ]
+  },
+  {
+   "id": "822",
+   "name": "Gallery 822 · European Paintings (Van Gogh)",
+   "floor": 2,
+   "kind": "gallery",
+   "rect": [
+    96,
+    45,
+    14,
+    25
+   ]
+  },
+  {
+   "id": "823",
+   "name": "Gallery 823 · European Paintings",
+   "floor": 2,
+   "kind": "gallery",
+   "rect": [
+    110,
+    45,
+    10,
+    13
+   ]
+  },
+  {
+   "id": "826",
+   "name": "Gallery 826 · European Paintings",
+   "floor": 2,
+   "kind": "gallery",
+   "rect": [
+    110,
+    58,
+    10,
+    12
+   ]
+  }
+ ],
+ "nodes": [
+  {
+   "id": "171",
+   "floor": 1,
+   "x": 20,
+   "y": 22.5
+  },
+  {
+   "id": "164",
+   "floor": 1,
+   "x": 40,
+   "y": 22.5
+  },
+  {
+   "id": "great-hall",
+   "floor": 1,
+   "x": 65,
+   "y": 22.5
+  },
+  {
+   "id": "130",
+   "floor": 1,
+   "x": 90,
+   "y": 22.5
+  },
+  {
+   "id": "131",
+   "floor": 1,
+   "x": 110,
+   "y": 22.5
+  },
+  {
+   "id": "stairs-1",
+   "floor": 1,
+   "x": 56,
+   "y": 40
+  },
+  {
+   "id": "elevator-1",
+   "floor": 1,
+   "x": 65,
+   "y": 40
+  },
+  {
+   "id": "restroom-1",
+   "floor": 1,
+   "x": 74,
+   "y": 40
+  },
+  {
+   "id": "375",
+   "floor": 1,
+   "x": 20,
+   "y": 57.5
+  },
+  {
+   "id": "379",
+   "floor": 1,
+   "x": 40,
+   "y": 57.5
+  },
+  {
+   "id": "371",
+   "floor": 1,
+   "x": 60,
+   "y": 57.5
+  },
+  {
+   "id": "301",
+   "floor": 1,
+   "x": 80,
+   "y": 57.5
+  },
+  {
+   "id": "303",
+   "floor": 1,
+   "x": 100,
+   "y": 57.5
+  },
+  {
+   "id": "202",
+   "floor": 2,
+   "x": 20,
+   "y": 22.5
+  },
+  {
+   "id": "207",
+   "floor": 2,
+   "x": 40,
+   "y": 22.5
+  },
+  {
+   "id": "800",
+   "floor": 2,
+   "x": 65,
+   "y": 22.5
+  },
+  {
+   "id": "220",
+   "floor": 2,
+   "x": 90,
+   "y": 22.5
+  },
+  {
+   "id": "242",
+   "floor": 2,
+   "x": 110,
+   "y": 22.5
+  },
+  {
+   "id": "stairs-2",
+   "floor": 2,
+   "x": 56,
+   "y": 40
+  },
+  {
+   "id": "elevator-2",
+   "floor": 2,
+   "x": 65,
+   "y": 40
+  },
+  {
+   "id": "restroom-2",
+   "floor": 2,
+   "x": 74,
+   "y": 40
+  },
+  {
+   "id": "760",
+   "floor": 2,
+   "x": 19,
+   "y": 57.5
+  },
+  {
+   "id": "761",
+   "floor": 2,
+   "x": 37,
+   "y": 57.5
+  },
+  {
+   "id": "802",
+   "floor": 2,
+   "x": 55,
+   "y": 57.5
+  },
+  {
+   "id": "808",
+   "floor": 2,
+   "x": 73,
+   "y": 57.5
+  },
+  {
+   "id": "810",
+   "floor": 2,
+   "x": 89,
+   "y": 57.5
+  },
+  {
+   "id": "822",
+   "floor": 2,
+   "x": 103,
+   "y": 57.5
+  },
+  {
+   "id": "823",
+   "floor": 2,
+   "x": 115,
+   "y": 51.5
+  },
+  {
+   "id": "826",
+   "floor": 2,
+   "x": 115,
+   "y": 64
+  }
+ ],
+ "edges": [
+  {
+   "a": "171",
+   "b": "164",
+   "kind": "walk"
+  },
+  {
+   "a": "164",
+   "b": "great-hall",
+   "kind": "walk"
+  },
+  {
+   "a": "great-hall",
+   "b": "130",
+   "kind": "walk"
+  },
+  {
+   "a": "130",
+   "b": "131",
+   "kind": "walk"
+  },
+  {
+   "a": "great-hall",
+   "b": "stairs-1",
+   "kind": "walk"
+  },
+  {
+   "a": "great-hall",
+   "b": "elevator-1",
+   "kind": "walk"
+  },
+  {
+   "a": "great-hall",
+   "b": "restroom-1",
+   "kind": "walk"
+  },
+  {
+   "a": "stairs-1",
+   "b": "371",
+   "kind": "walk"
+  },
+  {
+   "a": "elevator-1",
+   "b": "371",
+   "kind": "walk"
+  },
+  {
+   "a": "restroom-1",
+   "b": "301",
+   "kind": "walk"
+  },
+  {
+   "a": "375",
+   "b": "379",
+   "kind": "walk"
+  },
+  {
+   "a": "379",
+   "b": "371",
+   "kind": "walk"
+  },
+  {
+   "a": "371",
+   "b": "301",
+   "kind": "walk"
+  },
+  {
+   "a": "301",
+   "b": "303",
+   "kind": "walk"
+  },
+  {
+   "a": "303",
+   "b": "131",
+   "kind": "walk"
+  },
+  {
+   "a": "202",
+   "b": "207",
+   "kind": "walk"
+  },
+  {
+   "a": "207",
+   "b": "800",
+   "kind": "walk"
+  },
+  {
+   "a": "800",
+   "b": "220",
+   "kind": "walk"
+  },
+  {
+   "a": "220",
+   "b": "242",
+   "kind": "walk"
+  },
+  {
+   "a": "800",
+   "b": "stairs-2",
+   "kind": "walk"
+  },
+  {
+   "a": "800",
+   "b": "elevator-2",
+   "kind": "walk"
+  },
+  {
+   "a": "800",
+   "b": "restroom-2",
+   "kind": "walk"
+  },
+  {
+   "a": "stairs-2",
+   "b": "802",
+   "kind": "walk"
+  },
+  {
+   "a": "elevator-2",
+   "b": "802",
+   "kind": "walk"
+  },
+  {
+   "a": "restroom-2",
+   "b": "808",
+   "kind": "walk"
+  },
+  {
+   "a": "760",
+   "b": "761",
+   "kind": "walk"
+  },
+  {
+   "a": "761",
+   "b": "802",
+   "kind": "walk"
+  },
+  {
+   "a": "802",
+   "b": "808",
+   "kind": "walk"
+  },
+  {
+   "a": "808",
+   "b": "810",
+   "kind": "walk"
+  },
+  {
+   "a": "810",
+   "b": "822",
+   "kind": "walk"
+  },
+  {
+   "a": "822",
+   "b": "823",
+   "kind": "walk"
+  },
+  {
+   "a": "822",
+   "b": "826",
+   "kind": "walk"
+  },
+  {
+   "a": "823",
+   "b": "826",
+   "kind": "walk"
+  },
+  {
+   "a": "stairs-1",
+   "b": "stairs-2",
+   "kind": "stairs"
+  },
+  {
+   "a": "elevator-1",
+   "b": "elevator-2",
+   "kind": "elevator"
+  }
+ ],
+ "objects": [
+  {
+   "objectID": 438008,
+   "title": "Water Lilies",
+   "artist": "Claude Monet",
+   "date": "1919",
+   "medium": "Oil on canvas",
+   "accession": "1998.325.2",
+   "gallery": "822",
+   "dept": "European Paintings",
+   "credit": "The Walter H. and Leonore Annenberg Collection, Gift of Walter H. and Leonore Annenberg, 1998, Bequest of Walter H. Annenberg, 2002",
+   "isHighlight": false,
+   "img": ""
+  },
+  {
+   "objectID": 437133,
+   "title": "Garden at Sainte-Adresse",
+   "artist": "Claude Monet",
+   "date": "1867",
+   "medium": "Oil on canvas",
+   "accession": "67.241",
+   "gallery": "818",
+   "dept": "European Paintings",
+   "credit": "Purchase, special contributions and funds given or bequeathed by friends of the Museum, 1967",
+   "isHighlight": true,
+   "img": ""
+  },
+  {
+   "objectID": 437135,
+   "title": "La Grenouillère",
+   "artist": "Claude Monet",
+   "date": "1869",
+   "medium": "Oil on canvas",
+   "accession": "29.100.112",
+   "gallery": "818",
+   "dept": "European Paintings",
+   "credit": "H. O. Havemeyer Collection, Bequest of Mrs. H. O. Havemeyer, 1929",
+   "isHighlight": false,
+   "img": ""
+  },
+  {
+   "objectID": 436535,
+   "title": "Wheat Field with Cypresses",
+   "artist": "Vincent van Gogh",
+   "date": "1889",
+   "medium": "Oil on canvas",
+   "accession": "1993.132",
+   "gallery": "822",
+   "dept": "European Paintings",
+   "credit": "Purchase, The Annenberg Foundation Gift, 1993",
+   "isHighlight": true,
+   "img": "https://images.metmuseum.org/CRDImages/ep/web-large/DP-42549-001.jpg"
+  },
+  {
+   "objectID": 11417,
+   "title": "Washington Crossing the Delaware",
+   "artist": "Emanuel Leutze",
+   "date": "1851",
+   "medium": "Oil on canvas",
+   "accession": "97.34",
+   "gallery": "760",
+   "dept": "The American Wing",
+   "credit": "Gift of John Stewart Kennedy, 1897",
+   "isHighlight": true,
+   "img": "https://images.metmuseum.org/CRDImages/ad/web-large/DP215410.jpg"
+  },
+  {
+   "objectID": 544442,
+   "title": "Sphinx of Hatshepsut",
+   "artist": "",
+   "date": "ca. 1479–1458 B.C.",
+   "medium": "Granite, paint",
+   "accession": "31.3.166",
+   "gallery": "131",
+   "dept": "Egyptian Art",
+   "credit": "Rogers Fund, 1931",
+   "isHighlight": true,
+   "img": "https://images.metmuseum.org/CRDImages/eg/web-large/DP-24216-003.jpg"
+  },
+  {
+   "objectID": 436121,
+   "title": "A Woman Seated beside a Vase of Flowers (Madame Paul Valpinçon?)",
+   "artist": "Edgar Degas",
+   "date": "1865",
+   "medium": "Oil on canvas",
+   "accession": "29.100.128",
+   "gallery": "810",
+   "dept": "European Paintings",
+   "credit": "H. O. Havemeyer Collection, Bequest of Mrs. H. O. Havemeyer, 1929",
+   "isHighlight": true,
+   "img": "https://images.metmuseum.org/CRDImages/ep/web-large/DP-25460-001.jpg"
+  },
+  {
+   "objectID": 437853,
+   "title": "Venice, from the Porch of Madonna della Salute",
+   "artist": "Joseph Mallord William Turner",
+   "date": "ca. 1835",
+   "medium": "Oil on canvas",
+   "accession": "99.31",
+   "gallery": "808",
+   "dept": "European Paintings",
+   "credit": "Bequest of Cornelius Vanderbilt, 1899",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/ep/web-large/DP169568.jpg"
+  },
+  {
+   "objectID": 435882,
+   "title": "Still Life with Apples and a Pot of Primroses",
+   "artist": "Paul Cézanne",
+   "date": "ca. 1890",
+   "medium": "Oil on canvas",
+   "accession": "51.112.1",
+   "gallery": "826",
+   "dept": "European Paintings",
+   "credit": "Bequest of Sam A. Lewisohn, 1951",
+   "isHighlight": true,
+   "img": "https://images.metmuseum.org/CRDImages/ep/web-large/DT47.jpg"
+  },
+  {
+   "objectID": 24423,
+   "title": "Ceremonial Mace",
+   "artist": "",
+   "date": "18th century",
+   "medium": "Rock crystal, gold, copper alloy, ruby",
+   "accession": "36.25.1884",
+   "gallery": "379",
+   "dept": "Arms and Armor",
+   "credit": "Bequest of George C. Stone, 1935",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/aa/web-large/DP163751.jpg"
+  },
+  {
+   "objectID": 22393,
+   "title": "Powder Flask",
+   "artist": "",
+   "date": "late 16th century",
+   "medium": "Horn, bronze, gold",
+   "accession": "14.25.1509",
+   "gallery": "375",
+   "dept": "Arms and Armor",
+   "credit": "Gift of William H. Riggs, 1913",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/aa/web-large/sfrl14.25.1509_21786.jpg"
+  },
+  {
+   "objectID": 74832,
+   "title": "Buddha Expounding the Dharma",
+   "artist": "",
+   "date": "late 8th century",
+   "medium": "Copper alloy",
+   "accession": "2009.60",
+   "gallery": "242",
+   "dept": "Asian Art",
+   "credit": "Purchase, Harris Brisbane Dick Fund, The Vincent Astor Foundation Gift, Acquisitions and 2008 Benefit Funds, and John St",
+   "isHighlight": true,
+   "img": "https://images.metmuseum.org/CRDImages/as/web-large/DP210601.jpg"
+  },
+  {
+   "objectID": 40681,
+   "title": "Bowl with auspicious symbols",
+   "artist": "",
+   "date": "",
+   "medium": "Cloisonné enamel",
+   "accession": "29.110.18",
+   "gallery": "220",
+   "dept": "Asian Art",
+   "credit": "Gift of Edward G. Kennedy, 1929",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/as/web-large/DP236620.jpg"
+  },
+  {
+   "objectID": 250684,
+   "title": "Bronze statuette of a Lar",
+   "artist": "",
+   "date": "ca. 1st–2nd century CE",
+   "medium": "Bronze",
+   "accession": "18.145.19",
+   "gallery": "171",
+   "dept": "Greek and Roman Art",
+   "credit": "Rogers Fund, 1918",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/gr/web-large/DP20569.jpg"
+  },
+  {
+   "objectID": 252406,
+   "title": "Bronze spatulate knife",
+   "artist": "",
+   "date": "ca. 1600–1450 BCE",
+   "medium": "Bronze",
+   "accession": "26.31.486",
+   "gallery": "171",
+   "dept": "Greek and Roman Art",
+   "credit": "Bequest of Richard B. Seager, 1926",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/gr/web-large/DP20710.jpg"
+  },
+  {
+   "objectID": 473295,
+   "title": "Attachment for a Strap",
+   "artist": "",
+   "date": "100–300",
+   "medium": "Copper alloy",
+   "accession": "2002.483.10",
+   "gallery": "301",
+   "dept": "Medieval Art",
+   "credit": "Gift of Miriam N. Rosen, 2002",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/md/web-large/TR469102000obv.jpg"
+  },
+  {
+   "objectID": 466296,
+   "title": "Tip of a Pointer",
+   "artist": "",
+   "date": "1080–1150",
+   "medium": "Cloisonné enamel, gold",
+   "accession": "1997.235",
+   "gallery": "303",
+   "dept": "Medieval Art",
+   "credit": "Purchase, Louis V. Bell Fund and Henry G. Keasbey Bequest, 1997",
+   "isHighlight": true,
+   "img": "https://images.metmuseum.org/CRDImages/md/web-large/DT122.jpg"
+  },
+  {
+   "objectID": 325329,
+   "title": "Beads",
+   "artist": "",
+   "date": "ca. 9th century BCE",
+   "medium": "Glass",
+   "accession": "61.100.154",
+   "gallery": "202",
+   "dept": "Ancient West Asian Art",
+   "credit": "Purchase, Mrs. Constantine Sidamon-Eristoff Gift, 1961",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/an/web-large/DP-33871-001.jpg"
+  },
+  {
+   "objectID": 324145,
+   "title": "Eye idol",
+   "artist": "",
+   "date": "ca. 3700–3500 BCE",
+   "medium": "Gypsum alabaster",
+   "accession": "51.59.1",
+   "gallery": "202",
+   "dept": "Ancient West Asian Art",
+   "credit": "Gift of The Institute of Archaeology, The University of London, 1951",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/an/web-large/DP224739.jpg"
+  },
+  {
+   "objectID": 437799,
+   "title": "Allegorical Figure Representing Grammar",
+   "artist": "Giovanni Battista Tiepolo",
+   "date": "1760",
+   "medium": "Fresco, transferred to canvas",
+   "accession": "43.85.16",
+   "gallery": "642",
+   "dept": "European Paintings",
+   "credit": "Bequest of Grace Rainey Rogers, 1943",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/ep/web-large/DP287641.jpg"
+  },
+  {
+   "objectID": 822083,
+   "title": "Bindo Altoviti (1491–1557)",
+   "artist": "Francesco Salviati (Francesco de' Rossi)",
+   "date": "ca. 1545",
+   "medium": "Oil on marble",
+   "accession": "2022.460",
+   "gallery": "612",
+   "dept": "European Paintings",
+   "credit": "Gift of the Assadour O. Tavitian Trust, 2022",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/ep/web-large/DP-34698-001.jpg"
+  },
+  {
+   "objectID": 438017,
+   "title": "Henri-Gabriel Ibels (1867–1936)",
+   "artist": "Henri de Toulouse-Lautrec",
+   "date": "1892–93",
+   "medium": "Oil on cardboard",
+   "accession": "2003.20.14",
+   "gallery": "823",
+   "dept": "European Paintings",
+   "credit": "The Walter H. and Leonore Annenberg Collection, Bequest of Walter H. Annenberg, 2002",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/ep/web-large/EP5.jpg"
+  },
+  {
+   "objectID": 436309,
+   "title": "Bearded Man with a Velvet Cap",
+   "artist": "Govert Flinck",
+   "date": "1645",
+   "medium": "Oil on wood",
+   "accession": "25.110.27",
+   "gallery": "616",
+   "dept": "European Paintings",
+   "credit": "Bequest of Collis P. Huntington, 1900",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/ep/web-large/DP136267.jpg"
+  },
+  {
+   "objectID": 438776,
+   "title": "Madonna and Child with Saints",
+   "artist": "Ludovico Carracci",
+   "date": "1607",
+   "medium": "Oil on copper",
+   "accession": "2007.330",
+   "gallery": "620",
+   "dept": "European Paintings",
+   "credit": "Gift of Mark Fisch and Rachel Davidson, 2007",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/ep/web-large/DP153642.jpg"
+  },
+  {
+   "objectID": 437192,
+   "title": "Sports on a Frozen River",
+   "artist": "Aert van der Neer",
+   "date": "ca. 1660",
+   "medium": "Oil on wood",
+   "accession": "32.100.11",
+   "gallery": "638",
+   "dept": "European Paintings",
+   "credit": "The Friedsam Collection, Bequest of Michael Friedsam, 1931",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/ep/web-large/DP146485.jpg"
+  },
+  {
+   "objectID": 435989,
+   "title": "The Banks of the Seine at Conflans",
+   "artist": "Camille Corot",
+   "date": "ca. 1865–70",
+   "medium": "Oil on canvas",
+   "accession": "21.70.4",
+   "gallery": "802",
+   "dept": "European Paintings",
+   "credit": "Bequest of Eloise Lawrence Breese Norrie, 1921",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/ep/web-large/ep21.70.4.R.jpg"
+  },
+  {
+   "objectID": 437020,
+   "title": "Crucifix",
+   "artist": "Master of the Orcagnesque Misericordia",
+   "date": "1370–75",
+   "medium": "Tempera on wood, gold ground",
+   "accession": "27.231ab",
+   "gallery": "635",
+   "dept": "European Paintings",
+   "credit": "Gift of Samuel H. Kress, 1927",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/ep/web-large/DP-24118-001.jpg"
+  },
+  {
+   "objectID": 679021,
+   "title": "Elephant Sword",
+   "artist": "",
+   "date": "15th–17th century",
+   "medium": "Iron or steel",
+   "accession": "2015.103",
+   "gallery": "379",
+   "dept": "Arms and Armor",
+   "credit": "Gift of Jeri Garbaccio, in honor of Donald J. La Rocca, 2015",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/aa/web-large/DP350518.jpg"
+  },
+  {
+   "objectID": 26460,
+   "title": "Lamp",
+   "artist": "",
+   "date": "ca. 1220–71",
+   "medium": "Earthenware, glaze",
+   "accession": "28.99.15",
+   "gallery": "303",
+   "dept": "Arms and Armor",
+   "credit": "Gift of Clarence H. Mackay, Archer M. Huntington, Stephen H. P. Pell and Bashford Dean, 1928",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/aa/web-large/DP276482.jpg"
+  },
+  {
+   "objectID": 32223,
+   "title": "Mace",
+   "artist": "",
+   "date": "ca. 1575 to 1600",
+   "medium": "Steel, gold",
+   "accession": "32.75.203",
+   "gallery": "371",
+   "dept": "Arms and Armor",
+   "credit": "The Collection of Giovanni P. Morosini, presented by his daughter Giulia, 1932",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/aa/web-large/LC-32_75_203-001.jpg"
+  },
+  {
+   "objectID": 22379,
+   "title": "Wheellock Rifle",
+   "artist": "Daniel Sadeler",
+   "date": "ca. 1610–30",
+   "medium": "Steel, gold, wood (ebony, fruitwood), ivory, horn",
+   "accession": "14.25.1397",
+   "gallery": "375",
+   "dept": "Arms and Armor",
+   "credit": "Gift of William H. Riggs, 1913",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/aa/web-large/20382.jpg"
+  },
+  {
+   "objectID": 472596,
+   "title": "Shield Boss (Umbo)",
+   "artist": "",
+   "date": "7th century",
+   "medium": "Iron, copper alloy, gold",
+   "accession": "1984.184.1",
+   "gallery": "373",
+   "dept": "Arms and Armor",
+   "credit": "Purchase, Rogers Fund and Bequest of Stephen V. Grancsay, by exchange, 1984",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/aa/web-large/DP101366.jpg"
+  },
+  {
+   "objectID": 24819,
+   "title": "Pair of Pistol Holsters",
+   "artist": "",
+   "date": "mid-18th century",
+   "medium": "Velvet, metallic thread, leather",
+   "accession": "51.87.1, .2",
+   "gallery": "375",
+   "dept": "Arms and Armor",
+   "credit": "Gift of George Henry Warren, 1951",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/aa/web-large/sfrl51.87.1_150418ENL.jpg"
+  },
+  {
+   "objectID": 27247,
+   "title": "Shield (<i>Rotella</i> or <i>Brocchiere</i>) from an Armor Garniture of the Völs-Colonna Family",
+   "artist": "",
+   "date": "ca. 1570–80",
+   "medium": "Steel, copper alloy (brass), leather, horsehair, textile",
+   "accession": "14.25.768",
+   "gallery": "380",
+   "dept": "Arms and Armor",
+   "credit": "Gift of William H. Riggs, 1913",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/aa/web-large/LC-14_25_768-003.jpg"
+  },
+  {
+   "objectID": 24619,
+   "title": "Sword Guard (Tsuba)",
+   "artist": "",
+   "date": "early 19th century",
+   "medium": "Iron, gold, enameled cloisonné (shippō), copper",
+   "accession": "36.120.12",
+   "gallery": "378",
+   "dept": "Arms and Armor",
+   "credit": "The Howard Mansfield Collection, Gift of Howard Mansfield, 1936",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/aa/web-large/36.120.12_002may2014.jpg"
+  },
+  {
+   "objectID": 49587,
+   "title": "Mirror with Grapes and Fantastic Sea Animals",
+   "artist": "",
+   "date": "8th century",
+   "medium": "Bronze",
+   "accession": "25.82.8",
+   "gallery": "207",
+   "dept": "Asian Art",
+   "credit": "Rogers Fund, 1925",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/as/web-large/25_82_8_59801.JPG"
+  },
+  {
+   "objectID": 56431,
+   "title": "Bell",
+   "artist": "",
+   "date": "ca. 300 BCE–200 CE",
+   "medium": "Bronze",
+   "accession": "2001.433.106",
+   "gallery": "244",
+   "dept": "Asian Art",
+   "credit": "Samuel Eilenberg Collection, Bequest of Samuel Eilenberg, 1998",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/as/web-large/2001_433_106_O1.jpg"
+  },
+  {
+   "objectID": 42210,
+   "title": "Pouring Vessel (Kendi) with Flowers and Fruits",
+   "artist": "",
+   "date": "late 16th century",
+   "medium": "Porcelain painted with cobalt blue under transparent glaze (Jingdezhen ware)",
+   "accession": "19.136.4",
+   "gallery": "201",
+   "dept": "Asian Art",
+   "credit": "Rogers Fund, 1919",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/as/web-large/DP-14606-007.jpg"
+  },
+  {
+   "objectID": 38263,
+   "title": "Head of a Male Deity",
+   "artist": "",
+   "date": "ca. 13th century",
+   "medium": "Stone",
+   "accession": "1986.501.2",
+   "gallery": "247",
+   "dept": "Asian Art",
+   "credit": "Gift of Evelyn Kossak, The Kronos Collections, 1986",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/as/web-large/1986_501_2.jpg"
+  },
+  {
+   "objectID": 52945,
+   "title": "Sake Bottle (Tokkuri) with Bird on a Rock under Willow Tree",
+   "artist": "",
+   "date": "ca. 1640–50s",
+   "medium": "Porcelain with cobalt blue under transparent glaze (Hizen ware, Arita type",
+   "accession": "1975.268.501",
+   "gallery": "227",
+   "dept": "Asian Art",
+   "credit": "The Harry G. C. Packard Collection of Asian Art, Gift of Harry G. C. Packard, and Purchase, Fletcher, Rogers, Harris Brisbane Dick, and Louis V. Bell Funds, Joseph Pulitzer Bequest, and The Annenberg Fund Inc. Gift, 1975",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/as/web-large/DP220720.jpg"
+  },
+  {
+   "objectID": 57167,
+   "title": "Armlet",
+   "artist": "",
+   "date": "ca. 300 BCE–200 CE",
+   "medium": "Bronze",
+   "accession": "2000.489",
+   "gallery": "244",
+   "dept": "Asian Art",
+   "credit": "Purchase, Peter J. and Edith J. Kubicek and Evelyn Kranes Kossak Gifts, and funds from various donors, 2000",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/as/web-large/2000_489.jpg"
+  },
+  {
+   "objectID": 253127,
+   "title": "Glass bottle shaped like a bunch of grapes",
+   "artist": "",
+   "date": "ca. 3rd century CE",
+   "medium": "Glass",
+   "accession": "30.115.79",
+   "gallery": "171",
+   "dept": "Greek and Roman Art",
+   "credit": "Theodore M. Davis Collection, Bequest of Theodore M. Davis, 1915",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/gr/web-large/DP147890.jpg"
+  },
+  {
+   "objectID": 240345,
+   "title": "Terracotta globular flask",
+   "artist": "",
+   "date": "ca. 1400–1300 BCE",
+   "medium": "Terracotta",
+   "accession": "74.51.758",
+   "gallery": "151",
+   "dept": "Greek and Roman Art",
+   "credit": "The Cesnola Collection, Purchased by subscription, 1874–76",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/gr/web-large/DP-31294-001.jpg"
+  },
+  {
+   "objectID": 244894,
+   "title": "Carnelian ring stone",
+   "artist": "",
+   "date": "3rd–2nd century BCE",
+   "medium": "Carnelian",
+   "accession": "81.6.23",
+   "gallery": "171",
+   "dept": "Greek and Roman Art",
+   "credit": "Gift of John Taylor Johnston, 1881",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/gr/web-large/DP141687.jpg"
+  },
+  {
+   "objectID": 255880,
+   "title": "Gilded bronze mirror with the Three Graces",
+   "artist": "",
+   "date": "mid-2nd century CE",
+   "medium": "Bronze, silver, gold, speculum",
+   "accession": "1987.11.1",
+   "gallery": "168",
+   "dept": "Greek and Roman Art",
+   "credit": "Purchase, Sarah Campbell Blaffer Foundation Gift, 1987",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/gr/web-large/DT8597.jpg"
+  },
+  {
+   "objectID": 247989,
+   "title": "Marble relief of a horseman",
+   "artist": "",
+   "date": "1st century BCE",
+   "medium": "Marble, Parian ?",
+   "accession": "07.286.111",
+   "gallery": "164",
+   "dept": "Greek and Roman Art",
+   "credit": "Rogers Fund, 1907",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/gr/web-large/DP122998.jpg"
+  },
+  {
+   "objectID": 768142,
+   "title": "Terracotta fragment of a closed shape",
+   "artist": "",
+   "date": "mid-4th century BCE",
+   "medium": "Terracotta",
+   "accession": "2011.604.12.20",
+   "gallery": "157",
+   "dept": "Greek and Roman Art",
+   "credit": "Gift of Dietrich von Bothmer, Distinguished Research Curator, Greek and Roman Art, 2011",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/gr/web-large/DVB14647_1_ff.jpg"
+  },
+  {
+   "objectID": 247101,
+   "title": "Terracotta Little Master cup",
+   "artist": "",
+   "date": "ca. 550–525 BCE",
+   "medium": "Terracotta",
+   "accession": "03.24.32",
+   "gallery": "170",
+   "dept": "Greek and Roman Art",
+   "credit": "Rogers Fund, 1903",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/gr/web-large/DP257871.jpg"
+  },
+  {
+   "objectID": 248558,
+   "title": "Terracotta rim from a vase with bands and dots in circles",
+   "artist": "",
+   "date": "ca. 1450–1400 BCE",
+   "medium": "Terracotta",
+   "accession": "11.186.57",
+   "gallery": "171",
+   "dept": "Greek and Roman Art",
+   "credit": "The Cesnola Collection, by exchange, 1911",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/gr/web-large/DP21513.jpg"
+  },
+  {
+   "objectID": 469160,
+   "title": "Gold Solidus of Justinian I (527–65)",
+   "artist": "",
+   "date": "538–565",
+   "medium": "Gold",
+   "accession": "99.35.7406",
+   "gallery": "301",
+   "dept": "Medieval Art",
+   "credit": "Bequest of Joseph H. Durkee, 1898",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/md/web-large/DP100644.jpg"
+  },
+  {
+   "objectID": 329841,
+   "title": "Panel of Venus, “Pudica Type”",
+   "artist": "",
+   "date": "4th–6th century",
+   "medium": "Bone",
+   "accession": "2021.37.4",
+   "gallery": "302",
+   "dept": "Medieval Art",
+   "credit": "Bequest of Nanette B. Kelekian, 2020",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/md/web-large/k75.jpg"
+  },
+  {
+   "objectID": 468321,
+   "title": "Plaque with the Death of the Virgin",
+   "artist": "Jean Pénicaud I",
+   "date": "early 16th century",
+   "medium": "Painted enamel, copper",
+   "accession": "49.7.111",
+   "gallery": "544",
+   "dept": "Medieval Art",
+   "credit": "The Jules S. Bache Collection, 1949",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/md/web-large/DP267901.jpg"
+  },
+  {
+   "objectID": 466165,
+   "title": "Terret (Rein Guide)",
+   "artist": "",
+   "date": "1–100",
+   "medium": "Copper alloy, champlevé enamel",
+   "accession": "1988.79",
+   "gallery": "301",
+   "dept": "Medieval Art",
+   "credit": "Purchase, Harris Brisbane Dick Fund; Joseph Pulitzer Bequest; Pfeiffer, Rogers, Fletcher, Louis V. Bell, and Dodge Funds; and J. Richardson Dilworth, Peter Sharp, and Annette Reed Gifts, 1988",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/md/web-large/DT5908.jpg"
+  },
+  {
+   "objectID": 662941,
+   "title": "Armenian Manuscript Bifolium",
+   "artist": "Illuminator Minas (?)",
+   "date": "15th century",
+   "medium": "Tempera and gold leaf on paper",
+   "accession": "2014.740",
+   "gallery": "300",
+   "dept": "Medieval Art",
+   "credit": "Gift of Linda Barker and Lore Hilburg, in memory of their mother, Judith E. Hilburg, 2014",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/md/web-large/DP342091.jpg"
+  },
+  {
+   "objectID": 464340,
+   "title": "Censer",
+   "artist": "",
+   "date": "before 1477",
+   "medium": "Silver, raised and cast",
+   "accession": "17.190.360",
+   "gallery": "692",
+   "dept": "Medieval Art",
+   "credit": "Gift of J. Pierpont Morgan, 1917",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/md/web-large/DP-40084-001.jpg"
+  },
+  {
+   "objectID": 464197,
+   "title": "Plaque from a Reliquary Shrine",
+   "artist": "",
+   "date": "ca. 1200",
+   "medium": "Champlevé enamel on gilded copper",
+   "accession": "17.190.2139",
+   "gallery": "304",
+   "dept": "Medieval Art",
+   "credit": "Gift of J. Pierpont Morgan, 1917",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/md/web-large/sf17-190-2139s1.jpg"
+  },
+  {
+   "objectID": 463827,
+   "title": "Virgin of the Annunciation",
+   "artist": "",
+   "date": "ca. 1450",
+   "medium": "Oak, polychromy & gilding",
+   "accession": "16.32.224",
+   "gallery": "305",
+   "dept": "Medieval Art",
+   "credit": "Gift of J. Pierpont Morgan, 1916",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/md/web-large/sf16-32-224s1.jpg"
+  },
+  {
+   "objectID": 321878,
+   "title": "Cuneiform tablet: student exercise tablet",
+   "artist": "",
+   "date": "ca. 20th–16th century BCE",
+   "medium": "Clay",
+   "accession": "86.11.251",
+   "gallery": "202",
+   "dept": "Ancient West Asian Art",
+   "credit": "Purchase, 1886",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/an/web-large/DP360672.jpg"
+  },
+  {
+   "objectID": 324831,
+   "title": "Foundation figure of king Shulgi of Ur, carrying a basket",
+   "artist": "",
+   "date": "ca. 2094–2047 BCE",
+   "medium": "Copper",
+   "accession": "59.41.1",
+   "gallery": "202",
+   "dept": "Ancient West Asian Art",
+   "credit": "Rogers Fund, 1959",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/an/web-large/DP375095.jpg"
+  },
+  {
+   "objectID": 324157,
+   "title": "Eye idol",
+   "artist": "",
+   "date": "ca. 3700–3500 BCE",
+   "medium": "Gypsum alabaster",
+   "accession": "51.59.13",
+   "gallery": "202",
+   "dept": "Ancient West Asian Art",
+   "credit": "Gift of The Institute of Archaeology, The University of London, 1951",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/an/web-large/DP-25667-001.jpg"
+  },
+  {
+   "objectID": 325765,
+   "title": "Beaker with tongue and guilloche patterns",
+   "artist": "",
+   "date": "ca. 9th century BCE",
+   "medium": "Glass, Egyptian Blue",
+   "accession": "65.163.36",
+   "gallery": "202",
+   "dept": "Ancient West Asian Art",
+   "credit": "Rogers Fund, 1965",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/an/web-large/DP-26834-001.jpg"
+  },
+  {
+   "objectID": 321911,
+   "title": "Cuneiform tablet: a-she-er gi-ta, balag to Innin/Ishtar",
+   "artist": "",
+   "date": "ca. 2nd–1st century BCE",
+   "medium": "Clay",
+   "accession": "86.11.286b",
+   "gallery": "202",
+   "dept": "Ancient West Asian Art",
+   "credit": "Purchase, 1886",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/an/web-large/86.11.286a_286b_529.jpg"
+  },
+  {
+   "objectID": 329090,
+   "title": "Cylinder seal and modern impression: hunting scene",
+   "artist": "",
+   "date": "ca. 2250–2150 BCE",
+   "medium": "Chert",
+   "accession": "41.160.192",
+   "gallery": "202",
+   "dept": "Ancient West Asian Art",
+   "credit": "Bequest of W. Gedney Beatty, 1941",
+   "isHighlight": true,
+   "img": "https://images.metmuseum.org/CRDImages/an/web-large/DT860.jpg"
+  },
+  {
+   "objectID": 891621,
+   "title": "Jug with Assyrian-inspired decoration",
+   "artist": "",
+   "date": "1851–1860",
+   "medium": "Stoneware",
+   "accession": "2023.662",
+   "gallery": "516",
+   "dept": "Ancient West Asian Art",
+   "credit": "Henrietta and Christopher McCall Collection, Purchase, Henrie Jo Barth Bequest, and Museum Acquisitions and Josephine Lois Berger-Nadler Endowment Funds, 2023",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/an/web-large/DP-33297-001.jpg"
+  },
+  {
+   "objectID": 326595,
+   "title": "Bells",
+   "artist": "",
+   "date": "1st millennium BCE",
+   "medium": "Bronze",
+   "accession": "1978.514.21",
+   "gallery": "684",
+   "dept": "Ancient West Asian Art",
+   "credit": "Gift of Mr. and Mrs. Nathaniel Spear Jr., 1978",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/an/web-large/ME1978_514_21.jpg"
+  },
+  {
+   "objectID": 767385,
+   "title": "Document Sealing",
+   "artist": "",
+   "date": "ca. 1390–1352 B.C.",
+   "medium": "Mud",
+   "accession": "12.180.676",
+   "gallery": "120",
+   "dept": "Egyptian Art",
+   "credit": "Rogers Fund, 1911, 1912",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/eg/web-large/SC-PA_242.jpg"
+  },
+  {
+   "objectID": 548321,
+   "title": "Fragment of a spouted goose-shaped vessel, Tell el-Yahudiya-ware",
+   "artist": "",
+   "date": "ca. 1640–1550 B.C.",
+   "medium": "Pottery",
+   "accession": "15.3.1686",
+   "gallery": "109",
+   "dept": "Egyptian Art",
+   "credit": "Rogers Fund, 1915",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/eg/web-large/LC-15_3_1686_EGDP034561.jpg"
+  },
+  {
+   "objectID": 556856,
+   "title": "Hippopotamus head figurine",
+   "artist": "",
+   "date": "ca. 1981–1640 B.C.",
+   "medium": "Blue faience",
+   "accession": "15.3.885",
+   "gallery": "109",
+   "dept": "Egyptian Art",
+   "credit": "Rogers Fund, 1915",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/eg/web-large/LC-15_3_885_EGDP026490.jpg"
+  },
+  {
+   "objectID": 625867,
+   "title": "Worker Shabti of Nauny",
+   "artist": "",
+   "date": "ca. 1050 B.C.",
+   "medium": "Faience",
+   "accession": "30.3.30.7",
+   "gallery": "126",
+   "dept": "Egyptian Art",
+   "credit": "Rogers Fund, 1930",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/eg/web-large/30.3.26.30_EGDP021337.jpg"
+  },
+  {
+   "objectID": 559823,
+   "title": "Scarab Inscribed for Maatkare (Hatshepsut)",
+   "artist": "",
+   "date": "ca. 1479–1458 B.C.",
+   "medium": "Steatite (glazed)",
+   "accession": "27.3.231",
+   "gallery": "116",
+   "dept": "Egyptian Art",
+   "credit": "Rogers Fund, 1927",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/eg/web-large/27.3.231_bot.jpg"
+  },
+  {
+   "objectID": 548466,
+   "title": "Relief Fragment Depicting a Kneeling Woman",
+   "artist": "",
+   "date": "ca. 1479–1458 B.C.",
+   "medium": "Limestone, paint",
+   "accession": "36.3.239",
+   "gallery": "116",
+   "dept": "Egyptian Art",
+   "credit": "Rogers Fund, 1936",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/eg/web-large/LC-36_3_239_EGDP024963.jpg"
+  },
+  {
+   "objectID": 767225,
+   "title": "Document Sealing With the Throne Name of Amenhotep III",
+   "artist": "",
+   "date": "ca. 1390–1352 B.C.",
+   "medium": "Mud",
+   "accession": "12.180.520",
+   "gallery": "120",
+   "dept": "Egyptian Art",
+   "credit": "Rogers Fund, 1911, 1912",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/eg/web-large/SC-PA_82.jpg"
+  },
+  {
+   "objectID": 453343,
+   "title": "Pierced Window Screen (Jali)",
+   "artist": "",
+   "date": "second half 16th century",
+   "medium": "Red sandstone; pierced, carved",
+   "accession": "1993.67.1",
+   "gallery": "450",
+   "dept": "Islamic Art",
+   "credit": "Rogers Fund, 1993",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/is/web-large/sf1993-67-1a.jpg"
+  },
+  {
+   "objectID": 455064,
+   "title": "Panel of a Tent Lining",
+   "artist": "",
+   "date": "1700–1740",
+   "medium": "Cotton; plain weave, mordant painted and dyed, resist dyed",
+   "accession": "2005.251",
+   "gallery": "462",
+   "dept": "Islamic Art",
+   "credit": "Purchase, Friends of Islamic Art Gifts, 2005",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/is/web-large/DP123176.jpg"
+  },
+  {
+   "objectID": 452510,
+   "title": "Necklace with Bird, Circle and Cylinder Beads",
+   "artist": "",
+   "date": "11th–12th century",
+   "medium": "Glass, colorless, amber, opaque white, opaque red; wound and hot-worked",
+   "accession": "1973.347",
+   "gallery": "453",
+   "dept": "Islamic Art",
+   "credit": "Pfeiffer Fund, 1973",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/is/web-large/DT261719.jpg"
+  },
+  {
+   "objectID": 452168,
+   "title": "\"The Coronation of the Infant Shapur II\", Folio 538r from the Shahnama (Book of Kings) of Shah Tahmasp",
+   "artist": "Abu'l Qasim Firdausi",
+   "date": "ca. 1525–30",
+   "medium": "Opaque watercolor, ink, silver, and gold on paper",
+   "accession": "1970.301.59",
+   "gallery": "462",
+   "dept": "Islamic Art",
+   "credit": "Gift of Arthur A. Houghton Jr., 1970",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/is/web-large/DP107189.jpg"
+  },
+  {
+   "objectID": 452145,
+   "title": "\"The Besotted Iranian Camp Attacked by Night\", Folio 241r from the Shahnama (Book of Kings) of Shah Tahmasp",
+   "artist": "Abu'l Qasim Firdausi",
+   "date": "ca. 1525–30",
+   "medium": "Opaque watercolor, ink, silver, and gold on paper",
+   "accession": "1970.301.36",
+   "gallery": "462",
+   "dept": "Islamic Art",
+   "credit": "Gift of Arthur A. Houghton Jr., 1970",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/is/web-large/DP107152.jpg"
+  },
+  {
+   "objectID": 450856,
+   "title": "Bead",
+   "artist": "",
+   "date": "8th–13th century",
+   "medium": "Stone; cut and drilled",
+   "accession": "48.101.202",
+   "gallery": "453",
+   "dept": "Islamic Art",
+   "credit": "Rogers Fund, 1948",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/is/web-large/LC-48_101_202.jpg"
+  },
+  {
+   "objectID": 448673,
+   "title": "Bowl Depicting a Princely Couple",
+   "artist": "",
+   "date": "12th–13th century",
+   "medium": "Stonepaste; luster-painted on opaque white glaze",
+   "accession": "32.52.3",
+   "gallery": "451",
+   "dept": "Islamic Art",
+   "credit": "Fletcher Fund, 1932",
+   "isHighlight": false,
+   "img": "https://images.metmuseum.org/CRDImages/is/web-large/sf32-52-3a.jpg"
+  }
+ ]
+}

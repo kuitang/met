@@ -43,7 +43,7 @@ Fly.io app name: `met-nav` (not yet created; Phase 3). Image = web export + Node
 - **LLM = Gemini only**, via `@google/genai`, **all LLM calls server-side** (`server/src/gemini.ts`). No OpenAI SDK, no provider abstractions.
 - **Parsimony**: no speculative flexibility, minimal deps, one artifact (`met.sqlite`) not fragments.
 - **Update ARCHITECTURE.md in the same commit as any structural change** (once it exists, Phase 2).
-- expo-sqlite on web needs SharedArrayBuffer: the server sends `Cross-Origin-Opener-Policy: same-origin` + `Cross-Origin-Embedder-Policy: require-corp` on everything; external images (Met CDN) need `crossorigin="anonymous"`.
+- expo-sqlite on web needs SharedArrayBuffer: the server sends `Cross-Origin-Opener-Policy: same-origin` + a COEP header on everything. **Measured 2026-06-10: `images.metmuseum.org` sends NO `Access-Control-Allow-Origin` header**, so `COEP: require-corp` + `crossorigin="anonymous"` would block every Met CDN image — use `Cross-Origin-Embedder-Policy: credentialless` (or proxy images) instead, and load images as plain no-CORS `<img>` (see `apps/mobile/src/components/ObjectImage.tsx`).
 
 ## Data refresh model
 

@@ -9,12 +9,17 @@
     ".": {
       "types": "./api-types.d.ts"
     },
-    "./openapi.yaml": "./openapi.yaml"
+    "./openapi.yaml": "./openapi.yaml",
+    "./search": "./search.ts"
   },
   "scripts": {
-    "gen": "openapi-typescript openapi.yaml -o api-types.d.ts"
+    "gen": "openapi-typescript openapi.yaml -o api-types.d.ts",
+    "test": "vitest run"
   },
   "devDependencies": {
-    "openapi-typescript": "^7.13.0"
+    "@types/better-sqlite3": "^7.6.13",
+    "better-sqlite3": "^12.10.0",
+    "openapi-typescript": "^7.13.0",
+    "vitest": "^4.1.8"
   }
 }
