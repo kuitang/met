@@ -637,6 +637,10 @@ const styles = StyleSheet.create({
     bottom: spacing.md,
     flexWrap: 'wrap-reverse',
     gap: spacing.sm,
+    // The column spans the map's full height; without box-none the empty
+    // strip between chips swallows taps meant for right-edge rooms (seen as
+    // untappable room-131 on WebKit). Style form, not prop — see above.
+    pointerEvents: 'box-none',
   },
   // Apple HIG: every tap target ≥44×44 pt.
   chip: {
