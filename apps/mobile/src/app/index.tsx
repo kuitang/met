@@ -56,8 +56,9 @@ export default function HomeScreen() {
           and logs a dev warning (LogBox badge → HIG sweep failure). */}
       <View style={styles.topOverlay}>
         <View style={styles.header}>
-          <Text style={styles.wordmark}>The Met</Text>
-          <Text style={styles.headerLabel}>Navigator</Text>
+          <Text style={styles.wordmark}>
+            Muse<Text style={styles.wordmarkAccent}>Walk</Text>
+          </Text>
         </View>
         <Pressable
           style={styles.searchBar}
@@ -89,6 +90,12 @@ export default function HomeScreen() {
             {VENUE_NAMES[venue.venue]}
           </Text>
         </Pressable>
+
+        {/* Brand-required disclosure: nominative use of the museum's name in
+            descriptive copy only — never in the wordmark. */}
+        <Text style={styles.unofficialNote}>
+          An unofficial companion for The Metropolitan Museum of Art
+        </Text>
 
         {selected && (
           <HomeRoomSheet
@@ -132,8 +139,7 @@ const styles = StyleSheet.create({
     lineHeight: 34,
     textTransform: 'uppercase',
   },
-  headerLabel: {
-    ...type.label,
+  wordmarkAccent: {
     color: colors.red,
   },
   searchBar: {
@@ -182,6 +188,15 @@ const styles = StyleSheet.create({
     lineHeight: 14,
     letterSpacing: 1,
     color: 'rgba(255,255,255,0.75)',
+  },
+  unofficialNote: {
+    ...type.meta,
+    fontSize: 11,
+    lineHeight: 14,
+    color: colors.inkSecondary,
+    marginLeft: spacing.lg,
+    marginRight: spacing.lg,
+    marginBottom: spacing.sm,
   },
   venueToast: {
     flexDirection: 'row',

@@ -1,5 +1,5 @@
 /**
- * Positioning fusion state machine for Met Navigator. Platform-neutral pure
+ * Positioning fusion state machine for MuseWalk. Platform-neutral pure
  * functions: the Expo client owns the UI store; the rules that decide which
  * fix wins, what GPS may claim, and when a route recalculates live here.
  *

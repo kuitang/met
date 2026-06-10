@@ -156,7 +156,7 @@ export default function SearchScreen() {
               >
                 <Text style={styles.askDifferentlyLabel}>Ask differently</Text>
                 <Text style={type.meta}>
-                  Let the Met Navigator interpret your words and re-search →
+                  {'Let MuseWalk interpret your words and re-search →'}
                 </Text>
               </Pressable>
             )}

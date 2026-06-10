@@ -1,9 +1,9 @@
 openapi: 3.1.0
 info:
-  title: Met Navigator API
+  title: MuseWalk API
   version: 1.0.0
   description: >
-    The entire dynamic API for Met Navigator. Everything else (autocomplete,
+    The entire dynamic API for MuseWalk. Everything else (autocomplete,
     FTS search, routing, map, positioning fusion) runs client-local against the
     downloaded met.sqlite artifact. All LLM use is encapsulated server-side
     behind these routes.

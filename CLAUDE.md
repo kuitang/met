@@ -1,6 +1,6 @@
-# Met Navigator
+# MuseWalk
 
-Indoor-navigation web/mobile app for the Metropolitan Museum of Art. npm-workspaces monorepo: `apps/mobile` (Expo SDK 56 + expo-router), `server` (Node + Hono), `shared` (OpenAPI contract), `data` (pipelines + snapshots + evals), `e2e` (Playwright).
+MuseWalk — an unofficial indoor-navigation web/mobile companion app for the Metropolitan Museum of Art. (Brand: "MuseWalk", one word; never display a TLD/domain in UI copy. Infra identifiers — npm package `met-navigator`, Fly app `met-nav`, EAS slug `met-navigator`, bundle ids `com.kuitang.metnav`, `met.sqlite` — keep their names.) npm-workspaces monorepo: `apps/mobile` (Expo SDK 56 + expo-router), `server` (Node + Hono), `shared` (OpenAPI contract), `data` (pipelines + snapshots + evals), `e2e` (Playwright).
 
 ## Node version
 
