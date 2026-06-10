@@ -1,6 +1,6 @@
 # Architecture
 
-Met Navigator: indoor navigation + collection search for the Metropolitan Museum
+MuseWalk (an unofficial companion app): indoor navigation + collection search for the Metropolitan Museum
 of Art (Fifth Avenue + The Cloisters). One npm-workspaces monorepo, one deployed
 artifact (Fly.io app = static Expo web export + Node API server), one data
 artifact (`met.sqlite`) that every client downloads and queries locally.

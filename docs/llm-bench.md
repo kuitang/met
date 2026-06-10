@@ -1,6 +1,6 @@
 # LLM benchmarks — model choices, measured performance, cost
 
-Canonical benchmark record for the Met Navigator LLM surface. Everything here is
+Canonical benchmark record for the MuseWalk LLM surface. Everything here is
 **measured, not estimated**; each section names its raw data. Provider is **locked
 to Gemini** (`@google/genai`, all calls server-side in `server/src/gemini.ts`) —
 the lock was a user decision made *after* the head-to-head numbers below, not a

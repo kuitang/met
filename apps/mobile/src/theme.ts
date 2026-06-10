@@ -1,7 +1,7 @@
 /**
- * Met Navigator theme — modeled on metmuseum.org:
- * black/white with Met-red accents, serif display type, all-caps nav labels,
- * generous whitespace. System serif stack (no font dependency).
+ * MuseWalk theme — our own visual language: black/white with Met-red
+ * (#e4002b) accents, serif display type, all-caps nav labels, generous
+ * whitespace. System serif stack (no font dependency).
  */
 import { Platform } from 'react-native';
 

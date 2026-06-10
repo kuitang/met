@@ -1,4 +1,4 @@
-# Gate A mockup — review package
+# MuseWalk mockup (Gate A) — review package
 
 Phone-sized (390×844) captures of every screen are in this directory:
 `home.png`, `search.png`, `results.png`, `object.png`, `route.png`, `locate.png`.

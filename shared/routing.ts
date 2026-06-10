@@ -1,5 +1,5 @@
 /**
- * Routing engine for Met Navigator: Dijkstra over the met.sqlite walking
+ * Routing engine for MuseWalk: Dijkstra over the met.sqlite walking
  * graph plus room-grouped instruction templating. Platform-neutral pure
  * functions — callers pass plain `graph_nodes` / `graph_edges` / `galleries`
  * rows (from expo-sqlite on the client, better-sqlite3 on the server/tests).

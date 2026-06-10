@@ -1,5 +1,5 @@
 /**
- * Client-side search core for Met Navigator. Platform-neutral: no expo/node
+ * Client-side search core for MuseWalk. Platform-neutral: no expo/node
  * imports. Callers pass a minimal DB handle; on native/web that is expo-sqlite
  * (`getAllAsync`), on the server and in tests it is better-sqlite3.
  *
