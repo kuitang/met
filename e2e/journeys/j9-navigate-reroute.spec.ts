@@ -79,6 +79,16 @@ test('J9 navigate 131→822: route, checkpoint advance, one reroute, arrival', a
   await expect(page.getByTestId('route-step-0')).toContainText('Start in Gallery 131');
   expect(await activeStepIndex(page)).toBe(0);
 
+  // Cross-floor legibility (131 is F1, 822 is F2): the blue HOME glyph marks
+  // where I am on the visible floor; the chips bubble home (F1) vs star (F2).
+  // (.last() — the home screen stays mounted under the route screen in the
+  // expo-router stack, so screen-scoped testIDs can resolve twice.)
+  await expect(page.getByTestId('marker-home').last()).toBeVisible();
+  await expect(page.getByTestId('chip-badge-home-1').last()).toBeVisible();
+  await expect(page.getByTestId('chip-badge-target-2').last()).toBeVisible();
+  // The route path itself renders inside the map transform.
+  await expect(page.getByTestId('route-polyline').last()).toBeVisible();
+
   // --- checkpoint advance: monotone step progression --------------------
   await step(page, '“I’m here” at each checkpoint — steps advance', async () => {
     let prev = 0;
@@ -119,6 +129,8 @@ test('J9 navigate 131→822: route, checkpoint advance, one reroute, arrival', a
 
   await expect(page.getByTestId('route-arrived')).toBeVisible();
   await expect(page.getByTestId('route-arrived')).toContainText("You've arrived");
+  // Arrived on floor 2: the Met-red STAR target marker is on the visible map.
+  await expect(page.getByTestId('marker-target').last()).toBeVisible();
   if (countObjectsIn('822') > 0) {
     await expect(page.getByTestId('arrived-whats-here')).toBeVisible();
   } else {

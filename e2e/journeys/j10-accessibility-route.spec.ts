@@ -43,4 +43,13 @@ test('J10 avoid stairs: elevator-only route 131→822, end to end', async ({ pag
   await step(page, 'Arrived — elevator only, not a single stair', async () => {
     await expect(page.getByTestId('route-arrived')).toContainText("You've arrived");
   });
+  // Arrived on the destination floor: the STAR target marker is visible.
+  await expect(page.getByTestId('marker-target').last()).toBeVisible();
+
+  // Bug-5: even from a cold route deep link, the header HOME button is a
+  // one-tap return to the home map.
+  await step(page, 'One tap back to the home map', async () => {
+    await page.getByTestId('home-button').last().click();
+  });
+  await expect(page.getByTestId('home-search-bar')).toBeVisible();
 });

@@ -25,11 +25,13 @@ test('home renders map shell, search bar, and locate chip', async ({ page }) => 
   await expect(page.getByTestId('floor-chip-2')).toBeVisible();
 });
 
-test('home room tap opens the room sheet with directions', async ({ page }) => {
+test("home room tap opens the room sheet with directions AND I'm-here", async ({ page }) => {
   await page.goto('/');
   await page.getByTestId('room-131').click(FIRST_PAINT);
   await expect(page.getByTestId('room-sheet')).toBeVisible();
   await expect(page.getByTestId('room-sheet')).toContainText('Temple of Dendur');
+  // Both actions present (user mandate): equal-weight DIRECTIONS + I'M HERE.
+  await expect(page.getByTestId('room-im-here')).toBeVisible();
   await page.getByTestId('room-directions').click();
   await expect(page).toHaveURL(/\/route\/great-hall\/131/);
 });
@@ -49,11 +51,18 @@ test('search "Monet" shows suggestion rows with gallery chips', async ({ page })
   await expect(page.getByTestId('all-results-link')).toBeVisible();
 });
 
-test('search amenity intent surfaces restrooms', async ({ page }) => {
+test('search amenity intent surfaces restrooms; tap = directions, not relocation', async ({
+  page,
+}) => {
   await page.goto('/search');
   await page.getByTestId('search-input').fill('restroom', FIRST_PAINT);
   await expect(page.getByTestId('amenity-restroom-1')).toBeVisible();
   await expect(page.getByTestId('amenity-restroom-2')).toBeVisible();
+  // Tapping an amenity offers DIRECTIONS to it (bug fix: it used to silently
+  // move the visitor's location there). No anchor yet → Great Hall origin.
+  await page.getByTestId('amenity-restroom-1').click();
+  await expect(page).toHaveURL(/\/route\/great-hall\/restroom-1/);
+  await expect(page.getByTestId('route-summary')).toContainText('Restrooms');
 });
 
 test('weak query offers Ask differently → interpret flow (offline degrade here)', async ({
