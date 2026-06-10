@@ -37,7 +37,7 @@ test.skip(!TARGET, 'REAL_TARGET not set — see boot recipe in this spec');
 // Host of the public derivative bucket — keep in sync with the ONE client
 // constant in apps/mobile/src/data/imageCdn.ts (not importable here: that
 // module pulls in expo-constants via ./apiBase).
-const CDN_HOST = 'musewalk-img.fly.storage.tigris.dev';
+const CDN_HOST = 'musewalk-images.fly.storage.tigris.dev';
 
 const DB_PATH = path.resolve(__dirname, '../../data/met.sqlite');
 const SAMPLE = 8; // rows asserted per list screen (FlatList renders ~10 at 844px)

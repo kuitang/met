@@ -48,7 +48,7 @@ const EXPECTED = [
   // Public Tigris image-derivative bucket (apps/mobile/src/data/imageCdn.ts):
   // origin-independent infra like the Met CDN — the same constant is correct
   // for every deploy origin, so baking it in is allowed by design.
-  /^musewalk-img\.fly\.storage\.tigris\.dev$/i,
+  /^musewalk-images\.fly\.storage\.tigris\.dev$/i,
 ];
 
 const TEXT_EXT = new Set(['.js', '.mjs', '.css', '.html', '.json', '.txt', '.map', '.webmanifest']);

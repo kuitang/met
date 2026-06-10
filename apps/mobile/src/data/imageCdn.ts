@@ -2,7 +2,7 @@
  * imageCdn — the ONE module that knows where image bytes live.
  *
  * Primary source: pre-generated JPEG derivatives in the PUBLIC Tigris bucket
- * `musewalk-img` (anonymous GET, CORS `GET/HEAD from *`), produced by
+ * `musewalk-images` (anonymous GET, CORS `GET/HEAD from *`), produced by
  * data/src/thumbnails.ts and addressed by `objects.thumbKey` in met.sqlite
  * (`img/{objectID}/{sha256(imageUrl)[:12]}` — content-addressed, immutable).
  * Loading straight from the bucket keeps image bytes OFF the app server:
@@ -36,7 +36,7 @@ import { Platform } from 'react-native';
 
 import { apiBase } from './apiBase';
 
-export const IMAGE_CDN_BASE = 'https://musewalk-img.fly.storage.tigris.dev';
+export const IMAGE_CDN_BASE = 'https://musewalk-images.fly.storage.tigris.dev';
 
 export type ImageVariant = 't320' | 'c1080';
 

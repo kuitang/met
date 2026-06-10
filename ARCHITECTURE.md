@@ -256,12 +256,12 @@ is `data/src/embed-images.ts` (incremental; ≈$4 one-time at 34k images).
 
 Image bytes do NOT route through the app server on the happy path. The
 thumbnail pipeline (`data/src/thumbnails.ts`) pre-generates JPEG derivatives
-of every catalog image into the PUBLIC Tigris bucket `musewalk-img`
+of every catalog image into the PUBLIC Tigris bucket `musewalk-images`
 (anonymous GET, CORS `GET/HEAD from *`), content-addressed as
 `img/{objectID}/{sha256(imageUrl)[:12]}/{t320,c1080}.jpg` and recorded in
 met.sqlite as `objects.thumbKey`. Clients (web AND native — the derivatives
 are smaller than the raw Met CDN files) load
-`https://musewalk-img.fly.storage.tigris.dev/{thumbKey}/{variant}.jpg`
+`https://musewalk-images.fly.storage.tigris.dev/{thumbKey}/{variant}.jpg`
 directly: `t320` for list rows (results, room sheet), `c1080` for the
 object-detail hero. The URL policy lives in ONE module,
 `apps/mobile/src/data/imageCdn.ts`; the components are
