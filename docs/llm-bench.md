@@ -88,16 +88,39 @@ The escalation threshold experiment (healthy top-1 −12.60…−53.98 vs. low-s
 weak-score path only fires on queries whose terms barely occur in the catalog,
 adding the ~$0.003 agentic cost exactly where the cheap path is known-bad.
 
-## 3. Photo localization at full index scale — **pending**
+## 3. Photo localization at full index scale (2026-06-10, production index)
 
-The Gate C photo eval (real handheld photos vs. the production embedding index)
-is owned by the C3 stream; at the time of writing its embedding pipeline is still
-hydrating/embedding (~1,600 objects for the eval departments; the committed
-`data/snapshots/image-embeddings/` index holds a partial shard). Until it lands,
-the planning-phase real-guest-photo numbers above (90% top-1 / 95% top-5 over a
-158-image gallery) are the best measurement, bracketed below by DINOv3's published
-80.7% top-1 over 224k classes on the same benchmark. Expect the full-scale top-1
-to land between those bounds; `data/evals/photo-locate-eval.mjs` is the runner.
+Full-scale measurement, superseding the planning-phase 158-image-gallery numbers.
+Full methodology, miss taxonomy and raw per-query rows:
+`data/evals/reports/photo-locate.md` (+ `.json`).
+
+**Setup**: the COMPLETE production index (33,640 vectors / 30,623 unique on-view
+objects, gemini-embedding-2 768d) × the published Met benchmark's real visitor
+photos (NeurIPS 2021). Of 1,003 ground-truthed testset queries, **722 qualify**
+(GT object in the index; 280 of the rest are 2021 photos of objects not in
+today's on-view catalog, 1 is a pipeline gap). Deterministic stratified sample
+of **500 queries across 157 galleries**; query embedding + cosine math replicate
+the server (`gemini.ts embedImage` / `embeddings.ts searchByEmbedding`) exactly.
+
+| Metric | Full scale (30.6k objects) | Planning bench (158-image gallery) | DINOv3 published (224k classes, self-hosted) |
+|---|---|---|---|
+| top-1 object | **81.2% (406/500)** | 90% (36/40) | 80.7% |
+| top-5 object | **91.0% (455/500)** | 95% (38/40) | — |
+| top-1 **gallery** (the localization metric) | **86.8% (434/500)** | — | — |
+
+Live endpoint pass (40 stratified photos, prod server, real Gemini): 40/40 OK,
+**p50 849 ms / p95 1,254 ms** end-to-end (concurrent OCR + embed), top-3
+contains GT 32/40 (80%), OCR path returned `label: null` on 39/40 artwork
+photos (the 1 non-null was a real wall label legible in frame, deterministically
+matched — correct behavior), and **40/40 live↔offline top-1 parity**.
+
+Misses are dominated by extreme close-up/odd-angle shots of 3D objects vs. the
+single catalog view, near-duplicate siblings/casts (wrong objectID, same work —
+gallery still correct), and vitrine-glass degenerate framings; median miss is a
+near-tie (GT 0.018 cosine below the wrong top-1), so top-5 recovers half of
+them. **DINOv3 self-hosted upgrade gate: not triggered** — the hosted index
+matches DINOv3's published top-1 at the top of the planning bracket (75–85%);
+verdict and revisit conditions in photo-locate.md.
 
 ## 4. Cost model (measured per-call, projected)
 
@@ -132,6 +155,6 @@ assumptions: per-IP rate limit (10 rpm) + `LLM_DAILY_BUDGET` (2,000 calls/UTC-da
 cd data/evals/planning-bench && node bench.mjs            # see FETCH.md for corpora
 # full-scale interpret eval
 #   build eval DB + run goldens + live tier-3: see data/evals/reports/search-eval.md
-# photo eval (once C3's index is complete)
-node data/evals/photo-locate-eval.mjs
+# full-scale photo eval: methodology + verbatim scripts in
+#   data/evals/reports/photo-locate.md / .json (provenance field)
 ```

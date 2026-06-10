@@ -87,11 +87,11 @@ Everything is built and verified to flip to the full catalog with one command wh
 failure post-mortems — the honest part).
 
 **Headline** (measured at full catalog scale, 44,468 objects, live Gemini):
-- **48/50 golden queries pass (96%)** — autocomplete 26/26, full-results 11/11, LLM tier 11/13
+- **48/50 golden queries pass (96%)** — autocomplete 26/26, full-results 11/11, LLM tier 11/13 *(post-hydration update: **50/50** on the production 44,842-object met.sqlite after the Phase 2 synonyms + escalation upgrades — `data/evals/reports/search-eval.md`)*
 - Latency: local autocomplete p50 **0.3 ms**; live LLM interpret p50 **612 ms** / p95 940 ms (cache hits 12–15 ms)
 - Cost: ~$0.0003/interpret call → **≈$20/mo worst case** at 1,000 queries/day; hard budget cap at $40/mo (server `LLM_DAILY_BUDGET`)
 - The 2 failures are documented with root cause (count-based escalation never fires when the rewrite returns ≥3 plausible-but-wrong rows; score-aware escalation is the written fix)
-- Photo-localization full-index eval is **PENDING** — the embedding index has 2 of ~1,600 committed vectors so far (planning bench showed 90% top-1 on real guest photos; full-scale re-measure happens when the index build completes)
+- Photo-localization full-index eval **DONE (2026-06-10)**: 500 real guest photos (NeurIPS Met benchmark) vs the complete 33.6k-vector production index — **81.2% top-1 / 91.0% top-5 / 86.8% gallery-level**; live endpoint p50 849 ms / p95 1,254 ms, 40/40 live↔offline parity; DINOv3 self-hosted upgrade gate NOT triggered → `data/evals/reports/photo-locate.md`
 
 Because the full met.sqlite wasn't ready, C's numbers come from an equivalent-schema eval DB
 built from the official CC0 CSV × today's live on-view ID set (97.7% coverage) — method and

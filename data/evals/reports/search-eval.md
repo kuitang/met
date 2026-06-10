@@ -126,6 +126,15 @@ Raw live-endpoint transcripts (interpreted queries, top-5, latencies):
 the server's own per-IP limiter (10 rpm — working as designed); the committed run
 used the raised eval limits above.
 
+## Post-hydration confirmation (2026-06-10, production artifact)
+
+After the full objects hydration completed, the goldens were rerun against the
+**production `data/met.sqlite` (44,842 objects, dataVersion
+`2026-06-10-2e5aaf37`)** — i.e. the real artifact, not the CSV-derived eval DB
+described below: `node data/evals/run-goldens.mjs` → **autocomplete 26/26, full
+11/11, llm 13/13 — overall 50/50 (100%)**. The Phase 2 numbers below hold
+unchanged on the shipped database.
+
 ## Phase 2 upgrades (run later on 2026-06-10): synonyms column + score-aware escalation
 
 Both levers named above were built and re-measured the same day (user-approved at

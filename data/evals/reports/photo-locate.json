@@ -1,0 +1,9582 @@
+{
+ "generated": "2026-06-10T14:01:44.768Z",
+ "index": {
+  "vectors": 33640,
+  "uniqueObjects": 30623,
+  "staleDuplicateRows": 3017,
+  "model": "gemini-embedding-2",
+  "dims": 768
+ },
+ "join": {
+  "testsetQueries": 1003,
+  "testMetFiles": 1132,
+  "qualifying": 722,
+  "distinctGtObjects": 515,
+  "excluded": 281,
+  "taxonomy": {
+   "not-in-catalog (not on view today / no current gallery)": 280,
+   "has image but missing from embedding index (pipeline gap)": 1
+  },
+  "sampleSize": 500,
+  "sampleGalleries": 157
+ },
+ "bulk": {
+  "queries": 500,
+  "top1": "81.2% (406/500)",
+  "top5": "91.0% (455/500)",
+  "gallery": "86.8% (434/500)",
+  "hitMarginMedian": 0.05230000000000001,
+  "hitGtSimMedian": 0.8868,
+  "missGtSimMedian": 0.8018,
+  "missTop1SimMedian": 0.831,
+  "missDeficitMedian": 0.018000000000000016
+ },
+ "live": {
+  "requested": 40,
+  "ok": 40,
+  "errors": 0,
+  "p50": 849,
+  "p95": 1254,
+  "top1": 30,
+  "top3": 32,
+  "galleryHit": 32,
+  "labelNull": 39,
+  "labelNonNull": 1
+ },
+ "liveRows": [
+  {
+   "MET_id": 471943,
+   "path": "test_met/962e0ebb2d70.jpg",
+   "gallery": "001",
+   "ms": 1254,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 471943,
+     "gallery": "001",
+     "sim": 0.9328
+    },
+    {
+     "id": 471944,
+     "gallery": "001",
+     "sim": 0.9328
+    },
+    {
+     "id": 471911,
+     "gallery": "002",
+     "sim": 0.7946
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 471460,
+   "path": "test_met/897ac5427398.jpg",
+   "gallery": "008",
+   "ms": 760,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 471460,
+     "gallery": "008",
+     "sim": 0.8892
+    },
+    {
+     "id": 464005,
+     "gallery": "304",
+     "sim": 0.8098
+    },
+    {
+     "id": 471947,
+     "gallery": "008",
+     "sim": 0.8068
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 467528,
+   "path": "test_met/8ba00b47c59c.jpg",
+   "gallery": "018",
+   "ms": 854,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 467528,
+     "gallery": "018",
+     "sim": 0.9151
+    },
+    {
+     "id": 468232,
+     "gallery": "018",
+     "sim": 0.8923
+    },
+    {
+     "id": 468233,
+     "gallery": "018",
+     "sim": 0.864
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 543903,
+   "path": "test_met/a617a56a5960.jpg",
+   "gallery": "100",
+   "ms": 843,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 543903,
+     "gallery": "100",
+     "sim": 0.8094
+    },
+    {
+     "id": 556783,
+     "gallery": "109",
+     "sim": 0.7983
+    },
+    {
+     "sim": 0.7923
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 544776,
+   "path": "test_met/1d0a6ba51091.jpg",
+   "gallery": "121",
+   "ms": 822,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 544776,
+     "gallery": "121",
+     "sim": 0.9186
+    },
+    {
+     "id": 544797,
+     "gallery": "119",
+     "sim": 0.8624
+    },
+    {
+     "id": 547695,
+     "gallery": "119",
+     "sim": 0.8531
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 547802,
+   "path": "test_met/2d578400ee22.jpg",
+   "gallery": "131",
+   "ms": 932,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 549492,
+     "gallery": "123",
+     "sim": 0.8478
+    },
+    {
+     "id": 562132,
+     "gallery": "106",
+     "sim": 0.847
+    },
+    {
+     "id": 544986,
+     "gallery": "131",
+     "sim": 0.8452
+    }
+   ],
+   "top1": false,
+   "top3": false,
+   "galleryHit": false
+  },
+  {
+   "MET_id": 549610,
+   "path": "test_met/576db4b32582.jpg",
+   "gallery": "138",
+   "ms": 830,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 248140,
+     "gallery": "156",
+     "sim": 0.828
+    },
+    {
+     "id": 248146,
+     "gallery": "159",
+     "sim": 0.815
+    },
+    {
+     "id": 329970,
+     "gallery": "169",
+     "sim": 0.8073
+    }
+   ],
+   "top1": false,
+   "top3": false,
+   "galleryHit": false
+  },
+  {
+   "MET_id": 254508,
+   "path": "test_met/716fe77c95cd.jpg",
+   "gallery": "158",
+   "ms": 849,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 254508,
+     "gallery": "158",
+     "sim": 0.9374
+    },
+    {
+     "id": 248309,
+     "gallery": "153",
+     "sim": 0.88
+    },
+    {
+     "id": 255111,
+     "gallery": "168",
+     "sim": 0.8278
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 247010,
+   "path": "test_met/61e29f0ebbb4.jpg",
+   "gallery": "164",
+   "ms": 813,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 247010,
+     "gallery": "164",
+     "sim": 0.9324
+    },
+    {
+     "id": 247009,
+     "gallery": "164",
+     "sim": 0.8429
+    },
+    {
+     "id": 247012,
+     "gallery": "164",
+     "sim": 0.825
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 325865,
+   "path": "test_met/5429a606b05a.jpg",
+   "gallery": "202",
+   "ms": 868,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 325865,
+     "gallery": "202",
+     "sim": 0.915
+    },
+    {
+     "id": 450513,
+     "gallery": "453",
+     "sim": 0.86
+    },
+    {
+     "id": 3573,
+     "gallery": "706",
+     "sim": 0.8508
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 54245,
+   "path": "test_met/8eca6bf578ea.jpg",
+   "gallery": "208",
+   "ms": 801,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 54245,
+     "gallery": "208",
+     "sim": 0.8873
+    },
+    {
+     "id": 42727,
+     "gallery": "208",
+     "sim": 0.793
+    },
+    {
+     "id": 42725,
+     "gallery": "208",
+     "sim": 0.7787
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 38139,
+   "path": "test_met/864788b601b0.jpg",
+   "gallery": "241",
+   "ms": 839,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 259138,
+     "gallery": "162",
+     "sim": 0.8054
+    },
+    {
+     "id": 241265,
+     "gallery": "171",
+     "sim": 0.8036
+    },
+    {
+     "id": 571362,
+     "gallery": "134",
+     "sim": 0.7997
+    }
+   ],
+   "top1": false,
+   "top3": false,
+   "galleryHit": false
+  },
+  {
+   "MET_id": 472849,
+   "path": "test_met/b72adbb4530a.jpg",
+   "gallery": "301",
+   "ms": 850,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 472849,
+     "gallery": "301",
+     "sim": 0.89
+    },
+    {
+     "id": 61780,
+     "gallery": "207",
+     "sim": 0.8278
+    },
+    {
+     "id": 479784,
+     "gallery": "304",
+     "sim": 0.8273
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 470392,
+   "path": "test_met/17ebeb21dc73.jpg",
+   "gallery": "304",
+   "ms": 767,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 245515,
+     "gallery": "164",
+     "sim": 0.8216
+    },
+    {
+     "id": 470392,
+     "gallery": "304",
+     "sim": 0.8196
+    },
+    {
+     "id": 466822,
+     "gallery": "304",
+     "sim": 0.8034
+    }
+   ],
+   "top1": false,
+   "top3": true,
+   "galleryHit": false
+  },
+  {
+   "MET_id": 463096,
+   "path": "test_met/89cc4de69a90.jpg",
+   "gallery": "304",
+   "ms": 901,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 463096,
+     "gallery": "304",
+     "sim": 0.8143
+    },
+    {
+     "id": 242103,
+     "gallery": "171",
+     "sim": 0.7983
+    },
+    {
+     "id": 471050,
+     "gallery": "002",
+     "sim": 0.796
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 467594,
+   "path": "test_met/082ba2710465.jpg",
+   "gallery": "305",
+   "ms": 845,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 467594,
+     "gallery": "305",
+     "sim": 0.8433
+    },
+    {
+     "id": 466799,
+     "gallery": "008",
+     "sim": 0.7941
+    },
+    {
+     "id": 472342,
+     "gallery": "008",
+     "sim": 0.7874
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 470266,
+   "path": "test_met/c731c830c8ad.jpg",
+   "gallery": "305",
+   "ms": 918,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 470266,
+     "gallery": "305",
+     "sim": 0.8343
+    },
+    {
+     "id": 463758,
+     "gallery": "305",
+     "sim": 0.8207
+    },
+    {
+     "id": 463001,
+     "gallery": "305",
+     "sim": 0.8107
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 313348,
+   "path": "test_met/51ddaddcb3c4.jpg",
+   "gallery": "360",
+   "ms": 799,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 313348,
+     "gallery": "360",
+     "sim": 0.9217
+    },
+    {
+     "id": 313146,
+     "gallery": "360",
+     "sim": 0.8385
+    },
+    {
+     "id": 451747,
+     "gallery": "453",
+     "sim": 0.8281
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 22270,
+   "path": "test_met/44dfd3644303.jpg",
+   "gallery": "371",
+   "ms": 809,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 23214,
+     "gallery": "371",
+     "sim": 0.7511
+    },
+    {
+     "id": 35848,
+     "gallery": "373",
+     "sim": 0.7506
+    },
+    {
+     "id": 22901,
+     "gallery": "373",
+     "sim": 0.7467
+    }
+   ],
+   "top1": false,
+   "top3": false,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 23937,
+   "path": "test_met/a6d7b05f701b.jpg",
+   "gallery": "371",
+   "ms": 843,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 23207,
+     "gallery": "371",
+     "sim": 0.9001
+    },
+    {
+     "id": 22139,
+     "gallery": "371",
+     "sim": 0.8972
+    },
+    {
+     "id": 23016,
+     "gallery": "371",
+     "sim": 0.8916
+    }
+   ],
+   "top1": false,
+   "top3": false,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 21963,
+   "path": "test_met/9fb7542d928a.jpg",
+   "gallery": "375",
+   "ms": 808,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 21963,
+     "gallery": "375",
+     "sim": 0.9096
+    },
+    {
+     "id": 23045,
+     "gallery": "375",
+     "sim": 0.8697
+    },
+    {
+     "id": 24689,
+     "gallery": "375",
+     "sim": 0.8597
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 444523,
+   "path": "test_met/814b45d3e874.jpg",
+   "gallery": "455",
+   "ms": 957,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 662008,
+     "gallery": "463",
+     "sim": 0.8488
+    },
+    {
+     "id": 444523,
+     "gallery": "455",
+     "sim": 0.8437
+    },
+    {
+     "id": 450408,
+     "gallery": "455",
+     "sim": 0.8427
+    }
+   ],
+   "top1": false,
+   "top3": true,
+   "galleryHit": false
+  },
+  {
+   "MET_id": 435904,
+   "path": "test_met/6ce1fcdebe2b.jpg",
+   "gallery": "520",
+   "ms": 958,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 435904,
+     "gallery": "520",
+     "sim": 0.9225
+    },
+    {
+     "id": 436485,
+     "gallery": "617",
+     "sim": 0.8331
+    },
+    {
+     "id": 436305,
+     "gallery": "617",
+     "sim": 0.7962
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 198764,
+   "path": "test_met/9b5c48253af1.jpg",
+   "gallery": "534",
+   "ms": 772,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 198764,
+     "gallery": "534",
+     "sim": 0.8846
+    },
+    {
+     "id": 197822,
+     "gallery": "504",
+     "sim": 0.8025
+    },
+    {
+     "id": 198962,
+     "gallery": "534",
+     "sim": 0.7926
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 206698,
+   "path": "test_met/3d2519555d68.jpg",
+   "gallery": "536",
+   "ms": 845,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 206698,
+     "gallery": "536",
+     "sim": 0.8444
+    },
+    {
+     "sim": 0.8244
+    },
+    {
+     "id": 826291,
+     "gallery": "622",
+     "sim": 0.8244
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 769187,
+   "path": "test_met/35c94e588b06.jpg",
+   "gallery": "548",
+   "ms": 884,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 207555,
+     "gallery": "800",
+     "sim": 0.8319
+    },
+    {
+     "id": 17571,
+     "gallery": "766",
+     "sim": 0.7667
+    },
+    {
+     "sim": 0.7506
+    }
+   ],
+   "top1": false,
+   "top3": false,
+   "galleryHit": false
+  },
+  {
+   "MET_id": 205107,
+   "path": "test_met/68329ae0a52a.jpg",
+   "gallery": "549",
+   "ms": 1136,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 205107,
+     "gallery": "549",
+     "sim": 0.9115
+    },
+    {
+     "id": 4546,
+     "gallery": "722",
+     "sim": 0.7966
+    },
+    {
+     "sim": 0.7723
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 436282,
+   "path": "test_met/85d8f5399c75.jpg",
+   "gallery": "605",
+   "ms": 814,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 436282,
+     "gallery": "605",
+     "sim": 0.8505
+    },
+    {
+     "id": 464048,
+     "gallery": "544",
+     "sim": 0.8355
+    },
+    {
+     "id": 438605,
+     "gallery": "635",
+     "sim": 0.8283
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 647338,
+   "path": "test_met/f4945cab40a9.jpg",
+   "gallery": "620",
+   "ms": 846,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 435904,
+     "gallery": "520",
+     "sim": 0.8301
+    },
+    {
+     "id": 436485,
+     "gallery": "617",
+     "sim": 0.8251
+    },
+    {
+     "id": 435887,
+     "gallery": "629",
+     "sim": 0.7706
+    }
+   ],
+   "top1": false,
+   "top3": false,
+   "galleryHit": false
+  },
+  {
+   "MET_id": 437898,
+   "path": "test_met/288e879c6593.jpg",
+   "gallery": "633",
+   "ms": 1083,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 437898,
+     "gallery": "633",
+     "sim": 0.929
+    },
+    {
+     "id": 439405,
+     "gallery": "642",
+     "sim": 0.8412
+    },
+    {
+     "id": 437900,
+     "gallery": "632",
+     "sim": 0.8353
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 11952,
+   "path": "test_met/072df4fe10b4.jpg",
+   "gallery": "700",
+   "ms": 903,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 11952,
+     "gallery": "700",
+     "sim": 0.868
+    },
+    {
+     "id": 12649,
+     "gallery": "700",
+     "sim": 0.7868
+    },
+    {
+     "id": 12650,
+     "gallery": "700",
+     "sim": 0.7794
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 11922,
+   "path": "test_met/dddbe041af13.jpg",
+   "gallery": "700",
+   "ms": 846,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 11922,
+     "gallery": "700",
+     "sim": 0.8358
+    },
+    {
+     "id": 11790,
+     "gallery": "760",
+     "sim": 0.8147
+    },
+    {
+     "id": 254697,
+     "gallery": "162",
+     "sim": 0.7781
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 10176,
+   "path": "test_met/9e389b119cb5.jpg",
+   "gallery": "717",
+   "ms": 874,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 10176,
+     "gallery": "717",
+     "sim": 0.799
+    },
+    {
+     "id": 436851,
+     "gallery": "628",
+     "sim": 0.7885
+    },
+    {
+     "id": 437500,
+     "gallery": "512",
+     "sim": 0.7782
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 11790,
+   "path": "test_met/82fd73b5a2d9.jpg",
+   "gallery": "760",
+   "ms": 821,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 11790,
+     "gallery": "760",
+     "sim": 0.8165
+    },
+    {
+     "id": 11922,
+     "gallery": "700",
+     "sim": 0.8012
+    },
+    {
+     "id": 254697,
+     "gallery": "162",
+     "sim": 0.7501
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 10049,
+   "path": "test_met/59efc5571a63.jpg",
+   "gallery": "770",
+   "ms": 1075,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 10049,
+     "gallery": "770",
+     "sim": 0.9127
+    },
+    {
+     "id": 437343,
+     "gallery": "800",
+     "sim": 0.773
+    },
+    {
+     "id": 435776,
+     "gallery": "640",
+     "sim": 0.7643
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 435626,
+   "path": "test_met/f6ff4b6ea325.jpg",
+   "gallery": "818",
+   "ms": 974,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 435626,
+     "gallery": "818",
+     "sim": 0.8775
+    },
+    {
+     "id": 437852,
+     "gallery": "808",
+     "sim": 0.7307
+    },
+    {
+     "id": 438106,
+     "gallery": "644",
+     "sim": 0.729
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 460162,
+   "path": "test_met/2f2192f834e5.jpg",
+   "gallery": "950",
+   "ms": 836,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 460162,
+     "gallery": "950",
+     "sim": 0.9107
+    },
+    {
+     "id": 460237,
+     "gallery": "950",
+     "sim": 0.8694
+    },
+    {
+     "id": 460163,
+     "gallery": "950",
+     "sim": 0.8673
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 460258,
+   "path": "test_met/ba87ba9f5d87.jpg",
+   "gallery": "950",
+   "ms": 896,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 460258,
+     "gallery": "950",
+     "sim": 0.889
+    },
+    {
+     "id": 460257,
+     "gallery": "950",
+     "sim": 0.8565
+    },
+    {
+     "id": 460254,
+     "gallery": "950",
+     "sim": 0.8273
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  },
+  {
+   "MET_id": 461052,
+   "path": "test_met/148a000d3cc3.jpg",
+   "gallery": "953",
+   "ms": 1730,
+   "status": 200,
+   "label": {
+    "objectID": 312536,
+    "gallery": "343",
+    "floor": "1",
+    "accession": "1979.206.314",
+    "confidence": 0.9
+   },
+   "candidates": [
+    {
+     "id": 248081,
+     "gallery": "171",
+     "sim": 0.7862
+    },
+    {
+     "id": 466102,
+     "gallery": "537",
+     "sim": 0.7855
+    },
+    {
+     "id": 468582,
+     "gallery": "301",
+     "sim": 0.7852
+    }
+   ],
+   "top1": false,
+   "top3": false,
+   "galleryHit": false
+  },
+  {
+   "MET_id": 459011,
+   "path": "test_met/d92fc622ffaa.jpg",
+   "gallery": "954",
+   "ms": 852,
+   "status": 200,
+   "label": null,
+   "candidates": [
+    {
+     "id": 459011,
+     "gallery": "954",
+     "sim": 0.9013
+    },
+    {
+     "id": 442750,
+     "gallery": "601",
+     "sim": 0.8104
+    },
+    {
+     "id": 458990,
+     "gallery": "956",
+     "sim": 0.8096
+    }
+   ],
+   "top1": true,
+   "top3": true,
+   "galleryHit": true
+  }
+ ],
+ "bulkRows": [
+  {
+   "path": "test_met/962e0ebb2d70.jpg",
+   "gt": 471943,
+   "gallery": "001",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9328,
+   "top": {
+    "id": 471943,
+    "sim": 0.9328,
+    "gallery": "001"
+   }
+  },
+  {
+   "path": "test_met/a5732c3e5d60.jpg",
+   "gt": 471061,
+   "gallery": "001",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9207,
+   "top": {
+    "id": 471061,
+    "sim": 0.9207,
+    "gallery": "001"
+   }
+  },
+  {
+   "path": "test_met/379f5e55fada.jpg",
+   "gt": 472381,
+   "gallery": "002",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9136,
+   "top": {
+    "id": 472381,
+    "sim": 0.9136,
+    "gallery": "002"
+   }
+  },
+  {
+   "path": "test_met/9f6623bf5160.jpg",
+   "gt": 471263,
+   "gallery": "002",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8639,
+   "top": {
+    "id": 471263,
+    "sim": 0.8639,
+    "gallery": "002"
+   }
+  },
+  {
+   "path": "test_met/c73abdbabb31.jpg",
+   "gt": 471907,
+   "gallery": "002",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9231,
+   "top": {
+    "id": 471907,
+    "sim": 0.9231,
+    "gallery": "002"
+   }
+  },
+  {
+   "path": "test_met/d29b8f85d698.jpg",
+   "gt": 469882,
+   "gallery": "003",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8592,
+   "top": {
+    "id": 469882,
+    "sim": 0.8592,
+    "gallery": "003"
+   }
+  },
+  {
+   "path": "test_met/f02ccbb3bd51.jpg",
+   "gt": 471848,
+   "gallery": "003",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9021,
+   "top": {
+    "id": 471848,
+    "sim": 0.9021,
+    "gallery": "003"
+   }
+  },
+  {
+   "path": "test_met/2d1e2c502521.jpg",
+   "gt": 470601,
+   "gallery": "004",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8967,
+   "top": {
+    "id": 470601,
+    "sim": 0.8967,
+    "gallery": "004"
+   }
+  },
+  {
+   "path": "test_met/7556586e9cb3.jpg",
+   "gt": 469854,
+   "gallery": "004",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8547,
+   "top": {
+    "id": 469854,
+    "sim": 0.8547,
+    "gallery": "004"
+   }
+  },
+  {
+   "path": "test_met/88e210458873.jpg",
+   "gt": 469854,
+   "gallery": "004",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.86,
+   "top": {
+    "id": 469854,
+    "sim": 0.86,
+    "gallery": "004"
+   }
+  },
+  {
+   "path": "test_met/049b2caf4fb1.jpg",
+   "gt": 471187,
+   "gallery": "008",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8857,
+   "top": {
+    "id": 471188,
+    "sim": 0.8869,
+    "gallery": "008"
+   }
+  },
+  {
+   "path": "test_met/758a83fab463.jpg",
+   "gt": 470600,
+   "gallery": "008",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9149,
+   "top": {
+    "id": 470600,
+    "sim": 0.9149,
+    "gallery": "008"
+   }
+  },
+  {
+   "path": "test_met/897ac5427398.jpg",
+   "gt": 471460,
+   "gallery": "008",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8892,
+   "top": {
+    "id": 471460,
+    "sim": 0.8892,
+    "gallery": "008"
+   }
+  },
+  {
+   "path": "test_met/d40f186d2915.jpg",
+   "gt": 471999,
+   "gallery": "008",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9128,
+   "top": {
+    "id": 471999,
+    "sim": 0.9128,
+    "gallery": "008"
+   }
+  },
+  {
+   "path": "test_met/78946b18d254.jpg",
+   "gt": 471321,
+   "gallery": "009",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8854,
+   "top": {
+    "id": 471320,
+    "sim": 0.8923,
+    "gallery": "009"
+   }
+  },
+  {
+   "path": "test_met/ee676247e8d5.jpg",
+   "gt": 472387,
+   "gallery": "009",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9211,
+   "top": {
+    "id": 472387,
+    "sim": 0.9211,
+    "gallery": "009"
+   }
+  },
+  {
+   "path": "test_met/562cbab63bca.jpg",
+   "gt": 472276,
+   "gallery": "010",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8571,
+   "top": {
+    "id": 472276,
+    "sim": 0.8571,
+    "gallery": "010"
+   }
+  },
+  {
+   "path": "test_met/a213ca925540.jpg",
+   "gt": 472180,
+   "gallery": "013",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9295,
+   "top": {
+    "id": 472180,
+    "sim": 0.9295,
+    "gallery": "013"
+   }
+  },
+  {
+   "path": "test_met/1fabf8ab8466.jpg",
+   "gt": 471919,
+   "gallery": "014",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8966,
+   "top": {
+    "id": 471919,
+    "sim": 0.8966,
+    "gallery": "014"
+   }
+  },
+  {
+   "path": "test_met/0ae4905eb773.jpg",
+   "gt": 468561,
+   "gallery": "016",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.867,
+   "top": {
+    "id": 468561,
+    "sim": 0.867,
+    "gallery": "016"
+   }
+  },
+  {
+   "path": "test_met/66a0b3db07a2.jpg",
+   "gt": 471726,
+   "gallery": "016",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9265,
+   "top": {
+    "id": 471726,
+    "sim": 0.9265,
+    "gallery": "016"
+   }
+  },
+  {
+   "path": "test_met/341296c200f6.jpg",
+   "gt": 467654,
+   "gallery": "017",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8941,
+   "top": {
+    "id": 467653,
+    "sim": 0.8941,
+    "gallery": "017"
+   }
+  },
+  {
+   "path": "test_met/3cd71f30700d.jpg",
+   "gt": 467641,
+   "gallery": "017",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9106,
+   "top": {
+    "id": 467641,
+    "sim": 0.9106,
+    "gallery": "017"
+   }
+  },
+  {
+   "path": "test_met/074430e9aa13.jpg",
+   "gt": 468233,
+   "gallery": "018",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9053,
+   "top": {
+    "id": 468233,
+    "sim": 0.9053,
+    "gallery": "018"
+   }
+  },
+  {
+   "path": "test_met/6153011e3307.jpg",
+   "gt": 467528,
+   "gallery": "018",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9197,
+   "top": {
+    "id": 467528,
+    "sim": 0.9197,
+    "gallery": "018"
+   }
+  },
+  {
+   "path": "test_met/8ba00b47c59c.jpg",
+   "gt": 467528,
+   "gallery": "018",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9151,
+   "top": {
+    "id": 467528,
+    "sim": 0.9151,
+    "gallery": "018"
+   }
+  },
+  {
+   "path": "test_met/e359d075f3ae.jpg",
+   "gt": 468230,
+   "gallery": "018",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.859,
+   "top": {
+    "id": 468232,
+    "sim": 0.8656,
+    "gallery": "018"
+   }
+  },
+  {
+   "path": "test_met/ffb72c901d26.jpg",
+   "gt": 468230,
+   "gallery": "018",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8709,
+   "top": {
+    "id": 468232,
+    "sim": 0.8896,
+    "gallery": "018"
+   }
+  },
+  {
+   "path": "test_met/0eac5aea1242.jpg",
+   "gt": 471989,
+   "gallery": "020",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9046,
+   "top": {
+    "id": 471989,
+    "sim": 0.9046,
+    "gallery": "020"
+   }
+  },
+  {
+   "path": "test_met/122fb2ec26ae.jpg",
+   "gt": 469913,
+   "gallery": "020",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9194,
+   "top": {
+    "id": 469913,
+    "sim": 0.9194,
+    "gallery": "020"
+   }
+  },
+  {
+   "path": "test_met/67970a958661.jpg",
+   "gt": 469931,
+   "gallery": "020",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9212,
+   "top": {
+    "id": 469931,
+    "sim": 0.9212,
+    "gallery": "020"
+   }
+  },
+  {
+   "path": "test_met/8883e27c6c7f.jpg",
+   "gt": 470265,
+   "gallery": "020",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8621,
+   "top": {
+    "id": 470265,
+    "sim": 0.8621,
+    "gallery": "020"
+   }
+  },
+  {
+   "path": "test_met/cbb966e5ceca.jpg",
+   "gt": 469913,
+   "gallery": "020",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9195,
+   "top": {
+    "id": 469913,
+    "sim": 0.9195,
+    "gallery": "020"
+   }
+  },
+  {
+   "path": "test_met/fe6d34fce587.jpg",
+   "gt": 471730,
+   "gallery": "020",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.935,
+   "top": {
+    "id": 471730,
+    "sim": 0.935,
+    "gallery": "020"
+   }
+  },
+  {
+   "path": "test_met/ac766ae47654.jpg",
+   "gt": 437943,
+   "gallery": "099",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9012,
+   "top": {
+    "id": 437943,
+    "sim": 0.9012,
+    "gallery": "099"
+   }
+  },
+  {
+   "path": "test_met/b2b38238f9e3.jpg",
+   "gt": 325688,
+   "gallery": "099",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.7719,
+   "top": {
+    "id": 544804,
+    "sim": 0.7839,
+    "gallery": "109"
+   }
+  },
+  {
+   "path": "test_met/b84129866d77.jpg",
+   "gt": 464299,
+   "gallery": "099",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9256,
+   "top": {
+    "id": 464299,
+    "sim": 0.9256,
+    "gallery": "099"
+   }
+  },
+  {
+   "path": "test_met/a617a56a5960.jpg",
+   "gt": 543903,
+   "gallery": "100",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8094,
+   "top": {
+    "id": 543903,
+    "sim": 0.8094,
+    "gallery": "100"
+   }
+  },
+  {
+   "path": "test_met/401dc4ad2ea9.jpg",
+   "gt": 543901,
+   "gallery": "103",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9077,
+   "top": {
+    "id": 543901,
+    "sim": 0.9077,
+    "gallery": "103"
+   }
+  },
+  {
+   "path": "test_met/0f29defa3c7d.jpg",
+   "gt": 544213,
+   "gallery": "105",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9209,
+   "top": {
+    "id": 544213,
+    "sim": 0.9209,
+    "gallery": "105"
+   }
+  },
+  {
+   "path": "test_met/320b0edfe324.jpg",
+   "gt": 544212,
+   "gallery": "105",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.898,
+   "top": {
+    "id": 544212,
+    "sim": 0.898,
+    "gallery": "105"
+   }
+  },
+  {
+   "path": "test_met/3978ebc989ec.jpg",
+   "gt": 544211,
+   "gallery": "105",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8986,
+   "top": {
+    "id": 544211,
+    "sim": 0.8986,
+    "gallery": "105"
+   }
+  },
+  {
+   "path": "test_met/74a1cacc7cf6.jpg",
+   "gt": 545111,
+   "gallery": "105",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8791,
+   "top": {
+    "id": 545111,
+    "sim": 0.8791,
+    "gallery": "105"
+   }
+  },
+  {
+   "path": "test_met/c5ed769cfd5a.jpg",
+   "gt": 544214,
+   "gallery": "105",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9189,
+   "top": {
+    "id": 544213,
+    "sim": 0.9256,
+    "gallery": "105"
+   }
+  },
+  {
+   "path": "test_met/dd6b629cda0c.jpg",
+   "gt": 544126,
+   "gallery": "105",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9088,
+   "top": {
+    "id": 544126,
+    "sim": 0.9088,
+    "gallery": "105"
+   }
+  },
+  {
+   "path": "test_met/883f2379ebac.jpg",
+   "gt": 545393,
+   "gallery": "107",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.8483,
+   "top": {
+    "id": 544005,
+    "sim": 0.8914,
+    "gallery": "104"
+   }
+  },
+  {
+   "path": "test_met/d48fb291e771.jpg",
+   "gt": 544457,
+   "gallery": "115",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9328,
+   "top": {
+    "id": 544457,
+    "sim": 0.9328,
+    "gallery": "115"
+   }
+  },
+  {
+   "path": "test_met/035cdd1038b2.jpg",
+   "gt": 547751,
+   "gallery": "117",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.8563,
+   "top": {
+    "id": 551349,
+    "sim": 0.8661,
+    "gallery": "134"
+   }
+  },
+  {
+   "path": "test_met/185b4d0f95a6.jpg",
+   "gt": 544498,
+   "gallery": "119",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8748,
+   "top": {
+    "id": 544498,
+    "sim": 0.8748,
+    "gallery": "119"
+   }
+  },
+  {
+   "path": "test_met/a5d52c50facf.jpg",
+   "gt": 547741,
+   "gallery": "119",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9183,
+   "top": {
+    "id": 547741,
+    "sim": 0.9183,
+    "gallery": "119"
+   }
+  },
+  {
+   "path": "test_met/1d0a6ba51091.jpg",
+   "gt": 544776,
+   "gallery": "121",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9186,
+   "top": {
+    "id": 544776,
+    "sim": 0.9186,
+    "gallery": "121"
+   }
+  },
+  {
+   "path": "test_met/3af69f20c385.jpg",
+   "gt": 549201,
+   "gallery": "121",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9072,
+   "top": {
+    "id": 549201,
+    "sim": 0.9072,
+    "gallery": "121"
+   }
+  },
+  {
+   "path": "test_met/6c220013d3a8.jpg",
+   "gt": 544514,
+   "gallery": "121",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.7023,
+   "top": {
+    "id": 548059,
+    "sim": 0.7829,
+    "gallery": "130"
+   }
+  },
+  {
+   "path": "test_met/aeff803a8d43.jpg",
+   "gt": 544692,
+   "gallery": "121",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.7258,
+   "top": {
+    "id": 545932,
+    "sim": 0.7653,
+    "gallery": "106"
+   }
+  },
+  {
+   "path": "test_met/cf9a260bde62.jpg",
+   "gt": 544776,
+   "gallery": "121",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8981,
+   "top": {
+    "id": 544776,
+    "sim": 0.8981,
+    "gallery": "121"
+   }
+  },
+  {
+   "path": "test_met/e1c37d832a41.jpg",
+   "gt": 544514,
+   "gallery": "121",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.6778,
+   "top": {
+    "id": 38627,
+    "sim": 0.8096,
+    "gallery": "244"
+   }
+  },
+  {
+   "path": "test_met/85c43d277351.jpg",
+   "gt": 544752,
+   "gallery": "123",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.7893,
+   "top": {
+    "id": 544184,
+    "sim": 0.8162,
+    "gallery": "111"
+   }
+  },
+  {
+   "path": "test_met/f6f87b6d89ac.jpg",
+   "gt": 544765,
+   "gallery": "123",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.8002,
+   "top": {
+    "id": 545900,
+    "sim": 0.8503,
+    "gallery": "119"
+   }
+  },
+  {
+   "path": "test_met/27f2ac642985.jpg",
+   "gt": 551807,
+   "gallery": "128",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9089,
+   "top": {
+    "id": 551807,
+    "sim": 0.9089,
+    "gallery": "128"
+   }
+  },
+  {
+   "path": "test_met/514014597422.jpg",
+   "gt": 548360,
+   "gallery": "128",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8797,
+   "top": {
+    "id": 548360,
+    "sim": 0.8797,
+    "gallery": "128"
+   }
+  },
+  {
+   "path": "test_met/d2c324a57f3a.jpg",
+   "gt": 547759,
+   "gallery": "130",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9607,
+   "top": {
+    "id": 547759,
+    "sim": 0.9607,
+    "gallery": "130"
+   }
+  },
+  {
+   "path": "test_met/257b5cddf238.jpg",
+   "gt": 549534,
+   "gallery": "131",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.759,
+   "top": {
+    "id": 551899,
+    "sim": 0.8687,
+    "gallery": "132"
+   }
+  },
+  {
+   "path": "test_met/2d578400ee22.jpg",
+   "gt": 547802,
+   "gallery": "131",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.71,
+   "top": {
+    "id": 549492,
+    "sim": 0.8478,
+    "gallery": "123"
+   }
+  },
+  {
+   "path": "test_met/3b8c5943d8ea.jpg",
+   "gt": 547802,
+   "gallery": "131",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.716,
+   "top": {
+    "id": 551895,
+    "sim": 0.8475,
+    "gallery": "129"
+   }
+  },
+  {
+   "path": "test_met/5697ef8bf2a8.jpg",
+   "gt": 544483,
+   "gallery": "131",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9035,
+   "top": {
+    "id": 544483,
+    "sim": 0.9035,
+    "gallery": "131"
+   }
+  },
+  {
+   "path": "test_met/9899447abef7.jpg",
+   "gt": 544100,
+   "gallery": "131",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8734,
+   "top": {
+    "id": 544100,
+    "sim": 0.8734,
+    "gallery": "131"
+   }
+  },
+  {
+   "path": "test_met/af14b223f5e6.jpg",
+   "gt": 547802,
+   "gallery": "131",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.7215,
+   "top": {
+    "id": 577371,
+    "sim": 0.848,
+    "gallery": "102"
+   }
+  },
+  {
+   "path": "test_met/b00c5266a67e.jpg",
+   "gt": 547802,
+   "gallery": "131",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.7543,
+   "top": {
+    "id": 543878,
+    "sim": 0.8208,
+    "gallery": "103"
+   }
+  },
+  {
+   "path": "test_met/53e9dcd285b2.jpg",
+   "gt": 547257,
+   "gallery": "133",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.6156,
+   "top": {
+    "id": 638804,
+    "sim": 0.721,
+    "gallery": "378"
+   }
+  },
+  {
+   "path": "test_met/6c82a21a3dd4.jpg",
+   "gt": 547257,
+   "gallery": "133",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8857,
+   "top": {
+    "id": 547257,
+    "sim": 0.8857,
+    "gallery": "133"
+   }
+  },
+  {
+   "path": "test_met/7344c356b6fe.jpg",
+   "gt": 551313,
+   "gallery": "134",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9464,
+   "top": {
+    "id": 551313,
+    "sim": 0.9464,
+    "gallery": "134"
+   }
+  },
+  {
+   "path": "test_met/b3a9fbfbf9d1.jpg",
+   "gt": 551367,
+   "gallery": "134",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9452,
+   "top": {
+    "id": 551367,
+    "sim": 0.9452,
+    "gallery": "134"
+   }
+  },
+  {
+   "path": "test_met/cc443de0cb1b.jpg",
+   "gt": 551289,
+   "gallery": "134",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9401,
+   "top": {
+    "id": 551289,
+    "sim": 0.9401,
+    "gallery": "134"
+   }
+  },
+  {
+   "path": "test_met/92157b108aea.jpg",
+   "gt": 545872,
+   "gallery": "137",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8223,
+   "top": {
+    "id": 545872,
+    "sim": 0.8223,
+    "gallery": "137"
+   }
+  },
+  {
+   "path": "test_met/18925b368f8f.jpg",
+   "gt": 549610,
+   "gallery": "138",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.738,
+   "top": {
+    "id": 329970,
+    "sim": 0.8113,
+    "gallery": "169"
+   }
+  },
+  {
+   "path": "test_met/576db4b32582.jpg",
+   "gt": 549610,
+   "gallery": "138",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.8041,
+   "top": {
+    "id": 248140,
+    "sim": 0.828,
+    "gallery": "156"
+   }
+  },
+  {
+   "path": "test_met/a94606304ebe.jpg",
+   "gt": 549610,
+   "gallery": "138",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.7601,
+   "top": {
+    "id": 248140,
+    "sim": 0.8176,
+    "gallery": "156"
+   }
+  },
+  {
+   "path": "test_met/00e4f1657e87.jpg",
+   "gt": 254744,
+   "gallery": "152",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9165,
+   "top": {
+    "id": 254744,
+    "sim": 0.9165,
+    "gallery": "152"
+   }
+  },
+  {
+   "path": "test_met/4bbd0c4f6e46.jpg",
+   "gt": 256250,
+   "gallery": "152",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8695,
+   "top": {
+    "id": 256250,
+    "sim": 0.8695,
+    "gallery": "152"
+   }
+  },
+  {
+   "path": "test_met/21c4262a2370.jpg",
+   "gt": 253483,
+   "gallery": "153",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8995,
+   "top": {
+    "id": 253483,
+    "sim": 0.8995,
+    "gallery": "153"
+   }
+  },
+  {
+   "path": "test_met/3e9f9b1d1c7d.jpg",
+   "gt": 253483,
+   "gallery": "153",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8328,
+   "top": {
+    "id": 253483,
+    "sim": 0.8328,
+    "gallery": "153"
+   }
+  },
+  {
+   "path": "test_met/4ef763697dee.jpg",
+   "gt": 247967,
+   "gallery": "153",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9169,
+   "top": {
+    "id": 247967,
+    "sim": 0.9169,
+    "gallery": "153"
+   }
+  },
+  {
+   "path": "test_met/29e2fab2f971.jpg",
+   "gt": 256861,
+   "gallery": "154",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.8496,
+   "top": {
+    "id": 250910,
+    "sim": 0.857,
+    "gallery": "170"
+   }
+  },
+  {
+   "path": "test_met/4cd35f14337e.jpg",
+   "gt": 257597,
+   "gallery": "154",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9286,
+   "top": {
+    "id": 257597,
+    "sim": 0.9286,
+    "gallery": "154"
+   }
+  },
+  {
+   "path": "test_met/1493004687d3.jpg",
+   "gt": 246136,
+   "gallery": "157",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9419,
+   "top": {
+    "id": 246136,
+    "sim": 0.9419,
+    "gallery": "157"
+   }
+  },
+  {
+   "path": "test_met/24ca5b6efe96.jpg",
+   "gt": 247144,
+   "gallery": "158",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9376,
+   "top": {
+    "id": 247144,
+    "sim": 0.9376,
+    "gallery": "158"
+   }
+  },
+  {
+   "path": "test_met/6f586fdbb550.jpg",
+   "gt": 254595,
+   "gallery": "158",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8951,
+   "top": {
+    "id": 247588,
+    "sim": 0.8985,
+    "gallery": "158"
+   }
+  },
+  {
+   "path": "test_met/716fe77c95cd.jpg",
+   "gt": 254508,
+   "gallery": "158",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9374,
+   "top": {
+    "id": 254508,
+    "sim": 0.9374,
+    "gallery": "158"
+   }
+  },
+  {
+   "path": "test_met/60f11379d2c9.jpg",
+   "gt": 254523,
+   "gallery": "159",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.894,
+   "top": {
+    "id": 250552,
+    "sim": 0.9029,
+    "gallery": "171"
+   }
+  },
+  {
+   "path": "test_met/72319adbbcfc.jpg",
+   "gt": 251476,
+   "gallery": "159",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8483,
+   "top": {
+    "id": 251476,
+    "sim": 0.8483,
+    "gallery": "159"
+   }
+  },
+  {
+   "path": "test_met/cbc2c69ed529.jpg",
+   "gt": 256198,
+   "gallery": "159",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8311,
+   "top": {
+    "id": 256198,
+    "sim": 0.8311,
+    "gallery": "159"
+   }
+  },
+  {
+   "path": "test_met/46e795fce564.jpg",
+   "gt": 256125,
+   "gallery": "161",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8946,
+   "top": {
+    "id": 256125,
+    "sim": 0.8946,
+    "gallery": "161"
+   }
+  },
+  {
+   "path": "test_met/592bdb99fbb3.jpg",
+   "gt": 249164,
+   "gallery": "161",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9164,
+   "top": {
+    "id": 249164,
+    "sim": 0.9164,
+    "gallery": "161"
+   }
+  },
+  {
+   "path": "test_met/e3b4e28bfc9a.jpg",
+   "gt": 247403,
+   "gallery": "161",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8866,
+   "top": {
+    "id": 247403,
+    "sim": 0.8866,
+    "gallery": "161"
+   }
+  },
+  {
+   "path": "test_met/1fa83d132d1a.jpg",
+   "gt": 248706,
+   "gallery": "162",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9342,
+   "top": {
+    "id": 248706,
+    "sim": 0.9342,
+    "gallery": "162"
+   }
+  },
+  {
+   "path": "test_met/72540c19142f.jpg",
+   "gt": 257603,
+   "gallery": "162",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8403,
+   "top": {
+    "id": 257603,
+    "sim": 0.8403,
+    "gallery": "162"
+   }
+  },
+  {
+   "path": "test_met/7393a638b501.jpg",
+   "gt": 252983,
+   "gallery": "162",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9128,
+   "top": {
+    "id": 252983,
+    "sim": 0.9128,
+    "gallery": "162"
+   }
+  },
+  {
+   "path": "test_met/9f371226d572.jpg",
+   "gt": 257610,
+   "gallery": "162",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8535,
+   "top": {
+    "id": 257610,
+    "sim": 0.8535,
+    "gallery": "162"
+   }
+  },
+  {
+   "path": "test_met/a89a5cdd9de7.jpg",
+   "gt": 255983,
+   "gallery": "162",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8898,
+   "top": {
+    "id": 255983,
+    "sim": 0.8898,
+    "gallery": "162"
+   }
+  },
+  {
+   "path": "test_met/bee27e6baedf.jpg",
+   "gt": 247597,
+   "gallery": "162",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9307,
+   "top": {
+    "id": 247597,
+    "sim": 0.9307,
+    "gallery": "162"
+   }
+  },
+  {
+   "path": "test_met/61e29f0ebbb4.jpg",
+   "gt": 247010,
+   "gallery": "164",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9324,
+   "top": {
+    "id": 247010,
+    "sim": 0.9324,
+    "gallery": "164"
+   }
+  },
+  {
+   "path": "test_met/6b93fbb5835b.jpg",
+   "gt": 246875,
+   "gallery": "166",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9501,
+   "top": {
+    "id": 246875,
+    "sim": 0.9501,
+    "gallery": "166"
+   }
+  },
+  {
+   "path": "test_met/d23cb3dd40bf.jpg",
+   "gt": 253042,
+   "gallery": "166",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8332,
+   "top": {
+    "id": 253042,
+    "sim": 0.8332,
+    "gallery": "166"
+   }
+  },
+  {
+   "path": "test_met/e4a444922c54.jpg",
+   "gt": 248036,
+   "gallery": "166",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.8635,
+   "top": {
+    "id": 248037,
+    "sim": 0.8874,
+    "gallery": "168"
+   }
+  },
+  {
+   "path": "test_met/2c034fed4542.jpg",
+   "gt": 255243,
+   "gallery": "168",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8925,
+   "top": {
+    "id": 255243,
+    "sim": 0.8925,
+    "gallery": "168"
+   }
+  },
+  {
+   "path": "test_met/9d7d3d100ec0.jpg",
+   "gt": 255880,
+   "gallery": "168",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9291,
+   "top": {
+    "id": 255880,
+    "sim": 0.9291,
+    "gallery": "168"
+   }
+  },
+  {
+   "path": "test_met/b3635175a4e3.jpg",
+   "gt": 248365,
+   "gallery": "168",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8888,
+   "top": {
+    "id": 248365,
+    "sim": 0.8888,
+    "gallery": "168"
+   }
+  },
+  {
+   "path": "test_met/34dca5088567.jpg",
+   "gt": 250716,
+   "gallery": "169",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8969,
+   "top": {
+    "id": 250716,
+    "sim": 0.8969,
+    "gallery": "169"
+   }
+  },
+  {
+   "path": "test_met/3dd8e855ad4d.jpg",
+   "gt": 252513,
+   "gallery": "169",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8888,
+   "top": {
+    "id": 252513,
+    "sim": 0.8888,
+    "gallery": "169"
+   }
+  },
+  {
+   "path": "test_met/8acc4e3279ab.jpg",
+   "gt": 255068,
+   "gallery": "170",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8735,
+   "top": {
+    "id": 255068,
+    "sim": 0.8735,
+    "gallery": "170"
+   }
+  },
+  {
+   "path": "test_met/b614236db065.jpg",
+   "gt": 254342,
+   "gallery": "171",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.9156,
+   "top": {
+    "id": 247223,
+    "sim": 0.9206,
+    "gallery": "155"
+   }
+  },
+  {
+   "path": "test_met/470c27b7bc4b.jpg",
+   "gt": 327497,
+   "gallery": "202",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9239,
+   "top": {
+    "id": 327497,
+    "sim": 0.9239,
+    "gallery": "202"
+   }
+  },
+  {
+   "path": "test_met/5429a606b05a.jpg",
+   "gt": 325865,
+   "gallery": "202",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.915,
+   "top": {
+    "id": 325865,
+    "sim": 0.915,
+    "gallery": "202"
+   }
+  },
+  {
+   "path": "test_met/a9612433a54c.jpg",
+   "gt": 322484,
+   "gallery": "202",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8546,
+   "top": {
+    "id": 322484,
+    "sim": 0.8546,
+    "gallery": "202"
+   }
+  },
+  {
+   "path": "test_met/abae2ac93565.jpg",
+   "gt": 324622,
+   "gallery": "202",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.8245,
+   "top": {
+    "id": 546422,
+    "sim": 0.8603,
+    "gallery": "109"
+   }
+  },
+  {
+   "path": "test_met/d04761657e30.jpg",
+   "gt": 324289,
+   "gallery": "202",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9133,
+   "top": {
+    "id": 324289,
+    "sim": 0.9133,
+    "gallery": "202"
+   }
+  },
+  {
+   "path": "test_met/eddb32a667bc.jpg",
+   "gt": 324766,
+   "gallery": "202",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8862,
+   "top": {
+    "id": 324766,
+    "sim": 0.8862,
+    "gallery": "202"
+   }
+  },
+  {
+   "path": "test_met/7803f52f8a25.jpg",
+   "gt": 42716,
+   "gallery": "206",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8144,
+   "top": {
+    "id": 42716,
+    "sim": 0.8144,
+    "gallery": "206"
+   }
+  },
+  {
+   "path": "test_met/618e48ddb9db.jpg",
+   "gt": 42124,
+   "gallery": "207",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9074,
+   "top": {
+    "id": 42124,
+    "sim": 0.9074,
+    "gallery": "207"
+   }
+  },
+  {
+   "path": "test_met/846d01b36cf4.jpg",
+   "gt": 49368,
+   "gallery": "207",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8674,
+   "top": {
+    "id": 49368,
+    "sim": 0.8674,
+    "gallery": "207"
+   }
+  },
+  {
+   "path": "test_met/f4c3970bf602.jpg",
+   "gt": 49540,
+   "gallery": "207",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9174,
+   "top": {
+    "id": 49540,
+    "sim": 0.9174,
+    "gallery": "207"
+   }
+  },
+  {
+   "path": "test_met/010331700864.jpg",
+   "gt": 42724,
+   "gallery": "208",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8124,
+   "top": {
+    "id": 42724,
+    "sim": 0.8124,
+    "gallery": "208"
+   }
+  },
+  {
+   "path": "test_met/07b1f95ff768.jpg",
+   "gt": 42726,
+   "gallery": "208",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8843,
+   "top": {
+    "id": 42726,
+    "sim": 0.8843,
+    "gallery": "208"
+   }
+  },
+  {
+   "path": "test_met/0cd986139170.jpg",
+   "gt": 42725,
+   "gallery": "208",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8463,
+   "top": {
+    "id": 42725,
+    "sim": 0.8463,
+    "gallery": "208"
+   }
+  },
+  {
+   "path": "test_met/89f4c22da11d.jpg",
+   "gt": 42722,
+   "gallery": "208",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.894,
+   "top": {
+    "id": 42722,
+    "sim": 0.894,
+    "gallery": "208"
+   }
+  },
+  {
+   "path": "test_met/8eca6bf578ea.jpg",
+   "gt": 54245,
+   "gallery": "208",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8873,
+   "top": {
+    "id": 54245,
+    "sim": 0.8873,
+    "gallery": "208"
+   }
+  },
+  {
+   "path": "test_met/a3a78ff2b494.jpg",
+   "gt": 61660,
+   "gallery": "208",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8441,
+   "top": {
+    "id": 61660,
+    "sim": 0.8441,
+    "gallery": "208"
+   }
+  },
+  {
+   "path": "test_met/e4bdaef713fd.jpg",
+   "gt": 36085,
+   "gallery": "208",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.866,
+   "top": {
+    "id": 36085,
+    "sim": 0.866,
+    "gallery": "208"
+   }
+  },
+  {
+   "path": "test_met/e92d2f06dabf.jpg",
+   "gt": 44799,
+   "gallery": "208",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.883,
+   "top": {
+    "id": 44799,
+    "sim": 0.883,
+    "gallery": "208"
+   }
+  },
+  {
+   "path": "test_met/f22b1345cd43.jpg",
+   "gt": 61658,
+   "gallery": "208",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8431,
+   "top": {
+    "id": 61658,
+    "sim": 0.8431,
+    "gallery": "208"
+   }
+  },
+  {
+   "path": "test_met/1dfd0bcaddf1.jpg",
+   "gt": 44292,
+   "gallery": "219",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9076,
+   "top": {
+    "id": 44292,
+    "sim": 0.9076,
+    "gallery": "219"
+   }
+  },
+  {
+   "path": "test_met/4cadf12a6ea5.jpg",
+   "gt": 44842,
+   "gallery": "224",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9046,
+   "top": {
+    "id": 44842,
+    "sim": 0.9046,
+    "gallery": "224"
+   }
+  },
+  {
+   "path": "test_met/4e2a13b06658.jpg",
+   "gt": 36113,
+   "gallery": "229",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.914,
+   "top": {
+    "id": 36113,
+    "sim": 0.914,
+    "gallery": "229"
+   }
+  },
+  {
+   "path": "test_met/919414e72236.jpg",
+   "gt": 38133,
+   "gallery": "239",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8829,
+   "top": {
+    "id": 38133,
+    "sim": 0.8829,
+    "gallery": "239"
+   }
+  },
+  {
+   "path": "test_met/03022f7606a5.jpg",
+   "gt": 39326,
+   "gallery": "240",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.7735,
+   "top": {
+    "id": 37415,
+    "sim": 0.8042,
+    "gallery": "247"
+   }
+  },
+  {
+   "path": "test_met/0f3f9801c6d3.jpg",
+   "gt": 39327,
+   "gallery": "240",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.7672,
+   "top": {
+    "id": 39327,
+    "sim": 0.7672,
+    "gallery": "240"
+   }
+  },
+  {
+   "path": "test_met/3d50b3648203.jpg",
+   "gt": 38141,
+   "gallery": "241",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.75,
+   "top": {
+    "id": 38269,
+    "sim": 0.8219,
+    "gallery": "247"
+   }
+  },
+  {
+   "path": "test_met/864788b601b0.jpg",
+   "gt": 38139,
+   "gallery": "241",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.7871,
+   "top": {
+    "id": 259138,
+    "sim": 0.8054,
+    "gallery": "162"
+   }
+  },
+  {
+   "path": "test_met/9e0755eb4f43.jpg",
+   "gt": 38574,
+   "gallery": "241",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8001,
+   "top": {
+    "id": 38574,
+    "sim": 0.8001,
+    "gallery": "241"
+   }
+  },
+  {
+   "path": "test_met/f5886c6ea599.jpg",
+   "gt": 38140,
+   "gallery": "241",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.829,
+   "top": {
+    "id": 38140,
+    "sim": 0.829,
+    "gallery": "241"
+   }
+  },
+  {
+   "path": "test_met/a8f85e6bb315.jpg",
+   "gt": 39112,
+   "gallery": "250",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8915,
+   "top": {
+    "id": 39112,
+    "sim": 0.8915,
+    "gallery": "250"
+   }
+  },
+  {
+   "path": "test_met/c10da5bf1640.jpg",
+   "gt": 464237,
+   "gallery": "300",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9224,
+   "top": {
+    "id": 464237,
+    "sim": 0.9224,
+    "gallery": "300"
+   }
+  },
+  {
+   "path": "test_met/1b769547c807.jpg",
+   "gt": 465239,
+   "gallery": "301",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8926,
+   "top": {
+    "id": 465239,
+    "sim": 0.8926,
+    "gallery": "301"
+   }
+  },
+  {
+   "path": "test_met/43daa9b3ad78.jpg",
+   "gt": 468214,
+   "gallery": "301",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8935,
+   "top": {
+    "id": 468214,
+    "sim": 0.8935,
+    "gallery": "301"
+   }
+  },
+  {
+   "path": "test_met/560fc2bee3d8.jpg",
+   "gt": 470298,
+   "gallery": "301",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9383,
+   "top": {
+    "id": 470298,
+    "sim": 0.9383,
+    "gallery": "301"
+   }
+  },
+  {
+   "path": "test_met/6332d14eb2ca.jpg",
+   "gt": 468214,
+   "gallery": "301",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8896,
+   "top": {
+    "id": 468214,
+    "sim": 0.8896,
+    "gallery": "301"
+   }
+  },
+  {
+   "path": "test_met/647fc047a8c9.jpg",
+   "gt": 472849,
+   "gallery": "301",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8777,
+   "top": {
+    "id": 472849,
+    "sim": 0.8777,
+    "gallery": "301"
+   }
+  },
+  {
+   "path": "test_met/77f318412840.jpg",
+   "gt": 466122,
+   "gallery": "301",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9466,
+   "top": {
+    "id": 466122,
+    "sim": 0.9466,
+    "gallery": "301"
+   }
+  },
+  {
+   "path": "test_met/7cbd15c709ef.jpg",
+   "gt": 468422,
+   "gallery": "301",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8765,
+   "top": {
+    "id": 468422,
+    "sim": 0.8765,
+    "gallery": "301"
+   }
+  },
+  {
+   "path": "test_met/ab2cf5549159.jpg",
+   "gt": 468716,
+   "gallery": "301",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.8053,
+   "top": {
+    "id": 248310,
+    "sim": 0.8123,
+    "gallery": "162"
+   }
+  },
+  {
+   "path": "test_met/b72adbb4530a.jpg",
+   "gt": 472849,
+   "gallery": "301",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.89,
+   "top": {
+    "id": 472849,
+    "sim": 0.89,
+    "gallery": "301"
+   }
+  },
+  {
+   "path": "test_met/d4b81984966c.jpg",
+   "gt": 468215,
+   "gallery": "301",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8218,
+   "top": {
+    "id": 468215,
+    "sim": 0.8218,
+    "gallery": "301"
+   }
+  },
+  {
+   "path": "test_met/d5555b398eb6.jpg",
+   "gt": 468717,
+   "gallery": "301",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8795,
+   "top": {
+    "id": 468717,
+    "sim": 0.8795,
+    "gallery": "301"
+   }
+  },
+  {
+   "path": "test_met/f93a2066a438.jpg",
+   "gt": 472849,
+   "gallery": "301",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8828,
+   "top": {
+    "id": 472849,
+    "sim": 0.8828,
+    "gallery": "301"
+   }
+  },
+  {
+   "path": "test_met/12ad6c1e40d5.jpg",
+   "gt": 206321,
+   "gallery": "303",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8498,
+   "top": {
+    "id": 206321,
+    "sim": 0.8498,
+    "gallery": "303"
+   }
+  },
+  {
+   "path": "test_met/80c352441614.jpg",
+   "gt": 206321,
+   "gallery": "303",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8806,
+   "top": {
+    "id": 206321,
+    "sim": 0.8806,
+    "gallery": "303"
+   }
+  },
+  {
+   "path": "test_met/a7ce8537b954.jpg",
+   "gt": 206321,
+   "gallery": "303",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8719,
+   "top": {
+    "id": 206321,
+    "sim": 0.8719,
+    "gallery": "303"
+   }
+  },
+  {
+   "path": "test_met/ad7a9acebf83.jpg",
+   "gt": 206321,
+   "gallery": "303",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8424,
+   "top": {
+    "id": 206321,
+    "sim": 0.8424,
+    "gallery": "303"
+   }
+  },
+  {
+   "path": "test_met/02513f1465ab.jpg",
+   "gt": 467997,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.7836,
+   "top": {
+    "id": 467997,
+    "sim": 0.7836,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/032a3b19e1c1.jpg",
+   "gt": 470392,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8771,
+   "top": {
+    "id": 470392,
+    "sim": 0.8771,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/140a8e5876d5.jpg",
+   "gt": 464438,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8916,
+   "top": {
+    "id": 464438,
+    "sim": 0.8916,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/1777197c28ef.jpg",
+   "gt": 466334,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8378,
+   "top": {
+    "id": 466334,
+    "sim": 0.8378,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/17ebeb21dc73.jpg",
+   "gt": 470392,
+   "gallery": "304",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.8196,
+   "top": {
+    "id": 245515,
+    "sim": 0.8216,
+    "gallery": "164"
+   }
+  },
+  {
+   "path": "test_met/26ec057cff76.jpg",
+   "gt": 466379,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8772,
+   "top": {
+    "id": 466379,
+    "sim": 0.8772,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/2bbc6d755186.jpg",
+   "gt": 468219,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8153,
+   "top": {
+    "id": 468219,
+    "sim": 0.8153,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/32ef6dc82c1e.jpg",
+   "gt": 471850,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8251,
+   "top": {
+    "id": 471850,
+    "sim": 0.8251,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/3849f946d3c6.jpg",
+   "gt": 467647,
+   "gallery": "304",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8542,
+   "top": {
+    "id": 468219,
+    "sim": 0.8585,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/419129bdc787.jpg",
+   "gt": 466379,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8648,
+   "top": {
+    "id": 466379,
+    "sim": 0.8648,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/452773a7bebd.jpg",
+   "gt": 466379,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8804,
+   "top": {
+    "id": 466379,
+    "sim": 0.8804,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/5fdf0ad66bc5.jpg",
+   "gt": 464438,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8479,
+   "top": {
+    "id": 464438,
+    "sim": 0.8479,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/6a0706a46411.jpg",
+   "gt": 463096,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8544,
+   "top": {
+    "id": 463096,
+    "sim": 0.8544,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/6a554669ac54.jpg",
+   "gt": 464406,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9258,
+   "top": {
+    "id": 464406,
+    "sim": 0.9258,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/7065d481bc5a.jpg",
+   "gt": 464320,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9311,
+   "top": {
+    "id": 464320,
+    "sim": 0.9311,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/72f3c7e0c9c1.jpg",
+   "gt": 464438,
+   "gallery": "304",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.8118,
+   "top": {
+    "id": 255464,
+    "sim": 0.8216,
+    "gallery": "152"
+   }
+  },
+  {
+   "path": "test_met/840c25e0a5e0.jpg",
+   "gt": 464234,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8793,
+   "top": {
+    "id": 464234,
+    "sim": 0.8793,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/89cc4de69a90.jpg",
+   "gt": 463096,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8143,
+   "top": {
+    "id": 463096,
+    "sim": 0.8143,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/91e52e8447a0.jpg",
+   "gt": 464438,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8514,
+   "top": {
+    "id": 464438,
+    "sim": 0.8514,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/9992397bb838.jpg",
+   "gt": 466334,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.877,
+   "top": {
+    "id": 466334,
+    "sim": 0.877,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/a1989cb6b9c4.jpg",
+   "gt": 466379,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8802,
+   "top": {
+    "id": 466379,
+    "sim": 0.8802,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/ae128553b799.jpg",
+   "gt": 471850,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8783,
+   "top": {
+    "id": 471850,
+    "sim": 0.8783,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/bc85a659af2d.jpg",
+   "gt": 466822,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8747,
+   "top": {
+    "id": 466822,
+    "sim": 0.8747,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/c5f7dbe88fcb.jpg",
+   "gt": 463785,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8614,
+   "top": {
+    "id": 463785,
+    "sim": 0.8614,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/c6bff9bf6f8f.jpg",
+   "gt": 471850,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8054,
+   "top": {
+    "id": 471850,
+    "sim": 0.8054,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/ded9a6bacfc5.jpg",
+   "gt": 477779,
+   "gallery": "304",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8011,
+   "top": {
+    "id": 468219,
+    "sim": 0.8208,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/e0230248267f.jpg",
+   "gt": 463785,
+   "gallery": "304",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8339,
+   "top": {
+    "id": 463785,
+    "sim": 0.8339,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/fd9f026e9798.jpg",
+   "gt": 467630,
+   "gallery": "304",
+   "top1": false,
+   "top5": false,
+   "galleryHit": true,
+   "gtSim": 0.7729,
+   "top": {
+    "id": 468219,
+    "sim": 0.8084,
+    "gallery": "304"
+   }
+  },
+  {
+   "path": "test_met/071e863d50c0.jpg",
+   "gt": 437029,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8792,
+   "top": {
+    "id": 437029,
+    "sim": 0.8792,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/082ba2710465.jpg",
+   "gt": 467594,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8433,
+   "top": {
+    "id": 467594,
+    "sim": 0.8433,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/16913339cd2c.jpg",
+   "gt": 464613,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8262,
+   "top": {
+    "id": 464613,
+    "sim": 0.8262,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/1ee9975cb621.jpg",
+   "gt": 466378,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8116,
+   "top": {
+    "id": 466378,
+    "sim": 0.8116,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/285b3f111939.jpg",
+   "gt": 466652,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8283,
+   "top": {
+    "id": 466652,
+    "sim": 0.8283,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/29ae5b926031.jpg",
+   "gt": 464614,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8165,
+   "top": {
+    "id": 464614,
+    "sim": 0.8165,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/552819b0a291.jpg",
+   "gt": 464371,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8894,
+   "top": {
+    "id": 464371,
+    "sim": 0.8894,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/58cd1dbb4abd.jpg",
+   "gt": 468231,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8259,
+   "top": {
+    "id": 468231,
+    "sim": 0.8259,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/6f55ff0c58da.jpg",
+   "gt": 437029,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8451,
+   "top": {
+    "id": 437029,
+    "sim": 0.8451,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/7499914707ea.jpg",
+   "gt": 466697,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8985,
+   "top": {
+    "id": 466697,
+    "sim": 0.8985,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/7c9a2b65f01d.jpg",
+   "gt": 466418,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8613,
+   "top": {
+    "id": 466418,
+    "sim": 0.8613,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/8414658c4732.jpg",
+   "gt": 201926,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8584,
+   "top": {
+    "id": 201926,
+    "sim": 0.8584,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/a1a44b76c2cd.jpg",
+   "gt": 466626,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9061,
+   "top": {
+    "id": 466626,
+    "sim": 0.9061,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/c6b1b06d9e50.jpg",
+   "gt": 466331,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.917,
+   "top": {
+    "id": 466331,
+    "sim": 0.917,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/c731c830c8ad.jpg",
+   "gt": 470266,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8343,
+   "top": {
+    "id": 470266,
+    "sim": 0.8343,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/d20edf8d2453.jpg",
+   "gt": 34025,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8405,
+   "top": {
+    "id": 34025,
+    "sim": 0.8405,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/d5d573f771a7.jpg",
+   "gt": 472330,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8574,
+   "top": {
+    "id": 472330,
+    "sim": 0.8574,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/d9f6c39523f2.jpg",
+   "gt": 467594,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8172,
+   "top": {
+    "id": 467594,
+    "sim": 0.8172,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/e5d2a8a8751e.jpg",
+   "gt": 466315,
+   "gallery": "305",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9115,
+   "top": {
+    "id": 466315,
+    "sim": 0.9115,
+    "gallery": "305"
+   }
+  },
+  {
+   "path": "test_met/17214ad732b3.jpg",
+   "gt": 464709,
+   "gallery": "306",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9321,
+   "top": {
+    "id": 464709,
+    "sim": 0.9321,
+    "gallery": "306"
+   }
+  },
+  {
+   "path": "test_met/21c204244d3d.jpg",
+   "gt": 463717,
+   "gallery": "306",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8909,
+   "top": {
+    "id": 463717,
+    "sim": 0.8909,
+    "gallery": "306"
+   }
+  },
+  {
+   "path": "test_met/ef1620545bdb.jpg",
+   "gt": 463717,
+   "gallery": "306",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8924,
+   "top": {
+    "id": 463718,
+    "sim": 0.9018,
+    "gallery": "306"
+   }
+  },
+  {
+   "path": "test_met/5760ee4f0b81.jpg",
+   "gt": 465981,
+   "gallery": "307",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8793,
+   "top": {
+    "id": 465981,
+    "sim": 0.8793,
+    "gallery": "307"
+   }
+  },
+  {
+   "path": "test_met/8db81f217ad3.jpg",
+   "gt": 463787,
+   "gallery": "307",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.7946,
+   "top": {
+    "id": 463787,
+    "sim": 0.7946,
+    "gallery": "307"
+   }
+  },
+  {
+   "path": "test_met/63997623bbf2.jpg",
+   "gt": 320053,
+   "gallery": "344",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8468,
+   "top": {
+    "id": 320053,
+    "sim": 0.8468,
+    "gallery": "344"
+   }
+  },
+  {
+   "path": "test_met/9408a2a716d3.jpg",
+   "gt": 320053,
+   "gallery": "344",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8315,
+   "top": {
+    "id": 320053,
+    "sim": 0.8315,
+    "gallery": "344"
+   }
+  },
+  {
+   "path": "test_met/51ddaddcb3c4.jpg",
+   "gt": 313348,
+   "gallery": "360",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9217,
+   "top": {
+    "id": 313348,
+    "sim": 0.9217,
+    "gallery": "360"
+   }
+  },
+  {
+   "path": "test_met/6356e98fe10d.jpg",
+   "gt": 313386,
+   "gallery": "360",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.946,
+   "top": {
+    "id": 313386,
+    "sim": 0.946,
+    "gallery": "360"
+   }
+  },
+  {
+   "path": "test_met/b0f904c77a10.jpg",
+   "gt": 316682,
+   "gallery": "360",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9167,
+   "top": {
+    "id": 316682,
+    "sim": 0.9167,
+    "gallery": "360"
+   }
+  },
+  {
+   "path": "test_met/dbd1fc097060.jpg",
+   "gt": 317878,
+   "gallery": "360",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8683,
+   "top": {
+    "id": 317878,
+    "sim": 0.8683,
+    "gallery": "360"
+   }
+  },
+  {
+   "path": "test_met/9e0f70147b16.jpg",
+   "gt": 313341,
+   "gallery": "361",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9066,
+   "top": {
+    "id": 313341,
+    "sim": 0.9066,
+    "gallery": "361"
+   }
+  },
+  {
+   "path": "test_met/19adefaaae26.jpg",
+   "gt": 26450,
+   "gallery": "371",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.8669,
+   "top": {
+    "id": 25377,
+    "sim": 0.8911,
+    "gallery": "379"
+   }
+  },
+  {
+   "path": "test_met/1adf65737567.jpg",
+   "gt": 22730,
+   "gallery": "371",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9303,
+   "top": {
+    "id": 22730,
+    "sim": 0.9303,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/1ea54c36bdf6.jpg",
+   "gt": 22270,
+   "gallery": "371",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8866,
+   "top": {
+    "id": 22270,
+    "sim": 0.8866,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/23f18b807f10.jpg",
+   "gt": 23937,
+   "gallery": "371",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.8129,
+   "top": {
+    "id": 22875,
+    "sim": 0.8359,
+    "gallery": "374"
+   }
+  },
+  {
+   "path": "test_met/2580a44f344d.jpg",
+   "gt": 23202,
+   "gallery": "371",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8976,
+   "top": {
+    "id": 22239,
+    "sim": 0.8988,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/2670cc40194e.jpg",
+   "gt": 23937,
+   "gallery": "371",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.899,
+   "top": {
+    "id": 23937,
+    "sim": 0.899,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/2c940b6cb91d.jpg",
+   "gt": 23936,
+   "gallery": "371",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.875,
+   "top": {
+    "id": 24696,
+    "sim": 0.8847,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/41277be034e1.jpg",
+   "gt": 23944,
+   "gallery": "371",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8485,
+   "top": {
+    "id": 642980,
+    "sim": 0.8605,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/44dfd3644303.jpg",
+   "gt": 22270,
+   "gallery": "371",
+   "top1": false,
+   "top5": false,
+   "galleryHit": true,
+   "gtSim": 0.7405,
+   "top": {
+    "id": 23214,
+    "sim": 0.7511,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/5452219aaa4d.jpg",
+   "gt": 22233,
+   "gallery": "371",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.8442,
+   "top": {
+    "id": 22770,
+    "sim": 0.8483,
+    "gallery": "374"
+   }
+  },
+  {
+   "path": "test_met/5afac518d16e.jpg",
+   "gt": 23937,
+   "gallery": "371",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.8483,
+   "top": {
+    "id": 22875,
+    "sim": 0.8779,
+    "gallery": "374"
+   }
+  },
+  {
+   "path": "test_met/7957d081bdc2.jpg",
+   "gt": 22270,
+   "gallery": "371",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8946,
+   "top": {
+    "id": 22270,
+    "sim": 0.8946,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/7d9a97b857d5.jpg",
+   "gt": 26450,
+   "gallery": "371",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.7097,
+   "top": {
+    "id": 23150,
+    "sim": 0.7627,
+    "gallery": "373"
+   }
+  },
+  {
+   "path": "test_met/813413d848e0.jpg",
+   "gt": 24696,
+   "gallery": "371",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9117,
+   "top": {
+    "id": 24696,
+    "sim": 0.9117,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/8143ca9697ff.jpg",
+   "gt": 22270,
+   "gallery": "371",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8536,
+   "top": {
+    "id": 22270,
+    "sim": 0.8536,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/8a22029c0b78.jpg",
+   "gt": 23937,
+   "gallery": "371",
+   "top1": false,
+   "top5": false,
+   "galleryHit": true,
+   "gtSim": 0.8526,
+   "top": {
+    "id": 22139,
+    "sim": 0.8906,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/8cbf7a5a371c.jpg",
+   "gt": 24696,
+   "gallery": "371",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.879,
+   "top": {
+    "id": 24696,
+    "sim": 0.879,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/8e5b952053ba.jpg",
+   "gt": 22139,
+   "gallery": "371",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9038,
+   "top": {
+    "id": 22139,
+    "sim": 0.9038,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/96df85cc686b.jpg",
+   "gt": 22139,
+   "gallery": "371",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8866,
+   "top": {
+    "id": 22139,
+    "sim": 0.8866,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/a023267f6b26.jpg",
+   "gt": 22233,
+   "gallery": "371",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8538,
+   "top": {
+    "id": 22233,
+    "sim": 0.8538,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/a6d7b05f701b.jpg",
+   "gt": 23937,
+   "gallery": "371",
+   "top1": false,
+   "top5": false,
+   "galleryHit": true,
+   "gtSim": 0.8707,
+   "top": {
+    "id": 23207,
+    "sim": 0.9001,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/a7f9d9d71c7a.jpg",
+   "gt": 21997,
+   "gallery": "371",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8352,
+   "top": {
+    "id": 21997,
+    "sim": 0.8352,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/c609aab41441.jpg",
+   "gt": 22233,
+   "gallery": "371",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8944,
+   "top": {
+    "id": 22233,
+    "sim": 0.8944,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/d017d8380e69.jpg",
+   "gt": 23944,
+   "gallery": "371",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8993,
+   "top": {
+    "id": 23944,
+    "sim": 0.8993,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/e2da0ddb27e6.jpg",
+   "gt": 22139,
+   "gallery": "371",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8711,
+   "top": {
+    "id": 22139,
+    "sim": 0.8711,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/e7bec92f477d.jpg",
+   "gt": 23202,
+   "gallery": "371",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9135,
+   "top": {
+    "id": 23202,
+    "sim": 0.9135,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/fa56cd03e096.jpg",
+   "gt": 22270,
+   "gallery": "371",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.88,
+   "top": {
+    "id": 22270,
+    "sim": 0.88,
+    "gallery": "371"
+   }
+  },
+  {
+   "path": "test_met/74734ec809bb.jpg",
+   "gt": 24685,
+   "gallery": "373",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9475,
+   "top": {
+    "id": 24685,
+    "sim": 0.9475,
+    "gallery": "373"
+   }
+  },
+  {
+   "path": "test_met/7766355ff7dd.jpg",
+   "gt": 23205,
+   "gallery": "373",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9256,
+   "top": {
+    "id": 23205,
+    "sim": 0.9256,
+    "gallery": "373"
+   }
+  },
+  {
+   "path": "test_met/3dbdbedc3eb5.jpg",
+   "gt": 22184,
+   "gallery": "374",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8854,
+   "top": {
+    "id": 22184,
+    "sim": 0.8854,
+    "gallery": "374"
+   }
+  },
+  {
+   "path": "test_met/65f8de3768fb.jpg",
+   "gt": 27790,
+   "gallery": "374",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9033,
+   "top": {
+    "id": 22875,
+    "sim": 0.9164,
+    "gallery": "374"
+   }
+  },
+  {
+   "path": "test_met/939d858a88b7.jpg",
+   "gt": 22411,
+   "gallery": "374",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.895,
+   "top": {
+    "id": 22411,
+    "sim": 0.895,
+    "gallery": "374"
+   }
+  },
+  {
+   "path": "test_met/f8ccae143ab3.jpg",
+   "gt": 24671,
+   "gallery": "374",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9158,
+   "top": {
+    "id": 24671,
+    "sim": 0.9158,
+    "gallery": "374"
+   }
+  },
+  {
+   "path": "test_met/9fb7542d928a.jpg",
+   "gt": 21963,
+   "gallery": "375",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9096,
+   "top": {
+    "id": 21963,
+    "sim": 0.9096,
+    "gallery": "375"
+   }
+  },
+  {
+   "path": "test_met/c232936579df.jpg",
+   "gt": 34183,
+   "gallery": "375",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.923,
+   "top": {
+    "id": 35702,
+    "sim": 0.9242,
+    "gallery": "375"
+   }
+  },
+  {
+   "path": "test_met/120e66ab4709.jpg",
+   "gt": 27164,
+   "gallery": "376",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.7706,
+   "top": {
+    "id": 242816,
+    "sim": 0.7795,
+    "gallery": "156"
+   }
+  },
+  {
+   "path": "test_met/7452749d0cbc.jpg",
+   "gt": 22098,
+   "gallery": "377",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8851,
+   "top": {
+    "id": 22098,
+    "sim": 0.8851,
+    "gallery": "377"
+   }
+  },
+  {
+   "path": "test_met/ecf423efb288.jpg",
+   "gt": 22521,
+   "gallery": "377",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.926,
+   "top": {
+    "id": 35721,
+    "sim": 0.926,
+    "gallery": "377"
+   }
+  },
+  {
+   "path": "test_met/db8c94158488.jpg",
+   "gt": 24257,
+   "gallery": "379",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9324,
+   "top": {
+    "id": 24257,
+    "sim": 0.9324,
+    "gallery": "379"
+   }
+  },
+  {
+   "path": "test_met/e9fee78d5aca.jpg",
+   "gt": 24857,
+   "gallery": "379",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9289,
+   "top": {
+    "id": 24857,
+    "sim": 0.9289,
+    "gallery": "379"
+   }
+  },
+  {
+   "path": "test_met/51eb47005602.jpg",
+   "gt": 444717,
+   "gallery": "454",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8665,
+   "top": {
+    "id": 444717,
+    "sim": 0.8665,
+    "gallery": "454"
+   }
+  },
+  {
+   "path": "test_met/b63c125195e5.jpg",
+   "gt": 444717,
+   "gallery": "454",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8847,
+   "top": {
+    "id": 444717,
+    "sim": 0.8847,
+    "gallery": "454"
+   }
+  },
+  {
+   "path": "test_met/22717f301b86.jpg",
+   "gt": 444523,
+   "gallery": "455",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.6896,
+   "top": {
+    "id": 567772,
+    "sim": 0.7628,
+    "gallery": "122"
+   }
+  },
+  {
+   "path": "test_met/26a790c86697.jpg",
+   "gt": 455250,
+   "gallery": "455",
+   "top1": false,
+   "top5": false,
+   "galleryHit": true,
+   "gtSim": 0.8575,
+   "top": {
+    "id": 455040,
+    "sim": 0.8868,
+    "gallery": "455"
+   }
+  },
+  {
+   "path": "test_met/313e733a6de6.jpg",
+   "gt": 444523,
+   "gallery": "455",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8624,
+   "top": {
+    "id": 444523,
+    "sim": 0.8624,
+    "gallery": "455"
+   }
+  },
+  {
+   "path": "test_met/814b45d3e874.jpg",
+   "gt": 444523,
+   "gallery": "455",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.8437,
+   "top": {
+    "id": 662008,
+    "sim": 0.8488,
+    "gallery": "463"
+   }
+  },
+  {
+   "path": "test_met/8d034437d830.jpg",
+   "gt": 453164,
+   "gallery": "455",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8881,
+   "top": {
+    "id": 453164,
+    "sim": 0.8881,
+    "gallery": "455"
+   }
+  },
+  {
+   "path": "test_met/c5077c1516ff.jpg",
+   "gt": 452779,
+   "gallery": "455",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8411,
+   "top": {
+    "id": 452779,
+    "sim": 0.8411,
+    "gallery": "455"
+   }
+  },
+  {
+   "path": "test_met/cde411706046.jpg",
+   "gt": 444523,
+   "gallery": "455",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.6312,
+   "top": {
+    "id": 559147,
+    "sim": 0.7335,
+    "gallery": "120"
+   }
+  },
+  {
+   "path": "test_met/1c37d63da62c.jpg",
+   "gt": 471563,
+   "gallery": "457",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8256,
+   "top": {
+    "id": 471563,
+    "sim": 0.8256,
+    "gallery": "457"
+   }
+  },
+  {
+   "path": "test_met/45fc0a0a1c7f.jpg",
+   "gt": 450719,
+   "gallery": "457",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8896,
+   "top": {
+    "id": 450719,
+    "sim": 0.8896,
+    "gallery": "457"
+   }
+  },
+  {
+   "path": "test_met/74b183dc279c.jpg",
+   "gt": 454520,
+   "gallery": "457",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8792,
+   "top": {
+    "id": 454520,
+    "sim": 0.8792,
+    "gallery": "457"
+   }
+  },
+  {
+   "path": "test_met/796cf022b33b.jpg",
+   "gt": 446986,
+   "gallery": "457",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8963,
+   "top": {
+    "id": 446986,
+    "sim": 0.8963,
+    "gallery": "457"
+   }
+  },
+  {
+   "path": "test_met/96af2bf28add.jpg",
+   "gt": 448964,
+   "gallery": "457",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9302,
+   "top": {
+    "id": 448964,
+    "sim": 0.9302,
+    "gallery": "457"
+   }
+  },
+  {
+   "path": "test_met/d5767844a32a.jpg",
+   "gt": 446990,
+   "gallery": "457",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8663,
+   "top": {
+    "id": 446990,
+    "sim": 0.8663,
+    "gallery": "457"
+   }
+  },
+  {
+   "path": "test_met/eb8f1b70cd63.jpg",
+   "gt": 25164,
+   "gallery": "457",
+   "top1": false,
+   "top5": false,
+   "galleryHit": true,
+   "gtSim": 0.8018,
+   "top": {
+    "id": 446986,
+    "sim": 0.8742,
+    "gallery": "457"
+   }
+  },
+  {
+   "path": "test_met/2f4fa1025d54.jpg",
+   "gt": 205177,
+   "gallery": "515",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8272,
+   "top": {
+    "id": 205177,
+    "sim": 0.8272,
+    "gallery": "515"
+   }
+  },
+  {
+   "path": "test_met/2fc5b5a2585a.jpg",
+   "gt": 435904,
+   "gallery": "520",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9264,
+   "top": {
+    "id": 435904,
+    "sim": 0.9264,
+    "gallery": "520"
+   }
+  },
+  {
+   "path": "test_met/6ce1fcdebe2b.jpg",
+   "gt": 435904,
+   "gallery": "520",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9225,
+   "top": {
+    "id": 435904,
+    "sim": 0.9225,
+    "gallery": "520"
+   }
+  },
+  {
+   "path": "test_met/6e0e3aa3f048.jpg",
+   "gt": 195447,
+   "gallery": "520",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8785,
+   "top": {
+    "id": 195447,
+    "sim": 0.8785,
+    "gallery": "520"
+   }
+  },
+  {
+   "path": "test_met/7297ff7cb6af.jpg",
+   "gt": 226696,
+   "gallery": "520",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9108,
+   "top": {
+    "id": 226696,
+    "sim": 0.9108,
+    "gallery": "520"
+   }
+  },
+  {
+   "path": "test_met/d68797a6341d.jpg",
+   "gt": 189471,
+   "gallery": "530",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9126,
+   "top": {
+    "id": 189471,
+    "sim": 0.9126,
+    "gallery": "530"
+   }
+  },
+  {
+   "path": "test_met/8c8cd8ecced5.jpg",
+   "gt": 437177,
+   "gallery": "533",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9376,
+   "top": {
+    "id": 437177,
+    "sim": 0.9376,
+    "gallery": "533"
+   }
+  },
+  {
+   "path": "test_met/199dee821819.jpg",
+   "gt": 198644,
+   "gallery": "534",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.7854,
+   "top": {
+    "id": 198644,
+    "sim": 0.7854,
+    "gallery": "534"
+   }
+  },
+  {
+   "path": "test_met/1cd2a47e2784.jpg",
+   "gt": 198644,
+   "gallery": "534",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9038,
+   "top": {
+    "id": 198644,
+    "sim": 0.9038,
+    "gallery": "534"
+   }
+  },
+  {
+   "path": "test_met/2cfed6cd2c28.jpg",
+   "gt": 198764,
+   "gallery": "534",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8451,
+   "top": {
+    "id": 198764,
+    "sim": 0.8451,
+    "gallery": "534"
+   }
+  },
+  {
+   "path": "test_met/3f418b871827.jpg",
+   "gt": 207813,
+   "gallery": "534",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8402,
+   "top": {
+    "id": 207813,
+    "sim": 0.8402,
+    "gallery": "534"
+   }
+  },
+  {
+   "path": "test_met/454206c2ed2e.jpg",
+   "gt": 192717,
+   "gallery": "534",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8924,
+   "top": {
+    "id": 192717,
+    "sim": 0.8924,
+    "gallery": "534"
+   }
+  },
+  {
+   "path": "test_met/63664193dbbf.jpg",
+   "gt": 207813,
+   "gallery": "534",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8096,
+   "top": {
+    "id": 207813,
+    "sim": 0.8096,
+    "gallery": "534"
+   }
+  },
+  {
+   "path": "test_met/76bc2fbfb514.jpg",
+   "gt": 198764,
+   "gallery": "534",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.7618,
+   "top": {
+    "id": 194543,
+    "sim": 0.7747,
+    "gallery": "549"
+   }
+  },
+  {
+   "path": "test_met/9b5c48253af1.jpg",
+   "gt": 198764,
+   "gallery": "534",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8846,
+   "top": {
+    "id": 198764,
+    "sim": 0.8846,
+    "gallery": "534"
+   }
+  },
+  {
+   "path": "test_met/a7d6d7fc786c.jpg",
+   "gt": 206399,
+   "gallery": "534",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8115,
+   "top": {
+    "id": 206399,
+    "sim": 0.8115,
+    "gallery": "534"
+   }
+  },
+  {
+   "path": "test_met/c24a5ccbafe1.jpg",
+   "gt": 201885,
+   "gallery": "534",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8568,
+   "top": {
+    "id": 201885,
+    "sim": 0.8568,
+    "gallery": "534"
+   }
+  },
+  {
+   "path": "test_met/c5cc5de658b1.jpg",
+   "gt": 206399,
+   "gallery": "534",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.7937,
+   "top": {
+    "id": 206399,
+    "sim": 0.7937,
+    "gallery": "534"
+   }
+  },
+  {
+   "path": "test_met/d6156476f0bb.jpg",
+   "gt": 201885,
+   "gallery": "534",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8389,
+   "top": {
+    "id": 201885,
+    "sim": 0.8389,
+    "gallery": "534"
+   }
+  },
+  {
+   "path": "test_met/df84c4839052.jpg",
+   "gt": 198764,
+   "gallery": "534",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8598,
+   "top": {
+    "id": 198764,
+    "sim": 0.8598,
+    "gallery": "534"
+   }
+  },
+  {
+   "path": "test_met/ec0c5abd314f.jpg",
+   "gt": 198764,
+   "gallery": "534",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8441,
+   "top": {
+    "id": 198764,
+    "sim": 0.8441,
+    "gallery": "534"
+   }
+  },
+  {
+   "path": "test_met/efa90543e588.jpg",
+   "gt": 209466,
+   "gallery": "534",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8096,
+   "top": {
+    "id": 209466,
+    "sim": 0.8096,
+    "gallery": "534"
+   }
+  },
+  {
+   "path": "test_met/f1e0509d30bf.jpg",
+   "gt": 198764,
+   "gallery": "534",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8775,
+   "top": {
+    "id": 198764,
+    "sim": 0.8775,
+    "gallery": "534"
+   }
+  },
+  {
+   "path": "test_met/0da92f8e3ee4.jpg",
+   "gt": 203959,
+   "gallery": "536",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.7954,
+   "top": {
+    "id": 203959,
+    "sim": 0.7954,
+    "gallery": "536"
+   }
+  },
+  {
+   "path": "test_met/213f93ba2a18.jpg",
+   "gt": 201862,
+   "gallery": "536",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.868,
+   "top": {
+    "id": 201862,
+    "sim": 0.868,
+    "gallery": "536"
+   }
+  },
+  {
+   "path": "test_met/36f3dfac805d.jpg",
+   "gt": 203959,
+   "gallery": "536",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.8006,
+   "top": {
+    "id": 207496,
+    "sim": 0.8052,
+    "gallery": "800"
+   }
+  },
+  {
+   "path": "test_met/3952d1522c3f.jpg",
+   "gt": 201862,
+   "gallery": "536",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8506,
+   "top": {
+    "id": 201862,
+    "sim": 0.8506,
+    "gallery": "536"
+   }
+  },
+  {
+   "path": "test_met/3d2519555d68.jpg",
+   "gt": 206698,
+   "gallery": "536",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8444,
+   "top": {
+    "id": 206698,
+    "sim": 0.8444,
+    "gallery": "536"
+   }
+  },
+  {
+   "path": "test_met/48f6e3d862af.jpg",
+   "gt": 204587,
+   "gallery": "536",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8315,
+   "top": {
+    "id": 204587,
+    "sim": 0.8315,
+    "gallery": "536"
+   }
+  },
+  {
+   "path": "test_met/5992edc22f2b.jpg",
+   "gt": 203959,
+   "gallery": "536",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.7373,
+   "top": {
+    "id": 552461,
+    "sim": 0.7611,
+    "gallery": "130"
+   }
+  },
+  {
+   "path": "test_met/5e0350259390.jpg",
+   "gt": 200554,
+   "gallery": "536",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8839,
+   "top": {
+    "id": 200554,
+    "sim": 0.8839,
+    "gallery": "536"
+   }
+  },
+  {
+   "path": "test_met/69e0bf136d83.jpg",
+   "gt": 204587,
+   "gallery": "536",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8689,
+   "top": {
+    "id": 204587,
+    "sim": 0.8689,
+    "gallery": "536"
+   }
+  },
+  {
+   "path": "test_met/82ab37b59f32.jpg",
+   "gt": 203914,
+   "gallery": "536",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9041,
+   "top": {
+    "id": 203914,
+    "sim": 0.9041,
+    "gallery": "536"
+   }
+  },
+  {
+   "path": "test_met/b01635b75bf1.jpg",
+   "gt": 204587,
+   "gallery": "536",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8689,
+   "top": {
+    "id": 204587,
+    "sim": 0.8689,
+    "gallery": "536"
+   }
+  },
+  {
+   "path": "test_met/b5a648c830c7.jpg",
+   "gt": 206698,
+   "gallery": "536",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.903,
+   "top": {
+    "id": 206698,
+    "sim": 0.903,
+    "gallery": "536"
+   }
+  },
+  {
+   "path": "test_met/bf6a4af8198b.jpg",
+   "gt": 206698,
+   "gallery": "536",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.883,
+   "top": {
+    "id": 206698,
+    "sim": 0.883,
+    "gallery": "536"
+   }
+  },
+  {
+   "path": "test_met/144e26badfc4.jpg",
+   "gt": 209131,
+   "gallery": "544",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8728,
+   "top": {
+    "id": 209131,
+    "sim": 0.8728,
+    "gallery": "544"
+   }
+  },
+  {
+   "path": "test_met/e9c3fc0ed038.jpg",
+   "gt": 209418,
+   "gallery": "544",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.8403,
+   "top": {
+    "id": 471059,
+    "sim": 0.8541,
+    "gallery": "010"
+   }
+  },
+  {
+   "path": "test_met/2bb26e40fb6f.jpg",
+   "gt": 204758,
+   "gallery": "548",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8344,
+   "top": {
+    "id": 204758,
+    "sim": 0.8344,
+    "gallery": "548"
+   }
+  },
+  {
+   "path": "test_met/35c94e588b06.jpg",
+   "gt": 769187,
+   "gallery": "548",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.6895,
+   "top": {
+    "id": 207555,
+    "sim": 0.8319,
+    "gallery": "800"
+   }
+  },
+  {
+   "path": "test_met/35fc3bb4bfbf.jpg",
+   "gt": 204758,
+   "gallery": "548",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.7881,
+   "top": {
+    "id": 204758,
+    "sim": 0.7881,
+    "gallery": "548"
+   }
+  },
+  {
+   "path": "test_met/4244c55c30b4.jpg",
+   "gt": 204758,
+   "gallery": "548",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.868,
+   "top": {
+    "id": 204758,
+    "sim": 0.868,
+    "gallery": "548"
+   }
+  },
+  {
+   "path": "test_met/551878f77566.jpg",
+   "gt": 204758,
+   "gallery": "548",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8347,
+   "top": {
+    "id": 204758,
+    "sim": 0.8347,
+    "gallery": "548"
+   }
+  },
+  {
+   "path": "test_met/5bace194d40b.jpg",
+   "gt": 211505,
+   "gallery": "548",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8984,
+   "top": {
+    "id": 211505,
+    "sim": 0.8984,
+    "gallery": "548"
+   }
+  },
+  {
+   "path": "test_met/5f7d09d4bfc5.jpg",
+   "gt": 203012,
+   "gallery": "548",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8963,
+   "top": {
+    "id": 203012,
+    "sim": 0.8963,
+    "gallery": "548"
+   }
+  },
+  {
+   "path": "test_met/6713736883b5.jpg",
+   "gt": 211486,
+   "gallery": "548",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9258,
+   "top": {
+    "id": 211486,
+    "sim": 0.9258,
+    "gallery": "548"
+   }
+  },
+  {
+   "path": "test_met/7eda9e775101.jpg",
+   "gt": 211505,
+   "gallery": "548",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8982,
+   "top": {
+    "id": 211505,
+    "sim": 0.8982,
+    "gallery": "548"
+   }
+  },
+  {
+   "path": "test_met/8034379d3da6.jpg",
+   "gt": 211505,
+   "gallery": "548",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8474,
+   "top": {
+    "id": 211505,
+    "sim": 0.8474,
+    "gallery": "548"
+   }
+  },
+  {
+   "path": "test_met/84ea6dee4b66.jpg",
+   "gt": 204758,
+   "gallery": "548",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9028,
+   "top": {
+    "id": 204758,
+    "sim": 0.9028,
+    "gallery": "548"
+   }
+  },
+  {
+   "path": "test_met/8c0dbdec7936.jpg",
+   "gt": 204758,
+   "gallery": "548",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.761,
+   "top": {
+    "id": 11790,
+    "sim": 0.7658,
+    "gallery": "760"
+   }
+  },
+  {
+   "path": "test_met/b102328394de.jpg",
+   "gt": 769187,
+   "gallery": "548",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.7566,
+   "top": {
+    "id": 207555,
+    "sim": 0.7684,
+    "gallery": "800"
+   }
+  },
+  {
+   "path": "test_met/bc06ee951407.jpg",
+   "gt": 204758,
+   "gallery": "548",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8443,
+   "top": {
+    "id": 204758,
+    "sim": 0.8443,
+    "gallery": "548"
+   }
+  },
+  {
+   "path": "test_met/68329ae0a52a.jpg",
+   "gt": 205107,
+   "gallery": "549",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9115,
+   "top": {
+    "id": 205107,
+    "sim": 0.9115,
+    "gallery": "549"
+   }
+  },
+  {
+   "path": "test_met/7acc9a647fca.jpg",
+   "gt": 231787,
+   "gallery": "549",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9031,
+   "top": {
+    "id": 231787,
+    "sim": 0.9031,
+    "gallery": "549"
+   }
+  },
+  {
+   "path": "test_met/f2a75e8c51cf.jpg",
+   "gt": 208030,
+   "gallery": "551",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9132,
+   "top": {
+    "id": 208030,
+    "sim": 0.9132,
+    "gallery": "551"
+   }
+  },
+  {
+   "path": "test_met/b9f59288539d.jpg",
+   "gt": 192720,
+   "gallery": "552",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9127,
+   "top": {
+    "id": 192720,
+    "sim": 0.9127,
+    "gallery": "552"
+   }
+  },
+  {
+   "path": "test_met/d6685fd64af2.jpg",
+   "gt": 194458,
+   "gallery": "553",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9094,
+   "top": {
+    "id": 194458,
+    "sim": 0.9094,
+    "gallery": "553"
+   }
+  },
+  {
+   "path": "test_met/5dfe0ac1cc4c.jpg",
+   "gt": 188827,
+   "gallery": "555",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8998,
+   "top": {
+    "id": 188827,
+    "sim": 0.8998,
+    "gallery": "555"
+   }
+  },
+  {
+   "path": "test_met/259bd5dd9c87.jpg",
+   "gt": 209315,
+   "gallery": "556",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8976,
+   "top": {
+    "id": 209315,
+    "sim": 0.8976,
+    "gallery": "556"
+   }
+  },
+  {
+   "path": "test_met/c6f848c62a94.jpg",
+   "gt": 437794,
+   "gallery": "600",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8788,
+   "top": {
+    "id": 437794,
+    "sim": 0.8788,
+    "gallery": "600"
+   }
+  },
+  {
+   "path": "test_met/032a8f65dc8a.jpg",
+   "gt": 436491,
+   "gallery": "602",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9476,
+   "top": {
+    "id": 436491,
+    "sim": 0.9476,
+    "gallery": "602"
+   }
+  },
+  {
+   "path": "test_met/3acd7021ee7a.jpg",
+   "gt": 437322,
+   "gallery": "602",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8896,
+   "top": {
+    "id": 437322,
+    "sim": 0.8896,
+    "gallery": "602"
+   }
+  },
+  {
+   "path": "test_met/53482ebf6f3d.jpg",
+   "gt": 436896,
+   "gallery": "602",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.883,
+   "top": {
+    "id": 436896,
+    "sim": 0.883,
+    "gallery": "602"
+   }
+  },
+  {
+   "path": "test_met/fce1b0208e55.jpg",
+   "gt": 436896,
+   "gallery": "602",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9029,
+   "top": {
+    "id": 436896,
+    "sim": 0.9029,
+    "gallery": "602"
+   }
+  },
+  {
+   "path": "test_met/85d8f5399c75.jpg",
+   "gt": 436282,
+   "gallery": "605",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8505,
+   "top": {
+    "id": 436282,
+    "sim": 0.8505,
+    "gallery": "605"
+   }
+  },
+  {
+   "path": "test_met/fd3ae952596a.jpg",
+   "gt": 435824,
+   "gallery": "609",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8727,
+   "top": {
+    "id": 435824,
+    "sim": 0.8727,
+    "gallery": "609"
+   }
+  },
+  {
+   "path": "test_met/e0c2fc739a9c.jpg",
+   "gt": 437284,
+   "gallery": "613",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9214,
+   "top": {
+    "id": 437284,
+    "sim": 0.9214,
+    "gallery": "613"
+   }
+  },
+  {
+   "path": "test_met/9002cdbdc348.jpg",
+   "gt": 437877,
+   "gallery": "614",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9465,
+   "top": {
+    "id": 437877,
+    "sim": 0.9465,
+    "gallery": "614"
+   }
+  },
+  {
+   "path": "test_met/f5ec709afbd5.jpg",
+   "gt": 438490,
+   "gallery": "615",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8988,
+   "top": {
+    "id": 438490,
+    "sim": 0.8988,
+    "gallery": "615"
+   }
+  },
+  {
+   "path": "test_met/730518d233c3.jpg",
+   "gt": 437387,
+   "gallery": "616",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8816,
+   "top": {
+    "id": 437387,
+    "sim": 0.8816,
+    "gallery": "616"
+   }
+  },
+  {
+   "path": "test_met/9547d18ca232.jpg",
+   "gt": 437389,
+   "gallery": "616",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9506,
+   "top": {
+    "id": 437389,
+    "sim": 0.9506,
+    "gallery": "616"
+   }
+  },
+  {
+   "path": "test_met/36c8fc04c339.jpg",
+   "gt": 188923,
+   "gallery": "617",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.862,
+   "top": {
+    "id": 188923,
+    "sim": 0.862,
+    "gallery": "617"
+   }
+  },
+  {
+   "path": "test_met/dff5be8ab966.jpg",
+   "gt": 436252,
+   "gallery": "618",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8027,
+   "top": {
+    "id": 436252,
+    "sim": 0.8027,
+    "gallery": "618"
+   }
+  },
+  {
+   "path": "test_met/0ac2a68b7c97.jpg",
+   "gt": 436577,
+   "gallery": "619",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9054,
+   "top": {
+    "id": 436577,
+    "sim": 0.9054,
+    "gallery": "619"
+   }
+  },
+  {
+   "path": "test_met/39d244c64c46.jpg",
+   "gt": 436570,
+   "gallery": "619",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9073,
+   "top": {
+    "id": 436570,
+    "sim": 0.9073,
+    "gallery": "619"
+   }
+  },
+  {
+   "path": "test_met/49489921ca4b.jpg",
+   "gt": 436571,
+   "gallery": "619",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8516,
+   "top": {
+    "id": 436571,
+    "sim": 0.8516,
+    "gallery": "619"
+   }
+  },
+  {
+   "path": "test_met/c3786ff515f3.jpg",
+   "gt": 436571,
+   "gallery": "619",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8402,
+   "top": {
+    "id": 436571,
+    "sim": 0.8402,
+    "gallery": "619"
+   }
+  },
+  {
+   "path": "test_met/f4945cab40a9.jpg",
+   "gt": 647338,
+   "gallery": "620",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.7682,
+   "top": {
+    "id": 435904,
+    "sim": 0.8301,
+    "gallery": "520"
+   }
+  },
+  {
+   "path": "test_met/3e543a59bb84.jpg",
+   "gt": 438724,
+   "gallery": "622",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9061,
+   "top": {
+    "id": 438724,
+    "sim": 0.9061,
+    "gallery": "622"
+   }
+  },
+  {
+   "path": "test_met/d644f63d02d7.jpg",
+   "gt": 437327,
+   "gallery": "623",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8751,
+   "top": {
+    "id": 437327,
+    "sim": 0.8751,
+    "gallery": "623"
+   }
+  },
+  {
+   "path": "test_met/59117d5af04c.jpg",
+   "gt": 631985,
+   "gallery": "626",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.804,
+   "top": {
+    "id": 631985,
+    "sim": 0.804,
+    "gallery": "626"
+   }
+  },
+  {
+   "path": "test_met/eeb78233b843.jpg",
+   "gt": 188954,
+   "gallery": "627",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8555,
+   "top": {
+    "id": 188954,
+    "sim": 0.8555,
+    "gallery": "627"
+   }
+  },
+  {
+   "path": "test_met/5f9c21d3d287.jpg",
+   "gt": 436851,
+   "gallery": "628",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.94,
+   "top": {
+    "id": 436851,
+    "sim": 0.94,
+    "gallery": "628"
+   }
+  },
+  {
+   "path": "test_met/36586f1e7fcb.jpg",
+   "gt": 437865,
+   "gallery": "629",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9061,
+   "top": {
+    "id": 437865,
+    "sim": 0.9061,
+    "gallery": "629"
+   }
+  },
+  {
+   "path": "test_met/3b95ac45fbf1.jpg",
+   "gt": 198766,
+   "gallery": "631",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8583,
+   "top": {
+    "id": 198766,
+    "sim": 0.8583,
+    "gallery": "631"
+   }
+  },
+  {
+   "path": "test_met/3e2c1f8b7042.jpg",
+   "gt": 437183,
+   "gallery": "631",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9566,
+   "top": {
+    "id": 437183,
+    "sim": 0.9566,
+    "gallery": "631"
+   }
+  },
+  {
+   "path": "test_met/65430d1f85ef.jpg",
+   "gt": 436326,
+   "gallery": "631",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9251,
+   "top": {
+    "id": 436326,
+    "sim": 0.9251,
+    "gallery": "631"
+   }
+  },
+  {
+   "path": "test_met/ad57e270c24f.jpg",
+   "gt": 436588,
+   "gallery": "631",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9005,
+   "top": {
+    "id": 436588,
+    "sim": 0.9005,
+    "gallery": "631"
+   }
+  },
+  {
+   "path": "test_met/1566ea836648.jpg",
+   "gt": 437286,
+   "gallery": "632",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9028,
+   "top": {
+    "id": 437286,
+    "sim": 0.9028,
+    "gallery": "632"
+   }
+  },
+  {
+   "path": "test_met/288e879c6593.jpg",
+   "gt": 437898,
+   "gallery": "633",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.929,
+   "top": {
+    "id": 437898,
+    "sim": 0.929,
+    "gallery": "633"
+   }
+  },
+  {
+   "path": "test_met/78120ebb53a1.jpg",
+   "gt": 436105,
+   "gallery": "634",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9399,
+   "top": {
+    "id": 436105,
+    "sim": 0.9399,
+    "gallery": "634"
+   }
+  },
+  {
+   "path": "test_met/15a1b7b8639d.jpg",
+   "gt": 435897,
+   "gallery": "635",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9002,
+   "top": {
+    "id": 435897,
+    "sim": 0.9002,
+    "gallery": "635"
+   }
+  },
+  {
+   "path": "test_met/e55fda30b9e5.jpg",
+   "gt": 436792,
+   "gallery": "636",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.7873,
+   "top": {
+    "id": 436795,
+    "sim": 0.7999,
+    "gallery": "638"
+   }
+  },
+  {
+   "path": "test_met/b8722e2976f1.jpg",
+   "gt": 437326,
+   "gallery": "638",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9083,
+   "top": {
+    "id": 437326,
+    "sim": 0.9083,
+    "gallery": "638"
+   }
+  },
+  {
+   "path": "test_met/ce8e42303687.jpg",
+   "gt": 437802,
+   "gallery": "638",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.909,
+   "top": {
+    "id": 437802,
+    "sim": 0.909,
+    "gallery": "638"
+   }
+  },
+  {
+   "path": "test_met/9e892fe8b39b.jpg",
+   "gt": 436259,
+   "gallery": "639",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9194,
+   "top": {
+    "id": 436259,
+    "sim": 0.9194,
+    "gallery": "639"
+   }
+  },
+  {
+   "path": "test_met/fdce0617d0d6.jpg",
+   "gt": 437534,
+   "gallery": "639",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9187,
+   "top": {
+    "id": 437534,
+    "sim": 0.9187,
+    "gallery": "639"
+   }
+  },
+  {
+   "path": "test_met/f5144bef3ef6.jpg",
+   "gt": 438023,
+   "gallery": "644",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.906,
+   "top": {
+    "id": 438023,
+    "sim": 0.906,
+    "gallery": "644"
+   }
+  },
+  {
+   "path": "test_met/002e23a9382a.jpg",
+   "gt": 310532,
+   "gallery": "684",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8891,
+   "top": {
+    "id": 310532,
+    "sim": 0.8891,
+    "gallery": "684"
+   }
+  },
+  {
+   "path": "test_met/3664ab26ca7e.jpg",
+   "gt": 471903,
+   "gallery": "692",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9189,
+   "top": {
+    "id": 471903,
+    "sim": 0.9189,
+    "gallery": "692"
+   }
+  },
+  {
+   "path": "test_met/757f31e5eeca.jpg",
+   "gt": 471903,
+   "gallery": "692",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8412,
+   "top": {
+    "id": 471903,
+    "sim": 0.8412,
+    "gallery": "692"
+   }
+  },
+  {
+   "path": "test_met/ae8e78830526.jpg",
+   "gt": 471903,
+   "gallery": "692",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9241,
+   "top": {
+    "id": 471903,
+    "sim": 0.9241,
+    "gallery": "692"
+   }
+  },
+  {
+   "path": "test_met/072df4fe10b4.jpg",
+   "gt": 11952,
+   "gallery": "700",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.868,
+   "top": {
+    "id": 11952,
+    "sim": 0.868,
+    "gallery": "700"
+   }
+  },
+  {
+   "path": "test_met/0840fe095c3c.jpg",
+   "gt": 12649,
+   "gallery": "700",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.806,
+   "top": {
+    "id": 12649,
+    "sim": 0.806,
+    "gallery": "700"
+   }
+  },
+  {
+   "path": "test_met/19a1ab85847c.jpg",
+   "gt": 11299,
+   "gallery": "700",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8832,
+   "top": {
+    "id": 11299,
+    "sim": 0.8832,
+    "gallery": "700"
+   }
+  },
+  {
+   "path": "test_met/2ca447ed63d8.jpg",
+   "gt": 12650,
+   "gallery": "700",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8598,
+   "top": {
+    "id": 12650,
+    "sim": 0.8598,
+    "gallery": "700"
+   }
+  },
+  {
+   "path": "test_met/49a8f994c958.jpg",
+   "gt": 11922,
+   "gallery": "700",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8416,
+   "top": {
+    "id": 11922,
+    "sim": 0.8416,
+    "gallery": "700"
+   }
+  },
+  {
+   "path": "test_met/63b2f08c32ef.jpg",
+   "gt": 11922,
+   "gallery": "700",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8229,
+   "top": {
+    "id": 11922,
+    "sim": 0.8229,
+    "gallery": "700"
+   }
+  },
+  {
+   "path": "test_met/82279f5c32ac.jpg",
+   "gt": 11951,
+   "gallery": "700",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.7821,
+   "top": {
+    "id": 11951,
+    "sim": 0.7821,
+    "gallery": "700"
+   }
+  },
+  {
+   "path": "test_met/827386d5cd41.jpg",
+   "gt": 11952,
+   "gallery": "700",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.7145,
+   "top": {
+    "id": 11952,
+    "sim": 0.7145,
+    "gallery": "700"
+   }
+  },
+  {
+   "path": "test_met/b19504bfc95d.jpg",
+   "gt": 10575,
+   "gallery": "700",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8114,
+   "top": {
+    "id": 10575,
+    "sim": 0.8114,
+    "gallery": "700"
+   }
+  },
+  {
+   "path": "test_met/c5858009f09c.jpg",
+   "gt": 10025,
+   "gallery": "700",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9002,
+   "top": {
+    "id": 10025,
+    "sim": 0.9002,
+    "gallery": "700"
+   }
+  },
+  {
+   "path": "test_met/cf80c426611c.jpg",
+   "gt": 11998,
+   "gallery": "700",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.7775,
+   "top": {
+    "id": 11999,
+    "sim": 0.7812,
+    "gallery": "766"
+   }
+  },
+  {
+   "path": "test_met/dd8c52db9b35.jpg",
+   "gt": 11922,
+   "gallery": "700",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8424,
+   "top": {
+    "id": 11922,
+    "sim": 0.8424,
+    "gallery": "700"
+   }
+  },
+  {
+   "path": "test_met/dddbe041af13.jpg",
+   "gt": 11922,
+   "gallery": "700",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8358,
+   "top": {
+    "id": 11922,
+    "sim": 0.8358,
+    "gallery": "700"
+   }
+  },
+  {
+   "path": "test_met/f94bef68eabb.jpg",
+   "gt": 11998,
+   "gallery": "700",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.8283,
+   "top": {
+    "id": 11999,
+    "sim": 0.831,
+    "gallery": "766"
+   }
+  },
+  {
+   "path": "test_met/c88334851405.jpg",
+   "gt": 3529,
+   "gallery": "701",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.7983,
+   "top": {
+    "id": 467611,
+    "sim": 0.805,
+    "gallery": "307"
+   }
+  },
+  {
+   "path": "test_met/b1e3d638f95b.jpg",
+   "gt": 10830,
+   "gallery": "703",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9107,
+   "top": {
+    "id": 10830,
+    "sim": 0.9107,
+    "gallery": "703"
+   }
+  },
+  {
+   "path": "test_met/eb0367e8bd0f.jpg",
+   "gt": 11923,
+   "gallery": "703",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8433,
+   "top": {
+    "id": 11923,
+    "sim": 0.8433,
+    "gallery": "703"
+   }
+  },
+  {
+   "path": "test_met/2b87dea25a11.jpg",
+   "gt": 4570,
+   "gallery": "704",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8868,
+   "top": {
+    "id": 4570,
+    "sim": 0.8868,
+    "gallery": "704"
+   }
+  },
+  {
+   "path": "test_met/2e19b4c04383.jpg",
+   "gt": 17503,
+   "gallery": "704",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9203,
+   "top": {
+    "id": 17503,
+    "sim": 0.9203,
+    "gallery": "704"
+   }
+  },
+  {
+   "path": "test_met/37f5313bdfb1.jpg",
+   "gt": 7874,
+   "gallery": "704",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8621,
+   "top": {
+    "id": 7874,
+    "sim": 0.8621,
+    "gallery": "704"
+   }
+  },
+  {
+   "path": "test_met/162508aa52e2.jpg",
+   "gt": 4796,
+   "gallery": "705",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8737,
+   "top": {
+    "id": 4796,
+    "sim": 0.8737,
+    "gallery": "705"
+   }
+  },
+  {
+   "path": "test_met/1d5b03495934.jpg",
+   "gt": 3760,
+   "gallery": "705",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8975,
+   "top": {
+    "id": 3760,
+    "sim": 0.8975,
+    "gallery": "705"
+   }
+  },
+  {
+   "path": "test_met/7595c3d5fe8a.jpg",
+   "gt": 13057,
+   "gallery": "708",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9283,
+   "top": {
+    "id": 13057,
+    "sim": 0.9283,
+    "gallery": "708"
+   }
+  },
+  {
+   "path": "test_met/91f7dabcb346.jpg",
+   "gt": 13057,
+   "gallery": "708",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8537,
+   "top": {
+    "id": 13057,
+    "sim": 0.8537,
+    "gallery": "708"
+   }
+  },
+  {
+   "path": "test_met/8a272638b6f6.jpg",
+   "gt": 10177,
+   "gallery": "717",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8217,
+   "top": {
+    "id": 10177,
+    "sim": 0.8217,
+    "gallery": "717"
+   }
+  },
+  {
+   "path": "test_met/9e389b119cb5.jpg",
+   "gt": 10176,
+   "gallery": "717",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.799,
+   "top": {
+    "id": 10176,
+    "sim": 0.799,
+    "gallery": "717"
+   }
+  },
+  {
+   "path": "test_met/1948c4ea43df.jpg",
+   "gt": 5630,
+   "gallery": "726",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8719,
+   "top": {
+    "id": 5630,
+    "sim": 0.8719,
+    "gallery": "726"
+   }
+  },
+  {
+   "path": "test_met/7e97a3e72a7c.jpg",
+   "gt": 3411,
+   "gallery": "728",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.7737,
+   "top": {
+    "id": 196508,
+    "sim": 0.8631,
+    "gallery": "515"
+   }
+  },
+  {
+   "path": "test_met/792b46e02dff.jpg",
+   "gt": 16687,
+   "gallery": "733",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9191,
+   "top": {
+    "id": 16687,
+    "sim": 0.9191,
+    "gallery": "733"
+   }
+  },
+  {
+   "path": "test_met/8c19848f9d4b.jpg",
+   "gt": 16345,
+   "gallery": "736",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9177,
+   "top": {
+    "id": 16345,
+    "sim": 0.9177,
+    "gallery": "736"
+   }
+  },
+  {
+   "path": "test_met/dfd147868590.jpg",
+   "gt": 10077,
+   "gallery": "736",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8957,
+   "top": {
+    "id": 10077,
+    "sim": 0.8957,
+    "gallery": "736"
+   }
+  },
+  {
+   "path": "test_met/c3ee1cae1886.jpg",
+   "gt": 8288,
+   "gallery": "750",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8692,
+   "top": {
+    "id": 8288,
+    "sim": 0.8692,
+    "gallery": "750"
+   }
+  },
+  {
+   "path": "test_met/7ffc7f5fefcb.jpg",
+   "gt": 10522,
+   "gallery": "755",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8223,
+   "top": {
+    "id": 10522,
+    "sim": 0.8223,
+    "gallery": "755"
+   }
+  },
+  {
+   "path": "test_met/df98b9d09043.jpg",
+   "gt": 10238,
+   "gallery": "759",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.7953,
+   "top": {
+    "id": 11792,
+    "sim": 0.8171,
+    "gallery": "760"
+   }
+  },
+  {
+   "path": "test_met/0f26cd5f29f7.jpg",
+   "gt": 11790,
+   "gallery": "760",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8226,
+   "top": {
+    "id": 11790,
+    "sim": 0.8226,
+    "gallery": "760"
+   }
+  },
+  {
+   "path": "test_met/1d0374737bdc.jpg",
+   "gt": 10482,
+   "gallery": "760",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.947,
+   "top": {
+    "id": 10482,
+    "sim": 0.947,
+    "gallery": "760"
+   }
+  },
+  {
+   "path": "test_met/7bf9a8e56e71.jpg",
+   "gt": 11790,
+   "gallery": "760",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8208,
+   "top": {
+    "id": 11790,
+    "sim": 0.8208,
+    "gallery": "760"
+   }
+  },
+  {
+   "path": "test_met/82fd73b5a2d9.jpg",
+   "gt": 11790,
+   "gallery": "760",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8165,
+   "top": {
+    "id": 11790,
+    "sim": 0.8165,
+    "gallery": "760"
+   }
+  },
+  {
+   "path": "test_met/95b969f1329d.jpg",
+   "gt": 10481,
+   "gallery": "760",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.6892,
+   "top": {
+    "id": 437436,
+    "sim": 0.7336,
+    "gallery": "824"
+   }
+  },
+  {
+   "path": "test_met/9ea9b6bca1c0.jpg",
+   "gt": 11790,
+   "gallery": "760",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8654,
+   "top": {
+    "id": 11790,
+    "sim": 0.8654,
+    "gallery": "760"
+   }
+  },
+  {
+   "path": "test_met/938d3edf62c5.jpg",
+   "gt": 12804,
+   "gallery": "761",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.7686,
+   "top": {
+    "id": 12804,
+    "sim": 0.7686,
+    "gallery": "761"
+   }
+  },
+  {
+   "path": "test_met/f4307df97002.jpg",
+   "gt": 10573,
+   "gallery": "761",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8271,
+   "top": {
+    "id": 10573,
+    "sim": 0.8271,
+    "gallery": "761"
+   }
+  },
+  {
+   "path": "test_met/d8dfdd93454a.jpg",
+   "gt": 11134,
+   "gallery": "762",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8901,
+   "top": {
+    "id": 11134,
+    "sim": 0.8901,
+    "gallery": "762"
+   }
+  },
+  {
+   "path": "test_met/109a8ed85f34.jpg",
+   "gt": 11999,
+   "gallery": "766",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.8186,
+   "top": {
+    "id": 11998,
+    "sim": 0.8199,
+    "gallery": "700"
+   }
+  },
+  {
+   "path": "test_met/8522c63327ea.jpg",
+   "gt": 11999,
+   "gallery": "766",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.8276,
+   "top": {
+    "id": 11998,
+    "sim": 0.829,
+    "gallery": "700"
+   }
+  },
+  {
+   "path": "test_met/e62d2192ccd8.jpg",
+   "gt": 11999,
+   "gallery": "766",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8182,
+   "top": {
+    "id": 11999,
+    "sim": 0.8182,
+    "gallery": "766"
+   }
+  },
+  {
+   "path": "test_met/e894baa4904f.jpg",
+   "gt": 12846,
+   "gallery": "766",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8695,
+   "top": {
+    "id": 12846,
+    "sim": 0.8695,
+    "gallery": "766"
+   }
+  },
+  {
+   "path": "test_met/6918f26c3eb6.jpg",
+   "gt": 11867,
+   "gallery": "767",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8855,
+   "top": {
+    "id": 11867,
+    "sim": 0.8855,
+    "gallery": "767"
+   }
+  },
+  {
+   "path": "test_met/aafe4590fbf8.jpg",
+   "gt": 13171,
+   "gallery": "768",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8712,
+   "top": {
+    "id": 13171,
+    "sim": 0.8712,
+    "gallery": "768"
+   }
+  },
+  {
+   "path": "test_met/764ffaa1e15b.jpg",
+   "gt": 19523,
+   "gallery": "769",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9078,
+   "top": {
+    "id": 19523,
+    "sim": 0.9078,
+    "gallery": "769"
+   }
+  },
+  {
+   "path": "test_met/59efc5571a63.jpg",
+   "gt": 10049,
+   "gallery": "770",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9127,
+   "top": {
+    "id": 10049,
+    "sim": 0.9127,
+    "gallery": "770"
+   }
+  },
+  {
+   "path": "test_met/1c97e65b95b4.jpg",
+   "gt": 14931,
+   "gallery": "772",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8828,
+   "top": {
+    "id": 14931,
+    "sim": 0.8828,
+    "gallery": "772"
+   }
+  },
+  {
+   "path": "test_met/1b4f366328f5.jpg",
+   "gt": 191808,
+   "gallery": "800",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8671,
+   "top": {
+    "id": 191808,
+    "sim": 0.8671,
+    "gallery": "800"
+   }
+  },
+  {
+   "path": "test_met/20f3bee4fc98.jpg",
+   "gt": 198565,
+   "gallery": "800",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9082,
+   "top": {
+    "id": 198565,
+    "sim": 0.9082,
+    "gallery": "800"
+   }
+  },
+  {
+   "path": "test_met/21b983673fbf.jpg",
+   "gt": 193438,
+   "gallery": "800",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8834,
+   "top": {
+    "id": 193438,
+    "sim": 0.8834,
+    "gallery": "800"
+   }
+  },
+  {
+   "path": "test_met/6d182ce2ee61.jpg",
+   "gt": 193438,
+   "gallery": "800",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8598,
+   "top": {
+    "id": 193438,
+    "sim": 0.8598,
+    "gallery": "800"
+   }
+  },
+  {
+   "path": "test_met/fcac034931f0.jpg",
+   "gt": 191329,
+   "gallery": "800",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8345,
+   "top": {
+    "id": 193438,
+    "sim": 0.8448,
+    "gallery": "800"
+   }
+  },
+  {
+   "path": "test_met/31fe18517331.jpg",
+   "gt": 436180,
+   "gallery": "801",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.897,
+   "top": {
+    "id": 436180,
+    "sim": 0.897,
+    "gallery": "801"
+   }
+  },
+  {
+   "path": "test_met/48df6e2c1d92.jpg",
+   "gt": 436455,
+   "gallery": "802",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.902,
+   "top": {
+    "id": 436455,
+    "sim": 0.902,
+    "gallery": "802"
+   }
+  },
+  {
+   "path": "test_met/8a5ee26dabb7.jpg",
+   "gt": 438159,
+   "gallery": "807",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9334,
+   "top": {
+    "id": 438159,
+    "sim": 0.9334,
+    "gallery": "807"
+   }
+  },
+  {
+   "path": "test_met/edfa3b355274.jpg",
+   "gt": 436960,
+   "gallery": "810",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9314,
+   "top": {
+    "id": 436960,
+    "sim": 0.9314,
+    "gallery": "810"
+   }
+  },
+  {
+   "path": "test_met/7a2bfdef99e3.jpg",
+   "gt": 438820,
+   "gallery": "812",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8975,
+   "top": {
+    "id": 438820,
+    "sim": 0.8975,
+    "gallery": "812"
+   }
+  },
+  {
+   "path": "test_met/f6ff4b6ea325.jpg",
+   "gt": 435626,
+   "gallery": "818",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8775,
+   "top": {
+    "id": 435626,
+    "sim": 0.8775,
+    "gallery": "818"
+   }
+  },
+  {
+   "path": "test_met/313fecccc7df.jpg",
+   "gt": 436532,
+   "gallery": "825",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8996,
+   "top": {
+    "id": 436532,
+    "sim": 0.8996,
+    "gallery": "825"
+   }
+  },
+  {
+   "path": "test_met/53dfd27ac451.jpg",
+   "gt": 438822,
+   "gallery": "825",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9044,
+   "top": {
+    "id": 438822,
+    "sim": 0.9044,
+    "gallery": "825"
+   }
+  },
+  {
+   "path": "test_met/1c530c2a6554.jpg",
+   "gt": 435754,
+   "gallery": "827",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8923,
+   "top": {
+    "id": 435754,
+    "sim": 0.8923,
+    "gallery": "827"
+   }
+  },
+  {
+   "path": "test_met/7d883bce5f6e.jpg",
+   "gt": 437372,
+   "gallery": "899",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8116,
+   "top": {
+    "id": 437372,
+    "sim": 0.8116,
+    "gallery": "899"
+   }
+  },
+  {
+   "path": "test_met/f221468bca08.jpg",
+   "gt": 474336,
+   "gallery": "899",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9332,
+   "top": {
+    "id": 474336,
+    "sim": 0.9332,
+    "gallery": "899"
+   }
+  },
+  {
+   "path": "test_met/004677c37438.jpg",
+   "gt": 460161,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9121,
+   "top": {
+    "id": 460161,
+    "sim": 0.9121,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/09dd66fe381a.jpg",
+   "gt": 460263,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9176,
+   "top": {
+    "id": 460263,
+    "sim": 0.9176,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/0af2b7a6b7be.jpg",
+   "gt": 460129,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8937,
+   "top": {
+    "id": 460129,
+    "sim": 0.8937,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/154432a2e3cc.jpg",
+   "gt": 460175,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8682,
+   "top": {
+    "id": 460175,
+    "sim": 0.8682,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/1fe2c96dd41e.jpg",
+   "gt": 460134,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8976,
+   "top": {
+    "id": 460134,
+    "sim": 0.8976,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/20ca19ec8347.jpg",
+   "gt": 460173,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8409,
+   "top": {
+    "id": 460173,
+    "sim": 0.8409,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/2513e8e624d3.jpg",
+   "gt": 460150,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9308,
+   "top": {
+    "id": 460150,
+    "sim": 0.9308,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/2f2192f834e5.jpg",
+   "gt": 460162,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9107,
+   "top": {
+    "id": 460162,
+    "sim": 0.9107,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/4007d637612e.jpg",
+   "gt": 460148,
+   "gallery": "950",
+   "top1": false,
+   "top5": false,
+   "galleryHit": true,
+   "gtSim": 0.8689,
+   "top": {
+    "id": 460254,
+    "sim": 0.881,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/4569ca619660.jpg",
+   "gt": 460257,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9214,
+   "top": {
+    "id": 460257,
+    "sim": 0.9214,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/4bb40bec9708.jpg",
+   "gt": 460138,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9032,
+   "top": {
+    "id": 460138,
+    "sim": 0.9032,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/4c8f7303c607.jpg",
+   "gt": 460176,
+   "gallery": "950",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8626,
+   "top": {
+    "id": 460162,
+    "sim": 0.8754,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/68a7264b3f62.jpg",
+   "gt": 460256,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9164,
+   "top": {
+    "id": 460256,
+    "sim": 0.9164,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/6a1e04b1b380.jpg",
+   "gt": 460135,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9056,
+   "top": {
+    "id": 460135,
+    "sim": 0.9056,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/6ef2f61485dc.jpg",
+   "gt": 460260,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9302,
+   "top": {
+    "id": 460260,
+    "sim": 0.9302,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/727efcc168bc.jpg",
+   "gt": 460168,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8113,
+   "top": {
+    "id": 460168,
+    "sim": 0.8113,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/8bdc1c638665.jpg",
+   "gt": 460174,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8848,
+   "top": {
+    "id": 460174,
+    "sim": 0.8848,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/9977d11ebffd.jpg",
+   "gt": 460146,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8855,
+   "top": {
+    "id": 460146,
+    "sim": 0.8855,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/a8b305bffd3b.jpg",
+   "gt": 460133,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9141,
+   "top": {
+    "id": 460133,
+    "sim": 0.9141,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/ba87ba9f5d87.jpg",
+   "gt": 460258,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.889,
+   "top": {
+    "id": 460258,
+    "sim": 0.889,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/bdad6ca1d586.jpg",
+   "gt": 459244,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.922,
+   "top": {
+    "id": 459244,
+    "sim": 0.922,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/d011b8b4d6fa.jpg",
+   "gt": 460163,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8915,
+   "top": {
+    "id": 460163,
+    "sim": 0.8915,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/dc11dcbd189a.jpg",
+   "gt": 460154,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9313,
+   "top": {
+    "id": 460154,
+    "sim": 0.9313,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/eb2fa3df11cf.jpg",
+   "gt": 460155,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9296,
+   "top": {
+    "id": 460155,
+    "sim": 0.9296,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/f5ca32cfa821.jpg",
+   "gt": 460172,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8894,
+   "top": {
+    "id": 460172,
+    "sim": 0.8894,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/f5de99f4f65e.jpg",
+   "gt": 460128,
+   "gallery": "950",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8573,
+   "top": {
+    "id": 460128,
+    "sim": 0.8573,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/4ea68a2ab673.jpg",
+   "gt": 460232,
+   "gallery": "951",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.8174,
+   "top": {
+    "id": 460275,
+    "sim": 0.8479,
+    "gallery": "950"
+   }
+  },
+  {
+   "path": "test_met/8d067489f7e0.jpg",
+   "gt": 460232,
+   "gallery": "951",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8409,
+   "top": {
+    "id": 460232,
+    "sim": 0.8409,
+    "gallery": "951"
+   }
+  },
+  {
+   "path": "test_met/cb4e2d18466c.jpg",
+   "gt": 460852,
+   "gallery": "951",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.775,
+   "top": {
+    "id": 477239,
+    "sim": 0.7953,
+    "gallery": "014"
+   }
+  },
+  {
+   "path": "test_met/d3a427968cbb.jpg",
+   "gt": 460542,
+   "gallery": "951",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.8213,
+   "top": {
+    "id": 197138,
+    "sim": 0.8331,
+    "gallery": "520"
+   }
+  },
+  {
+   "path": "test_met/f7acdaae0e46.jpg",
+   "gt": 460541,
+   "gallery": "951",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8812,
+   "top": {
+    "id": 460541,
+    "sim": 0.8812,
+    "gallery": "951"
+   }
+  },
+  {
+   "path": "test_met/f9c12e785648.jpg",
+   "gt": 460232,
+   "gallery": "951",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.6616,
+   "top": {
+    "id": 501882,
+    "sim": 0.7674,
+    "gallery": "681"
+   }
+  },
+  {
+   "path": "test_met/148a000d3cc3.jpg",
+   "gt": 461052,
+   "gallery": "953",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.7692,
+   "top": {
+    "id": 248081,
+    "sim": 0.7862,
+    "gallery": "171"
+   }
+  },
+  {
+   "path": "test_met/3ae126ec891c.jpg",
+   "gt": 461052,
+   "gallery": "953",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.8095,
+   "top": {
+    "id": 463419,
+    "sim": 0.8275,
+    "gallery": "010"
+   }
+  },
+  {
+   "path": "test_met/5e6e9a52abd8.jpg",
+   "gt": 461330,
+   "gallery": "953",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.715,
+   "top": {
+    "id": 117766,
+    "sim": 0.763,
+    "gallery": "099"
+   }
+  },
+  {
+   "path": "test_met/8e3f040c1d9a.jpg",
+   "gt": 461330,
+   "gallery": "953",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.7841,
+   "top": {
+    "id": 461330,
+    "sim": 0.7841,
+    "gallery": "953"
+   }
+  },
+  {
+   "path": "test_met/bb49fb4b2389.jpg",
+   "gt": 461052,
+   "gallery": "953",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.7474,
+   "top": {
+    "id": 26586,
+    "sim": 0.7836,
+    "gallery": "374"
+   }
+  },
+  {
+   "path": "test_met/de765ff3b74b.jpg",
+   "gt": 461330,
+   "gallery": "953",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.7978,
+   "top": {
+    "id": 461330,
+    "sim": 0.7978,
+    "gallery": "953"
+   }
+  },
+  {
+   "path": "test_met/0cb42c5c2a52.jpg",
+   "gt": 459003,
+   "gallery": "954",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8646,
+   "top": {
+    "id": 460338,
+    "sim": 0.8681,
+    "gallery": "954"
+   }
+  },
+  {
+   "path": "test_met/5b0aa840c655.jpg",
+   "gt": 459046,
+   "gallery": "954",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8762,
+   "top": {
+    "id": 459046,
+    "sim": 0.8762,
+    "gallery": "954"
+   }
+  },
+  {
+   "path": "test_met/6c7ecc11ed85.jpg",
+   "gt": 459011,
+   "gallery": "954",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9003,
+   "top": {
+    "id": 459011,
+    "sim": 0.9003,
+    "gallery": "954"
+   }
+  },
+  {
+   "path": "test_met/900e4f55cc60.jpg",
+   "gt": 459026,
+   "gallery": "954",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9366,
+   "top": {
+    "id": 459026,
+    "sim": 0.9366,
+    "gallery": "954"
+   }
+  },
+  {
+   "path": "test_met/ae9fc116f491.jpg",
+   "gt": 459004,
+   "gallery": "954",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8839,
+   "top": {
+    "id": 460343,
+    "sim": 0.8927,
+    "gallery": "954"
+   }
+  },
+  {
+   "path": "test_met/b39b65888194.jpg",
+   "gt": 459046,
+   "gallery": "954",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8282,
+   "top": {
+    "id": 459046,
+    "sim": 0.8282,
+    "gallery": "954"
+   }
+  },
+  {
+   "path": "test_met/d92fc622ffaa.jpg",
+   "gt": 459011,
+   "gallery": "954",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.9013,
+   "top": {
+    "id": 459011,
+    "sim": 0.9013,
+    "gallery": "954"
+   }
+  },
+  {
+   "path": "test_met/ef7cc7013d81.jpg",
+   "gt": 459012,
+   "gallery": "954",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.873,
+   "top": {
+    "id": 459012,
+    "sim": 0.873,
+    "gallery": "954"
+   }
+  },
+  {
+   "path": "test_met/194c20634149.jpg",
+   "gt": 459090,
+   "gallery": "958",
+   "top1": false,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.7935,
+   "top": {
+    "id": 461588,
+    "sim": 0.7955,
+    "gallery": "958"
+   }
+  },
+  {
+   "path": "test_met/2afe323a3f91.jpg",
+   "gt": 461316,
+   "gallery": "958",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.7655,
+   "top": {
+    "id": 207017,
+    "sim": 0.7745,
+    "gallery": "537"
+   }
+  },
+  {
+   "path": "test_met/4f467bef5559.jpg",
+   "gt": 461462,
+   "gallery": "958",
+   "top1": false,
+   "top5": true,
+   "galleryHit": false,
+   "gtSim": 0.7787,
+   "top": {
+    "id": 192729,
+    "sim": 0.7845,
+    "gallery": "509"
+   }
+  },
+  {
+   "path": "test_met/5c707ee39f3a.jpg",
+   "gt": 460994,
+   "gallery": "958",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8748,
+   "top": {
+    "id": 460994,
+    "sim": 0.8748,
+    "gallery": "958"
+   }
+  },
+  {
+   "path": "test_met/85de77a7d8ed.jpg",
+   "gt": 460451,
+   "gallery": "958",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.6761,
+   "top": {
+    "id": 207017,
+    "sim": 0.7531,
+    "gallery": "537"
+   }
+  },
+  {
+   "path": "test_met/928bf47a99a2.jpg",
+   "gt": 460451,
+   "gallery": "958",
+   "top1": false,
+   "top5": false,
+   "galleryHit": false,
+   "gtSim": 0.6122,
+   "top": {
+    "id": 245311,
+    "sim": 0.7354,
+    "gallery": "162"
+   }
+  },
+  {
+   "path": "test_met/aaf4df749dfe.jpg",
+   "gt": 459088,
+   "gallery": "958",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8771,
+   "top": {
+    "id": 459088,
+    "sim": 0.8771,
+    "gallery": "958"
+   }
+  },
+  {
+   "path": "test_met/edc6daf52300.jpg",
+   "gt": 459088,
+   "gallery": "958",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8838,
+   "top": {
+    "id": 459088,
+    "sim": 0.8838,
+    "gallery": "958"
+   }
+  },
+  {
+   "path": "test_met/f308eebe8b7b.jpg",
+   "gt": 461462,
+   "gallery": "958",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8478,
+   "top": {
+    "id": 461462,
+    "sim": 0.8478,
+    "gallery": "958"
+   }
+  },
+  {
+   "path": "test_met/6a66c0a54de4.jpg",
+   "gt": 459111,
+   "gallery": "961",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8444,
+   "top": {
+    "id": 459111,
+    "sim": 0.8444,
+    "gallery": "961"
+   }
+  },
+  {
+   "path": "test_met/e4c9669ed79e.jpg",
+   "gt": 459111,
+   "gallery": "961",
+   "top1": true,
+   "top5": true,
+   "galleryHit": true,
+   "gtSim": 0.8679,
+   "top": {
+    "id": 459111,
+    "sim": 0.8679,
+    "gallery": "961"
+   }
+  }
+ ],
+ "excludedRows": [
+  {
+   "MET_id": 4511,
+   "path": "test_met/0201fff84b42.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 4577,
+   "path": "test_met/6091aed3c3be.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 38153,
+   "path": "test_met/7f65bc401f6b.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 49546,
+   "path": "test_met/52e47c6ee44f.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 11602,
+   "path": "test_met/0843ddc8d10b.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 5851,
+   "path": "test_met/05819e502819.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 464607,
+   "path": "test_met/acfc46eff53f.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 210103,
+   "path": "test_met/a06bed2aab97.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 544481,
+   "path": "test_met/7ed3def6bf46.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 201375,
+   "path": "test_met/f03d95557657.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 463762,
+   "path": "test_met/e0f1a2c41f2d.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 466110,
+   "path": "test_met/850b7bfcc21f.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 467679,
+   "path": "test_met/8dc90325c9eb.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 195190,
+   "path": "test_met/42c5388275d8.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 9198,
+   "path": "test_met/39b687a24b9b.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 467679,
+   "path": "test_met/b275840eba02.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 4623,
+   "path": "test_met/00a67d2d3681.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 210103,
+   "path": "test_met/bba30a6f731d.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 13204,
+   "path": "test_met/00fcde73986b.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 210103,
+   "path": "test_met/d02cb0f5f3f4.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 12692,
+   "path": "test_met/7efda0903951.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 18861,
+   "path": "test_met/ba85d9e4735f.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 9172,
+   "path": "test_met/95a61f09090e.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 57522,
+   "path": "test_met/ccee5220b579.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 463762,
+   "path": "test_met/6667e6884fe8.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 4622,
+   "path": "test_met/2ea7d76a1d9c.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 323742,
+   "path": "test_met/a6db078d21c8.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 449097,
+   "path": "test_met/43fd1748747c.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 544919,
+   "path": "test_met/e9e9e2bb3d51.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 324439,
+   "path": "test_met/4ec8d78cf21b.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 325955,
+   "path": "test_met/20c6f01cf67c.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 324492,
+   "path": "test_met/ca7ff4c00cec.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 325676,
+   "path": "test_met/073f3c1c7841.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 327528,
+   "path": "test_met/0fbd50441b69.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 325955,
+   "path": "test_met/4d00ebb2bd32.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 324061,
+   "path": "test_met/1885fea116ac.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 35690,
+   "path": "test_met/a69fe47dd1ca.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 459110,
+   "path": "test_met/0a78879f93f9.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 459110,
+   "path": "test_met/40e32123a803.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 325819,
+   "path": "test_met/fa3a2f29dfbe.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 451794,
+   "path": "test_met/ca85721aa26c.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 459113,
+   "path": "test_met/f78b6b282a5b.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 449097,
+   "path": "test_met/95165dff960d.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 326041,
+   "path": "test_met/e5b1a4235ffa.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 329074,
+   "path": "test_met/bc036fb69a34.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 35690,
+   "path": "test_met/9abb3c3c0965.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 444540,
+   "path": "test_met/61c1ae1e6ea0.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 324541,
+   "path": "test_met/570680dbd3c6.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 323797,
+   "path": "test_met/14bbb639e59a.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 324541,
+   "path": "test_met/2fb25f93ccd9.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 325955,
+   "path": "test_met/04d050152a00.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 325584,
+   "path": "test_met/f17962ef8492.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 451389,
+   "path": "test_met/9d99625bf633.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 324323,
+   "path": "test_met/783a5b70fe08.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 547820,
+   "path": "test_met/de7ecccb8391.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 444710,
+   "path": "test_met/ebed50d44eac.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 324439,
+   "path": "test_met/20a71d910c18.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 444530,
+   "path": "test_met/8a7fd2834899.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 451802,
+   "path": "test_met/7775e4f6eec1.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 326041,
+   "path": "test_met/0aa4b48b9a57.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 455056,
+   "path": "test_met/8c087004f9e2.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 444710,
+   "path": "test_met/f0af65be0c41.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 451406,
+   "path": "test_met/364f8243e671.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 451802,
+   "path": "test_met/775e126902c9.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 326623,
+   "path": "test_met/470527a777c3.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 327524,
+   "path": "test_met/e27a719a2328.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 324492,
+   "path": "test_met/706f168f3fed.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 323742,
+   "path": "test_met/784d4726528c.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 459113,
+   "path": "test_met/e5170351281e.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 23084,
+   "path": "test_met/6f948610f4e9.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 325676,
+   "path": "test_met/41e17e13cd94.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 325584,
+   "path": "test_met/6b1f7b022006.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 325584,
+   "path": "test_met/4aa1fe261c44.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 324061,
+   "path": "test_met/625ec71fd29b.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 327829,
+   "path": "test_met/f067b357b02f.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 327832,
+   "path": "test_met/26c6f3bf051e.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 453385,
+   "path": "test_met/5072322e5e4b.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 324061,
+   "path": "test_met/5b64b65bb65c.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 329074,
+   "path": "test_met/e5782e66ff1e.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 451416,
+   "path": "test_met/83f0fb07c307.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 452670,
+   "path": "test_met/aa032533a842.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 447000,
+   "path": "test_met/02e1647ce1b7.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 322652,
+   "path": "test_met/acdf52575f08.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 547861,
+   "path": "test_met/5c094921d4b3.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 23084,
+   "path": "test_met/265c0918ead0.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 446593,
+   "path": "test_met/93cd93b84205.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 459109,
+   "path": "test_met/1a777ac5d239.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 326041,
+   "path": "test_met/2c2c469fc046.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 327355,
+   "path": "test_met/a848f09f5d03.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 324439,
+   "path": "test_met/e486d0dacc67.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 547820,
+   "path": "test_met/01946b53a4c2.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 544919,
+   "path": "test_met/0231605c20cd.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 325717,
+   "path": "test_met/fae955d162bd.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 451420,
+   "path": "test_met/fa291582c848.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 444540,
+   "path": "test_met/9cd4d8ebb321.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 451199,
+   "path": "test_met/e56e5b322083.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 444710,
+   "path": "test_met/878b2be0b6e0.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 444540,
+   "path": "test_met/617ee31690d1.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 329074,
+   "path": "test_met/a1c638c372cd.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 327528,
+   "path": "test_met/86fc794c5254.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 23084,
+   "path": "test_met/46266220b4aa.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 326623,
+   "path": "test_met/093b6c3273c4.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 327436,
+   "path": "test_met/afa1e0f036a8.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 325127,
+   "path": "test_met/5cffb71c3248.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 446609,
+   "path": "test_met/4473e4720e70.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 451794,
+   "path": "test_met/57284b6ca6c1.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 327355,
+   "path": "test_met/346099b7825c.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 323742,
+   "path": "test_met/d4b6dacb8059.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 325955,
+   "path": "test_met/291866b2567e.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 547861,
+   "path": "test_met/e3cd50b101bf.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 323797,
+   "path": "test_met/c5a7e98cdca6.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 459109,
+   "path": "test_met/bc3b21502897.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 547861,
+   "path": "test_met/e98cd69e9b12.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 447000,
+   "path": "test_met/2db614626af2.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 444530,
+   "path": "test_met/83bf10da1ddc.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 451802,
+   "path": "test_met/90c3e8c0bfb1.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 327830,
+   "path": "test_met/e3ca3b0903dc.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 449097,
+   "path": "test_met/c7b78c99c94a.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 451408,
+   "path": "test_met/44b78ef4bc4d.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 324541,
+   "path": "test_met/2bcb6d74f2f1.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 327831,
+   "path": "test_met/d5f8b31bd36d.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 444530,
+   "path": "test_met/1a4e1d497544.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 324492,
+   "path": "test_met/8872f48749b2.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 547820,
+   "path": "test_met/0a3d74f7ea14.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 326623,
+   "path": "test_met/e37a2bfc4419.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 325556,
+   "path": "test_met/656e85f72e7b.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 325676,
+   "path": "test_met/18cc7976d50b.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 327355,
+   "path": "test_met/5ce229c413f6.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 324061,
+   "path": "test_met/d0395fb2eae7.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 326224,
+   "path": "test_met/12dfb8dcb858.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 329074,
+   "path": "test_met/93eb97360c4e.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 44761,
+   "path": "test_met/bcb72a119fcf.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 38612,
+   "path": "test_met/0ff2a55a51a7.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 42624,
+   "path": "test_met/2f08ed692e19.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 40314,
+   "path": "test_met/f2479e248952.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 316498,
+   "path": "test_met/697010f82758.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 65017,
+   "path": "test_met/287b4dcb93ba.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 16818,
+   "path": "test_met/052a52a27c04.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 36108,
+   "path": "test_met/5cff4903b8d2.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 10833,
+   "path": "test_met/cfb13f5e3e77.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 51085,
+   "path": "test_met/ef8a0d26b834.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 45095,
+   "path": "test_met/f2beae764286.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 57982,
+   "path": "test_met/c860fc12817e.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 242807,
+   "path": "test_met/652bf7c58318.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 40508,
+   "path": "test_met/46646bff9f68.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 206710,
+   "path": "test_met/921b43989599.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 466182,
+   "path": "test_met/46d0cc70b872.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 437059,
+   "path": "test_met/ca749ed63c38.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 44863,
+   "path": "test_met/8ce53f8dc3fc.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 49574,
+   "path": "test_met/15b73855faab.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 45334,
+   "path": "test_met/f0c39dc9f82c.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 326229,
+   "path": "test_met/8dfd7009c956.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 471260,
+   "path": "test_met/84a6cc203e85.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 39707,
+   "path": "test_met/357cbd843afb.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 10534,
+   "path": "test_met/efa69823aecc.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 32838,
+   "path": "test_met/dc5b012545a2.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 45392,
+   "path": "test_met/b6594c2804e0.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 36112,
+   "path": "test_met/745505e20b57.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 242014,
+   "path": "test_met/5a6224a04ecf.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 49258,
+   "path": "test_met/8c658f336fe3.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 75265,
+   "path": "test_met/d68a606b8ee9.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 238017,
+   "path": "test_met/1d7430c67423.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 18113,
+   "path": "test_met/f974fede1c19.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 437365,
+   "path": "test_met/eb84a33408a9.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 44835,
+   "path": "test_met/6f6e0a5b4246.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 459714,
+   "path": "test_met/57c4df8be67a.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 466265,
+   "path": "test_met/1ae9e308d4c7.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 325089,
+   "path": "test_met/ed5750cc1136.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 48922,
+   "path": "test_met/1ee707071150.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 48934,
+   "path": "test_met/fba5eac13b16.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 469048,
+   "path": "test_met/370efb4a6d4a.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 49195,
+   "path": "test_met/9b740140dbed.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 61795,
+   "path": "test_met/8ab2df700e08.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 40459,
+   "path": "test_met/0539ef6b5ff6.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 319224,
+   "path": "test_met/2346379de6db.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 471732,
+   "path": "test_met/b008a8d4c321.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 463512,
+   "path": "test_met/eaad76a01702.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 44824,
+   "path": "test_met/99b0c1a3330a.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 45734,
+   "path": "test_met/82c63032f1d9.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 201708,
+   "path": "test_met/9d8768920f52.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 549169,
+   "path": "test_met/757bd6cdc725.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 470603,
+   "path": "test_met/7347ff59a0d1.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 468576,
+   "path": "test_met/9defc31c2500.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 58346,
+   "path": "test_met/6c15bc93355b.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 547768,
+   "path": "test_met/c740e2e10b20.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 10469,
+   "path": "test_met/30a71faa4d22.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 468417,
+   "path": "test_met/3d4dac0dc797.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 39581,
+   "path": "test_met/c8b25049091a.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 44898,
+   "path": "test_met/176d8aeb60fe.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 73562,
+   "path": "test_met/dbd5ad4fb801.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 39487,
+   "path": "test_met/9f02c34d3c88.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 230011,
+   "path": "test_met/1e73e2e842a2.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 547217,
+   "path": "test_met/0238fd871259.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 40067,
+   "path": "test_met/fb4c97ee4f32.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 61941,
+   "path": "test_met/adb8943eb9d8.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 208853,
+   "path": "test_met/86846ed4ee73.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 26568,
+   "path": "test_met/bbdf905fb854.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 201730,
+   "path": "test_met/627ed9ae979f.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 39918,
+   "path": "test_met/0528b2cc51f5.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 62477,
+   "path": "test_met/1a61ce210d68.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 196392,
+   "path": "test_met/59f5a6ff3dd1.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 50843,
+   "path": "test_met/39388a85936c.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 48923,
+   "path": "test_met/b06d541aa993.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 45580,
+   "path": "test_met/ffba2448c68d.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 56680,
+   "path": "test_met/838457425917.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 61802,
+   "path": "test_met/1774c7b3768b.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 57773,
+   "path": "test_met/988dfbe2ba4b.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 45417,
+   "path": "test_met/79cd18c3478d.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 20058,
+   "path": "test_met/2189fd860562.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 37311,
+   "path": "test_met/0d3e63dc69cf.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 437381,
+   "path": "test_met/c12b9a0346fc.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 65352,
+   "path": "test_met/37a13a26cc54.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 19732,
+   "path": "test_met/e9c58fa9fe1c.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 11229,
+   "path": "test_met/91d1baf50674.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 45759,
+   "path": "test_met/93532f602291.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 435855,
+   "path": "test_met/b07d7b68262c.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 471901,
+   "path": "test_met/214c8a54b371.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 436191,
+   "path": "test_met/64844e9ba497.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 50803,
+   "path": "test_met/24abd9239031.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 11243,
+   "path": "test_met/48b759a9ae6d.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 54749,
+   "path": "test_met/410fe5a8a129.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 40767,
+   "path": "test_met/cd0740ad7e25.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 11205,
+   "path": "test_met/d1fa9837e14d.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 62893,
+   "path": "test_met/b26154b6db93.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 242762,
+   "path": "test_met/67a35170294f.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 318649,
+   "path": "test_met/9442c648014e.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 45457,
+   "path": "test_met/31d0f2a27805.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 37309,
+   "path": "test_met/edf560c53a4f.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 11771,
+   "path": "test_met/f4c3977e0566.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 7565,
+   "path": "test_met/c4ab206980a3.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 468576,
+   "path": "test_met/7273a3b4d1a6.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 436337,
+   "path": "test_met/8da0d0798626.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 324687,
+   "path": "test_met/bcb368580ccd.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 45695,
+   "path": "test_met/3a5ea88f7149.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 54616,
+   "path": "test_met/a7c7135da1a5.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 435967,
+   "path": "test_met/984bada8b179.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 307645,
+   "path": "test_met/ac92b21df596.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 45456,
+   "path": "test_met/2de379c2a60a.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 436418,
+   "path": "test_met/d7e41f2d1e18.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 256211,
+   "path": "test_met/dc3137f91f24.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 436866,
+   "path": "test_met/3ed03e728116.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 324490,
+   "path": "test_met/63dce6409c0c.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 16828,
+   "path": "test_met/7673f465ab62.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 436018,
+   "path": "test_met/2e03e54e6bba.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 471979,
+   "path": "test_met/17c2f07a050c.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 44822,
+   "path": "test_met/dd164515d472.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 11762,
+   "path": "test_met/3f61189ebeef.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 58678,
+   "path": "test_met/a69fa1f27bf2.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 437069,
+   "path": "test_met/4f9c9c95190b.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 39929,
+   "path": "test_met/1e12dba80f1e.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 547697,
+   "path": "test_met/cb56904096b7.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 551890,
+   "path": "test_met/105bc5f64a4e.jpg",
+   "reason": "has image but missing from embedding index (pipeline gap)"
+  },
+  {
+   "MET_id": 472386,
+   "path": "test_met/6a248042b589.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 470603,
+   "path": "test_met/9c6cb3b65a11.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 471294,
+   "path": "test_met/1adf913e20f3.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 547697,
+   "path": "test_met/3d1e37939b28.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 466293,
+   "path": "test_met/046e36531f5f.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 231721,
+   "path": "test_met/4abd730fcdc4.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 22908,
+   "path": "test_met/cfa46b3d3a20.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 227721,
+   "path": "test_met/67540b2c2ff9.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 227723,
+   "path": "test_met/8d75c87f11d6.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 437401,
+   "path": "test_met/585b8b9c9b80.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 472386,
+   "path": "test_met/1c843dd6ca45.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 13307,
+   "path": "test_met/b0b92b2ce7a8.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 11677,
+   "path": "test_met/6d564656db5e.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 337500,
+   "path": "test_met/3efdecbde69a.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 436433,
+   "path": "test_met/050628bb4ed5.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 435663,
+   "path": "test_met/4da4913e6098.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 435829,
+   "path": "test_met/d79a166b127c.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 435599,
+   "path": "test_met/7afcadec7425.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 437942,
+   "path": "test_met/c2e7573c1e36.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 437214,
+   "path": "test_met/727c23b3a1f2.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 437214,
+   "path": "test_met/a2d2a4e0ba21.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 436293,
+   "path": "test_met/db04101b23e8.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 459033,
+   "path": "test_met/282d9f996369.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 19003,
+   "path": "test_met/839fb7ca5ba3.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 257883,
+   "path": "test_met/b43abb54c9cf.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 237794,
+   "path": "test_met/bc273c3da41e.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 33567,
+   "path": "test_met/55ee25eb1a9c.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 437373,
+   "path": "test_met/caa98536d436.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  },
+  {
+   "MET_id": 466110,
+   "path": "test_met/0dc8bf85c3d6.jpg",
+   "reason": "not-in-catalog (not on view today / no current gallery)"
+  }
+ ],
+ "provenance": {
+  "note": "Scripts run from /tmp/met-bench/fullscale on 2026-06-10; reproduced verbatim below.",
+  "join.mjs": "// Join NeurIPS Met test queries against the production embedding index.\n// Outputs /tmp/met-bench/fullscale/join.json: qualifying queries, miss taxonomy,\n// deterministic stratified sample of 500.\nimport fs from 'node:fs'\nimport { gunzipSync } from 'node:zlib'\nimport { createRequire } from 'node:module'\nconst Database = createRequire('/home/kuitang/git/met/package.json')('better-sqlite3')\n\nconst ROOT = '/home/kuitang/git/met'\nconst METDS = '/tmp/met-bench/metds'\n\nconst testset = JSON.parse(fs.readFileSync(`${METDS}/testset.json`, 'utf8'))\nconst queries = testset.filter((q) => q.path.startsWith('test_met/') && q.MET_id != null)\nconst idx = JSON.parse(fs.readFileSync(`${ROOT}/data/snapshots/image-embeddings/index.json`, 'utf8'))\nconst db = new Database(`${ROOT}/data/met.sqlite`, { readonly: true })\nconst getObj = db.prepare('SELECT objectID, galleryNumber, imageUrl FROM objects WHERE objectID = ?')\n\n// snapshot for imageUrl presence (met.sqlite also has imageUrl per schema; use sqlite)\nconst qualifying = []\nconst excluded = []\nfor (const q of queries) {\n  if (idx.objects[q.MET_id]) {\n    qualifying.push({ MET_id: q.MET_id, path: q.path, gallery: idx.objects[q.MET_id].gallery, title: idx.objects[q.MET_id].title })\n  } else {\n    let row\n    try { row = getObj.get(q.MET_id) } catch { row = undefined }\n    let reason\n    if (!row) reason = 'not-in-catalog (not on view today / no current gallery)'\n    else if (!row.imageUrl) reason = 'on-view but no Open Access image'\n    else reason = 'has image but missing from embedding index (pipeline gap)'\n    excluded.push({ MET_id: q.MET_id, path: q.path, reason })\n  }\n}\n\nconst taxonomy = {}\nfor (const e of excluded) taxonomy[e.reason] = (taxonomy[e.reason] ?? 0) + 1\n\n// Deterministic stratified sample of 500: sort by (gallery, path), stride-pick.\nconst sorted = [...qualifying].sort((a, b) => (a.gallery + a.path).localeCompare(b.gallery + b.path))\nconst N = 500\nconst sample = []\nif (sorted.length <= 600) {\n  sample.push(...sorted)\n} else {\n  const seen = new Set()\n  for (let i = 0; i < N; i++) {\n    const j = Math.floor((i * sorted.length) / N)\n    if (!seen.has(j)) { seen.add(j); sample.push(sorted[j]) }\n  }\n}\n\nconst out = {\n  totalTestMetQueries: queries.length,\n  testMetFiles: fs.readdirSync(`${METDS}/test_met`).length,\n  qualifying: qualifying.length,\n  distinctGtObjects: new Set(qualifying.map((q) => q.MET_id)).size,\n  excluded: excluded.length,\n  taxonomy,\n  sampleSize: sample.length,\n  sampleGalleries: new Set(sample.map((q) => q.gallery)).size,\n  sample,\n  excludedRows: excluded,\n}\nfs.writeFileSync('/tmp/met-bench/fullscale/join.json', JSON.stringify(out, null, 1))\nconsole.log(JSON.stringify({ ...out, sample: undefined, excludedRows: undefined }, null, 1))\n",
+  "embed.mjs": "// Embed the 500 sampled query photos with gemini-embedding-2, exactly the\n// server's call shape (server/src/gemini.ts embedImage: inlineData image/jpeg,\n// outputDimensionality 768, no taskType). Resumable: one JSON per query in\n// /tmp/met-bench/qcache/. Polite: sequential + 150 ms gap, 30 s backoff on 429.\nimport fs from 'node:fs'\nimport path from 'node:path'\nimport { createRequire } from 'node:module'\nconst { GoogleGenAI } = createRequire('/home/kuitang/git/met/package.json')('@google/genai')\n\nconst METDS = '/tmp/met-bench/metds'\nconst CACHE = '/tmp/met-bench/qcache'\nfs.mkdirSync(CACHE, { recursive: true })\nconst sleep = (ms) => new Promise((r) => setTimeout(r, ms))\n\nconst { sample } = JSON.parse(fs.readFileSync('/tmp/met-bench/fullscale/join.json', 'utf8'))\nconst ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })\n\nlet done = 0, fresh = 0\nfor (const q of sample) {\n  const out = path.join(CACHE, path.basename(q.path).replace(/\\.jpg$/, '.json'))\n  if (fs.existsSync(out)) { done++; continue }\n  const data = fs.readFileSync(path.join(METDS, q.path)).toString('base64')\n  for (let a = 0; ; a++) {\n    try {\n      const response = await ai.models.embedContent({\n        model: 'gemini-embedding-2',\n        contents: [{ parts: [{ inlineData: { mimeType: 'image/jpeg', data } }] }],\n        config: { outputDimensionality: 768 },\n      })\n      const values = response.embeddings?.[0]?.values\n      if (!values || values.length !== 768) throw new Error('bad embedding')\n      fs.writeFileSync(out, JSON.stringify(values))\n      break\n    } catch (e) {\n      const msg = String(e).slice(0, 200)\n      if (a >= 5) { console.error(`FAIL ${q.path}: ${msg}`); break }\n      await sleep(/429|RESOURCE_EXHAUSTED/.test(msg) ? 30000 : 3000)\n    }\n  }\n  done++; fresh++\n  if (done % 25 === 0) console.log(`${done}/${sample.length} (${fresh} fresh)`)\n  await sleep(150)\n}\nconsole.log(`done: ${done}/${sample.length}, fresh embeds: ${fresh}`)\n",
+  "score.mjs": "// Bulk scoring: brute-force cosine of each cached query embedding against the\n// full 33,640-vector index (server semantics: pre-normalized rows, normalized\n// query, dot = cosine). Object-level top-k dedupes the 3,017 stale duplicate\n// rows (verified exact duplicates of mapped rows; the server's row-level top-3\n// sees identical similarities). Outputs results.json with per-query rows.\nimport fs from 'node:fs'\nimport path from 'node:path'\n\nconst ROOT = '/home/kuitang/git/met'\nconst D = `${ROOT}/data/snapshots/image-embeddings`\nconst CACHE = '/tmp/met-bench/qcache'\n\nconst idx = JSON.parse(fs.readFileSync(`${D}/index.json`, 'utf8'))\nconst { dims, shardSize, count } = idx\nconst matrix = new Float32Array(count * dims)\nfor (let s = 0; s * shardSize < count; s++) {\n  const buf = fs.readFileSync(`${D}/shard-${s}.bin`)\n  matrix.set(\n    new Float32Array(buf.buffer, buf.byteOffset, buf.byteLength / 4).subarray(0, Math.min(buf.byteLength / 4, (count - s * shardSize) * dims)),\n    s * shardSize * dims,\n  )\n}\nconst rowMeta = new Array(count) // {objectID, gallery} or undefined (stale dup row)\nfor (const [id, o] of Object.entries(idx.objects))\n  rowMeta[o.shard * shardSize + o.offset] = { objectID: Number(id), gallery: o.gallery, title: o.title }\n\nconst { sample } = JSON.parse(fs.readFileSync('/tmp/met-bench/fullscale/join.json', 'utf8'))\nconst rows = []\nfor (const q of sample) {\n  const f = path.join(CACHE, path.basename(q.path).replace(/\\.jpg$/, '.json'))\n  if (!fs.existsSync(f)) { rows.push({ ...q, error: 'no-embedding' }); continue }\n  const vec = Float32Array.from(JSON.parse(fs.readFileSync(f, 'utf8')))\n  let n = 0\n  for (let i = 0; i < dims; i++) n += vec[i] * vec[i]\n  n = Math.sqrt(n) || 1\n  // best similarity per objectID (stale rows fold into their mapped twin)\n  const best = new Map()\n  let gtSim = -2\n  for (let r = 0; r < count; r++) {\n    let dot = 0\n    const base = r * dims\n    for (let i = 0; i < dims; i++) dot += matrix[base + i] * vec[i]\n    const sim = dot / n\n    const meta = rowMeta[r]\n    if (!meta) continue\n    const prev = best.get(meta.objectID)\n    if (prev === undefined || sim > prev) best.set(meta.objectID, sim)\n    if (meta.objectID === q.MET_id && sim > gtSim) gtSim = sim\n  }\n  const sorted = [...best.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5)\n  const topIds = sorted.map(([id]) => id)\n  const top1Meta = idx.objects[topIds[0]]\n  const bestWrong = sorted.find(([id]) => id !== q.MET_id)\n  rows.push({\n    ...q,\n    top5: sorted.map(([id, sim]) => ({ id, sim: Number(sim.toFixed(4)), gallery: idx.objects[id].gallery })),\n    top1: topIds[0] === q.MET_id,\n    top5hit: topIds.includes(q.MET_id),\n    galleryHit: top1Meta.gallery === q.gallery,\n    gtSim: Number(gtSim.toFixed(4)),\n    bestWrongSim: bestWrong ? Number(bestWrong[1].toFixed(4)) : null,\n  })\n  if (rows.length % 50 === 0) console.log(rows.length)\n}\n\nconst ok = rows.filter((r) => !r.error)\nconst pct = (n, d) => `${((100 * n) / d).toFixed(1)}% (${n}/${d})`\nconst med = (a, q = 0.5) => { const s = [...a].sort((x, y) => x - y); return s[Math.min(s.length - 1, Math.floor(s.length * q))] }\nconst top1 = ok.filter((r) => r.top1).length\nconst top5 = ok.filter((r) => r.top5hit).length\nconst gal = ok.filter((r) => r.galleryHit).length\nconst hits = ok.filter((r) => r.top1)\nconst misses = ok.filter((r) => !r.top1)\nconst summary = {\n  queries: ok.length,\n  top1: pct(top1, ok.length),\n  top5: pct(top5, ok.length),\n  gallery: pct(gal, ok.length),\n  hitMarginMedian: med(hits.map((r) => r.gtSim - r.bestWrongSim)),\n  hitGtSimMedian: med(hits.map((r) => r.gtSim)),\n  missGtSimMedian: med(misses.map((r) => r.gtSim)),\n  missTop1SimMedian: med(misses.map((r) => r.top5[0].sim)),\n  missDeficitMedian: med(misses.map((r) => r.top5[0].sim - r.gtSim)),\n}\nconsole.log(JSON.stringify(summary, null, 1))\nfs.writeFileSync('/tmp/met-bench/fullscale/results.json', JSON.stringify({ summary, rows }, null, 1))\n",
+  "live.mjs": "// Live pass: 40 stratified photos from the bulk sample through the real\n// POST /api/v1/locate/photo (prod server, real Gemini, no mock).\nimport fs from 'node:fs'\nimport path from 'node:path'\n\nconst SERVER = process.env.SERVER ?? 'http://localhost:8788'\nconst METDS = '/tmp/met-bench/metds'\nconst { sample } = JSON.parse(fs.readFileSync('/tmp/met-bench/fullscale/join.json', 'utf8'))\n\n// deterministic stratified 40: sample is gallery-sorted; take every Nth\nconst picks = []\nconst seen = new Set()\nfor (let i = 0; i < 40; i++) {\n  const j = Math.floor((i * sample.length) / 40)\n  if (!seen.has(j)) { seen.add(j); picks.push(sample[j]) }\n}\n\nconst rows = []\nfor (const q of picks) {\n  const img = fs.readFileSync(path.join(METDS, q.path)).toString('base64')\n  const t0 = Date.now()\n  const row = { MET_id: q.MET_id, path: q.path, gallery: q.gallery }\n  try {\n    const r = await fetch(`${SERVER}/api/v1/locate/photo`, {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({ imageBase64: img }),\n    })\n    row.ms = Date.now() - t0\n    row.status = r.status\n    const j = await r.json()\n    if (!r.ok) row.error = JSON.stringify(j).slice(0, 200)\n    else {\n      row.label = j.label\n      row.candidates = j.candidates.map((c) => ({ id: c.objectID, gallery: c.gallery, sim: c.similarity }))\n      const ids = j.candidates.map((c) => c.objectID)\n      row.top1 = ids[0] === q.MET_id\n      row.top3 = ids.includes(q.MET_id)\n      row.galleryHit = j.candidates[0]?.gallery === q.gallery\n    }\n  } catch (e) {\n    row.error = String(e).slice(0, 200)\n  }\n  rows.push(row)\n  console.log(`${rows.length}/${picks.length} ${q.MET_id} ${row.ms}ms top1=${row.top1} top3=${row.top3} label=${JSON.stringify(row.label ?? null)?.slice(0, 60)}`)\n  await new Promise((r) => setTimeout(r, 300))\n}\n\nconst ok = rows.filter((r) => !r.error)\nconst med = (a, q = 0.5) => { const s = [...a].sort((x, y) => x - y); return s[Math.min(s.length - 1, Math.floor(s.length * q))] }\nconst summary = {\n  requested: picks.length,\n  ok: ok.length,\n  errors: rows.length - ok.length,\n  p50: med(ok.map((r) => r.ms)),\n  p95: med(ok.map((r) => r.ms), 0.95),\n  top1: ok.filter((r) => r.top1).length,\n  top3: ok.filter((r) => r.top3).length,\n  galleryHit: ok.filter((r) => r.galleryHit).length,\n  labelNull: ok.filter((r) => r.label === null).length,\n  labelNonNull: ok.filter((r) => r.label !== null).length,\n}\nconsole.log(JSON.stringify(summary, null, 1))\nfs.writeFileSync('/tmp/met-bench/fullscale/live-results.json', JSON.stringify({ summary, rows }, null, 1))\n"
+ }
+}
