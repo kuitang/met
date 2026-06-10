@@ -77,8 +77,19 @@ test('floor switch to 2 renders floor-2 galleries (with timing)', async ({ page 
   expect(elapsed).toBeLessThan(5_000);
 });
 
-test('site switch to Cloisters renders its floors and rooms', async ({ page }) => {
-  await page.getByTestId('site-chip-cloisters').click();
+test('venue switch via the locate sheet renders Cloisters floors and rooms', async ({ page }) => {
+  // Venue is location state, not map chrome: no site chips on the map.
+  await expect(page.getByTestId('site-chip-cloisters')).toHaveCount(0);
+  // The home chip's second line shows the current venue.
+  await expect(page.getByTestId('locate-chip-venue')).toHaveText('Fifth Avenue');
+
+  // Switch venue through the locate sheet's segmented VENUE row.
+  await page.getByTestId('locate-chip').click();
+  await expect(page.getByTestId('venue-cloisters')).toBeVisible();
+  await page.getByTestId('venue-cloisters').click();
+  await page.goBack(); // modal sheet → home (client-side, store state survives)
+
+  await expect(page.getByTestId('locate-chip-venue')).toHaveText('The Cloisters');
   const rooms = page.locator('[data-testid^="room-"]');
   await expect(rooms.first()).toBeVisible();
   const count = await rooms.count();
@@ -88,8 +99,14 @@ test('site switch to Cloisters renders its floors and rooms', async ({ page }) =
   await expect(page.getByTestId('floor-chip-G')).toBeVisible();
   await expect(page.getByTestId('floor-chip-1')).toBeVisible();
   await expect(page.getByTestId('floor-chip-1M')).toHaveCount(0);
+  // A manual venue pick is the user's own action — no auto-switch toast.
+  await expect(page.getByTestId('venue-toast')).toHaveCount(0);
+
   // And back.
-  await page.getByTestId('site-chip-fifthAve').click();
+  await page.getByTestId('locate-chip').click();
+  await page.getByTestId('venue-fifthAve').click();
+  await page.goBack();
+  await expect(page.getByTestId('locate-chip-venue')).toHaveText('Fifth Avenue');
   await expect(page.getByTestId('room-131')).toBeVisible();
 });
 

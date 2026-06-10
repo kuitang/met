@@ -58,6 +58,11 @@ export interface Room {
   kind: RoomKind;
   /** [x, y, w, h] in the stub's local schematic coordinate system. */
   rect: [number, number, number, number];
+  /**
+   * Venue the room belongs to. The stub dataset omits it (all stub rooms are
+   * Fifth Avenue); consumers treat undefined as 'fifthAve'.
+   */
+  site?: 'fifthAve' | 'cloisters';
 }
 
 export interface RouteStep {

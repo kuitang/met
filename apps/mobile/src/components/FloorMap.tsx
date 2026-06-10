@@ -4,9 +4,11 @@
  * Two render paths behind one component:
  *  - Real geometry (Living Map polygons out of met.sqlite's blobs table) when
  *    the DataProvider implements galleriesGeometry(site, floor) — see
- *    MapGeometry.ts for the provider contract. Floor + site switchers are
- *    driven by the data; closed galleries render hatched/dimmed; gallery
- *    numbers label rooms (large rooms always, every room once zoomed in).
+ *    MapGeometry.ts for the provider contract. Floor chips are driven by the
+ *    data; the venue (Fifth Avenue ⇄ The Cloisters) is location state passed
+ *    in via the `site` prop (no site switcher on the map — see LocateState);
+ *    closed galleries render hatched/dimmed; gallery numbers label rooms
+ *    (large rooms always, every room once zoomed in).
  *  - Stub schematic (rects from stub.json) when the provider is the Gate A
  *    stub — keeps the mockup checks green.
  *
@@ -34,7 +36,6 @@ import Svg, {
 } from 'react-native-svg';
 
 import {
-  availableFloors,
   buildSiteGeometry,
   floorLabel,
   floorNumber,
@@ -59,11 +60,6 @@ const STUB_FLOOR_CHIPS = [
 // Real-map label policy: big rooms always labeled; every room once zoomed in.
 const LABEL_ZOOM = 1.6;
 const LABEL_AREA_M2 = 150;
-
-const SITES: { site: Site; label: string }[] = [
-  { site: 'fifthAve', label: 'The Met' },
-  { site: 'cloisters', label: 'Cloisters' },
-];
 
 /**
  * Tap handler for an SVG shape. On web, react-native-svg implements onPress
@@ -99,6 +95,13 @@ export interface FloorMapProps {
   /** Controlled floor; if omitted the component manages its own. */
   floor?: number;
   onFloorChange?: (floor: number) => void;
+  /**
+   * Venue to render. Venue is location state, not map chrome (gate decision):
+   * the map has no site switcher — callers pass the active venue from
+   * LocateState (the locate sheet's segmented row / GPS auto-detect own it).
+   * The stub schematic has Fifth Avenue only and ignores this.
+   */
+  site?: Site;
 }
 
 export default function FloorMap(props: FloorMapProps) {
@@ -240,12 +243,14 @@ function RealFloorMap({
   onRoomPress,
   floor: floorProp,
   onFloorChange,
+  site = 'fifthAve',
 }: FloorMapProps & { geometry: GeometryFn }) {
-  const [site, setSite] = useState<Site>('fifthAve');
   const siteGeo = useMemo(() => buildSiteGeometry(geometry, site), [geometry, site]);
 
   const [floorState, setFloorState] = useState('1');
   const requested = floorProp !== undefined ? floorLabel(floorProp) : floorState;
+  // A floor the venue doesn't have (e.g. arriving at the Cloisters on "3")
+  // falls back to 1 / the lowest — venue switches never strand the map.
   const floor = siteGeo.floors.includes(requested)
     ? requested
     : siteGeo.floors.includes('1')
@@ -254,12 +259,6 @@ function RealFloorMap({
   const setFloor = (label: string) => {
     setFloorState(label);
     onFloorChange?.(floorNumber(label));
-  };
-  const switchSite = (next: Site) => {
-    if (next === site) return;
-    setSite(next);
-    const floors = availableFloors(geometry, next);
-    setFloor(floors.includes(floor) ? floor : floors.includes('1') ? '1' : floors[0]);
   };
 
   const [zoom, setZoom] = useState(1);
@@ -358,24 +357,6 @@ function RealFloorMap({
             >
               <Text style={[styles.chipText, active && styles.chipTextActive]}>
                 {label}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </View>
-
-      <View style={styles.siteChips}>
-        {SITES.map((s) => {
-          const active = s.site === site;
-          return (
-            <Pressable
-              key={s.site}
-              onPress={() => switchSite(s.site)}
-              testID={`site-chip-${s.site}`}
-              style={[styles.siteChip, active && styles.chipActive]}
-            >
-              <Text style={[styles.chipText, active && styles.chipTextActive]}>
-                {s.label}
               </Text>
             </Pressable>
           );
@@ -547,21 +528,5 @@ const styles = StyleSheet.create({
   },
   chipTextActive: {
     color: colors.white,
-  },
-  siteChips: {
-    position: 'absolute',
-    bottom: spacing.md,
-    right: spacing.md,
-    flexDirection: 'row',
-    gap: spacing.sm,
-  },
-  siteChip: {
-    height: 44,
-    paddingHorizontal: spacing.md,
-    backgroundColor: colors.white,
-    borderWidth: 1,
-    borderColor: colors.hairline,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });

@@ -34,6 +34,32 @@
  * Off-route detection (onRouteAnchor): room-anchored fixes drive checkpoint
  * auto-advance and recalc; an off-route anchor signals `reroute` exactly once
  * per deviation (deduped by gallery until the user is back on a route).
+ *
+ * VENUE / ANCHOR COUPLING (gate decision: venue is location state, not map
+ * chrome). The venue (Fifth Avenue ⇄ The Cloisters) is the building the app
+ * renders; exactly one is active. Rules, enforced by applyFusedInput:
+ *
+ *   1. INVARIANT: a defined anchor's `site` always equals the active venue.
+ *      Whatever changes one changes the other consistently.
+ *   2. Explicit inputs switch venue unconditionally: a room input carries its
+ *      site (the user just told us which building they're in), a manual venue
+ *      override (locate-sheet segmented row), and a browse switch (tapping an
+ *      object at the other venue). Switching venue CLEARS any anchor from the
+ *      other venue — nothing is retained across buildings, including
+ *      assumedFloor (the venues have different floor vocabularies, e.g. the
+ *      Cloisters is G/1 only).
+ *   3. GPS may auto-switch the venue (emitting a 'venue-switch' event → UI
+ *      toast) ONLY when (a) the venue was not manually pinned this session
+ *      (venue.source !== 'manual' — same override semantics as room anchors:
+ *      an explicit user statement beats GPS), and (b) no FRESH room anchor
+ *      exists (fresh room beats GPS, exactly as in anchor fusion; once it
+ *      decays past ROOM_ANCHOR_DECAY_MS the fix may supersede it AND switch).
+ *   4. Geometry makes GPS venue detection trivially safe: the two entrances
+ *      are ~9.8 km apart, while resolveGpsVenue accepts a fix only within
+ *      GPS_MAX_DISTANCE_M + accuracy (≤ 1.35 km) of an entrance with
+ *      accuracy ≤ VENUE_MAX_ACCURACY_M (1 km) — far less than half the
+ *      separation, so even the worst usable fix can never resolve to the
+ *      wrong venue (property-tested in positioning.sim.test.ts).
  */
 
 export type Site = "fifthAve" | "cloisters";
@@ -226,12 +252,157 @@ export function applyInput(
   if (current?.kind === "room") {
     // A fresh explicit room claim beats a wing-level fix; a stale one doesn't.
     if (input.at - current.timestamp < ROOM_ANCHOR_DECAY_MS) return current;
-    return withAssumedFloor(area, current.floor);
+    // Floor retention never crosses venues — the buildings have different
+    // floor vocabularies (venue/anchor coupling rule 2).
+    return area.site === current.site ? withAssumedFloor(area, current.floor) : area;
   }
-  if (current?.kind === "area" && current.assumedFloor !== undefined) {
+  if (
+    current?.kind === "area" &&
+    current.assumedFloor !== undefined &&
+    current.site === area.site
+  ) {
     return withAssumedFloor(area, current.assumedFloor);
   }
   return area;
+}
+
+// ---------------------------------------------------------------------------
+// Venue: which building the app renders (see VENUE / ANCHOR COUPLING above).
+
+/** Who last decided the venue. 'default' = app boot (Fifth Avenue). */
+export type VenueSource = "default" | "manual" | "browse" | "room" | "gps";
+
+export interface VenueState {
+  venue: Site;
+  source: VenueSource;
+  timestamp: number;
+}
+
+export const INITIAL_VENUE: VenueState = { venue: "fifthAve", source: "default", timestamp: 0 };
+
+/**
+ * Venue detection tolerates far worse fixes than room/area anchoring: the
+ * venues are ~9.8 km apart, so even a 1 km-accuracy fix disambiguates them.
+ */
+export const VENUE_MAX_ACCURACY_M = 1000;
+
+/**
+ * Which venue a GPS fix is at, or null when the fix is unusable for venue
+ * detection (accuracy worse than VENUE_MAX_ACCURACY_M, or farther than
+ * GPS_MAX_DISTANCE_M + accuracy from both entrances). The acceptance radius
+ * (≤ 1.35 km) is well under half the inter-venue distance, so a usable fix
+ * can never resolve to the wrong venue.
+ */
+export function resolveGpsVenue(fix: GpsFix): Site | null {
+  if (fix.accuracyM > VENUE_MAX_ACCURACY_M) return null;
+  let best: Site | null = null;
+  let bestD = Infinity;
+  for (const e of SITE_ENTRANCES) {
+    const d = haversineM(fix.lat, fix.lon, e.lat, e.lon);
+    if (d < bestD) {
+      bestD = d;
+      best = e.site;
+    }
+  }
+  return best !== null && bestD <= GPS_MAX_DISTANCE_M + Math.max(fix.accuracyM, 0)
+    ? best
+    : null;
+}
+
+/** Manual venue override (locate sheet) or browse switch (cross-venue object tap). */
+export type VenueInput = {
+  type: "venue";
+  venue: Site;
+  source: "manual" | "browse";
+  at: number;
+};
+
+export type FusedInput = PositionInput | VenueInput;
+
+export interface PositionState {
+  anchor: Anchor | undefined;
+  venue: VenueState;
+}
+
+/** Emitted when the active venue changes — the UI shows a dismissible toast
+ *  for 'gps' and 'browse' causes ("You're at The Cloisters — switched"). */
+export interface VenueSwitchEvent {
+  type: "venue-switch";
+  venue: Site;
+  cause: Exclude<VenueSource, "default">;
+}
+
+/**
+ * Venue-aware fusion: fold one input into {anchor, venue}, maintaining the
+ * coupling invariant (anchor.site === venue.venue) and the precedence rules
+ * documented at the top of this module. Returns the same `state` reference
+ * when the input is ignored.
+ */
+export function applyFusedInput(
+  state: PositionState,
+  input: FusedInput,
+): { state: PositionState; events: VenueSwitchEvent[] } {
+  const { anchor, venue } = state;
+
+  if (input.type === "venue") {
+    if (input.venue === venue.venue) {
+      // Re-affirming the current venue: a manual pin is never downgraded by a
+      // browse tap; a browse tap may be upgraded to a manual pin.
+      const source = venue.source === "manual" ? "manual" : input.source;
+      if (source === venue.source) return { state, events: [] };
+      return {
+        state: { anchor, venue: { venue: venue.venue, source, timestamp: input.at } },
+        events: [],
+      };
+    }
+    return {
+      state: {
+        // Coupling rule 2: an anchor from the other venue is cleared outright.
+        anchor: anchor !== undefined && anchor.site === input.venue ? anchor : undefined,
+        venue: { venue: input.venue, source: input.source, timestamp: input.at },
+      },
+      events: [{ type: "venue-switch", venue: input.venue, cause: input.source }],
+    };
+  }
+
+  if (input.type === "room") {
+    const next = applyInput(anchor, input)!; // room inputs always anchor
+    if (input.site !== venue.venue) {
+      return {
+        state: {
+          anchor: next,
+          venue: { venue: input.site, source: "room", timestamp: input.at },
+        },
+        events: [{ type: "venue-switch", venue: input.site, cause: "room" }],
+      };
+    }
+    return { state: { anchor: next, venue }, events: [] };
+  }
+
+  // GPS: venue detection first (loose gate), then ordinary anchor fusion.
+  const gpsVenue = resolveGpsVenue(input.fix);
+  if (gpsVenue !== null && gpsVenue !== venue.venue) {
+    // Coupling rule 3a: a manual venue pin beats GPS for the session visit.
+    if (venue.source === "manual") return { state, events: [] };
+    // Coupling rule 3b: a FRESH room anchor beats GPS — venue included.
+    if (anchor?.kind === "room" && input.at - anchor.timestamp < ROOM_ANCHOR_DECAY_MS) {
+      return { state, events: [] };
+    }
+    return {
+      state: {
+        // Old-venue anchor is dropped; the fix's own area anchor (if precise
+        // enough for one) takes over. No floor crosses the venue boundary.
+        anchor: resolveGpsArea(input.fix, input.at) ?? undefined,
+        venue: { venue: gpsVenue, source: "gps", timestamp: input.at },
+      },
+      events: [{ type: "venue-switch", venue: gpsVenue, cause: "gps" }],
+    };
+  }
+  const next = applyInput(anchor, input);
+  return {
+    state: next === anchor ? state : { anchor: next, venue },
+    events: [],
+  };
 }
 
 // ---------------------------------------------------------------------------

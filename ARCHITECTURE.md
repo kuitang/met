@@ -123,9 +123,13 @@ per-site viewBox across floors (`buildSiteGeometry`, `availableFloors`,
 `resolveGeometryFn`). `apps/mobile/src/components/FloorMap.tsx:FloorMap`
 renders it with react-native-svg: memoized room paths, closed galleries
 hatched + dimmed, zoom/area-gated labels, data-driven floor chips
-(`G|1|1M|2|3|5` today — floors come from the data, not a constant), Fifth
-Ave⇄Cloisters site switch, and pinch/pan/wheel applied as a screen-space
-transform so zooming never re-renders the SVG tree. Measured: 204 polygons on
+(`G|1|1M|2|3|5` today — floors come from the data, not a constant), and
+pinch/pan/wheel applied as a screen-space transform so zooming never
+re-renders the SVG tree. The venue (Fifth Avenue ⇄ The Cloisters) is **not
+map chrome**: FloorMap has no site switcher and renders whatever `site` prop
+it is given — the active venue is location state (see Positioning), surfaced
+as the second line of the home locate chip and overridden via the locate
+sheet's segmented VENUE row. Measured: 204 polygons on
 Fifth Ave floor 1, cold paint→first room 431 ms, floor switch 75 ms — no
 polygon simplification needed (measured before optimizing).
 
@@ -162,10 +166,26 @@ are inert on routes by type. Verified by a scenario simulator
 around real gallery centroids through the real machine, including a 500-random-
 fix property test asserting no room claim is ever produced.
 
+**Venue is location state** (gate decision): which building the app shows
+(`fifthAve | cloisters`) is part of the position, not a map control.
+`applyFusedInput(state, input)` composes venue with anchor fusion under the
+coupling rules documented in the `shared/positioning.ts` header: a defined
+anchor's site always equals the active venue; explicit inputs (room entry,
+locate-sheet manual override, cross-venue object tap) switch venue
+unconditionally and clear any other-venue anchor (no floor — not even
+`assumedFloor` — crosses buildings); GPS auto-switches the venue (emitting a
+`venue-switch` event → dismissible toast) only when the venue wasn't manually
+pinned this session and no fresh room anchor exists. `resolveGpsVenue` accepts
+fixes up to `VENUE_MAX_ACCURACY_M` (1 km — far looser than area anchoring)
+because the venues are ~9.8 km apart while the acceptance radius stays
+≤1.35 km, so a usable fix structurally cannot resolve to the wrong venue —
+property-tested over 500 noisy fixes at both venues' real centroids, plus
+manual-pin and fresh/stale-anchor venue scenarios, in the same simulator.
+
 UI state lives in `apps/mobile/src/components/LocateState.tsx`
-(`setAnchor`/`useAnchor`/`anchorForRoom`); the locate sheet
-(`apps/mobile/src/app/locate.tsx`) runs GPS-first on open and routes every
-signal through the shared machine.
+(`setAnchor`/`useAnchor`/`anchorForRoom`, plus `useVenue`/`applyVenue` and the
+venue-switch toast); the locate sheet (`apps/mobile/src/app/locate.tsx`) runs
+GPS-first on open and routes every signal through the shared machine.
 
 ## Routing & instructions
 
@@ -234,7 +254,9 @@ directly on web. `server/src/routes/img.ts:imgRoutes` proxies
 `GET /api/v1/img/{objectID}` with a disk LRU cache (`DATA_DIR/img-cache/`, cap
 `IMG_CACHE_MAX_MB`) and permissive CORP/CORS headers; web clients use it with a
 `?v={dataVersion}` cache-buster, native keeps direct CDN URLs (no COEP, saves
-egress). See `apps/mobile/src/components/ObjectImage.tsx` and
+egress). ObjectImage shows a fixed-height neutral block with a small Met-red
+spinner until the bytes paint (cold proxy fetches read as intentional; zero
+layout shift). See `apps/mobile/src/components/ObjectImage.tsx` and
 `apps/mobile/src/data/apiBase.ts:apiBase`.
 
 ## Nightly self-refresh
@@ -295,7 +317,7 @@ loads whatever shards exist.
 | `shared/openapi.yaml` → `shared/api-types.d.ts` | the only client↔server contract (`npm -w shared run gen`) |
 | `shared/search.ts:buildAutocompleteQuery` / `buildFullQuery` / `relaxQuery` / `amenityIntent` | FTS query construction, shared verbatim by client and server |
 | `shared/routing.ts:buildRouteGraph` / `route` | Dijkstra + room-grouped compass instructions |
-| `shared/positioning.ts:applyInput` / `resolveGpsArea` / `onRouteAnchor` / `initialRouteProgress` | signal fusion, decay, route advance/reroute |
+| `shared/positioning.ts:applyInput` / `applyFusedInput` / `resolveGpsArea` / `resolveGpsVenue` / `onRouteAnchor` | signal fusion, decay, venue coupling + GPS venue auto-detect, route advance/reroute |
 | `apps/mobile/src/data/provider.ts:DataProvider` / `StubDataProvider` / `useData` | UI-facing data interface |
 | `apps/mobile/src/data/SqliteDataProvider.ts:SqliteDataProvider` | real provider over the local DB |
 | `apps/mobile/src/data/DataGate.tsx:DataGate` | boot: local-first open, download, version poll, hot swap |
@@ -303,7 +325,7 @@ loads whatever shards exist.
 | `apps/mobile/src/components/MapGeometry.ts:buildSiteGeometry` | geojson → projected render model |
 | `apps/mobile/src/components/FloorMap.tsx:FloorMap` | SVG floor-plan renderer (real + stub paths) |
 | `apps/mobile/src/components/RoutePolyline.tsx` | route overlay from `Route.geo` |
-| `apps/mobile/src/components/LocateState.tsx:setAnchor` / `useAnchor` | global anchor state for the UI |
+| `apps/mobile/src/components/LocateState.tsx:setAnchor` / `useAnchor` / `useVenue` / `applyVenue` | global anchor + venue state for the UI (and the venue-switch toast) |
 | `server/src/index.ts` | Hono wiring: COOP/COEP, x-data-version, rate limits, static SPA |
 | `server/src/gemini.ts:createGemini` | the one Gemini client (rewrite, agentic loop, OCR, embeddings) |
 | `server/src/routes/interpret.ts:interpretRoutes` | tier-3 search: rewrite → score-aware agentic escalation |

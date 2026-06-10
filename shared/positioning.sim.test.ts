@@ -16,6 +16,10 @@
  *   4. GPS NEVER produces a room claim at any noise level (500-fix property loop)
  *   5. fresh manual beats everything
  *   6. off-route fires exactly once per deviation (on the real 131→822 route)
+ *   7. VENUE coupling (applyFusedInput): a confident fix at the other venue
+ *      auto-switches venue + emits the toast event; a fresh room anchor or a
+ *      manual venue pin blocks the switch; floor never crosses venues; a
+ *      noisy fix can NEVER pick the wrong venue (property loop)
  *
  * The run prints a scenario trace table so it doubles as documentation:
  *   npx vitest run --root shared positioning.sim
@@ -27,16 +31,20 @@ import { fileURLToPath } from "node:url";
 
 import {
   GPS_MAX_CONFIDENCE,
+  INITIAL_VENUE,
   ROOM_ANCHOR_DECAY_MS,
   anchorLevel,
+  applyFusedInput,
   applyInput,
   effectiveConfidence,
   initialRouteProgress,
   onRouteAnchor,
   resolveGpsArea,
+  resolveGpsVenue,
   type Anchor,
   type GpsFix,
   type PositionInput,
+  type PositionState,
   type RouteSignal,
 } from "./positioning.ts";
 import {
@@ -357,3 +365,195 @@ describe("off-route fires exactly once per deviation — real 131→822 route ga
     expect(signal).toEqual({ type: "none" });
   });
 });
+
+/* ---------------------------------------------------------------------- */
+/* Venue scenarios: applyFusedInput over real centroids of BOTH venues.    */
+
+const CLOISTERS_ENTRANCE = { lat: 40.8649, lon: -73.9317 };
+const cloistersNodes = galleryNodes.filter((n) => n.site === "cloisters");
+const MIN = 60_000;
+
+const gpsInput = (fix: GpsFix, at: number): PositionInput => ({ type: "gps", fix, at });
+
+describe("venue auto-detect: a confident fix at the other venue switches + emits the toast event", () => {
+  expect(cloistersNodes.length).toBeGreaterThanOrEqual(5); // real Cloisters rooms
+
+  it("venue=fifthAve, no anchor, clean fix at a real Cloisters gallery → switch", () => {
+    const rng = mulberry32(0xc105);
+    const node = cloistersNodes[0];
+    const fix = noisyFix(node.lat, node.lon, 40 + rng() * 60, 65, rng);
+    const { state, events } = applyFusedInput(
+      { anchor: undefined, venue: INITIAL_VENUE },
+      gpsInput(fix, 1 * MIN),
+    );
+    expect(events).toEqual([{ type: "venue-switch", venue: "cloisters", cause: "gps" }]);
+    expect(state.venue).toMatchObject({ venue: "cloisters", source: "gps" });
+    // The fix's own area anchor takes over — at the new venue, wing-level.
+    expect(state.anchor).toMatchObject({ kind: "area", site: "cloisters", source: "gps" });
+  });
+
+  it("even a coarse 900 m-accuracy fix switches the venue (no area anchor claimed)", () => {
+    const fix: GpsFix = { ...CLOISTERS_ENTRANCE, accuracyM: 900 };
+    expect(resolveGpsArea(fix, 0)).toBeNull(); // too coarse for an anchor…
+    expect(resolveGpsVenue(fix)).toBe("cloisters"); // …trivially enough for a venue
+    const { state, events } = applyFusedInput(
+      { anchor: undefined, venue: INITIAL_VENUE },
+      gpsInput(fix, 1 * MIN),
+    );
+    expect(events).toHaveLength(1);
+    expect(state.venue.venue).toBe("cloisters");
+    expect(state.anchor).toBeUndefined();
+  });
+
+  it("a FRESH room anchor at the current venue blocks the switch (fresh room beats GPS)", () => {
+    const state: PositionState = {
+      anchor: applyInput(undefined, {
+        type: "room",
+        source: "manual",
+        gallery: "131",
+        floor: "1",
+        site: "fifthAve",
+        at: 0,
+      }),
+      venue: INITIAL_VENUE,
+    };
+    const res = applyFusedInput(state, gpsInput({ ...CLOISTERS_ENTRANCE, accuracyM: 40 }, 2 * MIN));
+    expect(res.state).toBe(state); // same reference: ignored outright
+    expect(res.events).toEqual([]);
+  });
+
+  it("once the room anchor is stale, the cross-venue fix switches — and floor NEVER crosses venues", () => {
+    const state: PositionState = {
+      anchor: applyInput(undefined, {
+        type: "room",
+        source: "manual",
+        gallery: "822",
+        floor: "2",
+        site: "fifthAve",
+        at: 0,
+      }),
+      venue: INITIAL_VENUE,
+    };
+    const at = ROOM_ANCHOR_DECAY_MS + 1 * MIN;
+    const { state: next, events } = applyFusedInput(
+      state,
+      gpsInput({ ...CLOISTERS_ENTRANCE, accuracyM: 40 }, at),
+    );
+    expect(events).toEqual([{ type: "venue-switch", venue: "cloisters", cause: "gps" }]);
+    expect(next.anchor).toMatchObject({ kind: "area", site: "cloisters" });
+    if (next.anchor?.kind === "area") {
+      // Fifth Ave "Floor 2" must not survive as assumedFloor at the Cloisters.
+      expect(next.anchor.assumedFloor).toBeUndefined();
+      expect(next.anchor.label).not.toContain("assumed");
+    }
+  });
+
+  it("a room input at the other venue switches venue too (cause 'room', anchor wins)", () => {
+    const { state, events } = applyFusedInput(
+      { anchor: undefined, venue: INITIAL_VENUE },
+      { type: "room", source: "manual", gallery: "9", floor: "G", site: "cloisters", at: 0 },
+    );
+    expect(events).toEqual([{ type: "venue-switch", venue: "cloisters", cause: "room" }]);
+    expect(state.anchor).toMatchObject({ kind: "room", gallery: "9", site: "cloisters" });
+    expect(state.venue).toMatchObject({ venue: "cloisters", source: "room" });
+  });
+});
+
+describe("manual venue override beats GPS for the session visit", () => {
+  it("after a manual pin, fixes at the other venue never switch back — however late", () => {
+    // The visitor pins The Cloisters in the locate sheet…
+    const pinned = applyFusedInput(
+      { anchor: undefined, venue: INITIAL_VENUE },
+      { type: "venue", venue: "cloisters", source: "manual", at: 0 },
+    );
+    expect(pinned.events).toEqual([
+      { type: "venue-switch", venue: "cloisters", cause: "manual" },
+    ]);
+    expect(pinned.state.venue).toMatchObject({ venue: "cloisters", source: "manual" });
+
+    // …then perfect Fifth Avenue fixes arrive at 1 min, 10 min, 3 h: all ignored.
+    let state = pinned.state;
+    for (const at of [1 * MIN, 10 * MIN, 180 * MIN]) {
+      const res = applyFusedInput(state, gpsInput({ ...ENTRANCE, accuracyM: 10 }, at));
+      expect(res.state).toBe(state);
+      expect(res.events).toEqual([]);
+      state = res.state;
+    }
+  });
+
+  it("a manual pin clears an anchor from the other venue (coupling rule 2)", () => {
+    const state: PositionState = {
+      anchor: applyInput(undefined, {
+        type: "room",
+        source: "manual",
+        gallery: "131",
+        floor: "1",
+        site: "fifthAve",
+        at: 0,
+      }),
+      venue: INITIAL_VENUE,
+    };
+    const { state: next } = applyFusedInput(state, {
+      type: "venue",
+      venue: "cloisters",
+      source: "manual",
+      at: 1 * MIN,
+    });
+    expect(next.anchor).toBeUndefined();
+    expect(next.venue.venue).toBe("cloisters");
+  });
+
+  it("a within-venue GPS fix still anchors normally under a manual pin", () => {
+    const pinned: PositionState = {
+      anchor: undefined,
+      venue: { venue: "cloisters", source: "manual", timestamp: 0 },
+    };
+    const { state, events } = applyFusedInput(
+      pinned,
+      gpsInput({ ...CLOISTERS_ENTRANCE, accuracyM: 40 }, 1 * MIN),
+    );
+    expect(events).toEqual([]); // no switch — already there
+    expect(state.anchor).toMatchObject({ kind: "area", site: "cloisters" });
+    expect(state.venue.source).toBe("manual"); // the pin survives
+  });
+});
+
+describe("property: a noisy fix can NEVER pick the wrong venue — both venues, 500 fixes", () => {
+  it("resolveGpsVenue and applyFusedInput resolve to the true venue or nothing", () => {
+    const rng = mulberry32(0xbeefed);
+    let resolved = 0;
+    let switched = 0;
+    for (let i = 0; i < 500; i++) {
+      // True position: a real gallery centroid at either venue.
+      const node = galleryNodes[Math.floor(rng() * galleryNodes.length)];
+      const trueSite = node.site;
+      // Noise far beyond anything measured (0–2.5 km) and accuracies past the
+      // venue gate (0–2 km) — the resolver must reject or get it right.
+      const noiseM = rng() * 2500;
+      const accuracyM = rng() * 2000;
+      const fix = noisyFix(node.lat, node.lon, noiseM, accuracyM, rng);
+
+      const v = resolveGpsVenue(fix);
+      expect(v === null || v === trueSite).toBe(true);
+      if (v !== null) resolved++;
+
+      // Fused from the OPPOSITE venue: any emitted switch names the true venue.
+      const otherVenue = trueSite === "fifthAve" ? "cloisters" : "fifthAve";
+      const { state, events } = applyFusedInput(
+        { anchor: undefined, venue: { venue: otherVenue, source: "default", timestamp: 0 } },
+        gpsInput(fix, i),
+      );
+      for (const ev of events) {
+        expect(ev.venue).toBe(trueSite);
+        switched++;
+      }
+      if (state.anchor) expect(state.anchor.site).toBe(state.venue.venue); // invariant
+    }
+    // ~15% of fixes pass the gates (accuracy ≤ VENUE_MAX_ACCURACY_M and noise
+    // inside the acceptance radius) — assert the loop genuinely exercised both
+    // resolution and auto-switching, with slack for the deterministic seed.
+    expect(resolved).toBeGreaterThan(40);
+    expect(switched).toBeGreaterThan(40);
+  });
+});
+

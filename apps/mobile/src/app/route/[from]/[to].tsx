@@ -17,7 +17,14 @@ import {
 } from '@met/shared/positioning';
 
 import FloorMap from '@/components/FloorMap';
-import { Anchor, anchorForRoom, getAnchor, setAnchor, useAnchor } from '@/components/LocateState';
+import {
+  Anchor,
+  anchorForRoom,
+  getAnchor,
+  getVenue,
+  setAnchor,
+  useAnchor,
+} from '@/components/LocateState';
 import RoutePolyline from '@/components/RoutePolyline';
 import { Room, RouteStep, useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
@@ -262,6 +269,9 @@ export default function RouteScreen() {
           onFloorChange={setFloor}
           highlightId={currentRoom.id}
           routeRoomIds={routeRoomIds}
+          // Routes never cross venues (site isolation, J14): the origin room's
+          // venue is the route's venue. Fall back to the app venue state.
+          site={route.from.site ?? getVenue().venue}
         />
         <RoutePolyline route={route} floor={floor} activeStep={activeStep} />
         {rerouting && (

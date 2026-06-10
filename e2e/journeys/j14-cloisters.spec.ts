@@ -17,8 +17,12 @@ const F = HAS_REAL_TARGET ? loadJourneyFixtures() : null!;
 test('J14 Cloisters: venue switch, in-venue route, site isolation', async ({ page }) => {
   await bootReal(page);
 
-  await step(page, 'Switching venue: The Cloisters', async () => {
-    await page.getByTestId('site-chip-cloisters').click();
+  // Venue moved into location state: the switch lives in the locate sheet's
+  // segmented VENUE row (no site chips on the map).
+  await step(page, 'Switching venue: The Cloisters (locate sheet)', async () => {
+    await page.getByTestId('locate-chip').click();
+    await page.getByTestId('venue-cloisters').click();
+    await page.goBack();
   });
   // Data-driven floors: the Cloisters has G and 1 only.
   await expect(page.getByTestId('floor-chip-1')).toBeVisible();

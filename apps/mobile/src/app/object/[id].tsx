@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Linking,
   Platform,
@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 
 import ObjectImage from '@/components/ObjectImage';
+import { applyVenue, getVenue } from '@/components/LocateState';
 import { useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
@@ -22,6 +23,14 @@ export default function ObjectScreen() {
   const { id, anchor } = useLocalSearchParams<{ id: string; anchor?: string }>();
   const [copied, setCopied] = useState(false); // share-button feedback
   const object = data.getObject(Number(id));
+
+  // Cross-venue browse: opening an object at the other venue switches the
+  // app venue (map, chip) with the dismissible toast — same coupling as the
+  // GPS auto-switch (shared/positioning venue rules; cause 'browse').
+  const gallerySite = object?.gallery ? data.getGallery(object.gallery)?.site : undefined;
+  useEffect(() => {
+    if (gallerySite && gallerySite !== getVenue().venue) applyVenue(gallerySite, 'browse');
+  }, [gallerySite]);
 
   if (!object) {
     return (

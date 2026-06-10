@@ -17,13 +17,23 @@ import Svg, { Circle, Path } from 'react-native-svg';
 import type { components } from '@met/shared';
 import {
   GPS_MAX_CONFIDENCE,
-  applyInput,
+  applyFusedInput,
   resolveGpsArea,
   type Anchor as SharedAnchor,
+  type Site,
 } from '@met/shared/positioning';
 
 import { floorLabel, floorNumber } from '@/components/MapGeometry';
-import { Anchor, anchorForRoom, getAnchor, setAnchor } from '@/components/LocateState';
+import {
+  Anchor,
+  VENUE_NAMES,
+  anchorForRoom,
+  applyVenue,
+  getAnchor,
+  getVenue,
+  setAnchor,
+  useVenue,
+} from '@/components/LocateState';
 import { apiBase } from '@/data/apiBase';
 import { MetObject, useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
@@ -55,12 +65,13 @@ type PhotoState =
  */
 function sharedAnchorOf(a: Anchor | undefined): SharedAnchor | undefined {
   if (!a) return undefined;
+  const site: Site = a.site ?? 'fifthAve';
   if (a.source === 'gps') {
     return {
       kind: 'area',
-      site: 'fifthAve',
+      site,
       label: a.label,
-      place: 'Near Great Hall',
+      place: site === 'fifthAve' ? 'Near Great Hall' : 'Near the Cloisters entrance',
       assumedFloor: a.assumedFloor,
       source: 'gps',
       confidence: GPS_MAX_CONFIDENCE,
@@ -72,7 +83,7 @@ function sharedAnchorOf(a: Anchor | undefined): SharedAnchor | undefined {
     kind: 'room',
     gallery: a.roomId,
     floor: floorLabel(a.floor ?? 1),
-    site: 'fifthAve',
+    site,
     source: a.source === 'gallery' ? 'manual' : a.source,
     confidence: 1,
     timestamp: a.timestamp ?? 0,
@@ -86,6 +97,7 @@ function sharedAnchorOf(a: Anchor | undefined): SharedAnchor | undefined {
  */
 export default function LocateScreen() {
   const data = useData();
+  const venue = useVenue();
   const [gps, setGps] = useState<GpsState>({ phase: 'resolving' });
   const [input, setInput] = useState('');
   const [error, setError] = useState('');
@@ -96,9 +108,11 @@ export default function LocateScreen() {
   const overridden = useRef(false);
 
   // Opening the locator always re-resolves GPS (freshness beats precision):
-  // the fix is folded through shared/positioning.applyInput, so it supersedes
-  // a STALE room anchor (keeping its floor as "(assumed)") but never a fresh
-  // one — and by type it can only ever claim a wing, never a gallery.
+  // the fix is folded through shared/positioning.applyFusedInput, so it
+  // supersedes a STALE room anchor (keeping its floor as "(assumed)") but
+  // never a fresh one — by type it can only ever claim a wing, never a
+  // gallery — and a confident fix at the OTHER venue auto-switches the app
+  // venue (dismissible toast) unless the venue was manually pinned.
   useEffect(() => {
     (async () => {
       try {
@@ -112,13 +126,15 @@ export default function LocateScreen() {
           lon: pos.coords.longitude,
           accuracyM: pos.coords.accuracy ?? 0,
         };
-        if (!resolveGpsArea(fix, now)) {
-          // Rejected outright: poor accuracy or an off-campus outlier.
-          setGps({ phase: 'unavailable' });
-          return;
-        }
-        const next = applyInput(sharedAnchorOf(getAnchor()), { type: 'gps', fix, at: now });
-        if (next?.kind === 'area') {
+        const fused = applyFusedInput(
+          { anchor: sharedAnchorOf(getAnchor()), venue: getVenue() },
+          { type: 'gps', fix, at: now },
+        );
+        // Venue auto-switch first, so setAnchor's coupling sees the new venue
+        // and the toast ("You're at The Cloisters — switched") is raised.
+        for (const ev of fused.events) applyVenue(ev.venue, ev.cause);
+        const next = fused.state.anchor;
+        if (next?.kind === 'area' && next.timestamp === now) {
           const anchor: Anchor = {
             // Wing-level only: highlight the entrance hall, never a gallery.
             roomId: next.site === 'fifthAve' ? 'great-hall' : undefined,
@@ -129,15 +145,20 @@ export default function LocateScreen() {
                 : next.site === 'fifthAve'
                   ? 1
                   : undefined,
+            site: next.site,
             assumedFloor: next.assumedFloor,
             source: 'gps',
             timestamp: now,
           };
           setAnchor(anchor);
           setGps({ phase: 'resolved', anchor });
-        } else {
+        } else if (resolveGpsArea(fix, now) && getAnchor()) {
           // Usable fix, but the current room anchor is still fresh — keep it.
           setGps({ phase: 'kept', anchor: getAnchor()! });
+        } else {
+          // Rejected outright (poor accuracy / off-campus outlier), or the
+          // fix is at a venue the user manually pinned away from.
+          setGps({ phase: 'unavailable' });
         }
       } catch {
         if (!overridden.current) setGps({ phase: 'unavailable' });
@@ -281,6 +302,28 @@ export default function LocateScreen() {
         {gps.phase === 'unavailable' && (
           <Text style={type.meta}>GPS unavailable indoors — set your location below.</Text>
         )}
+      </View>
+
+      {/* Venue override — venue is location state, not map chrome. A manual
+          pick pins the venue for this session: GPS will never auto-switch
+          away from it (shared/positioning venue/anchor coupling rule 3). */}
+      <View style={styles.venueRow} testID="venue-row">
+        <Text style={styles.venueKicker}>Venue</Text>
+        {(['fifthAve', 'cloisters'] as const).map((s) => {
+          const active = venue.venue === s;
+          return (
+            <Pressable
+              key={s}
+              style={[styles.venueBtn, active && styles.venueBtnActive]}
+              onPress={() => applyVenue(s, 'manual')}
+              testID={`venue-${s}`}
+            >
+              <Text style={[styles.venueBtnText, active && styles.venueBtnTextActive]}>
+                {VENUE_NAMES[s]}
+              </Text>
+            </Pressable>
+          );
+        })}
       </View>
 
       <View style={styles.actionCard} testID="locate-action-card">
@@ -453,6 +496,36 @@ const styles = StyleSheet.create({
   },
   gpsAnchor: {
     ...type.title,
+  },
+  // Compact segmented venue row: label + two ≥44pt segments.
+  venueRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  venueKicker: {
+    ...type.label,
+    color: colors.inkSecondary,
+    marginRight: spacing.xs,
+  },
+  venueBtn: {
+    flex: 1,
+    minHeight: 44, // HIG tap target
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: colors.ink,
+    backgroundColor: colors.white,
+  },
+  venueBtnActive: {
+    backgroundColor: colors.ink,
+  },
+  venueBtnText: {
+    ...type.label,
+    letterSpacing: 0.5,
+  },
+  venueBtnTextActive: {
+    color: colors.white,
   },
   // One visual group for all three locate methods: text input, the
   // room/artifact pair below it, and the photo button full-width underneath —

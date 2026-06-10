@@ -17,8 +17,13 @@
  *    API server, so fall back to the direct CDN URL as a plain no-cors
  *    <img> (the metro dev server is not cross-origin isolated, so it loads).
  *  - Native: no COEP there; load the CDN directly and save our Fly egress.
+ *
+ * Loading state: cold image-proxy fetches (CDN miss → disk cache fill) can
+ * take a second-plus, so the fixed-height frame shows a neutral block with a
+ * small Met-red spinner until the bytes paint — intentional, no layout shift.
  */
-import { Image, Platform, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { ActivityIndicator, Image, Platform, StyleSheet, View } from 'react-native';
 
 import { apiBase } from '@/data/apiBase';
 import { useData } from '@/data/provider';
@@ -32,40 +37,80 @@ export default function ObjectImage({
   objectID: number;
 }) {
   const { dataVersion } = useData();
+  const [loaded, setLoaded] = useState(false);
+  // Spinner clears on error too: the neutral block is the error fallback.
+  const done = () => setLoaded(true);
+
+  let img: React.ReactNode;
   if (Platform.OS === 'web') {
     const src =
       dataVersion === 'stub'
         ? uri
         : `${apiBase()}/api/v1/img/${objectID}?v=${encodeURIComponent(dataVersion)}`;
-    return (
+    img = (
       <img
         src={src}
         alt=""
         data-testid="object-image"
+        onLoad={done}
+        onError={done}
+        // Browser-cached images can be complete before React attaches onLoad.
+        ref={(el) => {
+          if (el?.complete) setLoaded(true);
+        }}
         style={{
           width: '100%',
           height: 280,
           objectFit: 'contain',
           display: 'block',
-          backgroundColor: colors.surface,
         }}
       />
     );
+  } else {
+    img = (
+      <Image
+        source={{ uri }}
+        style={styles.image}
+        resizeMode="contain"
+        onLoadEnd={done}
+        testID="object-image"
+      />
+    );
   }
+
   return (
-    <Image
-      source={{ uri }}
-      style={styles.image}
-      resizeMode="contain"
-      testID="object-image"
-    />
+    <View style={styles.frame}>
+      {img}
+      {/* pointerEvents via style: the prop form logs an RN-web deprecation
+          warning (LogBox badge → HIG sweep failure). */}
+      {!loaded && (
+        <View style={styles.placeholder}>
+          <ActivityIndicator color={colors.red} size="small" />
+        </View>
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  image: {
+  // Fixed-height neutral frame — the image fades in over it, never reflows.
+  frame: {
     width: '100%',
     height: 280,
     backgroundColor: colors.surface,
+  },
+  image: {
+    width: '100%',
+    height: 280,
+  },
+  placeholder: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    pointerEvents: 'none',
   },
 });

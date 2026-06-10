@@ -5,13 +5,23 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import FloorMap from '@/components/FloorMap';
 import HomeRoomSheet from '@/components/HomeRoomSheet';
-import { anchorForRoom, setAnchor, useAnchor } from '@/components/LocateState';
+import {
+  VENUE_NAMES,
+  anchorForRoom,
+  dismissVenueToast,
+  setAnchor,
+  useAnchor,
+  useVenue,
+  useVenueToast,
+} from '@/components/LocateState';
 import { Room, useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
 export default function HomeScreen() {
   const data = useData();
   const anchor = useAnchor();
+  const venue = useVenue();
+  const venueToast = useVenueToast();
   // Deep-link support: `/?room=131` anchors directly (also kept for e2e).
   const { room: roomParam } = useLocalSearchParams<{ room?: string }>();
   useEffect(() => {
@@ -38,6 +48,7 @@ export default function HomeScreen() {
           onFloorChange={setFloor}
           highlightId={highlightId}
           onRoomPress={setSelected}
+          site={venue.venue}
         />
       </View>
 
@@ -58,6 +69,14 @@ export default function HomeScreen() {
       </View>
 
       <View style={styles.bottomOverlay}>
+        {/* Dismissible toast raised by automatic venue switches (GPS fix at
+            the other venue, or tapping a cross-venue search result). */}
+        {venueToast ? (
+          <Pressable style={styles.venueToast} onPress={dismissVenueToast} testID="venue-toast">
+            <Text style={styles.venueToastText}>{venueToast}</Text>
+            <Text style={styles.venueToastClose}>✕</Text>
+          </Pressable>
+        ) : null}
         <Pressable
           style={[styles.locateChip, !anchor && styles.locateChipUnknown]}
           onPress={() => router.push('/locate')}
@@ -65,6 +84,9 @@ export default function HomeScreen() {
         >
           <Text style={styles.locateChipText}>
             {anchor ? anchor.label : 'Location unknown — tap to set'}
+          </Text>
+          <Text style={styles.locateChipVenue} testID="locate-chip-venue">
+            {VENUE_NAMES[venue.venue]}
           </Text>
         </Pressable>
 
@@ -149,6 +171,35 @@ const styles = StyleSheet.create({
     backgroundColor: colors.red,
   },
   locateChipText: {
+    ...type.label,
+    color: colors.white,
+  },
+  // Second line: the active venue (Fifth Avenue / The Cloisters) — venue is
+  // part of location state, surfaced on the chip, set via the locate sheet.
+  locateChipVenue: {
+    ...type.label,
+    fontSize: 10,
+    lineHeight: 14,
+    letterSpacing: 1,
+    color: 'rgba(255,255,255,0.75)',
+  },
+  venueToast: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    alignSelf: 'flex-start',
+    marginLeft: spacing.lg,
+    marginBottom: spacing.sm,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    minHeight: 44, // HIG tap target (tap anywhere to dismiss)
+    backgroundColor: colors.red,
+  },
+  venueToastText: {
+    ...type.label,
+    color: colors.white,
+  },
+  venueToastClose: {
     ...type.label,
     color: colors.white,
   },

@@ -242,6 +242,7 @@ export class SqliteDataProvider implements DataProvider {
         floor: floorNumber(g.floor),
         kind: 'gallery',
         rect: bboxByGallery.get(g.galleryNumber) ?? [cx - 6, cy - 5, 12, 10],
+        site: g.site as Room['site'],
       };
       rooms.set(room.id, room);
       galleryRooms.push(room);
@@ -274,6 +275,7 @@ export class SqliteDataProvider implements DataProvider {
         floor,
         kind: (a.type in AMENITY_NAMES ? a.type : 'hall') as RoomKind,
         rect: [cx - 3, cy - 3, 6, 6],
+        site: a.site as Room['site'],
       };
       rooms.set(id, room);
       amenityRooms.push(room);
@@ -391,7 +393,14 @@ export class SqliteDataProvider implements DataProvider {
     const [x, y] = this.project(site, s.lat, s.lon);
     const kind: RoomKind =
       s.kind === 'stairs' ? 'stairs' : s.kind === 'elevator' ? 'elevator' : 'hall';
-    return { id: s.nodeId, name: s.name, floor: s.floor, kind, rect: [x - 3, y - 3, 6, 6] };
+    return {
+      id: s.nodeId,
+      name: s.name,
+      floor: s.floor,
+      kind,
+      rect: [x - 3, y - 3, 6, 6],
+      site: site as Room['site'],
+    };
   }
 
   route(from: string, to: string, opts?: { avoidStairs?: boolean }): Route | undefined {
