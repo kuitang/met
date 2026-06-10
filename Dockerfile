@@ -74,9 +74,10 @@ COPY data/package.json data/
 COPY e2e/package.json e2e/
 RUN npm ci -w server -w shared --omit=dev && npm cache clean --force
 
-# @met/shared ships as TypeScript source (Node 24 type-stripping executes it);
+# @met/shared ships as TypeScript source (Node 24 type-stripping executes it;
+# only the module files — not shared/node_modules dev tooling);
 # server/dist resolves apps/mobile/dist relative to its own path.
-COPY --from=build /app/shared/ shared/
+COPY --from=build /app/shared/package.json /app/shared/*.ts shared/
 COPY --from=build /app/server/dist/ server/dist/
 COPY --from=build /app/apps/mobile/dist/ apps/mobile/dist/
 COPY --from=build /artifacts/ /app/data/
