@@ -1,7 +1,7 @@
 import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -12,112 +12,88 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import Svg, { Circle, Path } from 'react-native-svg';
 
 import { Anchor, anchorForRoom, setAnchor } from '@/components/LocateState';
 import { MetObject, useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
-type Mode = 'gallery' | 'artifact' | 'photo' | 'gps';
-
-const MODES: { key: Mode; label: string }[] = [
-  { key: 'gallery', label: 'Gallery #' },
-  { key: 'artifact', label: 'Artifact' },
-  { key: 'photo', label: 'Photo' },
-  { key: 'gps', label: 'GPS' },
-];
+type GpsState =
+  | { phase: 'resolving' }
+  | { phase: 'resolved'; anchor: Anchor }
+  | { phase: 'unavailable' };
 
 /**
- * Locate sheet (modal) — set your position anchor by gallery number,
- * nearby artifact, photo (stub matcher), or GPS (coarse entrance only).
+ * Stub GPS confidence model: a fix near the museum is confident at *wing*
+ * level only — GPS indoors can never name a specific room, so the resolved
+ * anchor is the area around the Great Hall entrance, never a gallery.
+ */
+const GPS_STUB_ANCHOR: Anchor = {
+  roomId: 'great-hall',
+  label: 'Near Great Hall · Floor 1',
+  floor: 1,
+  source: 'gps',
+};
+
+/**
+ * Locate sheet (modal) — one display, no tabs. GPS resolves first and
+ * auto-applies a wing-level anchor; the text box (gallery number or artifact
+ * name) and the photo flow are overrides that beat the GPS anchor.
  */
 export default function LocateScreen() {
-  const [mode, setMode] = useState<Mode>('gallery');
+  const data = useData();
+  const [gps, setGps] = useState<GpsState>({ phase: 'resolving' });
+  const [input, setInput] = useState('');
+  const [error, setError] = useState('');
+  const [artifactHits, setArtifactHits] = useState<MetObject[]>([]);
+  const [photoUri, setPhotoUri] = useState<string | undefined>();
+  // Set once a manual override applied (or the sheet closed): a late GPS fix
+  // must never clobber an explicit room/artifact/photo anchor.
+  const overridden = useRef(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const perm = await Location.requestForegroundPermissionsAsync();
+        if (!perm.granted) throw new Error('denied');
+        await Location.getCurrentPositionAsync({});
+        if (overridden.current) return;
+        // Confident wing-level fix → show it and auto-apply as the anchor.
+        setGps({ phase: 'resolved', anchor: GPS_STUB_ANCHOR });
+        setAnchor(GPS_STUB_ANCHOR);
+      } catch {
+        if (!overridden.current) setGps({ phase: 'unavailable' });
+      }
+    })();
+    return () => {
+      overridden.current = true;
+    };
+  }, []);
 
   const apply = (anchor: Anchor) => {
+    overridden.current = true;
     setAnchor(anchor);
     router.dismissTo('/');
   };
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>Where are you?</Text>
+  const onInput = (t: string) => {
+    setInput(t);
+    setError('');
+    setArtifactHits([]);
+  };
 
-      <View style={styles.tabs}>
-        {MODES.map((m) => {
-          const active = m.key === mode;
-          return (
-            <Pressable
-              key={m.key}
-              style={[styles.tab, active && styles.tabActive]}
-              onPress={() => setMode(m.key)}
-              testID={`locate-mode-${m.key}`}
-            >
-              <Text style={[styles.tabText, active && styles.tabTextActive]}>{m.label}</Text>
-            </Pressable>
-          );
-        })}
-      </View>
-
-      {mode === 'gallery' && <GalleryPane apply={apply} />}
-      {mode === 'artifact' && <ArtifactPane apply={apply} />}
-      {mode === 'photo' && <PhotoPane apply={apply} />}
-      {mode === 'gps' && <GpsPane apply={apply} />}
-    </View>
-  );
-}
-
-function GalleryPane({ apply }: { apply: (a: Anchor) => void }) {
-  const data = useData();
-  const [roomNumber, setRoomNumber] = useState('');
-  const [error, setError] = useState('');
-
-  const submit = () => {
-    const room = data.getGallery(roomNumber.trim());
+  const locateRoom = () => {
+    const id = input.trim();
+    const room = id ? data.getGallery(id) : undefined;
     if (!room) {
-      setError(`Gallery “${roomNumber.trim()}” is not in the stub map.`);
+      setArtifactHits([]);
+      setError(`Gallery “${id}” is not on the stub map — check the number posted at the room entrance.`);
       return;
     }
     apply(anchorForRoom(room, 'gallery'));
   };
 
-  return (
-    <View style={styles.pane}>
-      <Text style={type.meta}>Enter the gallery number posted at the room entrance.</Text>
-      <View style={styles.inputRow}>
-        <TextInput
-          style={styles.input}
-          value={roomNumber}
-          onChangeText={(t) => {
-            setRoomNumber(t);
-            setError('');
-          }}
-          placeholder="e.g. 131"
-          placeholderTextColor={colors.inkFaint}
-          keyboardType="number-pad"
-          autoFocus
-          onSubmitEditing={submit}
-          testID="locate-room-input"
-        />
-        <Pressable style={styles.submitBtn} onPress={submit} testID="locate-submit">
-          <Text style={styles.submitBtnText}>Set</Text>
-        </Pressable>
-      </View>
-      {error ? (
-        <Text style={styles.error} testID="locate-error">
-          {error}
-        </Text>
-      ) : null}
-    </View>
-  );
-}
-
-function ArtifactPane({ apply }: { apply: (a: Anchor) => void }) {
-  const data = useData();
-  const [query, setQuery] = useState('');
-  const suggestions = data.searchAutocomplete(query, 6);
-
-  const pick = (o: MetObject) => {
-    if (!o.gallery) return;
+  const pickArtifact = (o: MetObject) => {
     const room = data.getGallery(o.gallery);
     apply(
       room
@@ -126,61 +102,35 @@ function ArtifactPane({ apply }: { apply: (a: Anchor) => void }) {
     );
   };
 
-  return (
-    <View style={styles.pane}>
-      <Text style={type.meta}>Search for an artwork you can see, then tap it.</Text>
-      <TextInput
-        style={[styles.input, styles.inputBlock]}
-        value={query}
-        onChangeText={setQuery}
-        placeholder="e.g. Wheat Field with Cypresses"
-        placeholderTextColor={colors.inkFaint}
-        autoFocus
-        autoCorrect={false}
-        testID="locate-artifact-input"
-      />
-      <ScrollView keyboardShouldPersistTaps="handled">
-        {suggestions.map((o) => (
-          <Pressable
-            key={o.objectID}
-            style={[styles.row, !o.gallery && styles.rowDisabled]}
-            disabled={!o.gallery}
-            onPress={() => pick(o)}
-            testID={`locate-artifact-${o.objectID}`}
-          >
-            <View style={styles.rowText}>
-              <Text style={styles.rowTitle} numberOfLines={1}>
-                {o.title}
-              </Text>
-              <Text style={type.meta} numberOfLines={1}>
-                {o.artist || o.dept}
-              </Text>
-            </View>
-            <Text style={styles.rowAction}>
-              {o.gallery ? "I'm next to this" : 'Not on view'}
-            </Text>
-          </Pressable>
-        ))}
-        {query.trim() && suggestions.length === 0 ? (
-          <Text style={[type.meta, styles.padTop]}>No matches in stub data.</Text>
-        ) : null}
-      </ScrollView>
-    </View>
-  );
-}
+  const locateArtifact = () => {
+    const q = input.trim();
+    const hits = q ? data.searchAutocomplete(q, 6).filter((o) => o.gallery) : [];
+    if (hits.length === 0) {
+      setArtifactHits([]);
+      setError(
+        q
+          ? `No artifact on view matches “${q}”.`
+          : 'Type an artifact name or accession number first.',
+      );
+      return;
+    }
+    if (hits.length === 1) {
+      pickArtifact(hits[0]);
+      return;
+    }
+    setError('');
+    setArtifactHits(hits);
+  };
 
-function PhotoPane({ apply }: { apply: (a: Anchor) => void }) {
-  const data = useData();
-  const [photoUri, setPhotoUri] = useState<string | undefined>();
   // Fake "top-3 candidates": deterministic stub stand-in for the Phase 2
   // server-side embedding match — one highlight from each of three different
   // galleries on the stub map.
-  const candidates: MetObject[] = [];
+  const photoCandidates: MetObject[] = [];
   if (photoUri) {
     for (const g of data.galleries()) {
       const hit = data.objectsInGallery(g.id).find((o) => o.isHighlight && o.img);
-      if (hit) candidates.push(hit);
-      if (candidates.length === 3) break;
+      if (hit) photoCandidates.push(hit);
+      if (photoCandidates.length === 3) break;
     }
   }
 
@@ -189,116 +139,147 @@ function PhotoPane({ apply }: { apply: (a: Anchor) => void }) {
       mediaTypes: ['images'],
       quality: 0.7,
     });
-    if (!result.canceled) setPhotoUri(result.assets[0].uri);
-  };
-
-  return (
-    <View style={styles.pane}>
-      {!photoUri ? (
-        <>
-          <Text style={type.meta}>
-            Photograph the artwork in front of you. The stub build returns sample
-            candidates — real photo matching arrives in Phase 2.
-          </Text>
-          <Pressable style={styles.bigBtn} onPress={choosePhoto} testID="locate-photo-pick">
-            <Text style={styles.bigBtnText}>Choose a photo</Text>
-          </Pressable>
-        </>
-      ) : (
-        <>
-          <View style={styles.photoHeader}>
-            <Image source={{ uri: photoUri }} style={styles.photoThumb} resizeMode="cover" />
-            <Text style={[type.meta, styles.flex1]}>
-              Best matches (stub data — not a real match):
-            </Text>
-          </View>
-          {candidates.map((o) => (
-            <Pressable
-              key={o.objectID}
-              style={styles.row}
-              onPress={() => {
-                const room = data.getGallery(o.gallery)!;
-                apply(anchorForRoom(room, 'photo'));
-              }}
-              testID={`locate-photo-candidate-${o.objectID}`}
-            >
-              <Image source={{ uri: o.img }} style={styles.candidateThumb} resizeMode="cover" />
-              <View style={styles.rowText}>
-                <Text style={styles.rowTitle} numberOfLines={1}>
-                  {o.title}
-                </Text>
-                <Text style={type.meta} numberOfLines={1}>
-                  Gallery {o.gallery}
-                </Text>
-              </View>
-              <Text style={styles.rowAction}>This one</Text>
-            </Pressable>
-          ))}
-          <Pressable
-            style={styles.linkBtn}
-            onPress={() => setPhotoUri(undefined)}
-            testID="locate-photo-retry"
-          >
-            <Text style={styles.linkBtnText}>None of these — try another photo</Text>
-          </Pressable>
-        </>
-      )}
-    </View>
-  );
-}
-
-function GpsPane({ apply }: { apply: (a: Anchor) => void }) {
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState('');
-
-  const useLocation = async () => {
-    setBusy(true);
-    setError('');
-    try {
-      const perm = await Location.requestForegroundPermissionsAsync();
-      if (!perm.granted) {
-        setError('Location permission denied — try a gallery number instead.');
-        return;
-      }
-      await Location.getCurrentPositionAsync({});
-      // Stub: GPS can only ever place you near an entrance, never in a room.
-      apply({
-        roomId: 'great-hall',
-        label: 'Near Fifth Ave entrance',
-        floor: 1,
-        source: 'gps',
-      });
-    } catch {
-      setError('Could not read your location — try a gallery number instead.');
-    } finally {
-      setBusy(false);
+    if (!result.canceled) {
+      setError('');
+      setArtifactHits([]);
+      setPhotoUri(result.assets[0].uri);
     }
   };
 
   return (
-    <View style={styles.pane}>
-      <Text style={type.meta}>
-        GPS only places you near an entrance — indoors it cannot tell which room
-        or floor you are on. The stub anchors you at the Fifth Avenue entrance.
-      </Text>
-      <Pressable
-        style={[styles.bigBtn, busy && styles.bigBtnBusy]}
-        onPress={useLocation}
-        disabled={busy}
-        testID="locate-gps"
-      >
-        {busy ? (
-          <ActivityIndicator color={colors.white} />
-        ) : (
-          <Text style={styles.bigBtnText}>Use my location</Text>
+    <View style={styles.container}>
+      <Text style={styles.heading}>Where are you?</Text>
+
+      <View style={styles.gpsPanel} testID="gps-status">
+        {gps.phase === 'resolving' && (
+          <View style={styles.gpsRow}>
+            <ActivityIndicator color={colors.red} size="small" />
+            <Text style={type.meta}>Locating via GPS…</Text>
+          </View>
         )}
-      </Pressable>
+        {gps.phase === 'resolved' && (
+          <>
+            <Text style={styles.gpsKicker}>Your location</Text>
+            <Text style={styles.gpsAnchor}>{gps.anchor.label}</Text>
+            <Text style={type.meta}>
+              Set from GPS — wing-level only. For an exact room, override below.
+            </Text>
+          </>
+        )}
+        {gps.phase === 'unavailable' && (
+          <Text style={type.meta}>GPS unavailable indoors — set your location below.</Text>
+        )}
+      </View>
+
+      <TextInput
+        style={styles.input}
+        value={input}
+        onChangeText={onInput}
+        placeholder="Gallery # — or artifact name / accession #"
+        placeholderTextColor={colors.inkFaint}
+        autoFocus
+        autoCorrect={false}
+        onSubmitEditing={() => (/^\d+$/.test(input.trim()) ? locateRoom() : locateArtifact())}
+        testID="locate-input"
+      />
+      <View style={styles.btnRow}>
+        <Pressable style={[styles.btn, styles.btnRoom]} onPress={locateRoom} testID="locate-room-btn">
+          <Text style={styles.btnText}>Locate room</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.btn, styles.btnArtifact]}
+          onPress={locateArtifact}
+          testID="locate-artifact-btn"
+        >
+          <Text style={styles.btnText}>Locate artifact</Text>
+        </Pressable>
+      </View>
       {error ? (
-        <Text style={styles.error} testID="locate-gps-error">
+        <Text style={styles.error} testID="locate-error">
           {error}
         </Text>
       ) : null}
+
+      <ScrollView style={styles.flex1} keyboardShouldPersistTaps="handled">
+        {artifactHits.map((o) => (
+          <Pressable
+            key={o.objectID}
+            style={styles.row}
+            onPress={() => pickArtifact(o)}
+            testID={`locate-candidate-${o.objectID}`}
+          >
+            <View style={styles.rowText}>
+              <Text style={styles.rowTitle} numberOfLines={1}>
+                {o.title}
+              </Text>
+              <Text style={type.meta} numberOfLines={1}>
+                {o.artist || o.dept} · Gallery {o.gallery}
+              </Text>
+            </View>
+            <Text style={styles.rowAction}>I'm next to this</Text>
+          </Pressable>
+        ))}
+
+        {photoUri ? (
+          <>
+            <View style={styles.photoHeader}>
+              <Image source={{ uri: photoUri }} style={styles.photoThumb} resizeMode="cover" />
+              <Text style={[type.meta, styles.flex1]}>
+                Best matches (stub data — not a real match):
+              </Text>
+            </View>
+            {photoCandidates.map((o) => (
+              <Pressable
+                key={o.objectID}
+                style={styles.row}
+                onPress={() => {
+                  const room = data.getGallery(o.gallery)!;
+                  apply(anchorForRoom(room, 'photo'));
+                }}
+                testID={`locate-photo-candidate-${o.objectID}`}
+              >
+                <Image source={{ uri: o.img }} style={styles.candidateThumb} resizeMode="cover" />
+                <View style={styles.rowText}>
+                  <Text style={styles.rowTitle} numberOfLines={1}>
+                    {o.title}
+                  </Text>
+                  <Text style={type.meta} numberOfLines={1}>
+                    Gallery {o.gallery}
+                  </Text>
+                </View>
+                <Text style={styles.rowAction}>This one</Text>
+              </Pressable>
+            ))}
+            <Pressable
+              style={styles.linkBtn}
+              onPress={() => setPhotoUri(undefined)}
+              testID="locate-photo-retry"
+            >
+              <Text style={styles.linkBtnText}>None of these — try another photo</Text>
+            </Pressable>
+          </>
+        ) : null}
+      </ScrollView>
+
+      <Pressable style={styles.photoBtn} onPress={choosePhoto} testID="locate-photo-btn">
+        <CameraIcon />
+        <Text style={styles.photoBtnText}>Locate by photo</Text>
+      </Pressable>
     </View>
+  );
+}
+
+function CameraIcon({ color = colors.red, size = 18 }: { color?: string; size?: number }) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M3 7.5h4.2L9 5h6l1.8 2.5H21V19H3V7.5z"
+        stroke={color}
+        strokeWidth={1.8}
+        strokeLinejoin="round"
+      />
+      <Circle cx={12} cy={13} r={3.2} stroke={color} strokeWidth={1.8} />
+    </Svg>
   );
 }
 
@@ -312,56 +293,47 @@ const styles = StyleSheet.create({
   heading: {
     ...type.title,
   },
-  tabs: {
+  gpsPanel: {
+    backgroundColor: colors.surface,
+    padding: spacing.md,
+    gap: spacing.xs,
+  },
+  gpsRow: {
     flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderBottomColor: colors.hairline,
+    alignItems: 'center',
+    gap: spacing.sm,
   },
-  tab: {
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.sm,
-    borderBottomWidth: 2,
-    borderBottomColor: 'transparent',
-    marginBottom: -1,
-  },
-  tabActive: {
-    borderBottomColor: colors.red,
-  },
-  tabText: {
+  gpsKicker: {
     ...type.label,
-    color: colors.inkSecondary,
+    color: colors.red,
   },
-  tabTextActive: {
-    color: colors.ink,
-  },
-  pane: {
-    flex: 1,
-    gap: spacing.sm,
-  },
-  inputRow: {
-    flexDirection: 'row',
-    gap: spacing.sm,
-    marginTop: spacing.sm,
+  gpsAnchor: {
+    ...type.title,
   },
   input: {
     ...type.body,
-    flex: 1,
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.md,
     borderWidth: 1,
     borderColor: colors.ink,
     backgroundColor: colors.white,
   },
-  inputBlock: {
-    flex: 0, // standalone (column) inputs must not stretch vertically
-    marginTop: spacing.sm,
+  btnRow: {
+    flexDirection: 'row',
+    gap: spacing.sm,
   },
-  submitBtn: {
+  btn: {
+    flex: 1,
+    paddingVertical: spacing.md,
+    alignItems: 'center',
+  },
+  btnRoom: {
     backgroundColor: colors.red,
-    paddingHorizontal: spacing.lg,
-    justifyContent: 'center',
   },
-  submitBtnText: {
+  btnArtifact: {
+    backgroundColor: colors.ink,
+  },
+  btnText: {
     ...type.label,
     color: colors.white,
   },
@@ -377,9 +349,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.hairline,
   },
-  rowDisabled: {
-    opacity: 0.45,
-  },
   rowText: {
     flex: 1,
     gap: 2,
@@ -392,22 +361,6 @@ const styles = StyleSheet.create({
     ...type.label,
     color: colors.red,
   },
-  padTop: {
-    paddingTop: spacing.md,
-  },
-  bigBtn: {
-    backgroundColor: colors.ink,
-    paddingVertical: spacing.md,
-    alignItems: 'center',
-    marginTop: spacing.sm,
-  },
-  bigBtnBusy: {
-    opacity: 0.7,
-  },
-  bigBtnText: {
-    ...type.label,
-    color: colors.white,
-  },
   linkBtn: {
     paddingVertical: spacing.md,
   },
@@ -419,6 +372,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.md,
+    paddingTop: spacing.sm,
   },
   photoThumb: {
     width: 56,
@@ -429,6 +383,19 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     backgroundColor: colors.surface,
+  },
+  photoBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    paddingVertical: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.hairline,
+  },
+  photoBtnText: {
+    ...type.label,
+    color: colors.red,
   },
   flex1: {
     flex: 1,

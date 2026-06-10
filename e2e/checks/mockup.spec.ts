@@ -159,26 +159,45 @@ test('avoid-stairs toggle reroutes via the elevator', async ({ page }) => {
   expect(all).not.toContain('stair');
 });
 
-test('locate sheet renders all four entry modes', async ({ page }) => {
-  await page.goto('/locate');
-  await expect(page.getByTestId('locate-mode-gallery')).toBeVisible(FIRST_PAINT);
-  await expect(page.getByTestId('locate-room-input')).toBeVisible();
+/**
+ * Locate sheet — single display: GPS resolves first (wing-level stub anchor),
+ * one text box with LOCATE ROOM / LOCATE ARTIFACT overrides, photo flow as a
+ * compact secondary action. Geolocation is emulated at the Met's entrance so
+ * the stub GPS fix resolves.
+ */
+test.describe('locate sheet', () => {
+  test.use({ geolocation: { latitude: 40.7794, longitude: -73.9632 } });
 
-  await page.getByTestId('locate-mode-artifact').click();
-  await expect(page.getByTestId('locate-artifact-input')).toBeVisible();
+  test('GPS resolves first to a wing-level anchor; all controls render', async ({ page }) => {
+    await page.goto('/locate');
+    await expect(page.getByTestId('gps-status')).toBeVisible(FIRST_PAINT);
+    await expect(page.getByTestId('gps-status')).toContainText('Near Great Hall · Floor 1');
+    await expect(page.getByTestId('locate-input')).toBeVisible();
+    await expect(page.getByTestId('locate-room-btn')).toBeVisible();
+    await expect(page.getByTestId('locate-artifact-btn')).toBeVisible();
+    await expect(page.getByTestId('locate-photo-btn')).toBeVisible();
+  });
 
-  await page.getByTestId('locate-mode-photo').click();
-  await expect(page.getByTestId('locate-photo-pick')).toBeVisible();
+  test('locate by gallery number anchors the home map', async ({ page }) => {
+    await page.goto('/locate');
+    await page.getByTestId('locate-input').fill('131', FIRST_PAINT);
+    await page.getByTestId('locate-room-btn').click();
+    await expect(page.getByTestId('locate-chip')).toContainText('Gallery 131');
+  });
 
-  await page.getByTestId('locate-mode-gps').click();
-  await expect(page.getByTestId('locate-gps')).toBeVisible();
-});
+  test('locate by artifact name anchors to its gallery', async ({ page }) => {
+    await page.goto('/locate');
+    await page.getByTestId('locate-input').fill('Wheat Field', FIRST_PAINT);
+    await page.getByTestId('locate-artifact-btn').click();
+    await expect(page.getByTestId('locate-chip')).toContainText('Gallery 822');
+  });
 
-test('locate by gallery number anchors the home map', async ({ page }) => {
-  await page.goto('/locate');
-  await page.getByTestId('locate-room-input').fill('131', FIRST_PAINT);
-  await page.getByTestId('locate-submit').click();
-  await expect(page.getByTestId('locate-chip')).toContainText('Gallery 131');
+  test('invalid gallery number shows an inline error', async ({ page }) => {
+    await page.goto('/locate');
+    await page.getByTestId('locate-input').fill('9999', FIRST_PAINT);
+    await page.getByTestId('locate-room-btn').click();
+    await expect(page.getByTestId('locate-error')).toContainText('9999');
+  });
 });
 
 /**
@@ -186,7 +205,11 @@ test('locate by gallery number anchors the home map', async ({ page }) => {
  * Serial inside this describe so files land deterministically.
  */
 test.describe('gate A screenshots', () => {
-  test.use({ viewport: { width: 390, height: 844 } });
+  test.use({
+    viewport: { width: 390, height: 844 },
+    // Entrance fix so the locate capture shows the resolved GPS state.
+    geolocation: { latitude: 40.7794, longitude: -73.9632 },
+  });
 
   const outDir = path.resolve(__dirname, '../../docs/mockup');
 
@@ -245,7 +268,8 @@ test.describe('gate A screenshots', () => {
 
   test('capture locate', async ({ page }) => {
     await page.goto('/locate');
-    await expect(page.getByTestId('locate-room-input')).toBeVisible(FIRST_PAINT);
+    await expect(page.getByTestId('locate-input')).toBeVisible(FIRST_PAINT);
+    await expect(page.getByTestId('gps-status')).toContainText('Near Great Hall');
     await shoot(page, 'locate');
   });
 });
