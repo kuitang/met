@@ -1,0 +1,95 @@
+# CI gate + prod deploy. The `ci` job is the required status check for
+# merging to main (branch protection); the `deploy` job runs only on push to
+# main and is gated with `needs: ci` — chosen over a separate
+# workflow_run-triggered file because a same-file job dependency is the
+# simplest form that guarantees "deploy only after green CI" with no
+# cross-workflow event plumbing.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck (apps/mobile, server, e2e, data)
+        run: |
+          (cd apps/mobile && npx tsc --noEmit)
+          (cd server && npx tsc --noEmit)
+          (cd e2e && npx tsc --noEmit)
+          (cd data && npx tsc --noEmit)
+
+      - name: OpenAPI types are up to date
+        run: |
+          npm -w shared run gen
+          git diff --exit-code shared/api-types.d.ts
+
+      - name: Unit tests (shared + data)
+        run: |
+          npm -w shared test
+          npm -w data test
+
+      - name: Fetch met.sqlite from Tigris (evals input)
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.TIGRIS_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.TIGRIS_AWS_SECRET_ACCESS_KEY }}
+          AWS_ENDPOINT_URL_S3: ${{ secrets.TIGRIS_AWS_ENDPOINT }}
+        run: npx tsx data/src/fetch-artifacts.ts --dest data --sqlite-only
+
+      - name: Data evals
+        run: npm run evals
+
+      - name: Playwright checks (stub mode)
+        run: |
+          cd e2e
+          npx playwright install chromium --with-deps
+          npx playwright test --project=checks
+
+      - name: Upload playwright artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: e2e/test-results
+          retention-days: 7
+          if-no-files-found: ignore
+
+  deploy:
+    name: deploy
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: fly-deploy-met-nav
+      cancel-in-progress: false
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Deploy met-nav (bakes latest/ artifacts)
+        run: |
+          flyctl deploy --remote-only \
+            --build-secret AWS_ACCESS_KEY_ID="${{ secrets.TIGRIS_AWS_ACCESS_KEY_ID }}" \
+            --build-secret AWS_SECRET_ACCESS_KEY="${{ secrets.TIGRIS_AWS_SECRET_ACCESS_KEY }}" \
+            --build-secret AWS_ENDPOINT_URL_S3="${{ secrets.TIGRIS_AWS_ENDPOINT }}" \
+            --build-arg ARTIFACT_CACHE_BUST="${{ github.run_id }}"
