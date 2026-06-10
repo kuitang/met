@@ -47,6 +47,15 @@ jobs:
           npm -w shared test
           npm -w data test
 
+      # Origin portability gate: export the real web bundle exactly like the
+      # Docker build does (EXPO_PUBLIC_DATA=real, no EXPO_PUBLIC_API_URL) and
+      # fail if any deploy origin (fly.dev/localhost/met-nav/private IP) got
+      # baked in — the same dist must serve custom domains and PR previews.
+      - name: Web export is origin-portable
+        run: |
+          npm run export:web
+          npm run check:origin
+
       - name: Fetch met.sqlite from Tigris (evals input)
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.TIGRIS_AWS_ACCESS_KEY_ID }}

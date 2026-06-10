@@ -51,7 +51,13 @@ COPY shared/ shared/
 COPY server/ server/
 COPY apps/mobile/ apps/mobile/
 RUN npm -w server run build
+# Web export: EXPO_PUBLIC_DATA=real only — never EXPO_PUBLIC_API_URL (web prod
+# is same-origin; a baked API origin would pin the image to one domain).
 RUN EXPO_PUBLIC_DATA=real npm -w apps/mobile run export:web
+# Origin-portability gate: fail the image build if the exported bundle bakes
+# in any deploy origin (fly.dev / localhost / met-nav / private IPs).
+COPY scripts/check-origin-portability.mjs scripts/
+RUN node scripts/check-origin-portability.mjs apps/mobile/dist
 
 # ---------------------------------------------------------------------------
 # Stage 2: runtime — server prod deps only, dists, baked artifacts, non-root
