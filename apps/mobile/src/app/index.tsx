@@ -101,6 +101,7 @@ export default function HomeScreen() {
           <HomeRoomSheet
             room={selected}
             objects={data.objectsInGallery(selected.id)}
+            totalCount={data.galleryObjectCount(selected.id)}
             originId={anchor?.roomId ?? 'great-hall'}
             onClose={() => setSelected(undefined)}
           />

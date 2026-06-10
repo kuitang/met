@@ -11,13 +11,24 @@ import { colors, spacing, type } from '@/theme';
 
 export interface HomeRoomSheetProps {
   room: Room;
+  /** Display list — capped by the provider (500) in dense galleries. */
   objects: MetObject[];
+  /** TRUE object count of the room; may exceed objects.length. */
+  totalCount: number;
   /** Route origin (current anchor room, or the Great Hall fallback). */
   originId: string;
   onClose: () => void;
 }
 
-export default function HomeRoomSheet({ room, objects, originId, onClose }: HomeRoomSheetProps) {
+const fmt = (n: number) => n.toLocaleString('en-US');
+
+export default function HomeRoomSheet({
+  room,
+  objects,
+  totalCount,
+  originId,
+  onClose,
+}: HomeRoomSheetProps) {
   return (
     <View style={styles.sheet} testID="room-sheet">
       <View style={styles.grabber} />
@@ -28,8 +39,11 @@ export default function HomeRoomSheet({ room, objects, originId, onClose }: Home
           </Text>
           <Text style={type.meta}>
             Floor {room.floor}
-            {objects.length > 0
-              ? ` · ${objects.length} ${objects.length === 1 ? 'object' : 'objects'}`
+            {/* Honest count: the list is capped, the total is not. */}
+            {totalCount > 0
+              ? objects.length < totalCount
+                ? ` · Showing ${fmt(objects.length)} of ${fmt(totalCount)} objects`
+                : ` · ${fmt(totalCount)} ${totalCount === 1 ? 'object' : 'objects'}`
               : ''}
           </Text>
         </View>

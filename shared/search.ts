@@ -161,6 +161,73 @@ export function buildFullQuery(
   return { sql, params };
 }
 
+// ---------------------------------------------------------- gallery browsing
+
+/**
+ * Canonical in-gallery ordering: highlights first, then objectID — objectID
+ * is unique, so the ordering is fully deterministic. objectsInGallery (the
+ * capped display list), the position counter and the neighbor queries below
+ * MUST all agree on this tuple; the keyed comparisons in the builders are
+ * this ordering spelled out as predicates.
+ */
+export const GALLERY_ORDER = "isHighlight DESC, objectID";
+
+/** Predicate: row `before` strictly precedes row `current` in GALLERY_ORDER. */
+const precedes = (before: string, current: string) =>
+  `(${before}.isHighlight > ${current}.isHighlight
+     OR (${before}.isHighlight = ${current}.isHighlight AND ${before}.objectID < ${current}.objectID))`;
+
+/**
+ * True position of an object within its gallery, computed in SQL over the
+ * FULL gallery ordering (galleries hold up to ~4.5k objects; the capped
+ * display list must never define the counter). Returns one row
+ * `{ position, total }` — `position` 1-based in GALLERY_ORDER, `total` the
+ * true gallery count — or no rows when the object is unknown or not on view.
+ * Index range scans on objects(galleryNumber); no row materialization.
+ */
+export function buildGalleryPositionQuery(objectID: number): BuiltQuery {
+  return {
+    sql: `SELECT
+  (SELECT COUNT(*) FROM objects p
+    WHERE p.galleryNumber = o.galleryNumber AND ${precedes("p", "o")}) + 1 AS position,
+  (SELECT COUNT(*) FROM objects t WHERE t.galleryNumber = o.galleryNumber) AS total
+FROM objects o
+WHERE o.objectID = ? AND o.galleryNumber <> ''`,
+    params: [objectID],
+  };
+}
+
+/**
+ * Previous/next object in the FULL gallery ordering, with wraparound at the
+ * true ends (prev of the first object = the last object and vice versa —
+ * the J15 browse loop, honest over the whole gallery). Returns one row
+ * `{ prevObjectID, nextObjectID }` (both equal the input in a single-object
+ * gallery), or no rows when the object is unknown or not on view.
+ * Keyed comparisons + LIMIT 1 — no row materialization.
+ */
+export function buildGalleryNeighborsQuery(objectID: number): BuiltQuery {
+  return {
+    sql: `SELECT
+  COALESCE(
+    (SELECT p.objectID FROM objects p
+      WHERE p.galleryNumber = o.galleryNumber AND ${precedes("p", "o")}
+      ORDER BY p.isHighlight ASC, p.objectID DESC LIMIT 1),
+    (SELECT l.objectID FROM objects l WHERE l.galleryNumber = o.galleryNumber
+      ORDER BY l.isHighlight ASC, l.objectID DESC LIMIT 1)
+  ) AS prevObjectID,
+  COALESCE(
+    (SELECT n.objectID FROM objects n
+      WHERE n.galleryNumber = o.galleryNumber AND ${precedes("o", "n")}
+      ORDER BY n.isHighlight DESC, n.objectID ASC LIMIT 1),
+    (SELECT f.objectID FROM objects f WHERE f.galleryNumber = o.galleryNumber
+      ORDER BY f.isHighlight DESC, f.objectID ASC LIMIT 1)
+  ) AS nextObjectID
+FROM objects o
+WHERE o.objectID = ? AND o.galleryNumber <> ''`,
+    params: [objectID],
+  };
+}
+
 export type AmenityType = "restroom" | "dining" | "elevator" | "water" | "info";
 
 const AMENITY_TOKENS: Array<[AmenityType, string[]]> = [

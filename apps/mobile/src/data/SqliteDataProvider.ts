@@ -40,7 +40,14 @@ import {
   type RouteGraph,
   type RouteStep as SharedRouteStep,
 } from '@met/shared/routing';
-import { buildAutocompleteQuery, buildFullQuery, type SearchFilters } from '@met/shared/search';
+import {
+  buildAutocompleteQuery,
+  buildFullQuery,
+  buildGalleryNeighborsQuery,
+  buildGalleryPositionQuery,
+  GALLERY_ORDER,
+  type SearchFilters,
+} from '@met/shared/search';
 
 import type { DataProvider, MetObject, Room, RoomKind, Route } from './provider';
 import type { MetDb } from './sqlite';
@@ -338,14 +345,33 @@ export class SqliteDataProvider implements DataProvider {
     return rows.length ? toMetObject(rows[0]) : undefined;
   }
 
+  /** Capped display list in GALLERY_ORDER — counts/positions come from the
+   *  full-ordering primitives below, never from this list's length/indices. */
   objectsInGallery(galleryId: string): MetObject[] {
     return this.met
       .allSync<ObjectRow>(
         `SELECT ${OBJECT_COLS} FROM objects WHERE galleryNumber = ?
-         ORDER BY isHighlight DESC, objectID LIMIT ?`,
+         ORDER BY ${GALLERY_ORDER} LIMIT ?`,
         [galleryId, GALLERY_OBJECTS_LIMIT],
       )
       .map(toMetObject);
+  }
+
+  galleryObjectCount(galleryId: string): number {
+    return this.met.allSync<{ c: number }>(
+      'SELECT COUNT(*) AS c FROM objects WHERE galleryNumber = ?',
+      [galleryId],
+    )[0].c;
+  }
+
+  objectGalleryPosition(objectID: number): { position: number; total: number } | undefined {
+    const q = buildGalleryPositionQuery(objectID);
+    return this.met.allSync<{ position: number; total: number }>(q.sql, q.params)[0];
+  }
+
+  galleryNeighbors(objectID: number): { prevObjectID: number; nextObjectID: number } | undefined {
+    const q = buildGalleryNeighborsQuery(objectID);
+    return this.met.allSync<{ prevObjectID: number; nextObjectID: number }>(q.sql, q.params)[0];
   }
 
   // --- rooms / map -------------------------------------------------------------

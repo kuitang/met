@@ -8,6 +8,9 @@ import {
   relaxQuery,
   buildAutocompleteQuery,
   buildFullQuery,
+  buildGalleryNeighborsQuery,
+  buildGalleryPositionQuery,
+  GALLERY_ORDER,
   amenityIntent,
   autocomplete,
   fullSearch,
@@ -333,6 +336,137 @@ describe.skipIf(!fullDb)("golden cases: against real data/met.sqlite", () => {
     // (no Gemini); the rewrite itself is exercised by the server's Gate C eval.
     expect(pass / total).toBeGreaterThanOrEqual(0.7);
   });
+});
+
+// --------------------------------- gallery browse primitives — needs met.sqlite
+
+describe("gallery browse builders (pure)", () => {
+  it("position query keys on the object and parameterizes only the objectID", () => {
+    const q = buildGalleryPositionQuery(561565);
+    expect(q.params).toEqual([561565]);
+    expect(q.sql).toContain("AS position");
+    expect(q.sql).toContain("AS total");
+    expect(q.sql).toContain("o.galleryNumber <> ''");
+  });
+  it("neighbors query wraps via COALESCE fallbacks, LIMIT 1 keyed scans", () => {
+    const q = buildGalleryNeighborsQuery(561565);
+    expect(q.params).toEqual([561565]);
+    expect(q.sql).toContain("prevObjectID");
+    expect(q.sql).toContain("nextObjectID");
+    expect(q.sql).toContain("COALESCE");
+    expect(q.sql).toContain("LIMIT 1");
+  });
+});
+
+describe.skipIf(!hasDb)("gallery browse primitives: against real data/met.sqlite", () => {
+  const withDb = <T>(f: (raw: Database.Database) => T): T => {
+    const raw = new Database(DB_PATH, { readonly: true });
+    try {
+      return f(raw);
+    } finally {
+      raw.close();
+    }
+  };
+  const getPosition = (raw: Database.Database, objectID: number) => {
+    const q = buildGalleryPositionQuery(objectID);
+    return raw.prepare(q.sql).get(...q.params) as
+      | { position: number; total: number }
+      | undefined;
+  };
+  const getNeighbors = (raw: Database.Database, objectID: number) => {
+    const q = buildGalleryNeighborsQuery(objectID);
+    return raw.prepare(q.sql).get(...q.params) as
+      | { prevObjectID: number; nextObjectID: number }
+      | undefined;
+  };
+  /** Reference: the materialized full ordering the SQL primitives must match. */
+  const fullOrdering = (raw: Database.Database, gallery: string): number[] =>
+    (
+      raw
+        .prepare(
+          `SELECT objectID FROM objects WHERE galleryNumber = ? ORDER BY ${GALLERY_ORDER}`,
+        )
+        .all(gallery) as { objectID: number }[]
+    ).map((r) => r.objectID);
+  const biggestGallery = (raw: Database.Database) =>
+    raw
+      .prepare(
+        `SELECT galleryNumber, COUNT(*) c FROM objects WHERE galleryNumber <> ''
+         GROUP BY galleryNumber ORDER BY c DESC LIMIT 1`,
+      )
+      .get() as { galleryNumber: string; c: number };
+
+  it("matches the materialized ordering across the densest gallery, incl. beyond the 500 display cap", () =>
+    withDb((raw) => {
+      const { galleryNumber, c } = biggestGallery(raw);
+      const ids = fullOrdering(raw, galleryNumber);
+      expect(ids.length).toBe(c);
+      if (fullDb) expect(c).toBeGreaterThan(500); // densest gallery ≈ 4.5k at full scale
+      const n = ids.length;
+      const sample = [0, 1, 499, 500, 700, Math.floor(n / 2), n - 2, n - 1]
+        .filter((i) => i >= 0 && i < n);
+      for (const i of sample) {
+        expect(getPosition(raw, ids[i])).toEqual({ position: i + 1, total: n });
+        expect(getNeighbors(raw, ids[i])).toEqual({
+          prevObjectID: ids[(i - 1 + n) % n],
+          nextObjectID: ids[(i + 1) % n],
+        });
+      }
+    }));
+
+  it("wraps around at the true ends (prev of first = last, next of last = first)", () =>
+    withDb((raw) => {
+      const { galleryNumber } = biggestGallery(raw);
+      const ids = fullOrdering(raw, galleryNumber);
+      const n = ids.length;
+      expect(getNeighbors(raw, ids[0])!.prevObjectID).toBe(ids[n - 1]);
+      expect(getNeighbors(raw, ids[n - 1])!.nextObjectID).toBe(ids[0]);
+    }));
+
+  it("object 561565 (reported '0 of 500' bug): true position past the display cap", () =>
+    withDb((raw) => {
+      const o = raw
+        .prepare("SELECT galleryNumber FROM objects WHERE objectID = 561565")
+        .get() as { galleryNumber: string } | undefined;
+      if (!o?.galleryNumber) return; // partial snapshot — covered by the dense-gallery case
+      const ids = fullOrdering(raw, o.galleryNumber);
+      const i = ids.indexOf(561565);
+      expect(i).toBeGreaterThanOrEqual(500); // the bug: indexOf on the capped list was -1
+      expect(getPosition(raw, 561565)).toEqual({ position: i + 1, total: ids.length });
+      expect(getNeighbors(raw, 561565)).toEqual({
+        prevObjectID: ids[i - 1],
+        nextObjectID: ids[(i + 1) % ids.length],
+      });
+    }));
+
+  it("single-object gallery: 1 of 1, both neighbors = self", () =>
+    withDb((raw) => {
+      const g = raw
+        .prepare(
+          `SELECT galleryNumber, MIN(objectID) AS objectID FROM objects
+           WHERE galleryNumber <> '' GROUP BY galleryNumber HAVING COUNT(*) = 1 LIMIT 1`,
+        )
+        .get() as { galleryNumber: string; objectID: number } | undefined;
+      if (!g) return;
+      expect(getPosition(raw, g.objectID)).toEqual({ position: 1, total: 1 });
+      expect(getNeighbors(raw, g.objectID)).toEqual({
+        prevObjectID: g.objectID,
+        nextObjectID: g.objectID,
+      });
+    }));
+
+  it("unknown or not-on-view objects yield no row (UI hides the counter)", () =>
+    withDb((raw) => {
+      expect(getPosition(raw, -1)).toBeUndefined();
+      expect(getNeighbors(raw, -1)).toBeUndefined();
+      const off = raw
+        .prepare("SELECT objectID FROM objects WHERE galleryNumber = '' LIMIT 1")
+        .get() as { objectID: number } | undefined;
+      if (off) {
+        expect(getPosition(raw, off.objectID)).toBeUndefined();
+        expect(getNeighbors(raw, off.objectID)).toBeUndefined();
+      }
+    }));
 });
 
 if (!hasDb) {

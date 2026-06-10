@@ -108,7 +108,27 @@ export interface DataProvider {
   searchAll(query: string, filters?: SearchFilters): MetObject[];
   getObject(objectID: number): MetObject | undefined;
   getGallery(id: string): Room | undefined;
+  /**
+   * In-room display list, in the canonical gallery ordering (highlights
+   * first, then objectID). CAPPED for rendering (SqliteDataProvider stops at
+   * 500; the densest gallery holds ~4.5k objects) — never derive counts or
+   * positions from it; use the primitives below.
+   */
   objectsInGallery(galleryId: string): MetObject[];
+  /** TRUE object count of a gallery (objectsInGallery is capped). */
+  galleryObjectCount(galleryId: string): number;
+  /**
+   * 1-based position of an object within the FULL canonical ordering of its
+   * gallery + the gallery's true total. undefined when the object is unknown
+   * or not on view — callers hide the counter rather than show a wrong one.
+   */
+  objectGalleryPosition(objectID: number): { position: number; total: number } | undefined;
+  /**
+   * Previous/next object in the FULL canonical gallery ordering, wrapping
+   * around at the true ends (J15 browse loop). Both equal the input in a
+   * single-object gallery; undefined when the object is unknown/not on view.
+   */
+  galleryNeighbors(objectID: number): { prevObjectID: number; nextObjectID: number } | undefined;
   route(from: string, to: string, opts?: { avoidStairs?: boolean }): Route | undefined;
   /** All visitable rooms (galleries + halls). */
   galleries(): Room[];
@@ -168,6 +188,35 @@ export class StubDataProvider implements DataProvider {
 
   objectsInGallery(galleryId: string): MetObject[] {
     return data.objects.filter((o) => o.gallery === galleryId);
+  }
+
+  galleryObjectCount(galleryId: string): number {
+    return this.objectsInGallery(galleryId).length;
+  }
+
+  // Stub datasets are tiny — the array IS the full ordering, so the
+  // position/neighbor primitives are plain index math over it.
+  private galleryIndex(objectID: number): { list: MetObject[]; i: number } | undefined {
+    const o = this.objects.get(objectID);
+    if (!o?.gallery) return undefined;
+    const list = this.objectsInGallery(o.gallery);
+    const i = list.findIndex((x) => x.objectID === objectID);
+    return i < 0 ? undefined : { list, i };
+  }
+
+  objectGalleryPosition(objectID: number): { position: number; total: number } | undefined {
+    const hit = this.galleryIndex(objectID);
+    return hit ? { position: hit.i + 1, total: hit.list.length } : undefined;
+  }
+
+  galleryNeighbors(objectID: number): { prevObjectID: number; nextObjectID: number } | undefined {
+    const hit = this.galleryIndex(objectID);
+    if (!hit) return undefined;
+    const { list, i } = hit;
+    return {
+      prevObjectID: list[(i - 1 + list.length) % list.length].objectID,
+      nextObjectID: list[(i + 1) % list.length].objectID,
+    };
   }
 
   galleries(): Room[] {

@@ -41,7 +41,13 @@ test('J2 room entry: gallery number → highlight → objects → synopsis', asy
     await tapRoom(page, F.galleryId);
   });
   const sheet = page.getByTestId('room-sheet');
-  await expect(sheet).toContainText(`${F.galleryObjects.length} objects`);
+  // The sheet renders the capped list but must report the TRUE count.
+  const fmt = (x: number) => x.toLocaleString('en-US');
+  await expect(sheet).toContainText(
+    F.galleryTotal > F.galleryObjects.length
+      ? `Showing ${fmt(F.galleryObjects.length)} of ${fmt(F.galleryTotal)} objects`
+      : `${fmt(F.galleryTotal)} objects`,
+  );
   expect(await page.locator('[data-testid^="sheet-object-"]').count()).toBeGreaterThan(0);
 
   const first = F.galleryObjects[0];

@@ -27,6 +27,8 @@ export interface JourneyFixtures {
   galleryId: string;
   galleryFloorNumeric: number;
   galleryObjects: FixtureObject[];
+  /** TRUE object count of that gallery (galleryObjects is capped at 500). */
+  galleryTotal: number;
   /** J4: distinctive clean-ASCII-titled object (same rule as dataprovider.spec). */
   artifact: FixtureObject;
   /** J5: artist with the most on-view objects + their count. */
@@ -151,16 +153,17 @@ export function loadJourneyFixtures(): JourneyFixtures {
     if (!top) throw new Error('no open mapped gallery with objects');
     const galleryId = top.galleryNumber;
     const galleryFloorNumeric = openMapped.get(galleryId)!.floor;
-    // Mirrors SqliteDataProvider.getGalleryObjects: same ordering AND the same
-    // GALLERY_OBJECTS_LIMIT=500 cap — the app's room sheet count and "i of n"
-    // browser are defined over this capped list (full hydration put >4k
-    // objects in the densest gallery).
+    // Mirrors SqliteDataProvider.objectsInGallery: same ordering AND the same
+    // GALLERY_OBJECTS_LIMIT=500 display cap. The app's room-sheet COUNT and
+    // the object page's "n of N" browser are defined over the FULL gallery
+    // (galleryTotal, SQL primitives) — only the rendered list is capped.
     const galleryObjects = db
       .prepare(
         `SELECT objectID, title, artist, galleryNumber FROM objects
          WHERE galleryNumber = ? ORDER BY isHighlight DESC, objectID LIMIT 500`,
       )
       .all(galleryId) as FixtureObject[];
+    const galleryTotal = top.c;
 
     const artistRow = db
       .prepare(
@@ -212,6 +215,7 @@ export function loadJourneyFixtures(): JourneyFixtures {
       galleryId,
       galleryFloorNumeric,
       galleryObjects,
+      galleryTotal,
       artifact: pickCleanObject(db),
       artist: artistRow.artist,
       artistCount: artistRow.c,

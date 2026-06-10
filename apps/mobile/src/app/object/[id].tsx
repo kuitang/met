@@ -46,16 +46,17 @@ export default function ObjectScreen() {
   const gallery = object.gallery ? data.getGallery(object.gallery) : undefined;
 
   // J15: next/previous within the same room — browse a gallery's objects
-  // sequentially without re-searching.
-  const roomMates = object.gallery ? data.objectsInGallery(object.gallery) : [];
-  const roomIndex = roomMates.findIndex((o) => o.objectID === object.objectID);
-  const cycleTo = (offset: number) => {
-    const next = roomMates[(roomIndex + offset + roomMates.length) % roomMates.length];
+  // sequentially without re-searching. Position + neighbors are computed in
+  // SQL over the FULL gallery ordering (galleries hold up to ~4.5k objects;
+  // the capped objectsInGallery list must never define this counter). When
+  // the position is unknowable the counter is hidden — never a wrong number.
+  const galleryPos = object.gallery ? data.objectGalleryPosition(object.objectID) : undefined;
+  const neighbors = object.gallery ? data.galleryNeighbors(object.objectID) : undefined;
+  const cycleTo = (nextID: number) =>
     router.replace({
       pathname: '/object/[id]',
-      params: anchor ? { id: String(next.objectID), anchor } : { id: String(next.objectID) },
+      params: anchor ? { id: String(nextID), anchor } : { id: String(nextID) },
     });
-  };
 
   const objectURL = `https://www.metmuseum.org/art/collection/search/${object.objectID}`;
 
@@ -82,15 +83,24 @@ export default function ObjectScreen() {
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {object.img ? <ObjectImage uri={object.img} objectID={object.objectID} /> : null}
 
-      {roomMates.length > 1 && (
+      {galleryPos && neighbors && galleryPos.total > 1 && (
         <View style={styles.cycleRow}>
-          <Pressable style={styles.cycleBtn} onPress={() => cycleTo(-1)} testID="object-prev">
+          <Pressable
+            style={styles.cycleBtn}
+            onPress={() => cycleTo(neighbors.prevObjectID)}
+            testID="object-prev"
+          >
             <Text style={styles.cycleArrow}>‹</Text>
           </Pressable>
           <Text style={styles.cycleLabel} testID="object-position">
-            {roomIndex + 1} of {roomMates.length} in Gallery {object.gallery}
+            {galleryPos.position.toLocaleString('en-US')} of{' '}
+            {galleryPos.total.toLocaleString('en-US')} in Gallery {object.gallery}
           </Text>
-          <Pressable style={styles.cycleBtn} onPress={() => cycleTo(1)} testID="object-next">
+          <Pressable
+            style={styles.cycleBtn}
+            onPress={() => cycleTo(neighbors.nextObjectID)}
+            testID="object-next"
+          >
             <Text style={styles.cycleArrow}>›</Text>
           </Pressable>
         </View>

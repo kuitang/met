@@ -2,7 +2,10 @@
  * J15 — Synopsis browsing (the Bloomberg-Connects pain-point killer): from
  * one object, ‹/› pages through everything in the same room sequentially —
  * no re-search, no list backtracking. Order matches the provider's in-room
- * ordering (highlights first), straight from the local DB.
+ * ordering (highlights first), straight from the local DB. The "n of N"
+ * counter and the neighbors are computed over the FULL gallery (the densest
+ * room holds ~4.5k objects — far past the 500-row display cap), with
+ * wraparound at the true first/last objects.
  */
 import { expect, test } from '@playwright/test';
 
@@ -18,7 +21,8 @@ test('J15 synopsis browsing: next/previous through the room, no re-search', asyn
 }) => {
   const objs = F.galleryObjects;
   expect(objs.length).toBeGreaterThanOrEqual(3);
-  const n = objs.length;
+  // The counter's denominator is the TRUE gallery count, not the capped list.
+  const n = F.galleryTotal.toLocaleString('en-US');
 
   await bootReal(page, `/object/${objs[0].objectID}`);
   await expect(page.getByTestId('object-title')).toHaveText(objs[0].title);
