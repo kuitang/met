@@ -67,6 +67,16 @@ jobs:
       - name: Data evals
         run: npm run evals
 
+      # Browser binaries cached: a cdn.playwright.dev download stalled
+      # mid-transfer with no timeout and hung the job to the 30-min kill
+      # (observed live, run 27305073014) — a cache hit skips the download
+      # entirely; misses are bounded by the timeout+retry loop below.
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
       # CHECKS_STATIC: `expo serve` of a pre-built stub export — the Metro
       # dev-server compile alone takes ~25 min on a 2-core runner and timed
       # out the job. webkit-render runs alongside checks (iPhone-engine
@@ -75,7 +85,13 @@ jobs:
         run: |
           EXPO_PUBLIC_DATA=stub npm -w apps/mobile run export:web
           cd e2e
-          npx playwright install chromium webkit --with-deps
+          npx playwright install-deps chromium webkit
+          ok=""
+          for i in 1 2 3; do
+            if timeout 360 npx playwright install chromium webkit; then ok=1; break; fi
+            echo "browser download attempt $i stalled or failed; retrying"
+          done
+          [ "$ok" = 1 ]
           CHECKS_STATIC=1 npx playwright test --project=checks --project=webkit-render
 
       - name: Upload playwright artifacts on failure
