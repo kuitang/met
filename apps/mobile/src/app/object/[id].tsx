@@ -1,3 +1,4 @@
+import * as ExpoLinking from 'expo-linking';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
@@ -59,10 +60,14 @@ export default function ObjectScreen() {
   const objectURL = `https://www.metmuseum.org/art/collection/search/${object.objectID}`;
 
   // Share = copy the canonical deep link (web clipboard; native share sheet).
+  // Always derived from the RUNTIME origin — window.location.origin on web,
+  // Linking.createURL on native — never a baked-in constant, so the same
+  // build shares correct links from any origin (custom domain, fly.dev,
+  // PR preview apps).
   const canonicalURL =
     Platform.OS === 'web' && typeof window !== 'undefined'
       ? `${window.location.origin}/object/${object.objectID}`
-      : objectURL;
+      : ExpoLinking.createURL(`/object/${object.objectID}`);
   const onShare = async () => {
     if (Platform.OS === 'web' && navigator.clipboard) {
       await navigator.clipboard.writeText(canonicalURL);
