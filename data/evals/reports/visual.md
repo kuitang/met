@@ -1,7 +1,7 @@
 # Visual diff: per-floor SVG renders
 
 - Status: **PASS**
-- Generated: 2026-06-10T12:55:45.010Z by `data/src/evals.ts`
+- Generated: 2026-06-10T15:35:23.855Z by `data/src/evals.ts`
 - Data version: 2026-06-10-2e5aaf37
 
 Human-reviewable renders of the decoded geometry with the derived routing

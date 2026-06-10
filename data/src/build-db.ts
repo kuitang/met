@@ -268,23 +268,45 @@ function main(): void {
   // the merged "Medieval Art and The Cloisters" department). galleryNumber → site
   // from Living Map geometry is authoritative.
   const siteByGallery = new Map<string, string>();
+  const galleryVocab = new Set<string>(); // exact galleries-table galleryNumber values
   for (const f of galleriesGeo.features) {
     const n = String(f.properties.galleryNumber ?? "").trim();
     if (n) {
+      galleryVocab.add(n);
       siteByGallery.set(n, String(f.properties.site));
       siteByGallery.set(n.replace(/^0+/, ""), String(f.properties.site));
     }
   }
   const authoritativeSite = (g: string, fallback: string): string =>
     siteByGallery.get(g) ?? siteByGallery.get(g.replace(/^0+/, "")) ?? fallback;
+  // Canonicalize objects.galleryNumber to the galleries-table vocabulary: the
+  // Met API zero-pads Cloisters gallery numbers ("003", "010") while Living Map
+  // geometry uses unpadded ("3", "10"), so the objects↔galleries join missed
+  // every Cloisters object. Strip leading zeros ONLY when the stripped form is
+  // a real polygon galleryNumber and the padded form is not. Exhibition codes
+  // like "099" stay raw — their polygons are *named* "Exhibition Gallery 099"
+  // (neither "099" nor "99" is a galleryNumber), so the rotation flag the
+  // objects pipeline keys off the raw code is unaffected. Idempotent: canonical
+  // input is a no-op, so the snapshot may carry either form. This is the single
+  // canonicalization point; galleries/amenities/graph need no treatment
+  // (verified: galleries and graph_nodes.gallery are already unpadded, and
+  // amenities carry no gallery references).
+  const canonicalGallery = (g: string): string => {
+    if (!/^0\d+$/.test(g)) return g;
+    const stripped = g.replace(/^0+/, "");
+    return galleryVocab.has(stripped) && !galleryVocab.has(g) ? stripped : g;
+  };
   db.transaction(() => {
-    for (const o of objects)
+    for (const o of objects) {
+      const galleryNumber = canonicalGallery(o.galleryNumber);
       insObject.run({
         ...o,
-        site: authoritativeSite(o.galleryNumber, o.site),
+        galleryNumber,
+        site: authoritativeSite(galleryNumber, o.site),
         isHighlight: o.isHighlight ? 1 : 0,
         synonyms: synFor(o),
       });
+    }
   })();
   db.exec("INSERT INTO objects_fts(objects_fts) VALUES ('optimize')");
 

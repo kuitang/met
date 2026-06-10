@@ -2,8 +2,10 @@
  * J14 — The Cloisters. Venue switch on the map (data-driven floor chips
  * change to G/1), routing WITHIN the Cloisters works, and site isolation
  * holds: no route ever crosses between the two buildings. The
- * Cloisters-object search step activates once the catalog has a
- * Cloisters-sited object (none in the partial snapshot).
+ * Cloisters-object search step is armed: build-db canonicalizes the Met API's
+ * zero-padded Cloisters gallery numbers ("010" → "10"), so the fixture's
+ * objects↔galleries join finds Cloisters-sited objects in the full catalog.
+ * (The else branch remains as a guard for partial snapshots.)
  */
 import { expect, test } from '@playwright/test';
 

@@ -1,7 +1,7 @@
 # Coverage: on-view objects ↔ gallery polygons
 
 - Status: **PASS**
-- Generated: 2026-06-10T12:55:44.654Z by `data/src/evals.ts`
+- Generated: 2026-06-10T15:35:23.504Z by `data/src/evals.ts`
 - Data version: 2026-06-10-2e5aaf37
 
 Snapshot is complete: 44842 rows vs 45502 on-view search total (202 drifted off-view, 458 dead IDs).

@@ -83,14 +83,21 @@ Order matters only as: objects/geometry → graph → build-db → evals.
 `npm run evals` produces five reports under `data/evals/reports/`. Numbers from
 the 2026-06-10 run:
 
-- **Coverage** (`coverage.md`): **100% of snapshot objects resolve to a gallery
-  polygon** (exact match → `data/src/gallery-aliases.json` manual aliases →
-  Cloisters zero-pad rule). The aliases file covers Living Map's named
-  exhibition polygons ("Exhibition Galleries 999" etc.), the 746 North/South
-  split, and the Petrie Court Café. ⚠️ Measured on the **partial 120-object
-  snapshot** (full hydration in flight when this was written); the eval
-  auto-WARNs until the snapshot is complete and must be re-read then. The
-  partial set already surfaced the three real orphan classes the aliases fix.
+- **Coverage** (`coverage.md`): **99.8% of snapshot objects (44,768/44,842)
+  resolve to a gallery polygon** (exact match → `data/src/gallery-aliases.json`
+  manual aliases → Cloisters zero-pad rule), measured on the full snapshot. The
+  aliases file covers Living Map's named exhibition polygons ("Exhibition
+  Galleries 999" etc.), the 746 North/South split, and the Petrie Court Café.
+  The zero-pad rule is also applied **inside met.sqlite**: `build-db.ts`
+  canonicalizes `objects.galleryNumber` ("010" → "10") whenever the stripped
+  form is a real galleries-table number and the padded form is not, so the
+  plain SQL `objects ↔ galleries` join covers the Cloisters directly
+  (44,321/44,842 = 98.8% in-DB; the remainder are alias-only codes plus four
+  Cloisters numbers with no Living Map polygon: 005, 015, 021, 023).
+  Exhibition codes like "099" are deliberately untouched — their polygons
+  carry the *name* "Exhibition Gallery 099", not the number, so neither "099"
+  nor "99" is in the galleries vocabulary and the rotation heuristic keyed on
+  the raw code stays valid.
 - **Geometry** (`geometry.md`): 828/828 polygons valid; **0 overlapping room
   pairs** > 1 m² per floor (floor-plate backdrop polygons excluded by design);
   polygon centroids vs the features API's independent label points: **p50 0.0 m,
@@ -131,11 +138,15 @@ the 2026-06-10 run:
 
 ## Known gaps & risks
 
-1. **Objects snapshot is partial at Gate B review time** (120 of ~45.5k rows;
-   full WAF-throttled hydration running). Everything downstream is
-   structure-complete and the rebuild is one command, but coverage % and FTS
-   behavior at full scale are pending re-measurement. The eval suite WARNs on
-   this automatically.
+1. **Cloisters gallery numbers are zero-padded by the Met API** ("003", "010")
+   while Living Map geometry uses unpadded numbers ("3", "10"). RESOLVED at the
+   single canonicalization point, `build-db.ts`: `objects.galleryNumber` is
+   stripped of leading zeros on insert iff the stripped form exists in the
+   galleries table and the padded form does not (snapshots keep the raw API
+   value; the build is idempotent either way). Before the fix, 0 of 1,158
+   Cloisters objects joined a gallery row; after, 1,145/1,158 do. Residual
+   orphans: 005/015/021/023 (no Living Map polygon) and the exhibition codes,
+   which only resolve via name aliases in the eval, not in the DB join.
 2. **Living Map could change or vanish.** Frozen snapshot keeps working;
    re-tracing from the official PDF map is the (slow) fallback. Unofficial use
    is a ToS gray zone — acceptable for a portfolio build, attributed, never

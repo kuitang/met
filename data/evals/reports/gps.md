@@ -1,7 +1,7 @@
 # GPS mapping: synthetic fixes vs the wing-level resolver
 
 - Status: **PASS**
-- Generated: 2026-06-10T12:55:44.991Z by `data/src/evals.ts`
+- Generated: 2026-06-10T15:35:23.830Z by `data/src/evals.ts`
 - Data version: 2026-06-10-2e5aaf37
 
 The resolver under test is the reference implementation of the positioning
