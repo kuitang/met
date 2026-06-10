@@ -90,27 +90,40 @@ export default function SearchScreen() {
         ListHeaderComponent={
           amenities.length > 0 ? (
             <View>
+              {/* Amenity rows are ranked nearest-first by graph distance from
+                  the anchor, so the top row IS the nearest instance. Tapping
+                  a row offers DIRECTIONS to it (never silently moves the
+                  visitor); "I'm here" is the explicit secondary action that
+                  re-anchors to the amenity. */}
               {amenities.map(({ room: r, distance }) => (
-                <Pressable
-                  key={r.id}
-                  style={styles.row}
-                  onPress={() => router.push(`/?room=${r.id}`)}
-                  testID={`amenity-${r.id}`}
-                >
-                  <View style={styles.rowText}>
-                    <Text style={styles.rowTitle} numberOfLines={1}>
-                      {r.name}
-                    </Text>
-                    <Text style={type.meta} numberOfLines={1}>
-                      {distance !== undefined
-                        ? `~${Math.round(distance)} m walk · tap to see on map`
-                        : 'Amenity · tap to see on map'}
-                    </Text>
-                  </View>
-                  <Text style={styles.galleryChip}>
-                    {r.kind} · F{r.floor}
-                  </Text>
-                </Pressable>
+                <View key={r.id} style={styles.row}>
+                  <Pressable
+                    style={styles.amenityMain}
+                    onPress={() => router.push(`/route/${originId}/${r.id}`)}
+                    testID={`amenity-${r.id}`}
+                  >
+                    <View style={styles.rowText}>
+                      <Text style={styles.rowTitle} numberOfLines={1}>
+                        {r.name}
+                      </Text>
+                      <Text style={type.meta} numberOfLines={1}>
+                        {distance !== undefined
+                          ? `~${Math.round(distance)} m walk · tap for directions`
+                          : 'Amenity · tap for directions'}
+                      </Text>
+                    </View>
+                    {/* Floor only: the row title already names the amenity,
+                        and the I'm-here button needs the width. */}
+                    <Text style={styles.galleryChip}>F{r.floor}</Text>
+                  </Pressable>
+                  <Pressable
+                    style={styles.amenityImHere}
+                    onPress={() => router.push(`/?room=${r.id}`)}
+                    testID={`amenity-im-here-${r.id}`}
+                  >
+                    <Text style={styles.amenityImHereText}>I'm here</Text>
+                  </Pressable>
+                </View>
               ))}
             </View>
           ) : null
@@ -229,6 +242,25 @@ const styles = StyleSheet.create({
     ...type.label,
     color: colors.red,
     textAlign: 'right',
+  },
+  // Amenity row: the row body is the DIRECTIONS tap; "I'm here" is the
+  // explicit, secondary re-anchor action (≥44pt, HIG).
+  amenityMain: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+  },
+  amenityImHere: {
+    minHeight: 44,
+    justifyContent: 'center',
+    paddingHorizontal: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.homeBlue,
+  },
+  amenityImHereText: {
+    ...type.label,
+    color: colors.homeBlue,
   },
   allResults: {
     paddingVertical: spacing.md,

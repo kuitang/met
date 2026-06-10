@@ -40,6 +40,11 @@ export default function HomeScreen() {
 
   const highlightId = selected?.id ?? anchor?.roomId;
 
+  // HOME glyph marker at the anchor room (when it's at the active venue).
+  const anchorRoom = anchor?.roomId ? data.getGallery(anchor.roomId) : undefined;
+  const homeRoom =
+    anchorRoom && (anchorRoom.site ?? 'fifthAve') === venue.venue ? anchorRoom : undefined;
+
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <View style={styles.mapFill}>
@@ -49,6 +54,7 @@ export default function HomeScreen() {
           highlightId={highlightId}
           onRoomPress={setSelected}
           site={venue.venue}
+          homeRoom={homeRoom}
         />
       </View>
 
@@ -103,6 +109,10 @@ export default function HomeScreen() {
             objects={data.objectsInGallery(selected.id)}
             totalCount={data.galleryObjectCount(selected.id)}
             originId={anchor?.roomId ?? 'great-hall'}
+            onImHere={() => {
+              setAnchor(anchorForRoom(selected, 'gallery'));
+              setSelected(undefined);
+            }}
             onClose={() => setSelected(undefined)}
           />
         )}
