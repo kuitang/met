@@ -14,6 +14,9 @@ export const colors = {
   hairline: '#d9d6d2',
   red: '#e4002b', // Met red — accents, active states, highlights
   redPressed: '#b30022',
+  // Current-location blue (home glyph). Paired with Met-red for the target
+  // star: a colorblind-safe pair (no red/green) — see components/MapMarkers.
+  homeBlue: '#1B6CA8',
   white: '#ffffff',
   black: '#000000',
   // Map-specific

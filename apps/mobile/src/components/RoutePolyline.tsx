@@ -1,23 +1,24 @@
 /**
- * RoutePolyline — SVG overlay tracing a route across the floor plan.
- * Rendered absolutely over <FloorMap> with the same viewBox/preserveAspectRatio
- * so coordinates line up at the map's default pan/zoom.
+ * RoutePolyline — SVG group tracing a route across the floor plan.
+ *
+ * Rendered INSIDE FloorMap via its `overlay` prop, i.e. inside the map's
+ * pan/zoom transform and SVG viewBox — so the path and checkpoint dots track
+ * the floor plan through every gesture state. (This replaces the Phase-2
+ * absolutely-positioned sibling overlay, whose known limitation was exactly
+ * that: FloorMap's pinch/pan transform lived inside FloorMap, so zooming the
+ * map offset the overlay.)
  *
  * Two coordinate sources, one render path:
  *  - `route.geo` (real provider): the shared/routing node path pre-projected
- *    into FloorMap's meter space + that projection's viewBox (see the Route.geo
- *    contract in src/data/provider.ts) — the polyline follows real doorways.
+ *    into FloorMap's meter space (see the Route.geo contract in
+ *    src/data/provider.ts) — the polyline follows real doorways. The viewBox
+ *    of that projection equals the map's, so coordinates land 1:1.
  *  - stub fallback: straight segments between step-room rect centers in the
  *    stub's 130×80 schematic space.
- *
- * (Known limitation, unchanged from Gate A: FloorMap's pinch/pan transform
- * lives inside FloorMap, so zooming the map offsets the overlay; folding the
- * polyline into the map's viewport is integration work once the real map's
- * overlay slot exists.)
  */
-import { StyleSheet, View } from 'react-native';
-import Svg, { Circle, Polyline } from 'react-native-svg';
+import { Circle, G, Polyline } from 'react-native-svg';
 
+import { labelPassThrough } from '@/components/FloorMap';
 import { Route } from '@/data/provider';
 import { colors } from '@/theme';
 
@@ -69,45 +70,35 @@ export default function RoutePolyline({ route, floor, activeStep }: RoutePolylin
   const onFloor = stepPts.filter((p) => p.floor === floor);
 
   return (
-    // pointerEvents in style — the prop form logs an RN-web deprecation warning.
-    <View
-      style={[StyleSheet.absoluteFill, { pointerEvents: 'none' }]}
-      testID="route-polyline"
-    >
-      <Svg
-        width="100%"
-        height="100%"
-        viewBox={`${vb.x} ${vb.y} ${vb.w} ${vb.h}`}
-        preserveAspectRatio="xMidYMid meet"
-      >
-        {runs.map((points, i) => (
-          <Polyline
-            key={i}
-            points={points}
-            fill="none"
+    // Pass-through pointer events: route art must never intercept room taps.
+    <G testID="route-polyline" {...labelPassThrough}>
+      {runs.map((points, i) => (
+        <Polyline
+          key={i}
+          points={points}
+          fill="none"
+          stroke={colors.red}
+          strokeWidth={1 * u}
+          strokeDasharray={`${2.5 * u} ${1.5 * u}`}
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
+      ))}
+      {onFloor.map((p) =>
+        p.index === activeStep ? (
+          <Circle key={p.index} cx={p.x} cy={p.y} r={2.4 * u} fill={colors.red} />
+        ) : (
+          <Circle
+            key={p.index}
+            cx={p.x}
+            cy={p.y}
+            r={1.3 * u}
+            fill={colors.white}
             stroke={colors.red}
-            strokeWidth={1 * u}
-            strokeDasharray={`${2.5 * u} ${1.5 * u}`}
-            strokeLinejoin="round"
-            strokeLinecap="round"
+            strokeWidth={0.6 * u}
           />
-        ))}
-        {onFloor.map((p) =>
-          p.index === activeStep ? (
-            <Circle key={p.index} cx={p.x} cy={p.y} r={2.4 * u} fill={colors.red} />
-          ) : (
-            <Circle
-              key={p.index}
-              cx={p.x}
-              cy={p.y}
-              r={1.3 * u}
-              fill={colors.white}
-              stroke={colors.red}
-              strokeWidth={0.6 * u}
-            />
-          ),
-        )}
-      </Svg>
-    </View>
+        ),
+      )}
+    </G>
   );
 }

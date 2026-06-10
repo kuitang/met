@@ -44,6 +44,7 @@ import {
   resolveGeometryFn,
   Site,
 } from '@/components/MapGeometry';
+import { HomeGlyph, StarGlyph, homePathD, starPathD } from '@/components/MapMarkers';
 import { Room, useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
@@ -75,7 +76,7 @@ const LABEL_AREA_M2 = 150;
  * warning (LogBox badge → HIG sweep failure); style is the clean route there
  * (prepare() resolves it onto the DOM node as CSS pointer-events).
  */
-const labelPassThrough: object =
+export const labelPassThrough: object =
   Platform.OS === 'web' ? { style: { pointerEvents: 'none' } } : { pointerEvents: 'none' };
 
 function svgPress(handler: () => void): object {
@@ -102,6 +103,24 @@ export interface FloorMapProps {
    * The stub schematic has Fifth Avenue only and ignores this.
    */
   site?: Site;
+  /**
+   * The visitor's current anchor room → HOME glyph marker (colors.homeBlue)
+   * at the room's center, plus a mini home badge on that floor's chip.
+   */
+  homeRoom?: Room;
+  /**
+   * Navigation target room → STAR glyph marker (Met red), plus a mini star
+   * badge on that floor's chip — cross-floor routes stay legible at a glance.
+   * Home/star shapes (not red/green color pairing) carry the distinction.
+   */
+  targetRoom?: Room;
+  /**
+   * SVG overlay rendered INSIDE the map's pan/zoom transform, in viewBox
+   * coordinates (real map: projected meters; stub: the 130×80 schematic).
+   * This is the overlay slot RoutePolyline plugs into, so route lines and
+   * markers pan/zoom with the floor plan in every gesture state.
+   */
+  overlay?: React.ReactNode;
 }
 
 export default function FloorMap(props: FloorMapProps) {
@@ -185,10 +204,92 @@ function MapViewport({
 
   return (
     <GestureDetector gesture={gesture}>
-      <Animated.View style={[styles.mapArea, animatedStyle]} {...wheelProps}>
+      <Animated.View style={[styles.mapArea, animatedStyle]} testID="map-viewport" {...wheelProps}>
         {children}
       </Animated.View>
     </GestureDetector>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Current-location / target markers (in-SVG, inside the transform)    */
+/* ------------------------------------------------------------------ */
+
+/**
+ * HOME (current anchor, blue) and STAR (target, Met red) glyphs at room
+ * centers, drawn inside the pan/zoom transform so they track every gesture.
+ * `u` scales glyph weight with the viewBox (1 in the 130-unit stub space).
+ */
+function MarkerGlyphs({
+  homeRoom,
+  targetRoom,
+  floor,
+  u,
+}: {
+  homeRoom?: Room;
+  targetRoom?: Room;
+  floor: number;
+  u: number;
+}) {
+  const center = (r: Room): [number, number] => {
+    const [x, y, w, h] = r.rect;
+    return [x + w / 2, y + h / 2];
+  };
+  const halo = { stroke: colors.white, strokeWidth: 0.7 * u, strokeLinejoin: 'round' as const };
+  return (
+    <>
+      {targetRoom && targetRoom.floor === floor && (
+        <Path
+          d={starPathD(...center(targetRoom), 3.4 * u)}
+          fill={colors.red}
+          {...halo}
+          {...labelPassThrough}
+          testID="marker-target"
+        />
+      )}
+      {homeRoom && homeRoom.floor === floor && (
+        <Path
+          d={homePathD(...center(homeRoom), 3 * u)}
+          fill={colors.homeBlue}
+          {...halo}
+          {...labelPassThrough}
+          testID="marker-home"
+        />
+      )}
+    </>
+  );
+}
+
+/**
+ * Mini home/star badges on a floor chip: the chip of the floor holding the
+ * current location carries a home bubble, the target's floor a star bubble —
+ * cross-floor routes are legible without switching floors.
+ */
+function ChipBadges({
+  label,
+  homeLabel,
+  targetLabel,
+}: {
+  label: string;
+  homeLabel?: string;
+  targetLabel?: string;
+}) {
+  return (
+    <>
+      {homeLabel === label && (
+        <View style={[styles.chipBadge, styles.chipBadgeHome]} testID={`chip-badge-home-${label}`}>
+          <HomeGlyph size={10} />
+        </View>
+      )}
+      {targetLabel === label && (
+        <View
+          style={[styles.chipBadge, styles.chipBadgeTarget]}
+          testID={`chip-badge-target-${label}`}
+        >
+          <StarGlyph size={10} />
+        </View>
+      )}
+    </>
   );
 }
 
@@ -244,6 +345,9 @@ function RealFloorMap({
   floor: floorProp,
   onFloorChange,
   site = 'fifthAve',
+  homeRoom,
+  targetRoom,
+  overlay,
 }: FloorMapProps & { geometry: GeometryFn }) {
   const siteGeo = useMemo(() => buildSiteGeometry(geometry, site), [geometry, site]);
 
@@ -273,9 +377,10 @@ function RealFloorMap({
         floor: shape.floorNumeric,
         kind: 'gallery',
         rect: shape.bbox,
+        site, // anchors set from a map tap must carry the venue
       });
     },
-    [onRoomPress],
+    [onRoomPress, site],
   );
 
   const vb = siteGeo.viewBox;
@@ -340,6 +445,13 @@ function RealFloorMap({
                   {s.label}
                 </SvgText>
               ))}
+              {overlay}
+              <MarkerGlyphs
+                homeRoom={homeRoom}
+                targetRoom={targetRoom}
+                floor={floorNumber(floor)}
+                u={vb.w / STUB_VIEW_W}
+              />
             </G>
           </Svg>
         </MapViewport>
@@ -358,6 +470,11 @@ function RealFloorMap({
               <Text style={[styles.chipText, active && styles.chipTextActive]}>
                 {label}
               </Text>
+              <ChipBadges
+                label={label}
+                homeLabel={homeRoom && floorLabel(homeRoom.floor)}
+                targetLabel={targetRoom && floorLabel(targetRoom.floor)}
+              />
             </Pressable>
           );
         })}
@@ -376,6 +493,9 @@ function StubFloorMap({
   onRoomPress,
   floor: floorProp,
   onFloorChange,
+  homeRoom,
+  targetRoom,
+  overlay,
 }: FloorMapProps) {
   const data = useData();
   const [floorState, setFloorState] = useState(1);
@@ -441,6 +561,8 @@ function StubFloorMap({
                 </G>
               );
             })}
+            {overlay}
+            <MarkerGlyphs homeRoom={homeRoom} targetRoom={targetRoom} floor={floor} u={1} />
           </G>
         </Svg>
       </MapViewport>
@@ -463,6 +585,11 @@ function StubFloorMap({
               <Text style={[styles.chipText, active && styles.chipTextActive]}>
                 {c.label}
               </Text>
+              <ChipBadges
+                label={c.label}
+                homeLabel={homeRoom && floorLabel(homeRoom.floor)}
+                targetLabel={targetRoom && floorLabel(targetRoom.floor)}
+              />
             </Pressable>
           );
         })}
@@ -535,5 +662,24 @@ const styles = StyleSheet.create({
   },
   chipTextActive: {
     color: colors.white,
+  },
+  // Mini home/star bubbles on the floor chips (see ChipBadges).
+  chipBadge: {
+    position: 'absolute',
+    top: -4,
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: colors.hairline,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  chipBadgeHome: {
+    left: -4,
+  },
+  chipBadgeTarget: {
+    right: -4,
   },
 });
