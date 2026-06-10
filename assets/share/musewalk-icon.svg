@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 180 180">
+  <!-- MuseWalk touch icon: solid brand-red field, white map pin (same pin
+       geometry as musewalk-share.svg). Full-bleed square: iOS/Android apply
+       their own corner masks. Intrinsic size 512 for crisp rasterization;
+       design coordinates stay in the 180x180 viewBox. -->
+  <rect width="180" height="180" fill="#e4002b"/>
+  <g transform="translate(90,90) scale(1.7) translate(-24,-33)">
+    <path d="M24 0C10.7 0 0 10.7 0 24c0 18 24 42 24 42s24-24 24-42C48 10.7 37.3 0 24 0z" fill="#ffffff"/>
+    <circle cx="24" cy="23" r="9" fill="#e4002b"/>
+  </g>
+</svg>

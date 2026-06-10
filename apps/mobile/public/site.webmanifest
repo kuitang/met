@@ -1,0 +1,13 @@
+{
+  "name": "MuseWalk",
+  "short_name": "MuseWalk",
+  "description": "An unofficial companion for The Metropolitan Museum of Art — search 45,000 artworks on view and get turn-by-turn directions.",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#e4002b",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/"
+}
