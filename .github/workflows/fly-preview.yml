@@ -50,6 +50,13 @@ jobs:
             AWS_ACCESS_KEY_ID=${{ secrets.TIGRIS_AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY=${{ secrets.TIGRIS_AWS_SECRET_ACCESS_KEY }}
             AWS_ENDPOINT_URL_S3=${{ secrets.TIGRIS_AWS_ENDPOINT }}
+          # Same cache-bust as the prod deploy job: without it the Docker
+          # artifact-fetch layer cache-hits and previews keep serving the
+          # artifact version from their FIRST build (observed live: a preview
+          # rebuilt after a latest/ pointer bump still served the old
+          # met.sqlite).
+          build_args: >-
+            ARTIFACT_CACHE_BUST=${{ github.run_id }}
 
       - name: Comment preview URL on the PR
         if: github.event.action != 'closed' && steps.deploy.outputs.url != ''
