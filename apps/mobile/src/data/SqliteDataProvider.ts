@@ -66,6 +66,7 @@ interface ObjectRow {
   galleryNumber: string;
   isHighlight: number;
   imageUrl: string;
+  thumbKey: string;
 }
 
 const OBJECT_COLS =
@@ -84,6 +85,7 @@ function toMetObject(r: ObjectRow): MetObject {
     credit: '',
     isHighlight: r.isHighlight === 1,
     img: r.imageUrl,
+    thumbKey: r.thumbKey,
   };
 }
 
@@ -159,6 +161,15 @@ function projectorFromFeatures(features: GalleryFeature[]): Projector | null {
 export class SqliteDataProvider implements DataProvider {
   readonly dataVersion: string;
 
+  /**
+   * Object SELECT list. Older met.sqlite artifacts (downloaded/cached before
+   * the thumbnail pipeline landed) have no thumbKey column — create()
+   * detects it and selects a '' literal instead, so the provider keeps
+   * working against any artifact version (components then use the proxy
+   * fallback, exactly like an object without thumbnails).
+   */
+  private objectCols = `${OBJECT_COLS}, '' AS thumbKey`;
+
   private constructor(
     private met: MetDb,
     private rooms: Map<string, Room>,
@@ -178,7 +189,10 @@ export class SqliteDataProvider implements DataProvider {
   }
 
   static async create(met: MetDb): Promise<SqliteDataProvider> {
-    const [galleryRows, amenityRows, nodes, edges, blob] = await Promise.all([
+    const [thumbCol, galleryRows, amenityRows, nodes, edges, blob] = await Promise.all([
+      met.allAsync<{ name: string }>(
+        `SELECT name FROM pragma_table_info('objects') WHERE name = 'thumbKey'`,
+      ),
       met.allAsync<DbGalleryRow>(
         'SELECT galleryNumber, title, floor, site, centroidLat, centroidLon FROM galleries',
       ),
@@ -296,7 +310,7 @@ export class SqliteDataProvider implements DataProvider {
       ? nearestNode('fifthAve', floorNumber(entrance.floor), entrance.lat, entrance.lon)
       : null;
 
-    return new SqliteDataProvider(
+    const provider = new SqliteDataProvider(
       met,
       rooms,
       galleryRooms,
@@ -308,6 +322,8 @@ export class SqliteDataProvider implements DataProvider {
       viewBoxBySite,
       entranceNodeId,
     );
+    if (thumbCol.length > 0) provider.objectCols = `${OBJECT_COLS}, thumbKey`;
+    return provider;
   }
 
   // --- search ----------------------------------------------------------------
@@ -316,7 +332,7 @@ export class SqliteDataProvider implements DataProvider {
   private hydrate(ids: number[]): MetObject[] {
     if (ids.length === 0) return [];
     const rows = this.met.allSync<ObjectRow>(
-      `SELECT ${OBJECT_COLS} FROM objects WHERE objectID IN (${ids.map(() => '?').join(',')})`,
+      `SELECT ${this.objectCols} FROM objects WHERE objectID IN (${ids.map(() => '?').join(',')})`,
       ids,
     );
     const byId = new Map(rows.map((r) => [r.objectID, toMetObject(r)]));
@@ -339,7 +355,7 @@ export class SqliteDataProvider implements DataProvider {
 
   getObject(objectID: number): MetObject | undefined {
     const rows = this.met.allSync<ObjectRow>(
-      `SELECT ${OBJECT_COLS} FROM objects WHERE objectID = ?`,
+      `SELECT ${this.objectCols} FROM objects WHERE objectID = ?`,
       [objectID],
     );
     return rows.length ? toMetObject(rows[0]) : undefined;
@@ -350,7 +366,7 @@ export class SqliteDataProvider implements DataProvider {
   objectsInGallery(galleryId: string): MetObject[] {
     return this.met
       .allSync<ObjectRow>(
-        `SELECT ${OBJECT_COLS} FROM objects WHERE galleryNumber = ?
+        `SELECT ${this.objectCols} FROM objects WHERE galleryNumber = ?
          ORDER BY ${GALLERY_ORDER} LIMIT ?`,
         [galleryId, GALLERY_OBJECTS_LIMIT],
       )

@@ -81,7 +81,7 @@ export default function ObjectScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      {object.img ? <ObjectImage uri={object.img} objectID={object.objectID} /> : null}
+      {object.img ? <ObjectImage object={object} /> : null}
 
       {galleryPos && neighbors && galleryPos.total > 1 && (
         <View style={styles.cycleRow}>
