@@ -52,13 +52,14 @@ object page says "(gallery not in stub map)".
 
 ## Known gaps (honest list)
 
-- **Met CDN images vs the prod server's COEP**: `images.metmuseum.org` sends
-  *no* `Access-Control-Allow-Origin` and no CORP header (verified live
-  2026-06-10), so `crossorigin="anonymous"` requests can never load from it,
-  and a `Cross-Origin-Embedder-Policy: require-corp` response would block its
-  images entirely. The mockup uses plain no-cors `<img>` (works on the dev
-  server and plain static hosting). Phase 2 must use `COEP: credentialless`
-  or proxy images through `/api` before enabling SharedArrayBuffer/sqlite.
+- **Met CDN images vs the prod server's COEP** — RESOLVED (gate review):
+  `images.metmuseum.org` sends *no* `Access-Control-Allow-Origin` and no CORP
+  header (verified live 2026-06-10), so `require-corp` would block its images.
+  The server now proxies them at `GET /api/v1/img/{objectID}` (disk LRU cache
+  on the Fly volume, `ACAO *` + `CORP cross-origin`); web clients use the
+  proxy, native uses the CDN directly. The mockup (stub provider, no server)
+  still uses plain no-cors `<img>` pointing at the CDN — see
+  `apps/mobile/src/components/ObjectImage.tsx`.
 - The 3 Monets in stub data have no image: the Met flags them
   `isPublicDomain: false` (no CC0 image in the API). Rows render with an empty
   thumbnail box — which is also the honest production behavior.

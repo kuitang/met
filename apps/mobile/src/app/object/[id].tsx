@@ -40,7 +40,7 @@ export default function ObjectScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      {object.img ? <ObjectImage uri={object.img} /> : null}
+      {object.img ? <ObjectImage uri={object.img} objectID={object.objectID} /> : null}
 
       {roomMates.length > 1 && (
         <View style={styles.cycleRow}>

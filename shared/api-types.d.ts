@@ -41,6 +41,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/img/{objectID}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Cached proxy for an object's Met CDN image
+         * @description Disk-cached pass-through of objects.imageUrl from met.sqlite. Exists because images.metmuseum.org sends no CORS/CORP headers, which the web client's COEP (require-corp, needed for SharedArrayBuffer / expo-sqlite) would block. Only objectIDs present in the catalog with a non-empty imageUrl are served, so this is not an open proxy. The objectID→image mapping is stable, so responses are immutable; clients cache-bust with ?v={dataVersion} when the catalog updates.
+         */
+        get: operations["getObjectImage"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/search/interpret": {
         parameters: {
             query?: never;
@@ -265,6 +285,56 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    getObjectImage: {
+        parameters: {
+            query?: {
+                /** @description Cache-buster; clients pass the current dataVersion. */
+                v?: string;
+            };
+            header?: never;
+            path: {
+                objectID: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Image bytes (Met CDN pass-through; in practice JPEG) */
+            200: {
+                headers: {
+                    /** @description public, max-age=31536000, immutable */
+                    "Cache-Control"?: string;
+                    /** @description Always "*" (images are public CC0) */
+                    "Access-Control-Allow-Origin"?: string;
+                    "x-data-version": components["headers"]["XDataVersion"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "image/jpeg": string;
+                };
+            };
+            /** @description Unknown objectID, or the object has no image */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
+            };
+            429: components["responses"]["RateLimited"];
+            /** @description Upstream Met CDN fetch failed or timed out (never cached) */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
+                };
             };
             default: components["responses"]["Error"];
         };

@@ -46,6 +46,12 @@ export interface Route {
 }
 
 export interface DataProvider {
+  /**
+   * met.sqlite artifact version, used to cache-bust /api/v1/img URLs.
+   * The stub provider reports 'stub', which tells ObjectImage there is no
+   * server to proxy through (mockup mode → direct CDN URLs).
+   */
+  readonly dataVersion: string;
   /** Prefix/substring suggestions for the omnibar (objects + rooms). */
   searchAutocomplete(query: string, limit?: number): MetObject[];
   /** Full result list for the All Results screen. */
@@ -75,6 +81,7 @@ function norm(s: string): string {
 }
 
 export class StubDataProvider implements DataProvider {
+  readonly dataVersion = 'stub';
   private rooms = new Map(data.rooms.map((r) => [r.id, r]));
   private objects = new Map(data.objects.map((o) => [o.objectID, o]));
   private nodes = new Map(data.nodes.map((n) => [n.id, n]));

@@ -47,3 +47,6 @@ test-results/
 # Large local caches (re-fetchable; see data/src/embed-images.ts)
 data/raw/met-images/
 data/raw/met-objects/
+
+# Image-proxy disk cache (server/src/routes/img.ts; lives on the Fly volume in prod)
+data/img-cache/

@@ -31,7 +31,9 @@ E2E note: if :8081 is busy, point tests at any running instance with `JOURNEY_TA
 - `source ~/openai_key.sh` — OpenAI, legacy/planning benchmarks only; the product uses NO OpenAI.
 - `~/expo_key.txt` — EAS token for mobile builds (Phase 3).
 
-Server env: `PORT` (8787), `DATA_DIR` (default `data/`, expects `met.sqlite` + `VERSION`), `DATA_VERSION`, `RATE_LIMIT_RPM` (10), `RATE_LIMIT_BURST` (5), `LLM_DAILY_BUDGET` (2000/UTC-day).
+Server env: `PORT` (8787), `DATA_DIR` (default `data/`, expects `met.sqlite` + `VERSION`), `DATA_VERSION`, `RATE_LIMIT_RPM` (10), `RATE_LIMIT_BURST` (5), `LLM_DAILY_BUDGET` (2000/UTC-day), `IMG_CACHE_MAX_MB` (512), `IMG_RATE_LIMIT_RPM` (120), `IMG_RATE_LIMIT_BURST` (60).
+
+Client env: `EXPO_PUBLIC_API_URL` — API origin override (needed for metro-web-dev against a separate API server, and for native release builds); see `apps/mobile/src/data/apiBase.ts`.
 
 ## Deploy
 
@@ -43,7 +45,7 @@ Fly.io app name: `met-nav` (not yet created; Phase 3). Image = web export + Node
 - **LLM = Gemini only**, via `@google/genai`, **all LLM calls server-side** (`server/src/gemini.ts`). No OpenAI SDK, no provider abstractions.
 - **Parsimony**: no speculative flexibility, minimal deps, one artifact (`met.sqlite`) not fragments.
 - **Update ARCHITECTURE.md in the same commit as any structural change** (once it exists, Phase 2).
-- expo-sqlite on web needs SharedArrayBuffer: the server sends `Cross-Origin-Opener-Policy: same-origin` + a COEP header on everything. **Measured 2026-06-10: `images.metmuseum.org` sends NO `Access-Control-Allow-Origin` header**, so `COEP: require-corp` + `crossorigin="anonymous"` would block every Met CDN image — use `Cross-Origin-Embedder-Policy: credentialless` (or proxy images) instead, and load images as plain no-CORS `<img>` (see `apps/mobile/src/components/ObjectImage.tsx`).
+- expo-sqlite on web needs SharedArrayBuffer: the server sends `Cross-Origin-Opener-Policy: same-origin` + `Cross-Origin-Embedder-Policy: require-corp` on everything. **Measured 2026-06-10: `images.metmuseum.org` sends NO CORS/CORP headers**, so the Met CDN cannot be embedded under require-corp. **RESOLVED (gate review): the server proxies images** at `GET /api/v1/img/{objectID}` — disk LRU cache on the Fly volume (`DATA_DIR/img-cache/`, cap `IMG_CACHE_MAX_MB`), responses carry `Access-Control-Allow-Origin: *` + `Cross-Origin-Resource-Policy: cross-origin` so the cross-origin metro dev setup (page :8081, API :8787) also works under COEP. Web clients use the proxy with a `?v={dataVersion}` cache-buster; native keeps direct CDN URLs (no COEP, saves egress); the stub-provider mockup falls back to direct no-cors `<img>` (see `apps/mobile/src/components/ObjectImage.tsx` and `apps/mobile/src/data/apiBase.ts`).
 
 ## Data refresh model
 

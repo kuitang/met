@@ -3,17 +3,19 @@ import { serveStatic } from '@hono/node-server/serve-static'
 import { Hono } from 'hono'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { llmRateLimit } from './middleware/ratelimit.js'
+import { imgRateLimit, llmRateLimit } from './middleware/ratelimit.js'
 import { dataRoutes, getDataVersion } from './routes/data.js'
 import { healthRoutes } from './routes/health.js'
+import { imgRoutes } from './routes/img.js'
 import { interpretRoutes } from './routes/interpret.js'
 import { locateRoutes } from './routes/locate.js'
 
 const app = new Hono()
 
 // Cross-origin isolation on EVERY response: expo-sqlite's wasm backend needs
-// SharedArrayBuffer on web. Met image CDN sends ACAO:* so images survive COEP
-// when loaded with crossorigin="anonymous".
+// SharedArrayBuffer on web. The Met image CDN sends no CORS/CORP headers, so
+// require-corp would block it — web clients load images through our
+// /api/v1/img proxy instead (gate-review accepted).
 app.use('*', async (c, next) => {
   await next()
   c.res.headers.set('Cross-Origin-Opener-Policy', 'same-origin')
@@ -29,9 +31,11 @@ app.use('/api/*', async (c, next) => {
 
 app.use('/api/v1/search/interpret', llmRateLimit)
 app.use('/api/v1/locate/photo', llmRateLimit)
+app.use('/api/v1/img/*', imgRateLimit)
 
 app.route('/api/v1/health', healthRoutes)
 app.route('/api/v1/data', dataRoutes)
+app.route('/api/v1/img', imgRoutes)
 app.route('/api/v1/search/interpret', interpretRoutes)
 app.route('/api/v1/locate/photo', locateRoutes)
 

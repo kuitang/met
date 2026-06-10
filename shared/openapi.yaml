@@ -65,6 +65,66 @@ paths:
         default:
           $ref: "#/components/responses/Error"
 
+  /api/v1/img/{objectID}:
+    get:
+      operationId: getObjectImage
+      summary: Cached proxy for an object's Met CDN image
+      description: >
+        Disk-cached pass-through of objects.imageUrl from met.sqlite. Exists
+        because images.metmuseum.org sends no CORS/CORP headers, which the
+        web client's COEP (require-corp, needed for SharedArrayBuffer /
+        expo-sqlite) would block. Only objectIDs present in the catalog with a
+        non-empty imageUrl are served, so this is not an open proxy. The
+        objectID→image mapping is stable, so responses are immutable; clients
+        cache-bust with ?v={dataVersion} when the catalog updates.
+      parameters:
+        - name: objectID
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: v
+          in: query
+          required: false
+          description: Cache-buster; clients pass the current dataVersion.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Image bytes (Met CDN pass-through; in practice JPEG)
+          headers:
+            Cache-Control:
+              description: "public, max-age=31536000, immutable"
+              schema:
+                type: string
+            Access-Control-Allow-Origin:
+              description: Always "*" (images are public CC0)
+              schema:
+                type: string
+            x-data-version:
+              $ref: "#/components/headers/XDataVersion"
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                contentMediaType: image/jpeg
+        "404":
+          description: Unknown objectID, or the object has no image
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "502":
+          description: Upstream Met CDN fetch failed or timed out (never cached)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        default:
+          $ref: "#/components/responses/Error"
+
   /api/v1/search/interpret:
     post:
       operationId: interpretSearch
