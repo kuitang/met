@@ -44,7 +44,7 @@ E2E notes: if :8081 is busy, point tests at any running instance with `JOURNEY_T
 
 Server env: `PORT` (8787), `DATA_DIR` (default `data/`, expects `met.sqlite` + `VERSION`), `DATA_VERSION`, `RATE_LIMIT_RPM` (10), `RATE_LIMIT_BURST` (5), `LLM_DAILY_BUDGET` (2000/UTC-day), `IMG_CACHE_MAX_MB` (512), `IMG_RATE_LIMIT_RPM` (120), `IMG_RATE_LIMIT_BURST` (60), `LLM_MOCK` (1 = deterministic fixtures, no Gemini), `RUN_REFRESH` (0 disables the nightly self-refresh), `REFRESH_CRON_HOUR` (UTC hour, default 4), `ADMIN_TOKEN` (enables `POST /api/v1/admin/refresh`; endpoint 404s when unset).
 
-Client env: `EXPO_PUBLIC_API_URL` — API origin override (needed for metro-web-dev against a separate API server, and for native release builds); see `apps/mobile/src/data/apiBase.ts`. `EXPO_PUBLIC_DATA=real` — bundle-time switch to `SqliteDataProvider` (downloads + queries met.sqlite locally); default is the stub provider. `export:web` defaults to real.
+Client env: `EXPO_PUBLIC_API_URL` — API origin override for native builds and web DEV only (metro-web-dev against a separate API server); production web bundles deliberately ignore it (dead-code-eliminated) so the export stays origin-portable — web prod is always same-origin. See `apps/mobile/src/data/apiBase.ts`; `scripts/check-origin-portability.mjs` (`npm run check:origin`) fails the build if an origin-pinned URL lands in `apps/mobile/dist`. `EXPO_PUBLIC_DATA=real` — bundle-time switch to `SqliteDataProvider` (downloads + queries met.sqlite locally); default is the stub provider. `export:web` defaults to real.
 
 ## Deploy
 

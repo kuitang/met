@@ -1,6 +1,7 @@
 import { serve } from '@hono/node-server'
 import { serveStatic } from '@hono/node-server/serve-static'
 import { Hono } from 'hono'
+import { cors } from 'hono/cors'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { imgRateLimit, llmRateLimit } from './middleware/ratelimit.js'
@@ -32,6 +33,21 @@ app.use('/api/*', async (c, next) => {
   c.res.headers.set('x-data-version', await getDataVersion())
 })
 
+// CORS for the LLM POST endpoints. Prod web is same-origin and never
+// preflights, but the cross-origin clients need this: native apps POSTing at
+// prod and metro web dev (:8081 page → :8787 API), whose JSON POSTs trigger
+// an OPTIONS preflight. Same `*` opt-in the GET routes already carry
+// (routes/data.ts, routes/img.ts) — no credentials, public API, no origin
+// pinned. Registered BEFORE the rate limiters so 429s carry the headers too.
+const llmCors = cors({
+  origin: '*',
+  allowMethods: ['POST', 'OPTIONS'],
+  allowHeaders: ['Content-Type'],
+  exposeHeaders: ['x-data-version', 'Retry-After'],
+})
+app.use('/api/v1/search/interpret', llmCors)
+app.use('/api/v1/locate/photo', llmCors)
+
 app.use('/api/v1/search/interpret', llmRateLimit)
 app.use('/api/v1/locate/photo', llmRateLimit)
 app.use('/api/v1/img/*', imgRateLimit)
@@ -50,6 +66,18 @@ app.all('/api/*', (c) =>
 
 // Static Expo web export (apps/mobile: `npm run export:web`), SPA fallback.
 // serveStatic roots are resolved against cwd, so compute relative to this file.
+//
+// OG-META INJECTION SEAM (for the share-preview workstream): social-preview
+// meta tags (og:url, og:image, canonical) MUST be emitted with the *request*
+// origin — the same build serves a custom domain, met-nav.fly.dev, and PR
+// preview apps, so nothing absolute may be baked into dist/index.html.
+// Implementation point: replace the SPA-fallback line below with a handler
+// that reads dist/index.html once, then per request injects tags built from
+// the request origin: host = new URL(c.req.url).host (@hono/node-server
+// derives it from the Host header, which Fly's single trusted proxy
+// preserves as the public hostname), scheme = c.req.header(
+// 'x-forwarded-proto') ?? 'http' (the Node socket is plain http behind
+// Fly's TLS termination, so c.req.url's scheme is NOT trustworthy).
 const distRoot = path.relative(
   process.cwd(),
   fileURLToPath(new URL('../../apps/mobile/dist', import.meta.url)),

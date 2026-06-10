@@ -17,6 +17,7 @@
     "export:web": "npm -w apps/mobile run export:web",
     "server": "npm -w server run dev",
     "e2e": "npm -w e2e run test",
-    "evals": "npm -w data run evals"
+    "evals": "npm -w data run evals",
+    "check:origin": "node scripts/check-origin-portability.mjs"
   }
 }
