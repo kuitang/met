@@ -1,9 +1,14 @@
-# Gate review — Gates A · B · C (Phase 1) · D (Phase 2)
+# Gate review — Gates A · B · C (Phase 1) · D (Phase 2) — ALL HISTORICAL
 
-One page. Every number below was measured on this machine on 2026-06-10; commands to
-reproduce are inline.
+**LAUNCHED 2026-06-11.** Every gate below (including the final deployment
+gate #24 — user approval of the PR-2 preview) was reviewed, approved, and is
+now historical record. The product is live at https://musewalk.app
+(Fly app `musewalk`, CI/CD + nightly data refresh + PR previews); the
+operator runbook is [DEPLOY_NOTES.md](DEPLOY_NOTES.md), the system reference
+is [ARCHITECTURE.md](ARCHITECTURE.md). Numbers below were measured on this
+machine on 2026-06-10; commands to reproduce are inline.
 
-## Gate D — architecture + full integration (Phase 2) — READY FOR REVIEW
+## Gate D — architecture + full integration (Phase 2) — REVIEWED (historical)
 
 **Look at:** [`ARCHITECTURE.md`](ARCHITECTURE.md) — the system as actually built
 (one-artifact data flow, positioning design with the GPS eval evidence, LLM

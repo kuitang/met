@@ -28,11 +28,13 @@ Real-stack boot (journeys + the gated `dataprovider`/realmap specs run against t
 
 ```sh
 npm -w server run build && EXPO_PUBLIC_DATA=real npm -w apps/mobile run export:web
-GEMINI_API_KEY=$(cat ~/.gemini_key) RUN_REFRESH=0 RATE_LIMIT_RPM=120 RATE_LIMIT_BURST=60 DATA_DIR=$PWD/data PORT=8789 node server/dist/index.js
+GEMINI_API_KEY=$(cat ~/.gemini_key) RATE_LIMIT_RPM=120 RATE_LIMIT_BURST=60 DATA_DIR=$PWD/data PORT=8789 node server/dist/index.js
 JOURNEY_TARGET=http://localhost:8789 npm -w e2e run journeys     # then: node e2e/collect-videos.mjs
 ```
 
 Canonical journey recordings use the LIVE LLM (no `LLM_MOCK` — the videos show the whole app, Gemini included; pennies per run). The same journey suite also passes against an `LLM_MOCK=1` server for free deterministic re-runs.
+
+Vitest gotcha: `describe.skipIf(cond)` marks tests skipped but **still executes the describe body at collection** — any expensive/throwing fixture call at the top of the suite (e.g. `withDb()` opening `data/met.sqlite`) must itself be guarded on the same condition, or checkouts without the artifact crash with SQLITE_CANTOPEN instead of skipping.
 
 E2E notes: if :8081 is busy, point tests at any running instance with `JOURNEY_TARGET=http://localhost:PORT` (skips the managed webServer). `REAL_TARGET=http://localhost:PORT` arms `e2e/checks/dataprovider.spec.ts` (boot recipe in its header). `npm -w server run dev` runs with cwd `server/` — pass an absolute `DATA_DIR`.
 
@@ -42,13 +44,13 @@ E2E notes: if :8081 is busy, point tests at any running instance with `JOURNEY_T
 - `source ~/openai_key.sh` — OpenAI, legacy/planning benchmarks only; the product uses NO OpenAI.
 - `~/expo_key.txt` — EAS token for mobile builds (Phase 3).
 
-Server env: `PORT` (8787), `DATA_DIR` (default `data/`, expects `met.sqlite` + `VERSION`), `DATA_VERSION`, `RATE_LIMIT_RPM` (10), `RATE_LIMIT_BURST` (5), `LLM_DAILY_BUDGET` (2000/UTC-day), `IMG_CACHE_MAX_MB` (512), `IMG_RATE_LIMIT_RPM` (120), `IMG_RATE_LIMIT_BURST` (60), `LLM_MOCK` (1 = deterministic fixtures, no Gemini), `RUN_REFRESH` (0 disables the nightly self-refresh), `REFRESH_CRON_HOUR` (UTC hour, default 4), `ADMIN_TOKEN` (enables `POST /api/v1/admin/refresh`; endpoint 404s when unset).
+Server env: `PORT` (8787), `DATA_DIR` (default `data/`, expects `met.sqlite` + `VERSION`), `DATA_VERSION`, `RATE_LIMIT_RPM` (10), `RATE_LIMIT_BURST` (5), `LLM_DAILY_BUDGET` (2000/UTC-day), `IMG_CACHE_MAX_MB` (512), `IMG_RATE_LIMIT_RPM` (120), `IMG_RATE_LIMIT_BURST` (60), `LLM_MOCK` (1 = deterministic fixtures, no Gemini).
 
 Client env: `EXPO_PUBLIC_API_URL` — API origin override for native builds and web DEV only (metro-web-dev against a separate API server); production web bundles deliberately ignore it (dead-code-eliminated) so the export stays origin-portable — web prod is always same-origin. See `apps/mobile/src/data/apiBase.ts`; `scripts/check-origin-portability.mjs` (`npm run check:origin`) fails the build if an origin-pinned URL lands in `apps/mobile/dist`. `EXPO_PUBLIC_DATA=real` — bundle-time switch to `SqliteDataProvider` (downloads + queries met.sqlite locally); default is the stub provider. `export:web` defaults to real.
 
-## Deploy
+## Deploy (LAUNCHED — see DEPLOY_NOTES.md for the operator runbook)
 
-Fly.io app name: `musewalk` (prod, https://musewalk.app). Image = web export + Node server serving `dist/` and `/api`; artifacts baked at build, no volumes.
+Fly.io app `musewalk` (prod, canonical https://musewalk.app; www + musewalk.fly.dev 301 to apex). Image = web export + Node server serving `dist/` and `/api`; artifacts baked at build from the Tigris `latest/` pointer, no volumes. All changes land as squash PRs (`main` is protected, required check `ci`); the `deploy` job in `ci.yml` ships `main` automatically, `fly-preview.yml` gives every PR a `musewalk-pr-{n}` app, and `nightly-data.yml` (03:23 UTC) refreshes data then redeploys. Mobile: EAS builds from `apps/mobile` (APK via `preview` profile; iOS store builds + TestFlight submit config in `eas.json`).
 
 ## Architecture rules (hard)
 
@@ -61,10 +63,8 @@ Fly.io app name: `musewalk` (prod, https://musewalk.app). Image = web export + N
 
 ## Data refresh model
 
-- Server runs a nightly self-refresh (`server/src/refresh.ts`, fires at `REFRESH_CRON_HOUR` UTC): Met API objects delta (`metadataDate`) → incremental synonyms → `build-db.ts` into a staging dir → atomic swap (previous artifact kept as `met.sqlite.prev`) → in-process handle reload. Manual trigger: `POST /api/v1/admin/refresh` with `Authorization: Bearer $ADMIN_TOKEN`. Clients poll `GET /api/v1/data/version` and re-download via ETag.
-- Deploy note (Phase 3): the server image must ship `data/src` + `tsx` (refresh spawns the pipeline scripts) and set `GEMINI_API_KEY` + `ADMIN_TOKEN`.
-- The same pipeline code is runnable locally via the `data` workspace scripts; dated snapshots go in `data/snapshots/`.
-- Transient state (2026-06-10): committed `data/met.sqlite` is a partial (120-object) snapshot; the full 45.5k hydration + an image-embedding index build run in the background with watchers that rebuild the DB and re-run evals/goldens when done. All code and tests are row-count-independent.
+- The server has NO refresh machinery (parsimony). Data refresh = the nightly GitHub Actions job (`.github/workflows/nightly-data.yml`, `data/src/nightly.ts`): Met API delta → incremental embeddings → `build-db.ts` → Tigris upload + verified `latest/` pointer commit → prod redeploy (Docker build bakes the fresh artifacts). Manual retry: `gh workflow run nightly-data.yml`. Clients poll `GET /api/v1/data/version` and re-download via ETag.
+- `data/met.sqlite` + `VERSION` are NOT in git — pull via `data/src/fetch-artifacts.ts` or rebuild with `npm -w data run build-db`. The same pipeline code runs locally via the `data` workspace scripts; dated snapshots go in `data/snapshots/`.
 
 ## Etiquette (external services)
 

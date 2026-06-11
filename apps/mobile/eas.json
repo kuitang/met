@@ -25,5 +25,15 @@
         "EXPO_PUBLIC_DATA": "real"
       }
     }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "ascApiKeyPath": "/home/kuitang/AuthKey_2UL86AV6L8.p8",
+        "ascApiKeyId": "2UL86AV6L8",
+        "ascApiKeyIssuerId": "71e0beb7-1b5c-4170-b7f4-bb85f2aaf4db",
+        "bundleIdentifier": "com.kuitang.metnav"
+      }
+    }
   }
 }
