@@ -1,0 +1,49 @@
+# Publishes the git-tracked data/met.sqlite to the Tigris artifact registry as a
+# new v{dataVersion}/ prefix and flips the latest/manifest.json pointer.
+# Embedding shards are carried forward unchanged via server-side copy.
+# Manual-only: met.sqlite changes land via PR, then a maintainer dispatches this.
+# (The full rebuild+publish path is nightly-data.yml on the deploy pipeline branch.)
+name: publish-artifacts
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Upload new version prefix, readback-verify, flip latest pointer
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.TIGRIS_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.TIGRIS_AWS_SECRET_ACCESS_KEY }}
+          AWS_ENDPOINT_URL_S3: ${{ secrets.TIGRIS_AWS_ENDPOINT }}
+          AWS_REGION: auto
+          BUCKET: met-artifacts
+        run: |
+          set -euo pipefail
+          DV="$(cat data/VERSION)"
+          VER="v$DV"
+          aws s3 cp "s3://$BUCKET/latest/manifest.json" old-manifest.json
+          OLD_VER="$(jq -r .version old-manifest.json)"
+          echo "publishing $VER (current pointer: $OLD_VER)"
+          # Carry forward embedding shards unchanged (server-side copies).
+          jq -r '.files[].key' old-manifest.json | while read -r k; do
+            rel="${k#"$OLD_VER"/}"   # normalize version-prefixed keys
+            case "$rel" in image-embeddings/*) ;; *) continue ;; esac
+            aws s3 cp --no-progress "s3://$BUCKET/$OLD_VER/$rel" "s3://$BUCKET/$VER/$rel"
+          done
+          aws s3 cp --no-progress data/met.sqlite "s3://$BUCKET/$VER/met.sqlite"
+          SHA="$(sha256sum data/met.sqlite | cut -d' ' -f1)"
+          BYTES="$(stat -c%s data/met.sqlite)"
+          jq --arg ver "$VER" --arg dv "$DV" --arg sha "$SHA" --argjson bytes "$BYTES" \
+             --arg now "$(date -u +%FT%T.%3NZ)" --arg old "$OLD_VER/" '
+            .version=$ver | .dataVersion=$dv | .builtAt=$now |
+            .files = ([{key:"met.sqlite",sha256:$sha,bytes:$bytes}]
+                      + [.files[] | .key |= ltrimstr($old) | select(.key|startswith("image-embeddings/"))])
+          ' old-manifest.json > manifest.json
+          aws s3 cp --no-progress manifest.json "s3://$BUCKET/$VER/manifest.json"
+          # Readback-verify the artifact bytes before flipping the pointer.
+          aws s3 cp --no-progress "s3://$BUCKET/$VER/met.sqlite" readback.sqlite
+          [ "$(sha256sum readback.sqlite | cut -d' ' -f1)" = "$SHA" ]
+          aws s3 cp --no-progress manifest.json "s3://$BUCKET/latest/manifest.json"
+          echo "published $VER and flipped latest/manifest.json"

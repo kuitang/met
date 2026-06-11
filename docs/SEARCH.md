@@ -60,11 +60,88 @@ I'M HERE) open. Known limitation: the Great Hall has no gallery polygon in
 the Living Map data, so "great hall" surfaces its amenities (Great Hall
 Balcony Cafe, the escalator) rather than a gallery row.
 
+### Typo tolerance (`autocompleteFuzzy` — fires only on zero rows)
+
+Two-stage vocabulary correction, the standard search-as-you-type pattern.
+Correct spellings never touch it: the exact prefix query runs first and any
+non-empty result returns unchanged, so the fast path carries **zero added
+latency and zero regression risk**. Only a zero-row keystroke (e.g. "Harlw")
+enters the fuzzy pipeline:
+
+1. **Per-token triage.** Each token is probed against the real index
+   (`objects_fts MATCH '"tok"*' LIMIT 1`); tokens that still prefix-match
+   stay as-is, the rest get corrected ("monet watr lilies" only corrects
+   "watr").
+2. **Candidate generation** — `vocab` + `vocab_trigram` (build-db.ts): every
+   distinct searchable token (len ≥ 3, diacritics folded) plus multi-word
+   artist names, with document frequency — 24,241 terms, **+1.7 MB raw /
+   +0.9 MB gzip** on met.sqlite (29.2 → 30.9 raw; budget was <3 MB). The
+   trigram FTS index is queried with an OR of the trigrams of the token PLUS
+   its adjacent-swap variants — a transposition ("mnoet") shares zero
+   trigrams with its target, but one swap variant IS the target; bm25 over
+   the OR ranks shared-trigram count, top 50 survive. Trigram feasibility was
+   verified in all three shipped runtimes before building: better-sqlite3
+   3.53.1 and `@sqlite.org/sqlite-wasm` 3.53.0 by live query, expo-sqlite's
+   vendored 3.50.3 by amalgamation inspection (`SQLITE_ENABLE_FTS5` set on
+   android/iOS/SPM; trigram is core FTS5 since 3.34).
+3. **Rerank** by length-normalized Damerau-Levenshtein — the better of
+   whole-term distance and distance to the candidate's prefix of the token's
+   length (±1), so "harlw" is 1 edit from "harle(quin)", not 5 from
+   "harlequin". Accept ≤ 0.34 (~1 edit per 3 chars); order by distance minus
+   a small `log10(df)` bonus so near-ties go to common terms ("drgas" →
+   degas/107 docs, not durgas/4).
+4. **Compound splits as 1-edit siblings**: a missing space costs `1/len` on
+   the same scale, and an index-validated split (both halves prefix-match the
+   same row) wins only when strictly cheaper — "goldsword" (0.11) splits to
+   `"gold"* AND "sword"*` over goldwork (0.22); "monnet" (tie at 0.17) stays
+   monet, never mon|net. Splits also rescue corrections-less compounds
+   ("eyeidol", "stilllife", "washingtoncrossing").
+5. **Two-pass execution**: the original query re-runs with each bad token
+   replaced by its best correction (complete vocab terms, unstarred — porter
+   covers morphology; multi-word corrections like "van gogh" stay quoted
+   phrases). Only if that returns zero rows does an OR-expanded variant (top
+   3 corrections per token) run — the conservative pass keeps "osiriss" →
+   osiris from being flooded by sibling osiride's shorter-title bm25 wins.
+   Explicit `AND` between parts: FTS5 implicit AND does not parse next to
+   parenthesized groups (a silent zero-rows failure mode, caught by the eval).
+6. **Confident-or-nothing**: a token with no acceptable correction and no
+   valid split vetoes the whole query — gibberish returns empty rather than
+   noise, which is what bounds the false-positive rate below.
+
+A met.sqlite predating the vocab tables degrades to the old empty-result
+behavior (the fuzzy stage is try-caught) until the client re-downloads.
+
+**Measured** (`data/evals/typo-cases.json`, 82 typo cases generated from real
+catalog titles/artists across 8 error classes + 20 gibberish negatives;
+runner `data/evals/run-typos.mjs`, also gated into `shared/search.test.ts`):
+
+| metric | target | better-sqlite3 | sqlite-wasm (shipped web runtime) |
+|---|---|---|---|
+| recall@8, typo cases | ≥ 85% | **96% (79/82)** | **96% (79/82)** |
+| false positives, 20 negatives | ≤ 10% | **10% (2/20)** | **10% (2/20)** |
+| fuzzy-path latency | p95 < 30 ms | p50 1.7 / p95 4.9 ms | **p50 2.3 / p95 6.8 ms** |
+| exact-path latency (unchanged) | — | p50 0.04 ms | p50 0.07 ms |
+
+Per class: transposition 12/12, missing-letter 12/12, doubled-letter 10/10,
+phonetic 10/10, word-boundary 8/8, multi-token 8/8, truncation+typo 9/10,
+adjacent-key 10/12. The three misses are genuinely ambiguous 1-edit
+alternatives the catalog itself supports — "monwt" → *Mont* Sainte-Victoire
+(1 deletion) vs Monet (1 substitution), "turnef" → *Turned* armchair vs
+Turner, "relicar" → relief+cartouches split vs reliquary (2 edits) — fixable
+only with keyboard-adjacency edit costs, not worth the complexity at 96%.
+The two negative FPs ("florpus" → florenus, "xylozonk" → xylophone-family
+instruments) are legitimate ≤0.34 matches of nonsense to rare real terms;
+tightening the threshold below them costs real recall (sfinx → sphinx scores
+0.33).
+
 ## Tier 2 — all results (same module, plus filters)
 
 The autocomplete query without LIMIT, plus plain WHERE filters: site
 (Fifth Ave / Cloisters), floor, permanent vs. exhibition rotation, has-image.
 This is the overflow target ("142 results for Monet") and runs in ~1 ms.
+Typo tolerance is deliberately tier-1-only for now: a misspelled query
+surfaces corrected suggestions as you type, and a zero-row tier-2 page
+escalates to tier 3 per the existing design.
 
 ## Tier 3 — LLM interpret (the only server hop)
 

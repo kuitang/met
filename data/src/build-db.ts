@@ -254,6 +254,23 @@ function main(): void {
     CREATE INDEX graph_edges_a ON graph_edges(a);
     CREATE INDEX graph_edges_b ON graph_edges(b);
 
+    -- Typo-tolerance vocabulary (shared/search.ts fuzzy autocomplete): every
+    -- distinct searchable token (len >= 3, lowercased, diacritics folded)
+    -- across the FTS columns plus multi-word artist names, with document
+    -- frequency. The trigram FTS index generates correction candidates for
+    -- misspelled tokens ("harlw" -> "harlequin"); trigram is core FTS5 since
+    -- 3.34 and verified in all three shipped runtimes (better-sqlite3 3.53,
+    -- sqlite-wasm 3.53, expo-sqlite vendored 3.50.3 + SQLITE_ENABLE_FTS5).
+    -- detail=column: the OR-of-trigrams candidate query never reads positions.
+    CREATE TABLE vocab (
+      id   INTEGER PRIMARY KEY,
+      term TEXT NOT NULL UNIQUE,
+      df   INTEGER NOT NULL
+    );
+    CREATE VIRTUAL TABLE vocab_trigram USING fts5(
+      term, content=vocab, content_rowid=id, tokenize='trigram', detail=column
+    );
+
     CREATE TABLE blobs (key TEXT PRIMARY KEY, value BLOB NOT NULL);
     CREATE TABLE meta  (key TEXT PRIMARY KEY, value TEXT NOT NULL);
   `);
@@ -309,6 +326,42 @@ function main(): void {
     }
   })();
   db.exec("INSERT INTO objects_fts(objects_fts) VALUES ('optimize')");
+
+  // ---- typo-tolerance vocabulary (fuzzy autocomplete candidate source) ------
+  // Tokenization mirrors what unicode61 does to latin text: lowercase, fold
+  // diacritics, split on non-alphanumerics. Tokens < 3 chars carry no trigram
+  // and are never fuzzy-corrected (the exact prefix path handles them).
+  // Multi-word artist names (each ";"-separated artist) are stored whole so a
+  // missing-space typo ("vangogh") can correct to the phrase "van gogh".
+  const fold = (s: string): string =>
+    s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  const vocabTokens = (s: string): string[] =>
+    fold(s).split(/[^a-z0-9]+/).filter((t) => t.length >= 3);
+  const termDf = new Map<string, number>();
+  const allObjects = db
+    .prepare("SELECT title, artist, culture, classification, medium, tags, synonyms FROM objects")
+    .all() as Array<Record<string, string>>;
+  for (const o of allObjects) {
+    const seen = new Set<string>();
+    for (const field of [o.title, o.artist, o.culture, o.classification, o.medium, o.tags, o.synonyms])
+      for (const t of vocabTokens(field)) seen.add(t);
+    for (const name of o.artist.split(";")) {
+      const phrase = vocabTokens(name).join(" ");
+      if (phrase.includes(" ") && phrase.length <= 40) seen.add(phrase);
+    }
+    for (const t of seen) termDf.set(t, (termDf.get(t) ?? 0) + 1);
+  }
+  const insVocab = db.prepare("INSERT INTO vocab(id, term, df) VALUES (?, ?, ?)");
+  const insVocabFts = db.prepare("INSERT INTO vocab_trigram(rowid, term) VALUES (?, ?)");
+  db.transaction(() => {
+    let id = 0;
+    for (const [term, df] of termDf) {
+      id++;
+      insVocab.run(id, term, df);
+      insVocabFts.run(id, term);
+    }
+  })();
+  db.exec("INSERT INTO vocab_trigram(vocab_trigram) VALUES ('optimize')");
 
   // "Floor 1M" -> "1M"; the label form clients display and filter on.
   const floorLabel = (floorName: unknown): string =>
@@ -379,6 +432,7 @@ function main(): void {
 
   const counts = {
     objects: objects.length,
+    vocab: termDf.size,
     galleries: galleryFeatures.length,
     amenities: amenitiesGeo.features.length,
     graphNodes: graph.nodes.length,
@@ -425,6 +479,16 @@ function main(): void {
       );
     }
   }
+
+  const trig = v
+    .prepare(`
+      SELECT vv.term FROM vocab_trigram t JOIN vocab vv ON vv.id = t.rowid
+      WHERE vocab_trigram MATCH '"har" OR "arl" OR "rlw"'
+      ORDER BY bm25(vocab_trigram) LIMIT 3
+    `)
+    .all()
+    .map((r) => (r as { term: string }).term);
+  console.log(`\nvocab trigram 'harlw' candidates → ${trig.join(", ") || "(none)"}`);
 
   const cov = v
     .prepare(`

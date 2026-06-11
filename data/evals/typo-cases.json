@@ -1,0 +1,518 @@
+{
+  "description": "Typo-tolerance eval for the fuzzy autocomplete path (shared/search.ts autocompleteFuzzy) against the real data/met.sqlite. All inputs derive from REAL catalog titles/artists; every typo case yields ZERO rows on the exact prefix path (asserted by the runner) so each one exercises the trigram+edit-distance correction. A typo case passes when a top-8 row matches any expectation (recall@8). A negative case (class 'negative') passes when autocompleteFuzzy returns ZERO rows — gibberish must not produce confident matches. Runner: run-typos.mjs (correctness + p50/p95 latency on better-sqlite3 and the shipped sqlite-wasm runtime). Targets: recall@8 >= 85%, negative false-positive rate <= 10%, fuzzy-path p95 < 30 ms on wasm.",
+  "cases": [
+    {
+      "input": "harlw",
+      "class": "truncation+typo",
+      "expectTitleContains": "harlequin",
+      "note": "the user-reported case"
+    },
+    {
+      "input": "sarcofag",
+      "class": "truncation+typo",
+      "expectTitleContains": "sarcophagus"
+    },
+    {
+      "input": "amphro",
+      "class": "truncation+typo",
+      "expectTitleContains": "amphora"
+    },
+    {
+      "input": "anunci",
+      "class": "truncation+typo",
+      "expectTitleContains": "annunciation"
+    },
+    {
+      "input": "hatshepst",
+      "class": "truncation+typo",
+      "expectTitleContains": "hatshepsut"
+    },
+    {
+      "input": "harpsicor",
+      "class": "truncation+typo",
+      "expectTitleContains": "harpsichord"
+    },
+    {
+      "input": "akhenatn",
+      "class": "truncation+typo",
+      "expectTitleContains": "akhenaten"
+    },
+    {
+      "input": "crucifx",
+      "class": "truncation+typo",
+      "expectTitleContains": "crucifix"
+    },
+    {
+      "input": "bodhisatv",
+      "class": "truncation+typo",
+      "expectTitleContains": "bodhisattva"
+    },
+    {
+      "input": "relicar",
+      "class": "truncation+typo",
+      "expectTitleContains": "reliquary"
+    },
+    {
+      "input": "mnoet",
+      "class": "transposition",
+      "expectArtistContains": "monet"
+    },
+    {
+      "input": "dgeas",
+      "class": "transposition",
+      "expectArtistContains": "degas"
+    },
+    {
+      "input": "vremeer",
+      "class": "transposition",
+      "expectArtistContains": "vermeer"
+    },
+    {
+      "input": "rmebrandt",
+      "class": "transposition",
+      "expectArtistContains": "rembrandt"
+    },
+    {
+      "input": "shpinx",
+      "class": "transposition",
+      "expectTitleContains": "sphinx"
+    },
+    {
+      "input": "dnedur",
+      "class": "transposition",
+      "expectTitleContains": "dendur"
+    },
+    {
+      "input": "mdaonna",
+      "class": "transposition",
+      "expectTitleContains": "madonna"
+    },
+    {
+      "input": "atsrolabe",
+      "class": "transposition",
+      "expectTitleContains": "astrolabe"
+    },
+    {
+      "input": "ktaana",
+      "class": "transposition",
+      "expectTitleContains": "katana"
+    },
+    {
+      "input": "veremer",
+      "class": "transposition",
+      "expectArtistContains": "vermeer",
+      "note": "m<->e swap; distinct from vremeer"
+    },
+    {
+      "input": "oisris",
+      "class": "transposition",
+      "expectTitleContains": "osiris"
+    },
+    {
+      "input": "gauguni",
+      "class": "transposition",
+      "expectArtistContains": "gauguin"
+    },
+    {
+      "input": "sphnx",
+      "class": "missing-letter",
+      "expectTitleContains": "sphinx"
+    },
+    {
+      "input": "rembrant",
+      "class": "missing-letter",
+      "expectArtistContains": "rembrandt"
+    },
+    {
+      "input": "chandelir",
+      "class": "missing-letter",
+      "expectTitleContains": "chandelier"
+    },
+    {
+      "input": "tapstry",
+      "class": "missing-letter",
+      "expectTitleContains": "tapestry"
+    },
+    {
+      "input": "aphrodte",
+      "class": "missing-letter",
+      "expectTitleContains": "aphrodite"
+    },
+    {
+      "input": "posedon",
+      "class": "missing-letter",
+      "expectTitleContains": "poseidon"
+    },
+    {
+      "input": "reliqary",
+      "class": "missing-letter",
+      "expectTitleContains": "reliquary"
+    },
+    {
+      "input": "trptych",
+      "class": "missing-letter",
+      "expectTitleContains": "triptych"
+    },
+    {
+      "input": "unicrn",
+      "class": "missing-letter",
+      "expectTitleContains": "unicorn"
+    },
+    {
+      "input": "crucifxion",
+      "class": "missing-letter",
+      "expectTitleContains": "crucifixion"
+    },
+    {
+      "input": "ushbti",
+      "class": "missing-letter",
+      "expectTitleContains": "ushabti"
+    },
+    {
+      "input": "gntlet",
+      "class": "missing-letter",
+      "expectTitleContains": "gauntlet"
+    },
+    {
+      "input": "harlequinn",
+      "class": "doubled-letter",
+      "expectTitleContains": "harlequin"
+    },
+    {
+      "input": "monnet",
+      "class": "doubled-letter",
+      "expectArtistContains": "monet"
+    },
+    {
+      "input": "sphinnx",
+      "class": "doubled-letter",
+      "expectTitleContains": "sphinx"
+    },
+    {
+      "input": "degass",
+      "class": "doubled-letter",
+      "expectArtistContains": "degas"
+    },
+    {
+      "input": "vermeerr",
+      "class": "doubled-letter",
+      "expectArtistContains": "vermeer"
+    },
+    {
+      "input": "madonnna",
+      "class": "doubled-letter",
+      "expectTitleContains": "madonna"
+    },
+    {
+      "input": "katanna",
+      "class": "doubled-letter",
+      "expectTitleContains": "katana"
+    },
+    {
+      "input": "anubiss",
+      "class": "doubled-letter",
+      "expectTitleContains": "anubis"
+    },
+    {
+      "input": "osiriss",
+      "class": "doubled-letter",
+      "expectTitleContains": "osiris"
+    },
+    {
+      "input": "akhenatten",
+      "class": "doubled-letter",
+      "expectTitleContains": "akhenaten"
+    },
+    {
+      "input": "monwt",
+      "class": "adjacent-key",
+      "expectArtistContains": "monet",
+      "note": "e->w"
+    },
+    {
+      "input": "sphjnx",
+      "class": "adjacent-key",
+      "expectTitleContains": "sphinx",
+      "note": "i->j"
+    },
+    {
+      "input": "vermeet",
+      "class": "adjacent-key",
+      "expectArtistContains": "vermeer",
+      "note": "r->t"
+    },
+    {
+      "input": "rembtandt",
+      "class": "adjacent-key",
+      "expectArtistContains": "rembrandt",
+      "note": "r->t"
+    },
+    {
+      "input": "drgas",
+      "class": "adjacent-key",
+      "expectArtistContains": "degas",
+      "note": "e->r"
+    },
+    {
+      "input": "hatlequin",
+      "class": "adjacent-key",
+      "expectTitleContains": "harlequin",
+      "note": "r->t"
+    },
+    {
+      "input": "sargwnt",
+      "class": "adjacent-key",
+      "expectArtistContains": "sargent",
+      "note": "e->w"
+    },
+    {
+      "input": "gauguim",
+      "class": "adjacent-key",
+      "expectArtistContains": "gauguin",
+      "note": "n->m"
+    },
+    {
+      "input": "renoit",
+      "class": "adjacent-key",
+      "expectArtistContains": "renoir",
+      "note": "r->t"
+    },
+    {
+      "input": "homwr",
+      "class": "adjacent-key",
+      "expectArtistContains": "homer",
+      "note": "e->w"
+    },
+    {
+      "input": "turnef",
+      "class": "adjacent-key",
+      "expectArtistContains": "turner",
+      "note": "r->f"
+    },
+    {
+      "input": "seurst",
+      "class": "adjacent-key",
+      "expectArtistContains": "seurat",
+      "note": "a->s"
+    },
+    {
+      "input": "sfinx",
+      "class": "phonetic",
+      "expectTitleContains": "sphinx"
+    },
+    {
+      "input": "sarcofagus",
+      "class": "phonetic",
+      "expectTitleContains": "sarcophagus"
+    },
+    {
+      "input": "harlekin",
+      "class": "phonetic",
+      "expectTitleContains": "harlequin"
+    },
+    {
+      "input": "afrodite",
+      "class": "phonetic",
+      "expectTitleContains": "aphrodite"
+    },
+    {
+      "input": "delawear",
+      "class": "phonetic",
+      "expectTitleContains": "delaware"
+    },
+    {
+      "input": "tiffanee",
+      "class": "phonetic",
+      "expectArtistContains": "tiffany"
+    },
+    {
+      "input": "shandelier",
+      "class": "phonetic",
+      "expectTitleContains": "chandelier"
+    },
+    {
+      "input": "catana",
+      "class": "phonetic",
+      "expectTitleContains": "katana"
+    },
+    {
+      "input": "osyris",
+      "class": "phonetic",
+      "expectTitleContains": "osiris"
+    },
+    {
+      "input": "annubis",
+      "class": "phonetic",
+      "expectTitleContains": "anubis"
+    },
+    {
+      "input": "vangogh",
+      "class": "word-boundary",
+      "expectArtistContains": "van gogh"
+    },
+    {
+      "input": "elgreco",
+      "class": "word-boundary",
+      "expectArtistContains": "el greco"
+    },
+    {
+      "input": "waterlilies",
+      "class": "word-boundary",
+      "expectTitleContains": "water lilies"
+    },
+    {
+      "input": "eyeidol",
+      "class": "word-boundary",
+      "expectObjectIDs": [
+        324145
+      ],
+      "note": "Tell Brak eye idol"
+    },
+    {
+      "input": "goldsword",
+      "class": "word-boundary",
+      "expectTitleContains": "sword"
+    },
+    {
+      "input": "washingtoncrossing",
+      "class": "word-boundary",
+      "expectObjectIDs": [
+        11417
+      ]
+    },
+    {
+      "input": "selfportrait",
+      "class": "word-boundary",
+      "expectTitleContains": "self-portrait"
+    },
+    {
+      "input": "stilllife",
+      "class": "word-boundary",
+      "expectTitleContains": "still life"
+    },
+    {
+      "input": "monet watr lilies",
+      "class": "multi-token",
+      "expectArtistContains": "monet"
+    },
+    {
+      "input": "wheat field cyprsses",
+      "class": "multi-token",
+      "expectObjectIDs": [
+        436535
+      ]
+    },
+    {
+      "input": "temple of dendor",
+      "class": "multi-token",
+      "expectTitleContains": "dendur"
+    },
+    {
+      "input": "washington crosing delaware",
+      "class": "multi-token",
+      "expectObjectIDs": [
+        11417
+      ]
+    },
+    {
+      "input": "madona and child",
+      "class": "multi-token",
+      "expectTitleContains": "madonna"
+    },
+    {
+      "input": "egyptian sphnix",
+      "class": "multi-token",
+      "expectTitleContains": "sphinx"
+    },
+    {
+      "input": "tiffany lmap",
+      "class": "multi-token",
+      "expectTitleContains": "lamp"
+    },
+    {
+      "input": "van gogh cipresses",
+      "class": "multi-token",
+      "expectTitleContains": "cypresses"
+    },
+    {
+      "input": "xqzpt",
+      "class": "negative"
+    },
+    {
+      "input": "qwerty",
+      "class": "negative"
+    },
+    {
+      "input": "asdfghjkl",
+      "class": "negative"
+    },
+    {
+      "input": "zzzzzz",
+      "class": "negative"
+    },
+    {
+      "input": "plokijuh",
+      "class": "negative"
+    },
+    {
+      "input": "mxyzptlk",
+      "class": "negative"
+    },
+    {
+      "input": "fnordwib",
+      "class": "negative"
+    },
+    {
+      "input": "blorptang",
+      "class": "negative"
+    },
+    {
+      "input": "kwyjibo",
+      "class": "negative"
+    },
+    {
+      "input": "zxcvbnm",
+      "class": "negative"
+    },
+    {
+      "input": "qqqqq",
+      "class": "negative"
+    },
+    {
+      "input": "wubbalubba",
+      "class": "negative"
+    },
+    {
+      "input": "florpus",
+      "class": "negative"
+    },
+    {
+      "input": "snarfblat",
+      "class": "negative"
+    },
+    {
+      "input": "gleeblegob",
+      "class": "negative"
+    },
+    {
+      "input": "vrumptz",
+      "class": "negative"
+    },
+    {
+      "input": "xylozonk",
+      "class": "negative"
+    },
+    {
+      "input": "jjjjjjj",
+      "class": "negative"
+    },
+    {
+      "input": "uqxzvw",
+      "class": "negative"
+    },
+    {
+      "input": "ploykm vexqz",
+      "class": "negative"
+    }
+  ]
+}

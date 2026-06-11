@@ -9,14 +9,21 @@ import {
   buildAccessionSearchQuery,
   buildAutocompleteQuery,
   buildFullQuery,
+  buildFuzzyCandidatesQuery,
   buildGalleryNeighborsQuery,
   buildGalleryPositionQuery,
   GALLERY_ORDER,
   amenityIntent,
   autocomplete,
+  autocompleteFuzzy,
+  damerauLevenshtein,
+  foldDiacritics,
   fullSearch,
+  fuzzyPrefixMatch,
   matchGalleries,
+  rankCorrections,
   type DbHandle,
+  type RunSync,
   type SearchRow,
 } from "./search.ts";
 
@@ -124,6 +131,66 @@ describe("amenityIntent", () => {
   }
 });
 
+// ---------------------------------------------------------------- unit: fuzzy pieces
+
+describe("damerauLevenshtein", () => {
+  const table: Array<[string, string, number]> = [
+    ["monet", "monet", 0],
+    ["mnoet", "monet", 1], // adjacent transposition = 1 (the OSA point)
+    ["sphnx", "sphinx", 1], // missing letter
+    ["monnet", "monet", 1], // doubled letter
+    ["monwt", "monet", 1], // substitution
+    ["harlw", "harle", 1],
+    ["harlw", "harlequin", 5],
+    ["", "abc", 3],
+  ];
+  for (const [a, b, d] of table) {
+    it(`d(${JSON.stringify(a)}, ${JSON.stringify(b)}) = ${d}`, () =>
+      expect(damerauLevenshtein(a, b)).toBe(d));
+  }
+});
+
+describe("foldDiacritics", () => {
+  it("lowercases and strips combining marks", () => {
+    expect(foldDiacritics("Cézanne Édouard Müller")).toBe("cezanne edouard muller");
+  });
+});
+
+describe("buildFuzzyCandidatesQuery", () => {
+  it("ORs quoted trigrams of the token AND its adjacent-swap variants", () => {
+    const q = buildFuzzyCandidatesQuery("mnoet")!;
+    const m = q.params[0] as string;
+    for (const tg of ["mno", "noe", "oet"]) expect(m).toContain(`"${tg}"`);
+    // swap variant "monet" contributes the trigrams the transposition destroyed
+    for (const tg of ["mon", "one", "net"]) expect(m).toContain(`"${tg}"`);
+    expect(q.sql).toContain("vocab_trigram MATCH ?");
+    expect(q.sql).toContain("bm25(vocab_trigram)");
+  });
+  it("returns null for tokens too short to carry a trigram", () => {
+    expect(buildFuzzyCandidatesQuery("ab")).toBeNull();
+  });
+});
+
+describe("rankCorrections", () => {
+  it("accepts a typo'd prefix of a longer term (harlw -> harlequin)", () => {
+    const out = rankCorrections("harlw", [
+      { term: "harlequin", df: 19 },
+      { term: "harvest", df: 40 },
+    ]);
+    expect(out.map((c) => c.term)).toEqual(["harlequin"]);
+  });
+  it("rejects candidates beyond the normalized-distance threshold", () => {
+    expect(rankCorrections("xqzpt", [{ term: "sphinx", df: 100 }])).toEqual([]);
+  });
+  it("breaks near-ties toward the more frequent catalog term", () => {
+    const out = rankCorrections("drgas", [
+      { term: "durgas", df: 4 },
+      { term: "degas", df: 107 },
+    ]);
+    expect(out[0].term).toBe("degas");
+  });
+});
+
 // ------------------------------------------- integration-lite: in-memory fixture DB
 // Validates the SQL actually executes against the B4 schema contract (FTS5
 // external content, porter unicode61, prefix 2/3/4) using the 16 real
@@ -158,6 +225,9 @@ function fixtureDb(): { db: DbHandle; raw: InstanceType<typeof Database> } {
       tokenize='porter unicode61', prefix='2 3 4');
     CREATE TABLE galleries(galleryNumber TEXT, site TEXT, floor TEXT,
       PRIMARY KEY(galleryNumber, site));
+    CREATE TABLE vocab (id INTEGER PRIMARY KEY, term TEXT NOT NULL UNIQUE, df INTEGER NOT NULL);
+    CREATE VIRTUAL TABLE vocab_trigram USING fts5(
+      term, content=vocab, content_rowid=id, tokenize='trigram', detail=column);
   `);
   const insObj = raw.prepare(
     `INSERT INTO objects(objectID, accession, title, artist, culture, period,
@@ -177,6 +247,26 @@ function fixtureDb(): { db: DbHandle; raw: InstanceType<typeof Database> } {
       o.gallery, o.isHighlight ? 1 : 0, o.img);
     insFts.run(o.objectID, o.title, o.artist, o.dept, o.medium);
     insGal.run(o.gallery, Number(o.gallery) >= 200 ? "2" : "1");
+  }
+  // vocab: same extraction build-db.ts performs (tokens len >= 3 + multi-word
+  // artist names, diacritics folded, document frequency)
+  const termDf = new Map<string, number>();
+  for (const o of objs) {
+    const seen = new Set<string>();
+    for (const f of [o.title, o.artist, o.dept, o.medium])
+      for (const t of foldDiacritics(f).split(/[^a-z0-9]+/).filter((t) => t.length >= 3))
+        seen.add(t);
+    const phrase = foldDiacritics(o.artist).split(/[^a-z0-9]+/).filter(Boolean).join(" ");
+    if (phrase.includes(" ") && phrase.length <= 40) seen.add(phrase);
+    for (const t of seen) termDf.set(t, (termDf.get(t) ?? 0) + 1);
+  }
+  const insV = raw.prepare("INSERT INTO vocab(id, term, df) VALUES (?, ?, ?)");
+  const insVF = raw.prepare("INSERT INTO vocab_trigram(rowid, term) VALUES (?, ?)");
+  let vid = 0;
+  for (const [term, df] of termDf) {
+    vid++;
+    insV.run(vid, term, df);
+    insVF.run(vid, term);
   }
   const db: DbHandle = {
     all: (sql, params) => raw.prepare(sql).all(...params) as SearchRow[],
@@ -243,6 +333,56 @@ describe("fixture DB (16 planning-bench objects, contract schema)", () => {
 
   it("FTS special characters in user input cannot break the query", async () => {
     await expect(fullSearch(db, 'sphinx" OR title:* NEAR(')).resolves.toBeTruthy();
+  });
+});
+
+describe("fuzzy autocomplete (fixture DB + vocab tables)", () => {
+  const { raw } = fixtureDb();
+  const run: RunSync = (sql, params) => raw.prepare(sql).all(...params);
+
+  it("correct spellings take the exact path — results byte-identical", () => {
+    const q = buildAutocompleteQuery("sphinx")!;
+    expect(autocompleteFuzzy(run, "sphinx")).toEqual(run(q.sql, q.params));
+  });
+
+  it("corrects a transposition (sphixn -> sphinx)", () => {
+    const rows = autocompleteFuzzy(run, "sphixn");
+    expect(rows.map((r) => r.objectID)).toContain(544442);
+  });
+
+  it("corrects a truncated typo within a multi-token query", () => {
+    const rows = autocompleteFuzzy(run, "washingtn crossing");
+    expect(rows.map((r) => r.objectID)).toContain(11417);
+  });
+
+  it("splits a missing-space compound against the real index", () => {
+    const m = fuzzyPrefixMatch(run, "washingtoncrossing");
+    expect(m?.primary).toBe('("washington"* AND "crossing"*)');
+  });
+
+  it("gibberish stays empty (no confident correction)", () => {
+    expect(autocompleteFuzzy(run, "xqzptw")).toEqual([]);
+    expect(fuzzyPrefixMatch(run, "xqzptw")).toBeNull();
+  });
+
+  it("all-good tokens with an empty conjunction stay empty (nothing to correct)", () => {
+    expect(fuzzyPrefixMatch(run, "sphinx monet")).toBeNull();
+  });
+
+  it("degrades to empty (not a throw) on a met.sqlite without vocab tables", () => {
+    const old = new Database(":memory:");
+    old.exec(`
+      CREATE TABLE objects(objectID INTEGER PRIMARY KEY, title TEXT, artist TEXT,
+        galleryNumber TEXT, site TEXT, isHighlight INTEGER, imageUrl TEXT);
+      CREATE VIRTUAL TABLE objects_fts USING fts5(
+        title, artist, culture, classification, medium, tags, synonyms,
+        content='objects', content_rowid='objectID',
+        tokenize='porter unicode61', prefix='2 3 4');
+      CREATE TABLE galleries(galleryNumber TEXT, site TEXT, floor TEXT);
+    `);
+    const oldRun: RunSync = (sql, params) => old.prepare(sql).all(...params);
+    expect(autocompleteFuzzy(oldRun, "sphixn")).toEqual([]);
+    old.close();
   });
 });
 
@@ -337,6 +477,46 @@ describe.skipIf(!fullDb)("golden cases: against real data/met.sqlite", () => {
     // LLM-tier cases run here through the post-rewrite relaxed-FTS path only
     // (no Gemini); the rewrite itself is exercised by the server's Gate C eval.
     expect(pass / total).toBeGreaterThanOrEqual(0.7);
+  });
+});
+
+// ------------------------------- typo-tolerance eval — needs full met.sqlite
+
+interface TypoCase {
+  input: string;
+  class: string;
+  expectObjectIDs?: number[];
+  expectTitleContains?: string;
+  expectArtistContains?: string;
+}
+
+describe.skipIf(!fullDb)("typo cases: fuzzy autocomplete against real data/met.sqlite", () => {
+  it("meets recall@8 >= 85% on typos and <= 10% false positives on gibberish", () => {
+    const typoCases: TypoCase[] = JSON.parse(
+      readFileSync(p("../data/evals/typo-cases.json"), "utf8"),
+    ).cases;
+    const raw = new Database(DB_PATH, { readonly: true });
+    const run: RunSync = (sql, params) => raw.prepare(sql).all(...params);
+    try {
+      const typos = typoCases.filter((c) => c.class !== "negative");
+      const negatives = typoCases.filter((c) => c.class === "negative");
+      let pass = 0;
+      const failures: string[] = [];
+      for (const c of typos) {
+        const rows = autocompleteFuzzy(run, c.input).slice(0, 8);
+        if (rowMatches(rows, c as GoldenCase & { query?: string })) pass++;
+        else failures.push(`[${c.class}] ${c.input}`);
+      }
+      const fp = negatives.filter((c) => autocompleteFuzzy(run, c.input).length > 0).length;
+      console.log(
+        `typo recall@8: ${pass}/${typos.length} (${((100 * pass) / typos.length).toFixed(0)}%), negative FPs: ${fp}/${negatives.length}`,
+      );
+      if (failures.length) console.log("typo failures: " + failures.join(", "));
+      expect(pass / typos.length).toBeGreaterThanOrEqual(0.85);
+      expect(fp / negatives.length).toBeLessThanOrEqual(0.1);
+    } finally {
+      raw.close();
+    }
   });
 });
 
