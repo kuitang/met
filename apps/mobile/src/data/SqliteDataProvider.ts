@@ -27,7 +27,9 @@ import { gunzipSync } from 'fflate';
 import {
   buildSiteGeometry,
   floorLabel,
+  placeRoomKind,
   type GalleryFeature,
+  type MapShape,
   type Site,
   type SiteGeometry,
 } from '@/components/MapGeometry';
@@ -237,6 +239,10 @@ export class SqliteDataProvider implements DataProvider {
     const projectors = new Map<string, Projector>();
     const viewBoxBySite = new Map<string, SiteGeometry['viewBox']>();
     const bboxByGallery = new Map<string, [number, number, number, number]>();
+    // Living Map closed flags (galleries table has no closed column) and the
+    // named place polygons (kind 'amenity' = named, see MapGeometry).
+    const closedGalleries = new Set<string>();
+    const placeShapes = new Map<string, { site: string; shape: MapShape }>();
     for (const [site, siteFeatures] of featuresBySite) {
       const projector = projectorFromFeatures(siteFeatures);
       if (!projector) continue;
@@ -245,7 +251,12 @@ export class SqliteDataProvider implements DataProvider {
       viewBoxBySite.set(site, sg.viewBox);
       for (const shapes of sg.shapesByFloor.values()) {
         for (const s of shapes) {
-          if (s.kind === 'gallery' && !bboxByGallery.has(s.id)) bboxByGallery.set(s.id, s.bbox);
+          if (s.kind === 'gallery') {
+            if (!bboxByGallery.has(s.id)) bboxByGallery.set(s.id, s.bbox);
+            if (s.closed) closedGalleries.add(s.id);
+          } else if (s.kind === 'amenity') {
+            placeShapes.set(s.id, { site, shape: s });
+          }
         }
       }
     }
@@ -266,6 +277,9 @@ export class SqliteDataProvider implements DataProvider {
         kind: 'gallery',
         rect: bboxByGallery.get(g.galleryNumber) ?? [cx - 6, cy - 5, 12, 10],
         site: g.site as Room['site'],
+        // Living Map closed flag (nightly snapshot): the sheet shows the
+        // room but offers no DIRECTIONS / I'M HERE for inaccessible rooms.
+        ...(closedGalleries.has(g.galleryNumber) ? { closed: true } : null),
       };
       rooms.set(room.id, room);
       galleryRooms.push(room);
@@ -304,6 +318,42 @@ export class SqliteDataProvider implements DataProvider {
       amenityRooms.push(room);
       const node = nearestNode(a.site, floor, a.lat, a.lon);
       if (node) amenityNode.set(id, node);
+    }
+
+    // Named place polygons (bar/cafe/shop/restroom/library/… with a name) are
+    // tappable map rooms (FloorMap passes id g{geomId}). Register them here so
+    // the sheet's DIRECTIONS can route: the endpoint is the nearest non-door
+    // graph node at the polygon's centroid — the exact join the amenities
+    // table's points already use (no lm_id exists to join on). Closed places
+    // get the room identity (sheet copy) but no routing endpoint.
+    for (const [siteKey, siteFeatures] of featuresBySite) {
+      for (const f of siteFeatures) {
+        const hit = placeShapes.get(`g${f.properties.geomId}`);
+        if (!hit || hit.site !== siteKey) continue;
+        const { shape } = hit;
+        const id = shape.id;
+        if (rooms.has(id)) continue;
+        rooms.set(id, {
+          id,
+          name: shape.name,
+          floor: shape.floorNumeric,
+          kind: placeRoomKind(shape.placeType ?? ''),
+          rect: shape.bbox,
+          site: siteKey as Room['site'],
+          ...(shape.closed ? { closed: true } : null),
+        });
+        if (shape.closed) continue;
+        const ring =
+          f.geometry.type === 'Polygon' ? f.geometry.coordinates[0] : f.geometry.coordinates[0][0];
+        let lat = 0;
+        let lon = 0;
+        for (const [rlon, rlat] of ring) {
+          lon += rlon;
+          lat += rlat;
+        }
+        const node = nearestNode(siteKey, shape.floorNumeric, lat / ring.length, lon / ring.length);
+        if (node) amenityNode.set(id, node);
+      }
     }
 
     const graph = buildRouteGraph(nodes, edges, galleryRows);

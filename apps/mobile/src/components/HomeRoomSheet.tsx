@@ -13,7 +13,7 @@ import { router } from 'expo-router';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import DetentSheet, { HALF_VISIBLE } from '@/components/DetentSheet';
+import DetentSheet, { HALF_VISIBLE, type SheetDetent } from '@/components/DetentSheet';
 import { floorLabel } from '@/components/MapGeometry';
 import { ObjectThumb } from '@/components/ObjectImage';
 import { roomGlyph } from '@/components/RoomRow';
@@ -22,8 +22,9 @@ import { colors, spacing, type } from '@/theme';
 
 export type { SheetDetent } from '@/components/DetentSheet';
 
-/** HALF height of the thin amenity variant: header + action row only. */
-const AMENITY_HALF_VISIBLE = 220;
+/** HALF height of the thin amenity variant: header + action row only.
+ *  Exported so the home screen can keep the map's zoom rail above the sheet. */
+export const AMENITY_HALF_VISIBLE = 220;
 
 export interface HomeRoomSheetProps {
   room: Room;
@@ -42,6 +43,8 @@ export interface HomeRoomSheetProps {
    */
   onDirections?: () => void;
   onClose: () => void;
+  /** Detent reports (parent keeps the map's zoom rail above the sheet). */
+  onDetentChange?: (d: SheetDetent) => void;
 }
 
 const fmt = (n: number) => n.toLocaleString('en-US');
@@ -54,12 +57,18 @@ export default function HomeRoomSheet({
   onImHere,
   onDirections,
   onClose,
+  onDetentChange,
 }: HomeRoomSheetProps) {
   const insets = useSafeAreaInsets();
 
   // Thin amenity variant (one tap grammar): amenities have no object list —
   // the sheet is kind glyph + name + floor + the two actions, nothing else.
   const isAmenity = room.kind !== 'gallery' && room.kind !== 'hall';
+
+  // Closed rooms (the Met's live-map `closed` flag, refreshed nightly): the
+  // sheet keeps the room's identity but offers NO actions — you can neither
+  // navigate to nor anchor at an inaccessible room (user mandate).
+  const closed = room.closed === true;
 
   const header = (
     <View style={styles.headerRow}>
@@ -98,28 +107,39 @@ export default function HomeRoomSheet({
       header={header}
       halfVisible={isAmenity ? AMENITY_HALF_VISIBLE : HALF_VISIBLE}
       resetKey={room.id}
+      onDetentChange={onDetentChange}
       testID="room-sheet"
     >
       {() => (
         <>
-          <View style={styles.actionRow}>
-            {originId !== room.id && onDirections && (
+          {closed ? (
+            <View style={styles.closedNote} testID="room-closed-note">
+              <Text style={styles.closedTitle}>Currently inaccessible</Text>
+              <Text style={type.meta}>
+                This space is marked closed on the Met’s live map (refreshed nightly). The
+                museum doesn’t publish reopening schedules.
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.actionRow}>
+              {originId !== room.id && onDirections && (
+                <Pressable
+                  style={[styles.actionBtn, styles.directionsBtn]}
+                  onPress={onDirections}
+                  testID="room-directions"
+                >
+                  <Text style={styles.actionText}>Directions</Text>
+                </Pressable>
+              )}
               <Pressable
-                style={[styles.actionBtn, styles.directionsBtn]}
-                onPress={onDirections}
-                testID="room-directions"
+                style={[styles.actionBtn, styles.imHereBtn]}
+                onPress={onImHere}
+                testID="room-im-here"
               >
-                <Text style={styles.actionText}>Directions</Text>
+                <Text style={styles.actionText}>I'm here</Text>
               </Pressable>
-            )}
-            <Pressable
-              style={[styles.actionBtn, styles.imHereBtn]}
-              onPress={onImHere}
-              testID="room-im-here"
-            >
-              <Text style={styles.actionText}>I'm here</Text>
-            </Pressable>
-          </View>
+            </View>
+          )}
 
           {isAmenity ? null : objects.length > 0 ? (
             <FlatList
@@ -152,7 +172,7 @@ export default function HomeRoomSheet({
                 </Pressable>
               )}
             />
-          ) : (
+          ) : closed ? null : ( // the inaccessible note already says it all
             <Text style={styles.empty}>No objects recorded in this room yet.</Text>
           )}
         </>
@@ -210,6 +230,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: spacing.sm,
     marginTop: spacing.sm,
+  },
+  // Closed rooms: honest dead-end in place of the action row.
+  closedNote: {
+    marginTop: spacing.sm,
+    padding: spacing.md,
+    gap: 2,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.hairline,
+  },
+  closedTitle: {
+    ...type.label,
+    letterSpacing: 0,
   },
   actionBtn: {
     flex: 1,

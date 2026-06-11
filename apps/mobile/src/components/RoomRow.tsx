@@ -28,6 +28,10 @@ const KIND_GLYPH: Partial<Record<Room['kind'], string>> = {
   tickets: 'TKT',
   cloakroom: 'COAT',
   firstAid: 'AID',
+  library: 'LIB',
+  auditorium: 'AUD',
+  classroom: 'EDU',
+  changing_room: 'FAM',
 };
 
 export function roomGlyph(room: Room): string {

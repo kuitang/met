@@ -16,7 +16,7 @@
  * Projection: equirectangular around the site bbox center — at building scale
  * (~450 m) the distortion is sub-decimeter, so local XY is treated as meters.
  */
-import type { DataProvider } from '@/data/provider';
+import type { DataProvider, RoomKind } from '@/data/provider';
 
 export type Site = 'fifthAve' | 'cloisters';
 
@@ -103,6 +103,8 @@ export interface MapShape {
   floor: string;
   floorNumeric: number;
   closed: boolean;
+  /** Raw geometry type for amenity shapes ('bar', 'shop', …) → Room.kind. */
+  placeType?: string;
   /** Projected bbox [x, y, w, h] — doubles as the stub-schema Room.rect. */
   bbox: [number, number, number, number];
 }
@@ -116,25 +118,40 @@ export interface SiteGeometry {
   shapesByFloor: Map<string, MapShape[]>;
 }
 
-const AMENITY_TYPES = new Set([
-  'toilet',
-  'restaurant',
-  'cafe',
-  'bar',
-  'shop',
-  'cloakroom',
-  'tickets',
-  'auditorium',
-  'library',
-  'classroom',
-  'changing_room',
-]);
+/**
+ * Geometry 'place' types → Room.kind (glyph + sheet variant). The key set IS
+ * the amenity-type vocabulary, so the two can never diverge.
+ */
+const PLACE_ROOM_KIND: Record<string, RoomKind> = {
+  toilet: 'restroom',
+  restaurant: 'dining',
+  cafe: 'dining',
+  bar: 'dining',
+  shop: 'shop',
+  cloakroom: 'cloakroom',
+  tickets: 'tickets',
+  auditorium: 'auditorium',
+  library: 'library',
+  classroom: 'classroom',
+  changing_room: 'changing_room',
+};
 
-function shapeKind(type: string): ShapeKind {
+export function placeRoomKind(type: string): RoomKind {
+  return PLACE_ROOM_KIND[type] ?? 'restroom'; // unreachable for amenity shapes
+}
+
+const AMENITY_TYPES = new Set(Object.keys(PLACE_ROOM_KIND));
+
+/**
+ * Tap-wiring rule (user mandate): every NAMED place polygon is tappable like
+ * a gallery. Unnamed amenity-type shapes (and corridor/BOH/floor/vista) are
+ * backdrop — they render as circulation and take no taps.
+ */
+function shapeKind(type: string, named: boolean): ShapeKind {
   if (type === 'gallery' || type === 'exhibition') return 'gallery';
   if (type === 'floor') return 'outline';
-  if (AMENITY_TYPES.has(type)) return 'amenity';
-  return 'circulation'; // corridor, vista, back_of_house, …
+  if (AMENITY_TYPES.has(type) && named) return 'amenity';
+  return 'circulation'; // corridor, vista, back_of_house, unnamed amenities, …
 }
 
 const DRAW_ORDER: Record<ShapeKind, number> = {
@@ -153,7 +170,7 @@ function rings(geometry: GalleryFeature['geometry']): number[][][] {
 /** Floor labels (FLOOR_ORDER order) whose features include ≥1 gallery. */
 export function availableFloors(geometry: GeometryFn, site: Site): string[] {
   return FLOOR_ORDER.filter((label) =>
-    geometry(site, label).some((f) => shapeKind(f.properties.type) === 'gallery'),
+    geometry(site, label).some((f) => shapeKind(f.properties.type, false) === 'gallery'),
   );
 }
 
@@ -200,7 +217,7 @@ export function buildSiteGeometry(geometry: GeometryFn, site: Site): SiteGeometr
     const shapes: MapShape[] = [];
     for (const f of features) {
       const p = f.properties;
-      const kind = shapeKind(p.type);
+      const kind = shapeKind(p.type, Boolean(p.title ?? p.name));
       let d = '';
       let area = 0;
       let cx = 0;
@@ -257,6 +274,7 @@ export function buildSiteGeometry(geometry: GeometryFn, site: Site): SiteGeometr
         floor: label,
         floorNumeric: p.floor,
         closed: p.closed,
+        ...(kind === 'amenity' ? { placeType: p.type } : null),
         bbox: [bMinX, bMinY, bMaxX - bMinX, bMaxY - bMinY],
       });
     }

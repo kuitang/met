@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import Database from 'better-sqlite3';
 import path from 'node:path';
 import zlib from 'node:zlib';
@@ -32,6 +32,84 @@ function loadGeometryJson(): string {
 
 const geometryJson = loadGeometryJson();
 
+// Snapshot-driven fixtures (closed flags move with the Met's nightly feed):
+// pick an OPEN gallery, an OPEN named place, and floor 5's closed pair from
+// the same geojson the app renders, instead of hard-coding ids.
+interface GeoFeature {
+  properties: {
+    geomId: number;
+    galleryNumber: string | null;
+    name: string | null;
+    title: string | null;
+    type: string;
+    floor: number;
+    site: string;
+    closed: boolean;
+  };
+}
+const features = (JSON.parse(geometryJson) as { features: GeoFeature[] }).features.filter(
+  (f) => f.properties.site === 'fifthAve',
+);
+const PLACE_TYPES = new Set([
+  'toilet',
+  'restaurant',
+  'cafe',
+  'bar',
+  'shop',
+  'cloakroom',
+  'tickets',
+  'auditorium',
+  'library',
+  'classroom',
+  'changing_room',
+]);
+const openGalleryId = features.find(
+  (f) =>
+    f.properties.type === 'gallery' &&
+    f.properties.floor === 1 &&
+    !f.properties.closed &&
+    f.properties.galleryNumber,
+)!.properties.galleryNumber!;
+const openPlace = features.find(
+  (f) =>
+    f.properties.type === 'shop' &&
+    f.properties.floor === 1 &&
+    !f.properties.closed &&
+    (f.properties.title ?? f.properties.name),
+)!.properties;
+const roofBar = features.find(
+  (f) => f.properties.type === 'bar' && f.properties.floor === 5,
+)!.properties;
+
+/**
+ * Pan/zoom transform of the map viewport, rounded for settle comparison
+ * (translate then scale about the view center → matrix(a,b,c,d,e,f)).
+ */
+function viewportTransform(page: Page): Promise<string> {
+  return page.getByTestId('map-viewport').evaluate((el) => {
+    const t = getComputedStyle(el).transform;
+    const m = new DOMMatrixReadOnly(t === 'none' ? undefined : t);
+    return [m.a, m.e, m.f].map((v) => Math.round(v * 10) / 10).join(',');
+  });
+}
+
+/** Resolve once the viewport transform is stable across two 100ms samples. */
+async function settledTransform(page: Page): Promise<string> {
+  let prev = '';
+  await expect
+    .poll(
+      async () => {
+        const cur = await viewportTransform(page);
+        const same = cur === prev && cur !== '';
+        prev = cur;
+        return same;
+      },
+      { timeout: 7_000, intervals: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100] },
+    )
+    .toBe(true);
+  return prev;
+}
+
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(`globalThis.__MET_GEOMETRY__ = ${geometryJson};`);
   await page.goto('/');
@@ -49,11 +127,85 @@ test('floor 1 renders >100 real gallery polygons', async ({ page }) => {
 
 test('tapping gallery 131 opens its room sheet', async ({ page }) => {
   const g131 = page.getByTestId('room-131');
-  // Gallery 131 is flagged closed in the snapshot → hatched fill via pattern.
+  // Gallery 131 is flagged closed in the snapshot → grey hatched fill, still
+  // tappable; its sheet is the honest dead-end (identity, no actions).
   await expect(g131).toHaveAttribute('fill', /url\(/);
   await g131.click();
   await expect(page.getByTestId('room-sheet')).toBeVisible();
   await expect(page.getByTestId('room-sheet')).toContainText('Temple of Dendur');
+  await expect(page.getByTestId('room-closed-note')).toContainText('Currently inaccessible');
+  await expect(page.getByTestId('room-directions')).toHaveCount(0);
+  await expect(page.getByTestId('room-im-here')).toHaveCount(0);
+});
+
+test('tap grammar: open rooms are white, open places open the amenity sheet with actions', async ({
+  page,
+}) => {
+  // WHITE = tappable, for galleries AND named places alike (user mandate).
+  await expect(page.getByTestId(`room-${openGalleryId}`)).toHaveAttribute('fill', '#ffffff');
+  const place = page.getByTestId(`room-g${openPlace.geomId}`);
+  await expect(place).toHaveAttribute('fill', '#ffffff');
+  await place.click();
+  const sheet = page.getByTestId('room-sheet');
+  await expect(sheet).toBeVisible();
+  await expect(sheet).toContainText((openPlace.title ?? openPlace.name)!);
+  // Thin amenity variant: kind glyph + both actions (open place → routable).
+  await expect(page.getByTestId('sheet-amenity-glyph')).toBeVisible();
+  await expect(page.getByTestId('room-directions')).toBeVisible();
+  await expect(page.getByTestId('room-im-here')).toBeVisible();
+});
+
+test('floor 5: closed Roof Garden + Bar are tappable dead-ends; backdrop stays inert', async ({
+  page,
+}) => {
+  await page.getByTestId('floor-chip-5').click();
+  // Gallery 926 (Cantor Roof Garden) is closed in the Met's live data.
+  const roof = page.getByTestId('room-926');
+  await expect(roof).toHaveAttribute('fill', /url\(/); // grey + hatch
+  await roof.click();
+  const sheet = page.getByTestId('room-sheet');
+  await expect(sheet).toBeVisible();
+  await expect(sheet).toContainText('Cantor Roof Garden');
+  await expect(page.getByTestId('room-closed-note')).toContainText('Currently inaccessible');
+  // ZERO action buttons: no DIRECTIONS, no I'M HERE on inaccessible rooms.
+  await expect(page.getByTestId('room-directions')).toHaveCount(0);
+  await expect(page.getByTestId('room-im-here')).toHaveCount(0);
+  await page.getByTestId('room-sheet-close').click();
+
+  // The Roof Garden Bar (closed place polygon) is equally tappable.
+  const bar = page.getByTestId(`room-g${roofBar.geomId}`);
+  await expect(bar).toHaveAttribute('fill', /url\(/);
+  await bar.click();
+  await expect(sheet).toBeVisible();
+  await expect(sheet).toContainText('Cantor Roof Garden Bar');
+  await expect(page.getByTestId('room-closed-note')).toContainText('Currently inaccessible');
+  await expect(page.getByTestId('room-im-here')).toHaveCount(0);
+
+  // Corridors / BOH / floor plate take no taps: the named pair is ALL there is.
+  expect(await page.locator('path[data-testid^="room-"]').count()).toBe(2);
+});
+
+test('per-floor viewport memory: deep floor-1 zoom never strands floor 5 blank', async ({
+  page,
+}) => {
+  await expect(page.getByTestId('room-131')).toBeVisible();
+  await settledTransform(page); // initial fit-to-floor settles
+
+  // Zoom deep into floor 1 (viewport-center anchored steps).
+  for (let i = 0; i < 4; i++) await page.getByTestId('zoom-in').click();
+  const deepZoom = await settledTransform(page);
+
+  // Floor 5 is a tiny roof-garden cluster: without per-floor viewports this
+  // landed on blank backdrop. It must arrive framed (fit-to-floor default).
+  await page.getByTestId('floor-chip-5').click();
+  await expect(page.getByTestId('room-926')).toBeInViewport();
+  const floor5 = await settledTransform(page);
+  expect(floor5).not.toBe(deepZoom);
+
+  // Back to floor 1: the deep-zoom viewport is restored from memory.
+  await page.getByTestId('floor-chip-1').click();
+  await expect(page.getByTestId('room-131')).toBeVisible();
+  expect(await settledTransform(page)).toBe(deepZoom);
 });
 
 test('floor switch to 2 renders floor-2 galleries (with timing)', async ({ page }) => {

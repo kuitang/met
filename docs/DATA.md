@@ -166,3 +166,12 @@ the 2026-06-10 run:
 6. **Petrie/746 alias judgment calls**: objects labeled "746" are anchored to
    746 North; café sculptures anchor to the café polygon. Room-level error of
    one wall at worst.
+7. **Room closures are a binary current-state flag, not a schedule.** The
+   only closure signal we have is the Living Map `closed` boolean on room
+   polygons and amenity points, captured at ETL/nightly-refresh time — "this
+   space is inaccessible right now (as of the last snapshot)". The Met
+   publishes no machine-readable opening/closing schedule, and the
+   gallery-closings page on metmuseum.org is bot-blocked like the rest of the
+   site, so the UI says "currently inaccessible" and nothing more: no
+   reopening dates, no hours. Closed rooms stay tappable on the map (grey +
+   hatched) but offer no DIRECTIONS / I'M HERE.

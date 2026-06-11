@@ -41,7 +41,9 @@ export interface MetObject {
 
 /**
  * Stub kinds plus the real amenities-table type vocabulary (met.sqlite
- * `amenities.type`). UI code must not switch exhaustively on this.
+ * `amenities.type`) plus the named-place polygon kinds the Living Map
+ * geometry carries beyond the amenities table (library/auditorium/…).
+ * UI code must not switch exhaustively on this.
  */
 export type RoomKind =
   | 'gallery'
@@ -57,7 +59,11 @@ export type RoomKind =
   | 'shop'
   | 'tickets'
   | 'cloakroom'
-  | 'firstAid';
+  | 'firstAid'
+  | 'library'
+  | 'auditorium'
+  | 'classroom'
+  | 'changing_room';
 
 export interface Room {
   id: string; // gallery number or amenity id, e.g. '131', 'restroom-1'
@@ -71,6 +77,13 @@ export interface Room {
    * Fifth Avenue); consumers treat undefined as 'fifthAve'.
    */
   site?: 'fifthAve' | 'cloisters';
+  /**
+   * Currently inaccessible per the Met's own live map feed (the Living Map
+   * `closed` flag, refreshed nightly). Binary current-state only — the Met
+   * publishes no schedule metadata (see docs/DATA.md). Closed rooms stay
+   * tappable on the map but offer no DIRECTIONS / I'M HERE actions.
+   */
+  closed?: boolean;
 }
 
 export interface RouteStep {
