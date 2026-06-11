@@ -34,7 +34,7 @@ import {
 
 import { HALF_VISIBLE, SheetDetent } from '@/components/DetentSheet';
 import FloorMap from '@/components/FloorMap';
-import HomeRoomSheet from '@/components/HomeRoomSheet';
+import HomeRoomSheet, { AMENITY_HALF_VISIBLE } from '@/components/HomeRoomSheet';
 import {
   Anchor,
   VENUE_NAMES,
@@ -122,6 +122,7 @@ export default function HomeScreen() {
 
   const [activeStep, setActiveStep] = useState(0);
   const [navDetent, setNavDetent] = useState<SheetDetent>('half');
+  const [roomDetent, setRoomDetent] = useState<SheetDetent>('half');
   const [rerouting, setRerouting] = useState(false);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => () => clearTimeout(toastTimer.current), []);
@@ -288,6 +289,25 @@ export default function HomeScreen() {
       }
     : undefined;
 
+  // Keep the map's +/− zoom rail above whichever sheet owns the bottom band
+  // (nav sheet, room sheet, or room-over-nav). At HALF the rail rides the
+  // sheet's visible height; at HEADER it clears the docked header; at FULL
+  // the sheet covers the map anyway, so the HEADER inset is moot but keeps
+  // the rail steady on the way up/down. No sheet → FloorMap's default rail.
+  const sheetInset = (d: SheetDetent, half: number) =>
+    d === 'half' ? half + spacing.md : NAV_HEADER_INSET + spacing.md;
+  const navInset = navActive && navRoute ? sheetInset(navDetent, HALF_VISIBLE) : 0;
+  const roomInset = selected
+    ? sheetInset(
+        roomDetent,
+        selected.kind !== 'gallery' && selected.kind !== 'hall'
+          ? AMENITY_HALF_VISIBLE
+          : HALF_VISIBLE,
+      )
+    : 0;
+  const controlsBottomInset =
+    navInset || roomInset ? Math.max(navInset, roomInset) : undefined;
+
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <View style={styles.mapFill}>
@@ -304,6 +324,7 @@ export default function HomeScreen() {
             navRoute ? <RoutePolyline route={navRoute} floor={floor} activeStep={step} /> : undefined
           }
           fitBounds={fitBounds}
+          controlsBottomInset={controlsBottomInset}
         />
       </View>
 
@@ -473,6 +494,7 @@ export default function HomeScreen() {
             setSelected(undefined);
           }}
           onClose={() => setSelected(undefined)}
+          onDetentChange={setRoomDetent}
         />
       )}
     </SafeAreaView>

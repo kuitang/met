@@ -17,7 +17,7 @@
  * memoized per (site, floor) and each <RoomShape> is React.memo'd so a
  * highlight change re-renders one path, not ~300.
  */
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
@@ -43,6 +43,7 @@ import {
   floorNumber,
   GeometryFn,
   MapShape,
+  placeRoomKind,
   resolveGeometryFn,
   Site,
 } from '@/components/MapGeometry';
@@ -133,10 +134,32 @@ export interface FloorMapProps {
    * in between are respected, not fought.
    */
   fitBounds?: { x: number; y: number; w: number; h: number; insetBottom: number; key: string };
+  /**
+   * Keep the floating +/− zoom controls this many px above the bottom edge
+   * (e.g. above an open nav/room sheet). Undefined → the default rail.
+   */
+  controlsBottomInset?: number;
 }
 
 /** fitBounds + the active viewBox, resolved by Real/Stub map for MapViewport. */
 type FitRequest = NonNullable<FloorMapProps['fitBounds']> & {
+  viewBox: { x: number; y: number; w: number; h: number };
+};
+
+/**
+ * Per-floor viewport memory (real map): `key` identifies the floor, bounds
+ * are that floor's geometry bbox. A floor switch saves the outgoing floor's
+ * {pan, zoom} and restores the incoming floor's — or, on first visit,
+ * animates a fit of the floor's own bounds, so switching floors can never
+ * land on a blank viewport (e.g. deep-zoomed floor 1 → tiny roof-garden
+ * floor 5 used to show empty backdrop).
+ */
+type FloorFit = {
+  key: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
   viewBox: { x: number; y: number; w: number; h: number };
 };
 
@@ -159,6 +182,8 @@ function MapViewport({
   maxScale = 4,
   onZoomEnd,
   fit,
+  floorFit,
+  controlsBottomInset,
 }: {
   children: React.ReactNode;
   maxScale?: number;
@@ -166,6 +191,9 @@ function MapViewport({
   onZoomEnd?: (scale: number) => void;
   /** Frame these viewBox bounds in the area above `insetBottom` (nav mode). */
   fit?: FitRequest;
+  /** Per-floor viewport memory + first-visit fit (see FloorFit). */
+  floorFit?: FloorFit;
+  controlsBottomInset?: number;
 }) {
   const scale = useSharedValue(1);
   const savedScale = useSharedValue(1);
@@ -182,33 +210,72 @@ function MapViewport({
   // for "bounds center → center of the visible band, bounds fit inside it"
   // gives s and (tx,ty) directly.
   const [layout, setLayout] = useState<{ w: number; h: number } | undefined>();
-  useEffect(() => {
-    if (!fit || !layout || layout.w === 0 || layout.h === 0) return;
-    const { viewBox: vb, insetBottom } = fit;
-    const W = layout.w;
-    const H = layout.h;
+
+  /**
+   * Solve scale + translation that frame `b` (viewBox space) centered in the
+   * visible band above `insetBottom`, with `breathe` relative padding around
+   * the bounds (min 6 viewBox units ≈ one room).
+   */
+  const solveFit = (
+    b: { x: number; y: number; w: number; h: number },
+    vb: { x: number; y: number; w: number; h: number },
+    insetBottom: number,
+    breathe: number,
+  ) => {
+    const W = layout!.w;
+    const H = layout!.h;
     const visH = Math.max(80, H - insetBottom);
     const k = Math.min(W / vb.w, H / vb.h);
-    // Breathing room around the route (15%, min 6 viewBox units ≈ one room).
-    const bw = Math.max(fit.w * 1.3, 12);
-    const bh = Math.max(fit.h * 1.3, 12);
+    const bw = Math.max(b.w * breathe, 12);
+    const bh = Math.max(b.h * breathe, 12);
     const s = Math.min(maxScale, Math.max(0.75, Math.min(W / (k * bw), visH / (k * bh))));
-    const lcx = (W - k * vb.w) / 2 + (fit.x + fit.w / 2 - vb.x) * k;
-    const lcy = (H - k * vb.h) / 2 + (fit.y + fit.h / 2 - vb.y) * k;
-    const nextTx = -s * (lcx - W / 2);
-    const nextTy = visH / 2 - H / 2 - s * (lcy - H / 2);
-    const t = { duration: 350 };
-    scale.value = withTiming(s, t);
-    tx.value = withTiming(nextTx, t);
-    ty.value = withTiming(nextTy, t);
-    savedScale.value = s;
-    savedTx.value = nextTx;
-    savedTy.value = nextTy;
-    onZoomEnd?.(s);
+    const lcx = (W - k * vb.w) / 2 + (b.x + b.w / 2 - vb.x) * k;
+    const lcy = (H - k * vb.h) / 2 + (b.y + b.h / 2 - vb.y) * k;
+    return { s, tx: -s * (lcx - W / 2), ty: visH / 2 - H / 2 - s * (lcy - H / 2) };
+  };
+
+  /** Animate to a solved viewport and settle the gesture baselines. */
+  const animateTo = (v: { s: number; tx: number; ty: number }, duration: number) => {
+    const t = { duration };
+    scale.value = withTiming(v.s, t);
+    tx.value = withTiming(v.tx, t);
+    ty.value = withTiming(v.ty, t);
+    savedScale.value = v.s;
+    savedTx.value = v.tx;
+    savedTy.value = v.ty;
+    onZoomEnd?.(v.s);
+  };
+
+  useEffect(() => {
+    if (!fit || !layout || layout.w === 0 || layout.h === 0) return;
+    // Breathing room around the route (30%, min 6 viewBox units ≈ one room).
+    animateTo(solveFit(fit, fit.viewBox, fit.insetBottom, 1.3), 350);
     // Re-fit only when the request identity or the layout changes — user
     // gestures in between must not be clobbered per render.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fit?.key, layout]);
+
+  // ---- per-floor viewport memory (see FloorFit) -----------------------------
+  const floorMemory = useRef(new Map<string, { s: number; tx: number; ty: number }>());
+  const prevFloorKey = useRef<string | undefined>(undefined);
+  useEffect(() => {
+    if (!floorFit || !layout || layout.w === 0 || layout.h === 0) return;
+    const prev = prevFloorKey.current;
+    if (prev === floorFit.key) return; // layout-only change: leave the user be
+    prevFloorKey.current = floorFit.key;
+    if (prev !== undefined) {
+      floorMemory.current.set(prev, { s: scale.value, tx: tx.value, ty: ty.value });
+    }
+    // Nav mode owns the viewport (the fit effect re-frames per floor/detent).
+    if (fit) return;
+    const saved = floorMemory.current.get(floorFit.key);
+    animateTo(
+      saved ?? solveFit(floorFit, floorFit.viewBox, 0, 1.08),
+      // First paint (no previous floor): settle quickly into the floor fit.
+      prev === undefined ? 200 : 300,
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [floorFit?.key, layout]);
 
   // ---- zoom anchoring -------------------------------------------------------
   // The transform is translate(t) then scale(s) about the view center C, so a
@@ -316,8 +383,15 @@ function MapViewport({
           {children}
         </Animated.View>
       </GestureDetector>
-      {/* pointerEvents in style — the prop form warns on RN-web (see chips). */}
-      <View style={styles.zoomCtrls}>
+      {/* pointerEvents in style — the prop form warns on RN-web (see chips).
+          controlsBottomInset lifts the rail above an open nav/room sheet so
+          the zoom buttons stay visible and tappable in nav mode. */}
+      <View
+        style={[
+          styles.zoomCtrls,
+          controlsBottomInset !== undefined && { bottom: controlsBottomInset },
+        ]}
+      >
         <Pressable
           style={styles.zoomBtn}
           onPress={() => zoomBy(ZOOM_STEP)}
@@ -439,26 +513,27 @@ const RoomShape = memo(function RoomShape({
   onPressShape,
 }: RoomShapeProps) {
   const active = highlighted || onRoute;
-  const tappable = shape.kind === 'gallery';
+  // Tap rule = color rule (user mandate): every named room — gallery OR
+  // place (bar/shop/restroom/…) — is tappable and renders WHITE; closed
+  // rooms render grey+hatched but stay tappable (their sheet explains);
+  // backdrop (floor plate / corridors / BOH / unnamed shapes) takes no taps.
+  const tappable = shape.kind === 'gallery' || shape.kind === 'amenity';
   const fill = active
     ? colors.mapRoomActive
     : shape.kind === 'outline'
-      ? colors.background
+      ? colors.surface
       : shape.kind === 'circulation'
-        ? colors.surface
-        : shape.kind === 'amenity'
-          ? colors.mapAmenity
-          : shape.closed
-            ? 'url(#closed-hatch)'
-            : colors.mapRoom;
+        ? colors.mapCirculation
+        : shape.closed
+          ? 'url(#closed-hatch)'
+          : colors.white;
   return (
     <Path
       d={shape.d}
       fill={fill}
       fillRule="evenodd"
-      opacity={shape.closed && !active ? 0.55 : 1}
       stroke={highlighted ? colors.red : colors.mapRoomStroke}
-      strokeWidth={highlighted ? 1 : shape.kind === 'gallery' ? 0.3 : 0.15}
+      strokeWidth={highlighted ? 1 : tappable ? 0.3 : 0.15}
       {...(tappable ? svgPress(() => onPressShape(shape)) : null)}
       testID={tappable ? `room-${shape.id}` : undefined}
     />
@@ -477,6 +552,7 @@ function RealFloorMap({
   targetRoom,
   overlay,
   fitBounds,
+  controlsBottomInset,
 }: FloorMapProps & { geometry: GeometryFn }) {
   const siteGeo = useMemo(() => buildSiteGeometry(geometry, site), [geometry, site]);
 
@@ -504,15 +580,38 @@ function RealFloorMap({
         id: shape.id,
         name: shape.name,
         floor: shape.floorNumeric,
-        kind: 'gallery',
+        // Place polygons carry their kind (→ sheet glyph + amenity variant);
+        // ids (g{geomId}) are registered as routable endpoints by the real
+        // provider, so DIRECTIONS from the sheet just works.
+        kind: shape.kind === 'amenity' ? placeRoomKind(shape.placeType ?? '') : 'gallery',
         rect: shape.bbox,
         site, // anchors set from a map tap must carry the venue
+        closed: shape.closed, // closed rooms: identity sheet, no actions
       });
     },
     [onRoomPress, site],
   );
 
   const vb = siteGeo.viewBox;
+
+  // This floor's geometry bbox → first-visit fit + per-floor viewport memory.
+  const floorBounds = useMemo(() => {
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+    for (const s of shapes) {
+      const [x, y, w, h] = s.bbox;
+      if (x < minX) minX = x;
+      if (y < minY) minY = y;
+      if (x + w > maxX) maxX = x + w;
+      if (y + h > maxY) maxY = y + h;
+    }
+    return Number.isFinite(minX)
+      ? { x: minX, y: minY, w: maxX - minX, h: maxY - minY }
+      : undefined;
+  }, [shapes]);
+
   const labeled = shapes.filter(
     (s) =>
       s.kind === 'gallery' &&
@@ -530,6 +629,8 @@ function RealFloorMap({
           maxScale={8}
           onZoomEnd={setZoom}
           fit={fitBounds ? { ...fitBounds, viewBox: vb } : undefined}
+          floorFit={floorBounds ? { key: floor, ...floorBounds, viewBox: vb } : undefined}
+          controlsBottomInset={controlsBottomInset}
         >
           <Svg
             width="100%"
@@ -545,7 +646,9 @@ function RealFloorMap({
                 height={3}
                 patternTransform="rotate(45)"
               >
-                <Rect width={3} height={3} fill={colors.mapRoom} />
+                {/* Grey + hatch = closed (still tappable): solid grey base so
+                    the state reads even at thumbnail zoom, hatch on top. */}
+                <Rect width={3} height={3} fill={colors.mapClosed} />
                 <Line x1={0} y1={0} x2={0} y2={3} stroke={colors.mapRoomStroke} strokeWidth={1} />
               </Pattern>
             </Defs>
@@ -631,6 +734,7 @@ function StubFloorMap({
   targetRoom,
   overlay,
   fitBounds,
+  controlsBottomInset,
 }: FloorMapProps) {
   const data = useData();
   const [floorState, setFloorState] = useState(1);
@@ -654,6 +758,7 @@ function StubFloorMap({
             ? { ...fitBounds, viewBox: { x: 0, y: 0, w: STUB_VIEW_W, h: STUB_VIEW_H } }
             : undefined
         }
+        controlsBottomInset={controlsBottomInset}
       >
         <Svg
           width="100%"

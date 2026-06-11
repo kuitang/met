@@ -140,11 +140,28 @@ render model: equirectangular projection around the site bbox center
 meters = SVG user units), shoelace centroid/area for label placement, one
 per-site viewBox across floors (`buildSiteGeometry`, `availableFloors`,
 `resolveGeometryFn`). `apps/mobile/src/components/FloorMap.tsx:FloorMap`
-renders it with react-native-svg: memoized room paths, closed galleries
-hatched + dimmed, zoom/area-gated labels, data-driven floor chips
-(`G|1|1M|2|3|5` today — floors come from the data, not a constant), and
-pinch/pan/wheel applied as a screen-space transform so zooming never
-re-renders the SVG tree. The venue (Fifth Avenue ⇄ The Cloisters) is **not
+renders it with react-native-svg: memoized room paths, zoom/area-gated
+labels, data-driven floor chips (`G|1|1M|2|3|5` today — floors come from the
+data, not a constant), and pinch/pan/wheel applied as a screen-space
+transform so zooming never re-renders the SVG tree.
+
+Tap + color grammar (user mandate): every NAMED room is tappable and renders
+WHITE — galleries AND place polygons (bar/cafe/shop/restroom/library/
+auditorium/…, `MapGeometry.shapeKind`); tapping opens the room/amenity sheet.
+CLOSED rooms (the Living Map `closed` flag — a binary current-state snapshot,
+refreshed nightly; the Met publishes no schedule metadata) render grey +
+hatched and stay tappable, but their sheet is an honest dead-end: identity +
+"Currently inaccessible", zero action buttons. Backdrop (floor plate,
+corridors, back-of-house, unnamed shapes) takes no taps. Place polygons get
+amenity-grade routing: `SqliteDataProvider.create()` registers each open
+named place (room id `g{geomId}`) with the nearest non-door graph node at its
+polygon centroid — the same join the amenities table's points use.
+
+Viewports are per-floor: each floor remembers its last pan/zoom; a first
+visit animates a fit of that floor's own bounds (so a deep floor-1 zoom can
+never strand the tiny floor-5 roof garden off-screen), venue switches reset
+to fit, and nav-mode route fits take precedence (`floorFit` vs `fit` in
+FloorMap's MapViewport). The venue (Fifth Avenue ⇄ The Cloisters) is **not
 map chrome**: FloorMap has no site switcher and renders whatever `site` prop
 it is given — the active venue is location state (see Positioning), surfaced
 as the second line of the home locate chip and overridden via the locate

@@ -201,3 +201,24 @@ test('cross-venue target: honest no-route notice with a one-tap exit', async ({ 
   await expect(page.getByTestId('route-not-found')).toHaveCount(0);
   await expect(page.getByTestId('home-search-bar')).toBeVisible();
 });
+
+test('zoom controls stay above the nav sheet and keep working mid-nav', async ({ page }) => {
+  await page.goto('/route/great-hall/822');
+  await expect(page.getByTestId('nav-sheet')).toBeVisible();
+  await settleAtHalf(page, 'zoom-rail');
+
+  // The +/− rail must sit fully above the sheet's top edge at HALF…
+  const sheet = (await page.getByTestId('nav-sheet').boundingBox())!;
+  const zoomOut = (await page.getByTestId('zoom-out').boundingBox())!;
+  expect(zoomOut.y + zoomOut.height).toBeLessThanOrEqual(sheet.y);
+  // …and at HEADER-ONLY (max-map nav). FULL hides the map anyway.
+  await dragHandle(page, 350);
+  await settleAtHeader(page, 'zoom-rail-header');
+  const headerSheet = (await page.getByTestId('nav-sheet').boundingBox())!;
+  const zoomOutHeader = (await page.getByTestId('zoom-out').boundingBox())!;
+  expect(zoomOutHeader.y + zoomOutHeader.height).toBeLessThanOrEqual(headerSheet.y);
+
+  // Functional, not just visible: a click would fail if the sheet covered it.
+  await page.getByTestId('zoom-in').click();
+  await page.getByTestId('zoom-out').click();
+});

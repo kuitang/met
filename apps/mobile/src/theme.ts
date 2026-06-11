@@ -19,11 +19,15 @@ export const colors = {
   homeBlue: '#1B6CA8',
   white: '#ffffff',
   black: '#000000',
-  // Map-specific
+  // Map-specific. Real-map color grammar (user mandate): WHITE = tappable
+  // (every named room — galleries and places alike), grey + hatch = closed
+  // (still tappable), warm greys = backdrop (floor plate / corridors / BOH).
   mapRoom: '#efedea',
   mapRoomStroke: '#b9b5b0',
   mapRoomActive: '#fbe3e8', // red-tinted highlight fill
   mapAmenity: '#e3e1de',
+  mapCirculation: '#edeae6', // corridors/BOH — visible against the floor plate
+  mapClosed: '#dfdcd8', // closed-hatch base — reads grey at thumbnail zoom
 } as const;
 
 /** 4pt-based spacing scale; generous whitespace is part of the look. */
