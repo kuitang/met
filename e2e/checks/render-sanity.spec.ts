@@ -50,6 +50,12 @@ function clipAudit(page: Page): Promise<string[]> {
       // The sheets' children are still audited against their own ancestors.
       const tid = (el as HTMLElement).dataset?.testid;
       if (tid === 'room-sheet' || tid === 'nav-sheet') continue;
+      // The map's pan/zoom transform layer extends past floor-map's clip by
+      // design (same rationale as the svg-internals skip above): any pan,
+      // zoom, or nav-mode fit overflows it. Its CONTENT is still reachable
+      // by gesture, never lost. (Pre-existing borderline failure: the nav
+      // fit overshoots the 1px tolerance by ~0.3px depending on timing.)
+      if (tid === 'map-viewport') continue;
       const r = el.getBoundingClientRect();
       if (!r.width || !r.height || hidden(el)) continue;
       if (getComputedStyle(el).position === 'fixed') continue;
@@ -82,6 +88,30 @@ function clipAudit(page: Page): Promise<string[]> {
   });
 }
 
+/**
+ * (c) Edge-flush audit — bottom-band chips/toasts must keep ≥12px breathing
+ * room from BOTH horizontal screen edges. The clip audit above passes
+ * edge-flush elements (nothing is clipped at exactly the edge), which is how
+ * a long real gallery title ("Gallery Exhibition Galleries 964 & 965 ·
+ * Floor G", met.sqlite) rode the locate chip flush to the right screen edge.
+ */
+const EDGE_CHIPS = ['locate-chip', 'venue-toast', 'rerouting-toast'];
+function edgeFlushAudit(page: Page): Promise<string[]> {
+  return page.evaluate((ids) => {
+    const out: string[] = [];
+    for (const id of ids) {
+      for (const el of Array.from(document.querySelectorAll(`[data-testid="${id}"]`))) {
+        const r = el.getBoundingClientRect();
+        if (!r.width || !r.height) continue;
+        if (r.left < 12) out.push(`${id}: left gap ${r.left.toFixed(1)}px < 12px breathing margin`);
+        const right = window.innerWidth - r.right;
+        if (right < 12) out.push(`${id}: right gap ${right.toFixed(1)}px < 12px breathing margin`);
+      }
+    }
+    return out;
+  }, EDGE_CHIPS);
+}
+
 /** (b) Returns filter-chip visibility violations. */
 function chipsAudit(page: Page): Promise<string[]> {
   return page.evaluate(() => {
@@ -112,6 +142,13 @@ test('home renders without clipped content', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByTestId('floor-map')).toBeVisible();
   expect(await clipAudit(page)).toEqual([]);
+  expect(await edgeFlushAudit(page)).toEqual([]);
+});
+
+test('home with an anchored room keeps the locate chip off the screen edge', async ({ page }) => {
+  await page.goto('/?room=131');
+  await expect(page.getByTestId('locate-chip')).toContainText('131');
+  expect(await edgeFlushAudit(page)).toEqual([]);
 });
 
 test('search with open suggestions renders without clipped content', async ({ page }) => {

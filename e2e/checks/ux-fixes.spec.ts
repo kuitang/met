@@ -199,6 +199,224 @@ test('route polyline pans and zooms WITH the floor plan', async ({ page }) => {
 });
 
 /* ------------------------------------------------------------------ */
+/* Zoom anchoring — every zoom path pivots on the VIEWPORT CENTER      */
+/* ------------------------------------------------------------------ */
+/*
+ * Regression for the off-center pinch bug: the transform is translate(t)
+ * then scale(s) about the view center C, and the old code changed s at
+ * constant t — whose invariant point is C + t, the map point that was under
+ * the center BEFORE any pan (measured drift = exactly the pan offset).
+ * Fixed by t' = t·s'/s on every zoom path (pinch / wheel / buttons).
+ *
+ * Measurement (same style as the polyline scale-identity test above): track
+ * a known room's bbox across the zoom; for a uniform scale k about a fixed
+ * point F, x' = F + k(x − F) ⇒ F = (x' − k·x)/(1 − k). F must equal the
+ * viewport center within 2px, at multiple off-center pans, both directions.
+ */
+
+/** Screen-space bbox of the Great Hall polygon. */
+async function roomBox(page: Page) {
+  return page.evaluate(() => {
+    const r = document
+      .querySelector('[data-testid="room-great-hall"]')!
+      .getBoundingClientRect();
+    return { x: r.x, y: r.y, w: r.width };
+  });
+}
+
+/** Fixed point of the screen-space scale taking box a to box b. */
+function zoomFixedPoint(a: { x: number; y: number; w: number }, b: typeof a) {
+  const k = b.w / a.w;
+  return { k, fx: (b.x - k * a.x) / (1 - k), fy: (b.y - k * a.y) / (1 - k) };
+}
+
+async function mapCenter(page: Page) {
+  const bb = (await page.getByTestId('floor-map').boundingBox())!;
+  return { x: bb.x + bb.width / 2, y: bb.y + bb.height / 2 };
+}
+
+async function panBy(page: Page, c: { x: number; y: number }, dx: number, dy: number) {
+  const before = await roomBox(page);
+  await page.mouse.move(c.x, c.y);
+  await page.mouse.down();
+  await page.mouse.move(c.x + dx, c.y + dy, { steps: 8 });
+  await page.mouse.up();
+  // Condition, not a pause: the room polygon actually moved with the drag.
+  await expect
+    .poll(async () => Math.abs((await roomBox(page)).x - before.x))
+    .toBeGreaterThan(Math.abs(dx) / 2);
+  // A drag that starts and ends inside the same room fires a DOM click on
+  // release, opening the room sheet over the bottom band — dismiss it so it
+  // cannot intercept the zoom controls / pinch fingers under test.
+  if (await page.getByTestId('room-sheet').isVisible()) {
+    await page.getByTestId('room-sheet-close').click();
+    await expect(page.getByTestId('room-sheet')).toBeHidden();
+  }
+}
+
+test('wheel zoom anchors the viewport center at off-center pans, both directions', async ({
+  page,
+}) => {
+  for (const pan of [
+    { dx: 120, dy: 150 },
+    { dx: -130, dy: -100 },
+  ]) {
+    await page.goto('/');
+    await expect(page.getByTestId('room-great-hall')).toBeVisible();
+    const c = await mapCenter(page);
+    await panBy(page, c, pan.dx, pan.dy);
+
+    for (const deltaY of [-480, 300]) {
+      const before = await roomBox(page);
+      await page.mouse.move(c.x, c.y);
+      await page.mouse.wheel(0, deltaY);
+      const grew = deltaY < 0;
+      await expect
+        .poll(async () => {
+          const k = (await roomBox(page)).w / before.w;
+          return grew ? k : 1 / k;
+        })
+        .toBeGreaterThan(1.25);
+      const { fx, fy } = zoomFixedPoint(before, await roomBox(page));
+      expect(Math.abs(fx - c.x)).toBeLessThan(2);
+      expect(Math.abs(fy - c.y)).toBeLessThan(2);
+    }
+  }
+});
+
+test.describe('two-finger pinch', () => {
+  test.use({ hasTouch: true }); // CDP touch synthesis needs a touch-enabled context
+
+test('pinch anchors the viewport center when panned off-center', async ({
+  page,
+  browserName,
+}) => {
+  test.skip(browserName !== 'chromium', 'CDP touch synthesis is chromium-only');
+  await page.goto('/');
+  await expect(page.getByTestId('room-great-hall')).toBeVisible();
+  const c = await mapCenter(page);
+  await panBy(page, c, 120, 150);
+
+  const cdp = await page.context().newCDPSession(page);
+  const pts = (gap: number) => [
+    { x: c.x, y: c.y - gap / 2, id: 0 },
+    { x: c.x, y: c.y + gap / 2, id: 1 },
+  ];
+  // Both directions: spread (zoom in), then squeeze (zoom out).
+  for (const [startGap, endGap] of [
+    [120, 300],
+    [300, 140],
+  ]) {
+    const before = await roomBox(page);
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: pts(startGap) });
+    for (let i = 1; i <= 10; i++) {
+      await cdp.send('Input.dispatchTouchEvent', {
+        type: 'touchMove',
+        touchPoints: pts(startGap + ((endGap - startGap) * i) / 10),
+      });
+    }
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    const grew = endGap > startGap;
+    await expect
+      .poll(async () => {
+        const k = (await roomBox(page)).w / before.w;
+        return grew ? k : 1 / k;
+      })
+      .toBeGreaterThan(1.3); // the pinch actually scaled
+    const { fx, fy } = zoomFixedPoint(before, await roomBox(page));
+    expect(Math.abs(fx - c.x)).toBeLessThan(2);
+    expect(Math.abs(fy - c.y)).toBeLessThan(2);
+  }
+  await cdp.detach();
+});
+});
+
+test('zoom buttons: 44pt targets, ~1.4× per tap, center-anchored, clamped at max', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page.getByTestId('room-great-hall')).toBeVisible();
+  const c = await mapCenter(page);
+  await panBy(page, c, 100, 120); // off-center first — anchoring must still hold
+
+  for (const id of ['zoom-in', 'zoom-out']) {
+    const bb = (await page.getByTestId(id).boundingBox())!;
+    expect(bb.width).toBeGreaterThanOrEqual(43.5);
+    expect(bb.height).toBeGreaterThanOrEqual(43.5);
+  }
+
+  // + : spring-settles at ×1.4 (ζ≈1, no overshoot), fixed point = center.
+  const before = await roomBox(page);
+  await page.getByTestId('zoom-in').click();
+  await expect.poll(async () => (await roomBox(page)).w / before.w).toBeGreaterThan(1.38);
+  const zin = zoomFixedPoint(before, await roomBox(page));
+  expect(zin.k).toBeLessThan(1.45);
+  expect(Math.abs(zin.fx - c.x)).toBeLessThan(2);
+  expect(Math.abs(zin.fy - c.y)).toBeLessThan(2);
+
+  // − : back down by the same step, same anchor.
+  const mid = await roomBox(page);
+  await page.getByTestId('zoom-out').click();
+  await expect.poll(async () => (await roomBox(page)).w / mid.w).toBeLessThan(0.73);
+  const zout = zoomFixedPoint(mid, await roomBox(page));
+  expect(Math.abs(zout.fx - c.x)).toBeLessThan(2);
+  expect(Math.abs(zout.fy - c.y)).toBeLessThan(2);
+
+  // Clamp: hammering + plateaus at the stub map's maxScale (4×).
+  for (let i = 0; i < 6; i++) await page.getByTestId('zoom-in').click();
+  await expect.poll(async () => (await roomBox(page)).w / before.w).toBeGreaterThan(3.9);
+  expect((await roomBox(page)).w / before.w).toBeLessThan(4.1);
+});
+
+/* ------------------------------------------------------------------ */
+/* Locate chip — hard horizontal limit, ellipsis, never edge-flush     */
+/* ------------------------------------------------------------------ */
+
+test.describe('locate chip at phone width', () => {
+  test.use({ viewport: { width: 390, height: 844 } });
+
+  test('longest real gallery label truncates to one line with ≥16px right margin', async ({
+    page,
+  }) => {
+    await page.goto('/?room=131');
+    const chip = page.getByTestId('locate-chip');
+    await expect(chip).toContainText('Gallery 131');
+    const oneLine = (await chip.boundingBox())!.height;
+
+    // The stub fixture has no long titles, so feed the chip's Text node the
+    // longest REAL labels from met.sqlite (galleries: galleryNumber
+    // "Exhibition Galleries 964 & 965"; amenities: "The Iris and B.Gerald
+    // Cantor Roof Garden Bar"). The CSS contract under test (nowrap +
+    // ellipsis + margin cap) is what real data exercises in production.
+    for (const label of [
+      'Gallery Exhibition Galleries 964 & 965 · Floor G',
+      'The Iris and B.Gerald Cantor Roof Garden Bar · Floor 5',
+    ]) {
+      const m = await page.evaluate((text) => {
+        const el = document.querySelector('[data-testid="locate-chip"]')!;
+        const t = el.querySelector('div') as HTMLElement;
+        t.textContent = text;
+        const r = el.getBoundingClientRect();
+        const cs = getComputedStyle(t);
+        return {
+          right: r.right,
+          h: r.height,
+          winW: window.innerWidth,
+          whiteSpace: cs.whiteSpace,
+          textOverflow: cs.textOverflow,
+          truncated: t.scrollWidth > t.clientWidth + 1,
+        };
+      }, label);
+      expect(m.winW - m.right).toBeGreaterThanOrEqual(16); // breathing margin
+      expect(m.h).toBeLessThanOrEqual(oneLine + 1); // never wraps
+      expect(m.whiteSpace).toBe('nowrap');
+      expect(m.textOverflow).toBe('ellipsis');
+      expect(m.truncated).toBe(true); // the long title actually ellipsized
+    }
+  });
+});
+
+/* ------------------------------------------------------------------ */
 /* Bug 5 — one-tap return home                                         */
 /* ------------------------------------------------------------------ */
 

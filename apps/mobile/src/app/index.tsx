@@ -354,10 +354,13 @@ export default function HomeScreen() {
             onPress={() => router.push('/locate')}
             testID="locate-chip"
           >
-            <Text style={styles.locateChipText}>
+            {/* Single line + tail ellipsis: long real gallery titles (e.g.
+                "Gallery Exhibition Galleries 964 & 965 · Floor G") must
+                truncate, never wrap, never reach the screen edge. */}
+            <Text style={styles.locateChipText} numberOfLines={1}>
               {anchor ? anchor.label : 'Location unknown — tap to set'}
             </Text>
-            <Text style={styles.locateChipVenue} testID="locate-chip-venue">
+            <Text style={styles.locateChipVenue} numberOfLines={1} testID="locate-chip-venue">
               {VENUE_NAMES[venue.venue]}
             </Text>
           </Pressable>
@@ -528,10 +531,16 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    // Horizontal limits live on the overlay as padding so children can use
+    // maxWidth '100%': margins do NOT cap a nowrap chip (its intrinsic
+    // min-content width is the full single-line title — measured riding the
+    // screen edge with "Gallery Exhibition Galleries 964 & 965 · Floor G").
+    paddingLeft: spacing.lg,
+    paddingRight: spacing.md, // ≥16px breathing room at the right screen edge
   },
   locateChip: {
     alignSelf: 'flex-start',
-    marginLeft: spacing.lg,
+    maxWidth: '100%', // hard cap; the texts above ellipsize at one line
     marginBottom: spacing.md,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.md,
@@ -560,8 +569,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     lineHeight: 14,
     color: colors.inkSecondary,
-    marginLeft: spacing.lg,
-    marginRight: spacing.lg,
+    marginRight: spacing.sm, // overlay padding supplies the rest
     marginBottom: spacing.sm,
   },
   venueToast: {
@@ -569,7 +577,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.md,
     alignSelf: 'flex-start',
-    marginLeft: spacing.lg,
+    maxWidth: '100%', // same breathing-room rule as the locate chip
     marginBottom: spacing.sm,
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.md,
@@ -579,6 +587,7 @@ const styles = StyleSheet.create({
   venueToastText: {
     ...type.label,
     color: colors.white,
+    flexShrink: 1, // long toast copy shrinks before pushing ✕ off the chip
   },
   venueToastClose: {
     ...type.label,

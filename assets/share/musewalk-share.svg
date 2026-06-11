@@ -14,9 +14,11 @@
   <circle cx="24" cy="23" r="9" fill="#ffffff"/>
 </g>
 
-<!-- Branding (regenerable text block) -->
+<!-- Branding (regenerable text block). Wordmark matches the app header
+     (apps/mobile/src/app/index.tsx styles.wordmark / wordmarkAccent): serif
+     bold uppercase, default tracking, MUSE in ink + WALK in Met red. -->
 <g id="text-layer">
-  <text x="600" y="288" text-anchor="middle" font-family="Georgia, 'Liberation Serif', 'Times New Roman', serif" font-size="128" font-weight="bold" fill="#111111" letter-spacing="5">MUSEWALK</text>
+  <text x="600" y="288" text-anchor="middle" font-family="Georgia, 'Liberation Serif', 'Times New Roman', serif" font-size="128" font-weight="bold" fill="#111111">MUSE<tspan fill="#e4002b">WALK</tspan></text>
   <text x="600" y="352" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, 'Liberation Sans', Arial, sans-serif" font-size="32" fill="#494643" letter-spacing="0.5">Find any artwork. Never get lost.</text>
   <text x="600" y="403" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, 'Liberation Sans', Arial, sans-serif" font-size="21" fill="#6b6660" letter-spacing="0.4">An unofficial companion for The Met</text>
 </g>
