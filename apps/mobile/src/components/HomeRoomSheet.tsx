@@ -46,7 +46,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { floorLabel } from '@/components/MapGeometry';
 import { ObjectThumb } from '@/components/ObjectImage';
+import { roomGlyph } from '@/components/RoomRow';
 import { MetObject, Room } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
@@ -54,6 +56,8 @@ export type SheetDetent = 'header' | 'half' | 'full';
 
 /** Visible sheet height at HALF — matches the pre-detent default split. */
 const HALF_VISIBLE = 340;
+/** HALF height of the thin amenity variant: header + action row only. */
+const AMENITY_HALF_VISIBLE = 220;
 /** Map sliver left above the sheet at FULL (below the top safe inset). */
 const FULL_TOP_GAP = 12;
 /** Header-strip estimate until onLayout reports the real height. */
@@ -72,6 +76,12 @@ export interface HomeRoomSheetProps {
   originId: string;
   /** "I'm here" — reset the visitor's anchor to this room. */
   onImHere: () => void;
+  /**
+   * Called when DIRECTIONS is taken (after the route push): the sheet's job
+   * is done, so the parent closes it — returning home later shows the clean
+   * map + locate chip, not a stale sheet.
+   */
+  onDirections?: () => void;
   onClose: () => void;
 }
 
@@ -83,18 +93,24 @@ export default function HomeRoomSheet({
   totalCount,
   originId,
   onImHere,
+  onDirections,
   onClose,
 }: HomeRoomSheetProps) {
   const { height: winH } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const sheetH = winH - insets.top - FULL_TOP_GAP;
 
+  // Thin amenity variant (one tap grammar): amenities have no object list —
+  // the sheet is kind glyph + name + floor + the two actions, nothing else.
+  const isAmenity = room.kind !== 'gallery' && room.kind !== 'hall';
+  const halfVisible = isAmenity ? AMENITY_HALF_VISIBLE : HALF_VISIBLE;
+
   const [headerH, setHeaderH] = useState(HEADER_FALLBACK);
   const [detent, setDetent] = useState<SheetDetent>('half');
 
   // translateY per detent (0 = fully open).
   const fullTy = 0;
-  const halfTy = Math.max(0, sheetH - HALF_VISIBLE);
+  const halfTy = Math.max(0, sheetH - halfVisible);
   const headerTy = Math.max(0, sheetH - headerH);
   const tyFor = useCallback(
     (d: SheetDetent) => (d === 'full' ? 0 : d === 'half' ? halfTy : headerTy),
@@ -164,7 +180,7 @@ export default function HomeRoomSheet({
   };
 
   // List viewport per settled detent; at HEADER it's below the fold anyway.
-  const listH = (detent === 'full' ? sheetH : HALF_VISIBLE) - headerH;
+  const listH = (detent === 'full' ? sheetH : halfVisible) - headerH;
 
   return (
     // Clipping wrapper: the translated sheet must never grow the page's
@@ -183,14 +199,24 @@ export default function HomeRoomSheet({
               <View style={styles.grabber} />
             </Pressable>
             <View style={styles.headerRow}>
+              {/* Amenity sheets lead with the kind glyph (WC / ELEV / CAFE …),
+                  same wayfinding code as the search room rows. */}
+              {isAmenity && (
+                <View style={styles.glyphBox} testID="sheet-amenity-glyph">
+                  <Text style={styles.glyphText} numberOfLines={1}>
+                    {roomGlyph(room)}
+                  </Text>
+                </View>
+              )}
               <View style={styles.headerText}>
                 <Text style={styles.title} numberOfLines={2}>
                   {room.name}
                 </Text>
                 <Text style={type.meta}>
-                  Floor {room.floor}
+                  {/* Label vocabulary (G / 1M / …), not the numeric floor. */}
+                  Floor {floorLabel(room.floor)}
                   {/* Honest count: the list is capped, the total is not. */}
-                  {totalCount > 0
+                  {!isAmenity && totalCount > 0
                     ? objects.length < totalCount
                       ? ` · Showing ${fmt(objects.length)} of ${fmt(totalCount)} objects`
                       : ` · ${fmt(totalCount)} ${totalCount === 1 ? 'object' : 'objects'}`
@@ -214,7 +240,10 @@ export default function HomeRoomSheet({
             {originId !== room.id && (
               <Pressable
                 style={[styles.actionBtn, styles.directionsBtn]}
-                onPress={() => router.push(`/route/${originId}/${room.id}`)}
+                onPress={() => {
+                  router.push(`/route/${originId}/${room.id}`);
+                  onDirections?.();
+                }}
                 testID="room-directions"
               >
                 <Text style={styles.actionText}>Directions</Text>
@@ -229,7 +258,7 @@ export default function HomeRoomSheet({
             </Pressable>
           </View>
 
-          {objects.length > 0 ? (
+          {isAmenity ? null : objects.length > 0 ? (
             <FlatList
               data={objects}
               keyExtractor={(o) => String(o.objectID)}
@@ -310,6 +339,22 @@ const styles = StyleSheet.create({
   headerText: {
     flex: 1,
     gap: 2,
+  },
+  // Amenity-kind glyph box — same wayfinding code language as RoomRow.
+  glyphBox: {
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: colors.ink,
+    backgroundColor: colors.surface,
+  },
+  glyphText: {
+    ...type.label,
+    letterSpacing: 0,
+    fontSize: 11,
+    lineHeight: 14,
   },
   title: {
     ...type.title,

@@ -45,6 +45,21 @@ An **amenity intent check** (`amenityIntent`) runs token-level before FTS:
 `amenities` table (16 restrooms, 9 dining, 55 elevators…) instead of the catalog.
 Token-level matching with plural folding means "water lilies" still finds Monet.
 
+**Digit queries + room rows.** The accession column is deliberately NOT in
+`objects_fts` (digits live almost exclusively there — "21.131" — while titles
+rarely carry them), so digit-bearing queries union in an accession
+LIKE-containment scan (`buildAccessionSearchQuery`; measured 0.6 ms over the
+full 44.8k catalog). FTS bm25 hits rank first, accession hits append deduped.
+Above the object rows the omnibar (and All Results) shows **room rows**:
+galleries via `matchGalleries` (digit query → exact gallery number, then
+number prefixes, cap 4; letter query → title-word prefix match, "dendur" →
+The Temple of Dendur) and amenities nearest-first. Room rows have one anatomy
+(kind glyph, name, floor chip — no inline buttons) and one tap grammar: home
+map, floor switched, room highlighted, dual-action sheet (DIRECTIONS /
+I'M HERE) open. Known limitation: the Great Hall has no gallery polygon in
+the Living Map data, so "great hall" surfaces its amenities (Great Hall
+Balcony Cafe, the escalator) rather than a gallery row.
+
 ## Tier 2 — all results (same module, plus filters)
 
 The autocomplete query without LIMIT, plus plain WHERE filters: site

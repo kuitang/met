@@ -105,7 +105,14 @@ The provider:
 
 - runs autocomplete/full search through the shared builders
   (`shared/search.ts:buildAutocompleteQuery` / `buildFullQuery`) with
-  rank-preserving hydration;
+  rank-preserving hydration; digit-bearing queries additionally match
+  accession numbers (`buildAccessionSearchQuery` LIKE containment — accession
+  is not an FTS column; FTS hits rank first, accession hits are appended,
+  deduped);
+- `searchGalleries` returns gallery rooms for the omnibar's room rows via
+  `shared/search.ts:matchGalleries` over the in-memory gallery list (digit
+  query: exact number, then number prefixes; letter query: title-word prefix
+  match);
 - `objectsInGallery` is a CAPPED display list (500 rows; the densest gallery
   holds ~4.5k objects) in the canonical `shared/search.ts:GALLERY_ORDER`
   (`isHighlight DESC, objectID` — deterministic). Counts and positions are
@@ -208,11 +215,22 @@ on-device (offline routing works; J11 asserts it).
 
 1. **Autocomplete** (every keystroke, local, p50 0.3 ms): normalized input →
    FTS5 every-token-prefix AND, weighted bm25 + isHighlight boost, gallery
-   joined inline. `shared/search.ts:buildAutocompleteQuery`.
+   joined inline. `shared/search.ts:buildAutocompleteQuery`. Digit-bearing
+   queries union in accession-containment matches
+   (`buildAccessionSearchQuery`; accession is not FTS-indexed — measured
+   0.6 ms LIKE scan over the full catalog). Above the object rows the omnibar
+   shows **room rows**: galleries (`matchGalleries` — exact gallery number →
+   number prefixes → title-word matches, cap 4) and amenities (substring +
+   synonyms, nearest-first by graph distance). Room rows share one anatomy
+   (kind glyph, name, floor chip; no inline actions) and one tap grammar:
+   tapping lands on the home map with the room highlighted, floor switched,
+   and the dual-action sheet open (`/?focus=` param; HomeRoomSheet renders a
+   thin glyph+actions variant for amenities). Object rows go to the object
+   page.
 2. **All Results** (local): same query + filters (site/floor/classification/
-   hasImage/rotation) as WHERE clauses; amenity intent ("restroom") routes to
-   the amenities table ranked by graph distance from the current anchor.
-   `shared/search.ts:buildFullQuery`, `amenityIntent`.
+   hasImage/rotation) as WHERE clauses, plus the same gallery/amenity room
+   rows above the object list. `shared/search.ts:buildFullQuery`,
+   `amenityIntent`.
 3. **LLM interpret** (the only server hop, `POST /api/v1/search/interpret`,
    one round trip): the server rewrites *and executes and ranks*, returning
    final results — the client never orchestrates LLM steps.

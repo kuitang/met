@@ -13,7 +13,7 @@
  */
 import { createContext, useContext } from 'react';
 
-import type { SearchFilters } from '@met/shared/search';
+import { matchGalleries, type SearchFilters } from '@met/shared/search';
 
 import stub from './stub.json';
 
@@ -109,6 +109,13 @@ export interface DataProvider {
   /** Prefix/substring suggestions for the omnibar (objects + rooms). */
   searchAutocomplete(query: string, limit?: number): MetObject[];
   /**
+   * Gallery rooms matching the query, for the omnibar's room rows: digit
+   * queries match gallery numbers (exact first, then prefixes), queries with
+   * letters match gallery titles ("dendur" → The Temple of Dendur). Ranking
+   * lives in shared/search.ts matchGalleries.
+   */
+  searchGalleries(query: string, limit?: number): Room[];
+  /**
    * Full result list for the All Results screen. Optional SQL-level filters
    * (site / floor / rotation / hasImage) — the stub ignores them; the UI's
    * SearchFilterChips post-filter still applies either way.
@@ -184,6 +191,16 @@ export class StubDataProvider implements DataProvider {
       if (score >= 0) scored.push({ o, score: score - (o.isHighlight ? 0.5 : 0) });
     }
     return scored.sort((a, b) => a.score - b.score).map((s) => s.o);
+  }
+
+  searchGalleries(query: string, limit = 4): Room[] {
+    // Stub room names embed the number ("Gallery 131 · The Temple of Dendur"),
+    // so title matching covers both forms; halls (The Great Hall) included.
+    return matchGalleries(
+      this.galleries().map((room) => ({ galleryNumber: room.id, title: room.name, room })),
+      query,
+      limit,
+    ).map((hit) => hit.room);
   }
 
   getObject(objectID: number): MetObject | undefined {

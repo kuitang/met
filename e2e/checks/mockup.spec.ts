@@ -50,18 +50,59 @@ test('search "Monet" shows suggestion rows with gallery chips', async ({ page })
   await expect(page.getByTestId('all-results-link')).toBeVisible();
 });
 
-test('search amenity intent surfaces restrooms; tap = directions, not relocation', async ({
+test('search amenity intent surfaces restrooms; tap opens the amenity sheet', async ({
   page,
 }) => {
   await page.goto('/search');
   await page.getByTestId('search-input').fill('restroom');
   await expect(page.getByTestId('amenity-restroom-1')).toBeVisible();
   await expect(page.getByTestId('amenity-restroom-2')).toBeVisible();
-  // Tapping an amenity offers DIRECTIONS to it (bug fix: it used to silently
-  // move the visitor's location there). No anchor yet → Great Hall origin.
+  // One row anatomy (user mandate): glyph + name + floor chip, NO inline
+  // action buttons on amenity rows.
+  await expect(page.locator('[data-testid^="amenity-im-here-"]')).toHaveCount(0);
+  // One tap grammar (supersedes the PR #8 tap-routes-directly behavior):
+  // the row lands on the home map with the amenity sheet open — DIRECTIONS /
+  // I'M HERE live there. No anchor yet → Great Hall route origin.
   await page.getByTestId('amenity-restroom-1').click();
+  await expect(page.getByTestId('room-sheet')).toBeVisible();
+  await expect(page.getByTestId('room-sheet')).toContainText('Restrooms');
+  await expect(page.getByTestId('sheet-amenity-glyph')).toContainText('WC');
+  await page.getByTestId('room-directions').click();
   await expect(page).toHaveURL(/\/route\/great-hall\/restroom-1/);
   await expect(page.getByTestId('route-summary')).toContainText('Restrooms');
+});
+
+test('digit query surfaces the gallery row; tap opens the gallery sheet', async ({
+  page,
+}) => {
+  await page.goto('/search');
+  await page.getByTestId('search-input').fill('131');
+  const row = page.getByTestId('gallery-131');
+  await expect(row).toBeVisible();
+  await expect(row).toContainText('Temple of Dendur');
+  await expect(row).toContainText('F1');
+  // Same anatomy as amenity rows: no inline actions anywhere.
+  await expect(page.locator('[data-testid^="amenity-im-here-"]')).toHaveCount(0);
+  await row.click();
+  await expect(page.getByTestId('room-sheet')).toBeVisible();
+  await expect(page.getByTestId('room-sheet')).toContainText('Temple of Dendur');
+  await expect(page.getByTestId('room-directions')).toBeVisible();
+  await expect(page.getByTestId('room-im-here')).toBeVisible();
+});
+
+test('gallery row tap switches the map to the gallery floor', async ({ page }) => {
+  await page.goto('/search');
+  await page.getByTestId('search-input').fill('822');
+  await page.getByTestId('gallery-822').click();
+  await expect(page.getByTestId('room-sheet')).toContainText('Van Gogh');
+  // Floor switched to 2: the floor-2 stub rect renders (and is highlighted).
+  await expect(page.getByTestId('room-822')).toBeVisible();
+});
+
+test('gallery title query ("dendur") surfaces the gallery row', async ({ page }) => {
+  await page.goto('/search');
+  await page.getByTestId('search-input').fill('dendur');
+  await expect(page.getByTestId('gallery-131')).toBeVisible();
 });
 
 test('weak query offers Ask differently → interpret flow (offline degrade here)', async ({

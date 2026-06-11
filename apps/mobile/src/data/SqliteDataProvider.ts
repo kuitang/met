@@ -41,11 +41,13 @@ import {
   type RouteStep as SharedRouteStep,
 } from '@met/shared/routing';
 import {
+  buildAccessionSearchQuery,
   buildAutocompleteQuery,
   buildFullQuery,
   buildGalleryNeighborsQuery,
   buildGalleryPositionQuery,
   GALLERY_ORDER,
+  matchGalleries,
   type SearchFilters,
 } from '@met/shared/search';
 
@@ -339,18 +341,50 @@ export class SqliteDataProvider implements DataProvider {
     return ids.map((id) => byId.get(id)).filter((o): o is MetObject => o !== undefined);
   }
 
+  /**
+   * Digit-bearing queries additionally match accession numbers ("131" →
+   * "21.131"): accession is not an objects_fts column, so without this UNION
+   * digit queries surface almost nothing. FTS hits (bm25-ranked title/artist
+   * relevance) come first; accession-containment hits are appended, deduped.
+   */
+  private withAccessionMatches(query: string, ids: number[], limit: number): number[] {
+    if (ids.length >= limit) return ids.slice(0, limit);
+    const aq = buildAccessionSearchQuery(query, limit);
+    if (aq === null) return ids.slice(0, limit);
+    const seen = new Set(ids);
+    const merged = [...ids];
+    for (const r of this.met.allSync<{ objectID: number }>(aq.sql, aq.params)) {
+      if (!seen.has(r.objectID)) merged.push(r.objectID);
+      if (merged.length >= limit) break;
+    }
+    return merged;
+  }
+
   searchAutocomplete(query: string, limit = 8): MetObject[] {
     const q = buildAutocompleteQuery(query); // builder caps at top 8
-    if (q === null) return [];
-    const rows = this.met.allSync<{ objectID: number }>(q.sql, q.params);
-    return this.hydrate(rows.slice(0, limit).map((r) => r.objectID));
+    const rows = q === null ? [] : this.met.allSync<{ objectID: number }>(q.sql, q.params);
+    const ids = this.withAccessionMatches(query, rows.map((r) => r.objectID), limit);
+    return this.hydrate(ids);
   }
 
   searchAll(query: string, filters: SearchFilters = {}): MetObject[] {
     const q = buildFullQuery(query, filters, { limit: SEARCH_ALL_LIMIT });
-    if (q === null) return [];
-    const rows = this.met.allSync<{ objectID: number }>(q.sql, q.params);
-    return this.hydrate(rows.map((r) => r.objectID));
+    const rows = q === null ? [] : this.met.allSync<{ objectID: number }>(q.sql, q.params);
+    // Accession matches join the pool only for unfiltered searches — the
+    // accession scan doesn't apply the SQL-level filters.
+    const ids = Object.keys(filters).length
+      ? rows.map((r) => r.objectID)
+      : this.withAccessionMatches(query, rows.map((r) => r.objectID), SEARCH_ALL_LIMIT);
+    return this.hydrate(ids);
+  }
+
+  searchGalleries(query: string, limit = 4): Room[] {
+    // galleryRooms carry id = galleryNumber and name = gallery title.
+    return matchGalleries(
+      this.galleryRooms.map((room) => ({ galleryNumber: room.id, title: room.name, room })),
+      query,
+      limit,
+    ).map((hit) => hit.room);
   }
 
   getObject(objectID: number): MetObject | undefined {

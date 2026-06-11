@@ -3,9 +3,11 @@ import { expect, test, type Page } from '@playwright/test';
 /**
  * Live-testing bug-fix regression suite (stub provider, like mockup.spec):
  *
- *  Bug 1 — amenity search: tapping a result offers DIRECTIONS (nearest-first
- *          ranking already orders the rows); "I'm here" is the explicit
- *          secondary action — tapping never silently moves the visitor.
+ *  Bug 1 — amenity search (grammar updated by the gallery/amenity search
+ *          row PR, superseding the PR #8 tap-routes-directly behavior):
+ *          rows carry NO inline actions; tapping a row opens the amenity
+ *          sheet on the home map, where DIRECTIONS and I'M HERE live —
+ *          tapping never silently moves the visitor.
  *  Bug 2 — room sheet: both DIRECTIONS and I'M HERE, ≥44pt.
  *  Bug 3 — current location (HOME glyph, blue) vs target (STAR glyph, Met
  *          red) markers + floor-chip bubbles. Shapes, not red/green, carry
@@ -21,10 +23,10 @@ const HOME_BLUE = '#1B6CA8';
 const MET_RED = '#e4002b';
 
 /* ------------------------------------------------------------------ */
-/* Bug 1 — amenity search offers directions                            */
+/* Bug 1 — amenity rows: one anatomy, one tap → dual-action sheet      */
 /* ------------------------------------------------------------------ */
 
-test('amenity tap routes to that amenity from the anchor — location unchanged', async ({
+test('amenity tap opens the amenity sheet; DIRECTIONS routes from the anchor — location unchanged', async ({
   page,
 }) => {
   await page.goto('/?room=131');
@@ -33,11 +35,18 @@ test('amenity tap routes to that amenity from the anchor — location unchanged'
   await page.getByTestId('search-input').fill('bathroom'); // synonym still matches
 
   // Rows are ranked nearest-first by graph distance; the top row is the
-  // nearest restroom, and tapping it asks for DIRECTIONS to exactly that row.
+  // nearest restroom. Rows carry NO inline buttons (one row anatomy).
   const rows = page.locator('[data-testid^="amenity-restroom-"]');
   await expect(rows.first()).toBeVisible();
+  await expect(page.locator('[data-testid^="amenity-im-here-"]')).toHaveCount(0);
   const nearestId = (await rows.first().getAttribute('data-testid'))!.replace('amenity-', '');
+
+  // One tap → home map with the amenity sheet open (thin variant: kind
+  // glyph, name, floor, DIRECTIONS / I'M HERE).
   await rows.first().click();
+  await expect(page.getByTestId('room-sheet')).toBeVisible();
+  await expect(page.getByTestId('sheet-amenity-glyph')).toContainText('WC');
+  await page.getByTestId('room-directions').click();
   await expect(page).toHaveURL(new RegExp(`/route/131/${nearestId}`));
   await expect(page.getByTestId('route-summary')).toContainText('Restrooms');
 
@@ -46,14 +55,16 @@ test('amenity tap routes to that amenity from the anchor — location unchanged'
   await expect(page.getByTestId('locate-chip')).toContainText('Gallery 131');
 });
 
-test("amenity 'I'm here' is the explicit secondary re-anchor action", async ({ page }) => {
+test("amenity sheet 'I'm here' is the explicit re-anchor action", async ({ page }) => {
   await page.goto('/search');
   await page.getByTestId('search-input').fill('bathroom');
-  const imHere = page.getByTestId('amenity-im-here-restroom-1');
+  await page.getByTestId('amenity-restroom-1').click();
+  const imHere = page.getByTestId('room-im-here');
   await expect(imHere).toBeVisible();
   const box = (await imHere.boundingBox())!;
   expect(box.height).toBeGreaterThanOrEqual(43.5); // HIG tap target
   await imHere.click();
+  await expect(page.getByTestId('room-sheet')).toHaveCount(0);
   await expect(page.getByTestId('locate-chip')).toContainText('Restrooms');
 });
 

@@ -228,6 +228,78 @@ WHERE o.objectID = ? AND o.galleryNumber <> ''`,
   };
 }
 
+// ----------------------------------------------------------- gallery search
+//
+// Galleries are a separate, tiny table (~460 rows) that objects_fts never
+// covers — this is why digit queries used to "show nothing": the only search
+// surface was objects_fts, where digits live almost exclusively in the
+// UNINDEXED accession column. Gallery matching is a pure in-memory function
+// (callers hold the gallery list anyway) instead of another FTS index.
+
+export interface GalleryHit {
+  galleryNumber: string;
+  title: string | null;
+}
+
+/**
+ * Gallery rows for the omnibar. Two regimes (user ranking mandate):
+ *  - digit query: exact gallery number first, then number-prefix matches
+ *    (e.g. "13" → 130, 131, …), numerically ordered, capped.
+ *  - query with letters: every token must prefix-match a word of the gallery
+ *    title or number ("dendur" → The Temple of Dendur; "746 south" →
+ *    746 South), input order preserved, capped.
+ */
+export function matchGalleries<T extends GalleryHit>(
+  galleries: readonly T[],
+  query: string,
+  cap = 4,
+): T[] {
+  const q = normalizeQuery(query);
+  if (!q) return [];
+  if (/^\d+$/.test(q)) {
+    const exact = galleries.filter((g) => g.galleryNumber === q);
+    const prefix = galleries
+      .filter((g) => g.galleryNumber !== q && g.galleryNumber.startsWith(q))
+      .sort((a, b) =>
+        a.galleryNumber.localeCompare(b.galleryNumber, undefined, { numeric: true }),
+      );
+    return [...exact, ...prefix].slice(0, cap);
+  }
+  const toks = q.split(" ");
+  return galleries
+    .filter((g) => {
+      const hay = tokens(`${g.galleryNumber} ${g.title ?? ""}`);
+      return toks.every((t) => hay.some((h) => h.startsWith(t)));
+    })
+    .slice(0, cap);
+}
+
+/**
+ * Accession-number matches for digit-bearing queries. The accession column is
+ * NOT in objects_fts (root cause of empty digit autocomplete: digits live in
+ * accessions like "21.131", titles rarely carry them), so this is a LIKE
+ * containment scan over objects — measured 0.6 ms per query on the full 44.8k
+ * catalog (better-sqlite3), well inside keystroke budget even at wasm speed.
+ * Tokens are joined with '%' so "21.131" (normalized "21 131") still matches
+ * the dotted accession. Returns null when the query carries no digit.
+ */
+export function buildAccessionSearchQuery(input: string, limit = 8): BuiltQuery | null {
+  const toks = tokens(input);
+  if (toks.length === 0 || !toks.some((t) => /\d/.test(t))) return null;
+  const esc = (t: string) => t.replace(/[\\%_]/g, (c) => `\\${c}`);
+  const pattern = `%${toks.map(esc).join("%")}%`;
+  return {
+    sql: `SELECT o.objectID, o.title, o.artist, o.galleryNumber, o.site,
+       g.floor AS floor, o.isHighlight, o.imageUrl, 0 AS score
+FROM objects o
+LEFT JOIN galleries g ON g.galleryNumber = o.galleryNumber AND g.site = o.site
+WHERE o.accession LIKE ? ESCAPE '\\'
+ORDER BY o.isHighlight DESC, o.objectID
+LIMIT ?`,
+    params: [pattern, limit],
+  };
+}
+
 export type AmenityType = "restroom" | "dining" | "elevator" | "water" | "info";
 
 const AMENITY_TOKENS: Array<[AmenityType, string[]]> = [

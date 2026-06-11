@@ -8,6 +8,7 @@ import HomeRoomSheet from '@/components/HomeRoomSheet';
 import {
   VENUE_NAMES,
   anchorForRoom,
+  applyVenue,
   dismissVenueToast,
   setAnchor,
   useAnchor,
@@ -23,7 +24,11 @@ export default function HomeScreen() {
   const venue = useVenue();
   const venueToast = useVenueToast();
   // Deep-link support: `/?room=131` anchors directly (also kept for e2e).
-  const { room: roomParam } = useLocalSearchParams<{ room?: string }>();
+  const { room: roomParam, focus: focusParam, ts: tsParam } = useLocalSearchParams<{
+    room?: string;
+    focus?: string;
+    ts?: string;
+  }>();
   useEffect(() => {
     if (!roomParam) return;
     const room = data.getGallery(roomParam);
@@ -32,6 +37,20 @@ export default function HomeScreen() {
 
   const [selected, setSelected] = useState<Room | undefined>();
   const [floor, setFloor] = useState(1);
+
+  // One tap grammar for search room rows: `/?focus=131` (gallery or amenity
+  // id) lands here with the floor switched, the room highlighted, and its
+  // sheet open — the anchor is NOT touched (DIRECTIONS / I'M HERE live in the
+  // sheet). `ts` busts expo-router param equality so re-tapping the same room
+  // re-opens the sheet; cross-venue rooms drag the venue (with the toast).
+  useEffect(() => {
+    if (!focusParam) return;
+    const room = data.getGallery(focusParam);
+    if (!room) return;
+    applyVenue(room.site ?? 'fifthAve', 'browse');
+    setSelected(room);
+    setFloor(room.floor);
+  }, [focusParam, tsParam, data]);
 
   // Follow the anchor's floor when it changes (e.g. set via the Locate sheet).
   useEffect(() => {
@@ -122,6 +141,7 @@ export default function HomeScreen() {
             setAnchor(anchorForRoom(selected, 'gallery'));
             setSelected(undefined);
           }}
+          onDirections={() => setSelected(undefined)}
           onClose={() => setSelected(undefined)}
         />
       )}
