@@ -17,7 +17,6 @@ import { expect, test, type Page } from '@playwright/test';
  *          on the home map with the anchor intact.
  */
 
-const FIRST_PAINT = { timeout: 45_000 };
 const HOME_BLUE = '#1B6CA8';
 const MET_RED = '#e4002b';
 
@@ -29,7 +28,7 @@ test('amenity tap routes to that amenity from the anchor — location unchanged'
   page,
 }) => {
   await page.goto('/?room=131');
-  await expect(page.getByTestId('locate-chip')).toContainText('Gallery 131', FIRST_PAINT);
+  await expect(page.getByTestId('locate-chip')).toContainText('Gallery 131');
   await page.getByTestId('home-search-bar').click();
   await page.getByTestId('search-input').fill('bathroom'); // synonym still matches
 
@@ -49,7 +48,7 @@ test('amenity tap routes to that amenity from the anchor — location unchanged'
 
 test("amenity 'I'm here' is the explicit secondary re-anchor action", async ({ page }) => {
   await page.goto('/search');
-  await page.getByTestId('search-input').fill('bathroom', FIRST_PAINT);
+  await page.getByTestId('search-input').fill('bathroom');
   const imHere = page.getByTestId('amenity-im-here-restroom-1');
   await expect(imHere).toBeVisible();
   const box = (await imHere.boundingBox())!;
@@ -64,7 +63,7 @@ test("amenity 'I'm here' is the explicit secondary re-anchor action", async ({ p
 
 test("room sheet: equal-weight Directions and I'm-here, both ≥44pt", async ({ page }) => {
   await page.goto('/');
-  await page.getByTestId('room-131').click(FIRST_PAINT);
+  await page.getByTestId('room-131').click();
   await expect(page.getByTestId('room-sheet')).toBeVisible();
 
   const directions = page.getByTestId('room-directions');
@@ -94,7 +93,7 @@ test("room sheet: equal-weight Directions and I'm-here, both ≥44pt", async ({ 
 
 test('home map shows the blue HOME glyph at the anchor + chip bubble', async ({ page }) => {
   await page.goto('/?room=131');
-  await expect(page.getByTestId('locate-chip')).toContainText('Gallery 131', FIRST_PAINT);
+  await expect(page.getByTestId('locate-chip')).toContainText('Gallery 131');
   const home = page.getByTestId('marker-home');
   await expect(home).toBeVisible();
   await expect(home).toHaveAttribute('fill', HOME_BLUE); // never red/green pairing
@@ -104,7 +103,7 @@ test('home map shows the blue HOME glyph at the anchor + chip bubble', async ({ 
 test('route view: home vs star markers and cross-floor chip bubbles', async ({ page }) => {
   // 131 (floor 1) → 822 (floor 2): a cross-floor route.
   await page.goto('/route/131/822');
-  await expect(page.getByTestId('route-summary')).toBeVisible(FIRST_PAINT);
+  await expect(page.getByTestId('route-summary')).toBeVisible();
 
   // Floor 1 active: current location renders as the blue HOME glyph; the
   // target is on floor 2, so its chip carries the star bubble at a glance.
@@ -146,7 +145,7 @@ function measureOverlay(page: Page) {
 
 test('route polyline pans and zooms WITH the floor plan', async ({ page }) => {
   await page.goto('/route/great-hall/822');
-  await expect(page.getByTestId('route-summary')).toBeVisible(FIRST_PAINT);
+  await expect(page.getByTestId('route-summary')).toBeVisible();
   await expect(page.getByTestId('route-polyline')).toBeVisible();
 
   const before = await measureOverlay(page);
@@ -156,11 +155,13 @@ test('route polyline pans and zooms WITH the floor plan', async ({ page }) => {
   const bb = (await map.boundingBox())!;
   await page.mouse.move(bb.x + bb.width / 2, bb.y + bb.height / 2);
   await page.mouse.wheel(0, -480);
-  await page.waitForTimeout(300);
+  // Condition, not a pause: poll until the room polygon has actually scaled.
+  await expect
+    .poll(async () => (await measureOverlay(page)).rw / before.rw)
+    .toBeGreaterThan(1.5);
 
   const zoomed = await measureOverlay(page);
   const k = zoomed.rw / before.rw;
-  expect(k).toBeGreaterThan(1.5); // the zoom actually happened
 
   // Transform consistency: the polyline scaled exactly with the room
   // polygon, and its offset from the room scaled by the same factor.
@@ -174,10 +175,12 @@ test('route polyline pans and zooms WITH the floor plan', async ({ page }) => {
   await page.mouse.down();
   await page.mouse.move(bb.x + bb.width / 2 + 80, bb.y + bb.height / 2 + 50, { steps: 8 });
   await page.mouse.up();
-  await page.waitForTimeout(300);
+  // Condition, not a pause: poll until the map has actually moved.
+  await expect
+    .poll(async () => (await measureOverlay(page)).rx - zoomed.rx)
+    .toBeGreaterThan(40);
 
   const panned = await measureOverlay(page);
-  expect(panned.rx - zoomed.rx).toBeGreaterThan(40); // the map moved…
   // …and the polyline stayed glued to it (relative offset unchanged).
   expect(Math.abs(panned.dcx - zoomed.dcx)).toBeLessThan(2);
   expect(Math.abs(panned.dcy - zoomed.dcy)).toBeLessThan(2);
@@ -189,7 +192,7 @@ test('route polyline pans and zooms WITH the floor plan', async ({ page }) => {
 
 test('HOME button: one tap from a 3-deep stack, anchor intact', async ({ page }) => {
   await page.goto('/?room=131');
-  await expect(page.getByTestId('locate-chip')).toContainText('Gallery 131', FIRST_PAINT);
+  await expect(page.getByTestId('locate-chip')).toContainText('Gallery 131');
 
   // search → object → route: a 3-deep stack.
   await page.getByTestId('home-search-bar').click();
@@ -215,6 +218,6 @@ test('HOME button: one tap from a 3-deep stack, anchor intact', async ({ page })
 test('HOME button is present on search, results, object, and locate too', async ({ page }) => {
   for (const route of ['/search', '/results?q=Monet', '/object/436535', '/locate']) {
     await page.goto(route);
-    await expect(page.getByTestId('home-button').last()).toBeVisible(FIRST_PAINT);
+    await expect(page.getByTestId('home-button').last()).toBeVisible();
   }
 });

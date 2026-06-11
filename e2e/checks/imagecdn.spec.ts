@@ -97,6 +97,8 @@ function pickFixture(): Fixture {
 
 const fixture = TARGET ? pickFixture() : null!;
 
+// e2e-discipline: allow(REAL_TARGET-gated spec — skipped in CI; first-run
+// met.sqlite download + real Tigris CDN fetches are genuine network time)
 const FIRST_PAINT = { timeout: 60_000 };
 
 interface RequestCounts {
@@ -139,11 +141,14 @@ async function expectThumbsPainted(page: Page, min: number) {
       return imgs.length >= n && imgs.slice(0, n).every((i) => i.complete && i.naturalWidth > 0);
     },
     min,
+    // e2e-discipline: allow(real CDN image bytes — cold-bucket fetches)
     { timeout: 30_000 },
   );
 }
 
 test.describe('image CDN happy path', () => {
+  // e2e-discipline: allow(REAL_TARGET-gated: DB download + ~9 real CDN image
+  // fetches per test are genuine network time, not element waits)
   test.setTimeout(120_000);
 
   test('results rows + object hero load from the bucket, zero proxy requests', async ({
@@ -164,6 +169,7 @@ test.describe('image CDN happy path', () => {
         return !!img && img.complete && img.naturalWidth > 0;
       },
       undefined,
+      // e2e-discipline: allow(real CDN hero bytes — cold-bucket fetch)
       { timeout: 30_000 },
     );
 

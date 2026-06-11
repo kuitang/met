@@ -4,7 +4,7 @@
  *   npm -w server run build
  *   EXPO_PUBLIC_DATA=real npm -w apps/mobile run export:web
  *   GEMINI_API_KEY=$(cat ~/.gemini_key) DATA_DIR=$PWD/data PORT=8789 \
- *     RUN_REFRESH=0 node server/dist/index.js
+ *     node server/dist/index.js
  *   cd e2e && JOURNEY_TARGET=http://localhost:8789 npm run journeys
  *
  * Canonical recordings run with the LIVE LLM (no LLM_MOCK — the videos show

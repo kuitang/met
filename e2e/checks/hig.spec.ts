@@ -12,8 +12,6 @@ import { expect, test, type Page } from '@playwright/test';
  *      never user-scalable=no (pinch-zoom stays available — accessibility).
  */
 
-const FIRST_PAINT = { timeout: 45_000 };
-
 test.use({
   viewport: { width: 390, height: 844 },
   // Entrance fix so /locate resolves its GPS state like a real visit.
@@ -101,38 +99,42 @@ function audit(page: Page): Promise<string[]> {
 
 test('home passes the HIG sweep', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByTestId('floor-map')).toBeVisible(FIRST_PAINT);
+  await expect(page.getByTestId('floor-map')).toBeVisible();
   expect(await audit(page)).toEqual([]);
 });
 
 test('search with open suggestions passes the HIG sweep', async ({ page }) => {
   await page.goto('/search');
-  await page.getByTestId('search-input').fill('Monet', FIRST_PAINT);
-  await expect(page.getByTestId('suggestion-438008')).toBeVisible();
+  await page.getByTestId('search-input').fill('Monet');
+  // First suggestion row, not a pinned objectID: suggestion ranking differs
+  // between the stub fixture set and the real artifact, and this sweep
+  // audits layout, not relevance — it must run against both providers
+  // (JOURNEY_TARGET previews use the real one).
+  await expect(page.locator('[data-testid^="suggestion-"]').first()).toBeVisible();
   expect(await audit(page)).toEqual([]);
 });
 
 test('results passes the HIG sweep', async ({ page }) => {
   await page.goto('/results?q=Monet');
-  await expect(page.getByTestId('result-438008')).toBeVisible(FIRST_PAINT);
+  await expect(page.getByTestId('result-438008')).toBeVisible();
   expect(await audit(page)).toEqual([]);
 });
 
 test('object passes the HIG sweep', async ({ page }) => {
   await page.goto('/object/436535');
-  await expect(page.getByTestId('object-title')).toBeVisible(FIRST_PAINT);
+  await expect(page.getByTestId('object-title')).toBeVisible();
   expect(await audit(page)).toEqual([]);
 });
 
 test('route passes the HIG sweep', async ({ page }) => {
   await page.goto('/route/great-hall/822');
-  await expect(page.getByTestId('route-step-0')).toBeVisible(FIRST_PAINT);
+  await expect(page.getByTestId('route-step-0')).toBeVisible();
   expect(await audit(page)).toEqual([]);
 });
 
 test('locate passes the HIG sweep', async ({ page }) => {
   await page.goto('/locate');
-  await expect(page.getByTestId('locate-input')).toBeVisible(FIRST_PAINT);
+  await expect(page.getByTestId('locate-input')).toBeVisible();
   await expect(page.getByTestId('gps-status')).toContainText('Near Great Hall');
   expect(await audit(page)).toEqual([]);
 });

@@ -23,8 +23,6 @@ import { expect, test, type Page } from '@playwright/test';
  * project (iPhone engine — where the report came from).
  */
 
-const FIRST_PAINT = { timeout: 45_000 };
-
 test.use({
   viewport: { width: 390, height: 844 },
   geolocation: { latitude: 40.7794, longitude: -73.9632 },
@@ -106,14 +104,16 @@ function chipsAudit(page: Page): Promise<string[]> {
 
 test('home renders without clipped content', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByTestId('floor-map')).toBeVisible(FIRST_PAINT);
+  await expect(page.getByTestId('floor-map')).toBeVisible();
   expect(await clipAudit(page)).toEqual([]);
 });
 
 test('search with open suggestions renders without clipped content', async ({ page }) => {
   await page.goto('/search');
-  await page.getByTestId('search-input').fill('Monet', FIRST_PAINT);
-  await expect(page.getByTestId('suggestion-438008')).toBeVisible();
+  await page.getByTestId('search-input').fill('Monet');
+  // First suggestion row, not a pinned objectID — see hig.spec.ts: the
+  // render audits must run against both the stub and the real provider.
+  await expect(page.locator('[data-testid^="suggestion-"]').first()).toBeVisible();
   expect(await clipAudit(page)).toEqual([]);
 });
 
@@ -121,26 +121,28 @@ test('results with a LONG list keeps the filter chips visible', async ({ page })
   // "a" matches all 79 stub objects — enough rows that a flex-shrinkable
   // chip strip would collapse (the original bug needed a long sibling list).
   await page.goto('/results?q=a');
-  await expect(page.getByTestId('result-436535')).toBeVisible(FIRST_PAINT);
+  // First row, not a pinned objectID — the row set differs between the stub
+  // fixture set and the real artifact; the audits only need A long list.
+  await expect(page.locator('[data-testid^="result-"]').first()).toBeVisible();
   expect(await chipsAudit(page)).toEqual([]);
   expect(await clipAudit(page)).toEqual([]);
 });
 
 test('object renders without clipped content', async ({ page }) => {
   await page.goto('/object/436535');
-  await expect(page.getByTestId('object-title')).toBeVisible(FIRST_PAINT);
+  await expect(page.getByTestId('object-title')).toBeVisible();
   expect(await clipAudit(page)).toEqual([]);
 });
 
 test('route renders without clipped content', async ({ page }) => {
   await page.goto('/route/great-hall/822');
-  await expect(page.getByTestId('route-step-0')).toBeVisible(FIRST_PAINT);
+  await expect(page.getByTestId('route-step-0')).toBeVisible();
   expect(await clipAudit(page)).toEqual([]);
 });
 
 test('locate renders without clipped content', async ({ page }) => {
   await page.goto('/locate');
-  await expect(page.getByTestId('locate-input')).toBeVisible(FIRST_PAINT);
+  await expect(page.getByTestId('locate-input')).toBeVisible();
   await expect(page.getByTestId('gps-status')).toContainText('Near Great Hall');
   expect(await clipAudit(page)).toEqual([]);
 });
