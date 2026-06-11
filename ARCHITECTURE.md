@@ -60,6 +60,11 @@ Tables (built by `data/src/build-db.ts`):
   (`data/src/synonyms.ts`, one-time ≈$0.30): "katana"→"samurai sword",
   culture translations, antiquities nicknames — recall fixed before any
   query-time LLM is involved.
+- `vocab(id, term UNIQUE, df)` + `vocab_trigram` — typo-correction vocabulary
+  (~24k distinct searchable tokens + multi-word artist names, diacritics
+  folded, with document frequency) and its FTS5 `trigram` index
+  (`detail=column`). Feeds the fuzzy autocomplete fallback in
+  `shared/search.ts` (+1.7 MB raw / +0.9 MB gzip; see docs/SEARCH.md).
 - `galleries(galleryNumber, site, …)` / `amenities` — centroids, floors,
   titles for 463 gallery polygons + 125 amenities.
 - `graph_nodes` / `graph_edges` — the routing graph (2,125 nodes / 8,096 edges:
@@ -215,8 +220,12 @@ on-device (offline routing works; J11 asserts it).
 
 1. **Autocomplete** (every keystroke, local, p50 0.3 ms): normalized input →
    FTS5 every-token-prefix AND, weighted bm25 + isHighlight boost, gallery
-   joined inline. `shared/search.ts:buildAutocompleteQuery`. Digit-bearing
-   queries union in accession-containment matches
+   joined inline. `shared/search.ts:buildAutocompleteQuery`. On zero rows a
+   typo-tolerant fallback fires (`autocompleteFuzzy`): trigram candidates from
+   the `vocab` tables, Damerau-Levenshtein rerank, corrected query re-run —
+   "harlw" → Harlequin (measured: recall@8 96% on the 82-case typo eval,
+   ≤10% gibberish false positives, fuzzy p95 6.8 ms on wasm; docs/SEARCH.md).
+   Digit-bearing queries union in accession-containment matches
    (`buildAccessionSearchQuery`; accession is not FTS-indexed — measured
    0.6 ms LIKE scan over the full catalog). Above the object rows the omnibar
    shows **room rows**: galleries (`matchGalleries` — exact gallery number →

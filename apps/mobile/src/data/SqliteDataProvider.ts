@@ -41,8 +41,8 @@ import {
   type RouteStep as SharedRouteStep,
 } from '@met/shared/routing';
 import {
+  autocompleteFuzzy,
   buildAccessionSearchQuery,
-  buildAutocompleteQuery,
   buildFullQuery,
   buildGalleryNeighborsQuery,
   buildGalleryPositionQuery,
@@ -361,9 +361,10 @@ export class SqliteDataProvider implements DataProvider {
   }
 
   searchAutocomplete(query: string, limit = 8): MetObject[] {
-    const q = buildAutocompleteQuery(query); // builder caps at top 8
-    const rows = q === null ? [] : this.met.allSync<{ objectID: number }>(q.sql, q.params);
-    const ids = this.withAccessionMatches(query, rows.map((r) => r.objectID), limit);
+    // exact prefix path first; on zero rows, trigram+edit-distance correction
+    // over the vocab tables ("harlw" -> harlequin). Caps at top 8.
+    const rows = autocompleteFuzzy((sql, params) => this.met.allSync(sql, params), query);
+    const ids = this.withAccessionMatches(query, rows.slice(0, limit).map((r) => r.objectID), limit);
     return this.hydrate(ids);
   }
 

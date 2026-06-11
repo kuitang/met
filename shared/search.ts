@@ -13,6 +13,9 @@
  *           tokenize='porter unicode61', prefix='2 3 4')
  *   galleries(galleryNumber, site, floor, ...) — PK (galleryNumber, site)
  *   amenities(..., type IN ('restroom','dining','elevator','water','info'), ...)
+ *   vocab(id, term UNIQUE, df) + vocab_trigram — FTS5(term, content=vocab,
+ *           tokenize='trigram', detail=column) — typo-correction vocabulary
+ *           (see the fuzzy correction section below)
  *
  * bm25 column weights (title, artist, culture, classification, medium, tags,
  * synonyms) = (10, 8, 3, 5, 2, 4, 1). synonyms is the LLM-generated
@@ -115,6 +118,249 @@ export function buildAutocompleteQuery(input: string): BuiltQuery | null {
   const match = toPrefixMatch(input);
   if (match === null) return null;
   return { sql: `${SELECT_CORE}\nORDER BY score\nLIMIT 8`, params: [match] };
+}
+
+// ------------------------------------------------------------ fuzzy correction
+//
+// Two-stage vocabulary correction (standard search-as-you-type pattern), used
+// ONLY when the exact prefix query returns zero rows — correct spellings never
+// touch this code, so the fast path is byte-identical to before. Requires the
+// vocab/vocab_trigram tables (build-db.ts):
+//   vocab(id INTEGER PK, term TEXT UNIQUE, df INTEGER) — distinct searchable
+//     tokens + multi-word artist names, diacritics folded
+//   vocab_trigram — FTS5(term, content=vocab, tokenize='trigram', detail=column)
+//
+//   1. candidates: OR-of-trigrams query against vocab_trigram, using trigrams
+//      of the misspelled token PLUS its adjacent-swap variants — a
+//      transposition ("mnoet") shares zero trigrams with its target, but one
+//      of its swap variants IS the target. bm25 over the OR ranks vocab terms
+//      sharing more trigrams first; top FUZZY_CANDIDATES survive.
+//   2. rerank: length-normalized Damerau-Levenshtein, taking the better of
+//      whole-term distance and distance to the candidate's prefix of the
+//      token's length (+0.05 so completed terms win ties) — "harlw" is 5 edits
+//      from "harlequin" but 1 from its prefix "harle". Accept <=
+//      FUZZY_MAX_NORM, order by distance then document frequency, keep
+//      FUZZY_MAX_CORRECTIONS, OR them into the original prefix-AND query.
+//
+// A token with no acceptable correction gets one last chance as a missing-space
+// compound ("eyeidol" -> "eye"* "idol"*: both halves must prefix-match the real
+// index). If any token stays uncorrectable the whole query confidently returns
+// nothing — that property bounds the false-positive rate on gibberish.
+//
+// All shipped runtimes are synchronous (better-sqlite3, sqlite-wasm oo1,
+// expo-sqlite allSync), so the pipeline takes a sync runner.
+
+export type RunSync = (
+  sql: string,
+  params: ReadonlyArray<string | number>,
+) => unknown[];
+
+/** Accept corrections within ~1 edit per 3 chars (normalized DL distance). */
+export const FUZZY_MAX_NORM = 0.34;
+/** Trigram candidates fetched before the edit-distance rerank. */
+export const FUZZY_CANDIDATES = 50;
+/** Corrections OR-expanded per misspelled token (second pass only). */
+export const FUZZY_MAX_CORRECTIONS = 3;
+
+/** Fold to the vocab form: lowercase + diacritics stripped (NFD, drop marks). */
+export function foldDiacritics(s: string): string {
+  return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+}
+
+/** Damerau-Levenshtein distance (OSA variant: adjacent transposition = 1). */
+export function damerauLevenshtein(a: string, b: string): number {
+  const m = a.length;
+  const n = b.length;
+  const d: number[][] = Array.from({ length: m + 1 }, () => new Array<number>(n + 1).fill(0));
+  for (let i = 0; i <= m; i++) d[i][0] = i;
+  for (let j = 0; j <= n; j++) d[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1])
+        d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+    }
+  }
+  return d[m][n];
+}
+
+/** Distinct trigrams of the token and its adjacent-swap variants. */
+function fuzzyTrigrams(tok: string): string[] {
+  const out = new Set<string>();
+  const add = (s: string) => {
+    for (let i = 0; i + 3 <= s.length; i++) out.add(s.slice(i, i + 3));
+  };
+  add(tok);
+  for (let i = 0; i + 1 < tok.length; i++)
+    add(tok.slice(0, i) + tok[i + 1] + tok[i] + tok.slice(i + 2));
+  return [...out];
+}
+
+/** Trigram-overlap candidate query over vocab; null when the token is too short. */
+export function buildFuzzyCandidatesQuery(token: string): BuiltQuery | null {
+  const tg = fuzzyTrigrams(token);
+  if (tg.length === 0) return null;
+  return {
+    sql: `SELECT v.term AS term, v.df AS df
+FROM vocab_trigram t JOIN vocab v ON v.id = t.rowid
+WHERE vocab_trigram MATCH ?
+ORDER BY bm25(vocab_trigram)
+LIMIT ${FUZZY_CANDIDATES}`,
+    params: [tg.map((t) => `"${t}"`).join(" OR ")],
+  };
+}
+
+export interface Correction {
+  term: string;
+  /** Raw length-normalized DL distance (the acceptance criterion). */
+  s: number;
+}
+
+/**
+ * Edit-distance rerank of trigram candidates → accepted corrections, best
+ * first. A candidate scores as the best of (a) whole-term distance and (b)
+ * distance to its prefix of the token's length or one more — the user may
+ * have typed a typo'd PREFIX of the term ("harlw" ~ "harle", "anunci" ~
+ * "annunci") — with +0.05 so a completed term wins ties; everything
+ * normalized by the longer side. Acceptance uses the raw distance
+ * (<= FUZZY_MAX_NORM); ORDERING subtracts a small document-frequency bonus
+ * so near-ties resolve toward common catalog terms ("drgas" -> degas (107
+ * docs) over durgas (4), "catana" -> katana over catalan).
+ */
+export function rankCorrections(
+  token: string,
+  candidates: ReadonlyArray<{ term: string; df: number }>,
+): Correction[] {
+  return candidates
+    .map((c) => {
+      let s = damerauLevenshtein(token, c.term) / Math.max(token.length, c.term.length);
+      for (const len of [token.length, token.length + 1]) {
+        if (c.term.length <= len) continue;
+        const slice = c.term.slice(0, len);
+        s = Math.min(s, damerauLevenshtein(token, slice) / Math.max(token.length, len) + 0.05);
+      }
+      return { term: c.term, s, rank: s - 0.03 * Math.log10(c.df + 1) };
+    })
+    .filter((c) => c.s <= FUZZY_MAX_NORM)
+    .sort((a, b) => a.rank - b.rank)
+    .slice(0, FUZZY_MAX_CORRECTIONS)
+    .map(({ term, s }) => ({ term, s }));
+}
+
+/** Does this token (prefix-starred) match anything in the real FTS index? */
+function probeToken(run: RunSync, tok: string): boolean {
+  return (
+    run("SELECT 1 FROM objects_fts WHERE objects_fts MATCH ? LIMIT 1", [`"${tok}"*`]).length > 0
+  );
+}
+
+/**
+ * Missing-space compound rescue: find a split where both halves prefix-match
+ * the index AND their conjunction matches at least one row ("stilllife" ->
+ * `"still"* AND "life"*`). `minHalf` 3 = the confident pre-correction pass;
+ * 2 = the last-resort pass (short particles like "el greco").
+ */
+function trySplit(run: RunSync, tok: string, minHalf: number): string | null {
+  for (let i = minHalf; i <= tok.length - minHalf; i++) {
+    const sub = `"${tok.slice(0, i)}"* AND "${tok.slice(i)}"*`;
+    if (run("SELECT 1 FROM objects_fts WHERE objects_fts MATCH ? LIMIT 1", [sub]).length > 0)
+      return `(${sub})`;
+  }
+  return null;
+}
+
+export interface FuzzyMatches {
+  /** Best correction per misspelled token — run this first. */
+  primary: string;
+  /** OR-expanded alternates; null when no token has more than one. */
+  expanded: string | null;
+}
+
+/**
+ * Corrected FTS match expressions for a zero-result input, or null when no
+ * confident correction exists. Per misspelled token: a compound split counts
+ * as ONE edit (the missing space), so it scores 1/len on the same scale as
+ * corrections — a strictly cheaper, index-validated split wins ("goldsword"
+ * 0.11 beats goldwork 0.22), a tie goes to the correction ("monnet" -> monet,
+ * not mon|net). Corrections are complete vocab terms — no prefix star, porter
+ * covers morphology; multi-word corrections stay quoted phrases. A token with
+ * neither a correction nor a split (>= 3-char halves; >= 2 as a last resort)
+ * vetoes the whole query — gibberish stays empty, which bounds the
+ * false-positive rate. Parts join with explicit AND: FTS5 only allows
+ * implicit AND between plain phrases, not around parenthesized groups.
+ */
+export function fuzzyPrefixMatch(run: RunSync, input: string): FuzzyMatches | null {
+  const toks = tokens(foldDiacritics(input));
+  if (toks.length === 0) return null;
+  let correctedAny = false;
+  let expandedAny = false;
+  const primary: string[] = [];
+  const expanded: string[] = [];
+  for (const tok of toks) {
+    if (probeToken(run, tok)) {
+      primary.push(`"${tok}"*`);
+      expanded.push(`"${tok}"*`);
+      continue;
+    }
+    correctedAny = true;
+    const q = buildFuzzyCandidatesQuery(tok);
+    const corrections = q
+      ? rankCorrections(tok, run(q.sql, q.params) as Array<{ term: string; df: number }>)
+      : [];
+    const splitCheaper = corrections.length === 0 || 1 / tok.length < corrections[0].s;
+    const split = splitCheaper && tok.length >= 6 ? trySplit(run, tok, 3) : null;
+    if (split !== null) {
+      primary.push(split);
+      expanded.push(split);
+      continue;
+    }
+    if (corrections.length > 0) {
+      primary.push(`"${corrections[0].term}"`);
+      if (corrections.length > 1) {
+        expanded.push(`(${corrections.map((c) => `"${c.term}"`).join(" OR ")})`);
+        expandedAny = true;
+      } else expanded.push(`"${corrections[0].term}"`);
+      continue;
+    }
+    const weak = tok.length >= 4 ? trySplit(run, tok, 2) : null;
+    if (weak === null) return null;
+    primary.push(weak);
+    expanded.push(weak);
+  }
+  // nothing misspelled -> the conjunction is genuinely empty; stay empty
+  if (!correctedAny) return null;
+  return {
+    primary: primary.join(" AND "),
+    expanded: expandedAny ? expanded.join(" AND ") : null,
+  };
+}
+
+/**
+ * Client autocomplete entry: exact prefix query first (unchanged fast path);
+ * on zero rows, retry with the best correction per misspelled token, and only
+ * if THAT comes back empty, once more with the OR-expanded alternates — the
+ * conservative pass keeps a strong correction ("osiriss" -> osiris) from
+ * being flooded by a weaker sibling's shorter-title bm25 wins (osiride).
+ * Top 8 either way. A met.sqlite predating the vocab tables degrades to the
+ * old empty result (the fuzzy stage is try-caught) until the client
+ * re-downloads the artifact.
+ */
+export function autocompleteFuzzy(run: RunSync, input: string): SearchRow[] {
+  const q = buildAutocompleteQuery(input);
+  if (q === null) return [];
+  const rows = run(q.sql, q.params) as SearchRow[];
+  if (rows.length > 0) return rows;
+  try {
+    const m = fuzzyPrefixMatch(run, input);
+    if (m === null) return [];
+    const sql = `${SELECT_CORE}\nORDER BY score\nLIMIT 8`;
+    const primary = run(sql, [m.primary]) as SearchRow[];
+    if (primary.length > 0 || m.expanded === null) return primary;
+    return run(sql, [m.expanded]) as SearchRow[];
+  } catch {
+    return [];
+  }
 }
 
 export interface FullQueryOpts {
