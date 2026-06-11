@@ -1,9 +1,13 @@
 /**
  * J12 — Amenities. Anchored in a gallery, search "restroom": results are
- * ranked nearest-first by graph (walking) distance from the anchor, TAPPING
- * the nearest row opens DIRECTIONS to it (it must never silently move the
- * visitor's location — that's the explicit "I'm here" secondary action), and
- * the header HOME button is the one-tap way back with the anchor intact.
+ * ranked nearest-first by graph (walking) distance from the anchor, and rows
+ * carry NO inline actions (one row anatomy: kind glyph, name, floor chip).
+ * TAPPING the nearest row opens the amenity sheet on the home map — the thin
+ * dual-action variant (DIRECTIONS / I'M HERE) — it must never silently move
+ * the visitor's location. DIRECTIONS routes from the anchor; the header HOME
+ * button is the one-tap way back with the anchor intact.
+ * (Grammar updated by the gallery/amenity search-row PR, superseding the
+ * PR #8 tap-routes-directly behavior.)
  */
 import { expect, test } from '@playwright/test';
 
@@ -14,7 +18,7 @@ import { step } from '../helpers/steps';
 test.skip(!HAS_REAL_TARGET, 'set JOURNEY_TARGET — see helpers/journey.ts');
 const F = HAS_REAL_TARGET ? loadJourneyFixtures() : null!;
 
-test('J12 amenities: "restroom" → nearest-first by walking distance → route', async ({
+test('J12 amenities: "restroom" → nearest-first → amenity sheet → route', async ({
   page,
 }) => {
   // Deep-link anchor (also exercised by J13) so distance has an origin.
@@ -26,17 +30,14 @@ test('J12 amenities: "restroom" → nearest-first by walking distance → route'
     await page.getByTestId('search-input').fill('restroom');
   });
 
-  // Main rows only ("I'm here" secondary buttons carry their own testID).
-  const rows = page.locator(
-    '[data-testid^="amenity-"]:not([data-testid^="amenity-im-here-"])',
-  );
+  const rows = page.locator('[data-testid^="amenity-"]');
   await expect(rows.first()).toBeVisible();
   const count = await rows.count();
   expect(count).toBeGreaterThanOrEqual(2);
 
-  // Each row offers the explicit secondary re-anchor action.
+  // One row anatomy: no inline action buttons on any row.
+  await expect(page.locator('[data-testid^="amenity-im-here-"]')).toHaveCount(0);
   const firstRowId = (await rows.first().getAttribute('data-testid'))!.replace(/^amenity-/, '');
-  await expect(page.getByTestId(`amenity-im-here-${firstRowId}`)).toBeVisible();
 
   // Sorted by graph distance: the "~N m walk" labels must be non-decreasing.
   const distances: number[] = [];
@@ -49,9 +50,18 @@ test('J12 amenities: "restroom" → nearest-first by walking distance → route'
     expect(distances[i]).toBeGreaterThanOrEqual(distances[i - 1]);
   }
 
-  // TAPPING the nearest row offers directions from the anchor to that row.
-  await step(page, `Nearest is ~${distances[0]} m away — tap for directions`, async () => {
+  // TAPPING the nearest row opens the amenity sheet (map focused, dual
+  // actions) — the visitor's location does not move.
+  await step(page, `Nearest is ~${distances[0]} m away — tap it`, async () => {
     await rows.first().click();
+  });
+  await expect(page.getByTestId('room-sheet')).toBeVisible();
+  await expect(page.getByTestId('sheet-amenity-glyph')).toBeVisible();
+  await expect(page.getByTestId('room-im-here')).toBeVisible();
+
+  // DIRECTIONS routes from the anchor to exactly that amenity.
+  await step(page, 'DIRECTIONS from my gallery to the restroom', async () => {
+    await page.getByTestId('room-directions').click();
   });
   await expect(page).toHaveURL(new RegExp(`/route/${F.galleryId}/${firstRowId}`));
   await expect(page.getByTestId('route-summary')).toContainText(/Restroom/i);

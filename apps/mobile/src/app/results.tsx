@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -11,13 +11,16 @@ import {
 
 import type { components } from '@met/shared';
 
+import { useAnchor } from '@/components/LocateState';
 import { ObjectThumb } from '@/components/ObjectImage';
+import RoomRow from '@/components/RoomRow';
 import SearchFilterChips, {
   ResultFilters,
   applyFilters,
 } from '@/components/SearchFilterChips';
 import { apiBase } from '@/data/apiBase';
 import { DataProvider, MetObject, useData } from '@/data/provider';
+import { matchAmenities, rankAmenities } from '@/data/roomSearch';
 import { colors, spacing, type } from '@/theme';
 
 type InterpretResponse = components['schemas']['InterpretResponse'];
@@ -88,6 +91,20 @@ export default function ResultsScreen() {
     };
   }, [isInterpreted, q]);
 
+  // Gallery + amenity rows for text searches — same anatomy and one-tap
+  // grammar as the search omnibar (rows open the home-map sheet; no inline
+  // actions). Skipped for ?gallery= listings (already a single room's view).
+  const anchor = useAnchor();
+  const originId = anchor?.roomId ?? 'great-hall';
+  const galleryRows = !gallery && q ? data.searchGalleries(q, 4) : [];
+  const matchedAmenities = !gallery && q ? matchAmenities(data.amenities(), q) : [];
+  const amenityRows = useMemo(
+    () => rankAmenities(data, matchedAmenities, originId),
+    // matchedAmenities is identity-unstable per render; key on its ids.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [data, originId, matchedAmenities.map((r) => r.id).join(',')],
+  );
+
   const base = gallery
     ? data.objectsInGallery(gallery)
     : isInterpreted
@@ -147,6 +164,28 @@ export default function ResultsScreen() {
       <FlatList
         data={results}
         keyExtractor={(o) => String(o.objectID)}
+        ListHeaderComponent={
+          galleryRows.length > 0 || amenityRows.length > 0 ? (
+            <View>
+              {galleryRows.map((room) => (
+                <RoomRow
+                  key={room.id}
+                  room={room}
+                  meta={room.kind === 'gallery' ? `Gallery ${room.id}` : undefined}
+                  testID={`gallery-${room.id}`}
+                />
+              ))}
+              {amenityRows.map(({ room, distance }) => (
+                <RoomRow
+                  key={room.id}
+                  room={room}
+                  meta={distance !== undefined ? `~${Math.round(distance)} m walk` : 'Amenity'}
+                  testID={`amenity-${room.id}`}
+                />
+              ))}
+            </View>
+          ) : null
+        }
         renderItem={({ item }) => (
           <Pressable
             style={styles.row}

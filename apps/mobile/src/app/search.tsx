@@ -3,7 +3,9 @@ import { useMemo, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { useAnchor } from '@/components/LocateState';
-import { DataProvider, MetObject, Room, useData } from '@/data/provider';
+import RoomRow from '@/components/RoomRow';
+import { MetObject, useData } from '@/data/provider';
+import { matchAmenities, rankAmenities } from '@/data/roomSearch';
 import { colors, spacing, type } from '@/theme';
 
 // Chosen to hit stub data: "gold swords" deliberately under-matches locally
@@ -11,50 +13,15 @@ import { colors, spacing, type } from '@/theme';
 // object yet — restore once the real catalog lands.)
 const EXAMPLE_QUERIES = ['Monet', 'gold swords', 'sphinx', 'restroom'];
 
-/** "bathroom" and friends should still find restrooms. */
-const AMENITY_SYNONYMS: Record<string, string> = {
-  bathroom: 'restroom',
-  bathrooms: 'restroom',
-  toilet: 'restroom',
-  toilets: 'restroom',
-  wc: 'restroom',
-  lift: 'elevator',
-  lifts: 'elevator',
-  staircase: 'stairs',
-  stairway: 'stairs',
-};
-
-function matchAmenities(amenities: Room[], query: string): Room[] {
-  const q = query.trim().toLowerCase();
-  if (q.length < 3) return [];
-  const canon = AMENITY_SYNONYMS[q] ?? q;
-  return amenities.filter(
-    (r) => r.kind.includes(canon) || r.name.toLowerCase().includes(canon),
-  );
-}
-
-/**
- * Nearest-first amenity ranking: walking (graph) distance from the visitor's
- * anchor — or the Great Hall before any fix exists. Unreachable rooms (other
- * site, no graph) sink to the end. ~0.6 ms per route on the full graph,
- * computed once per (anchor, amenity-set).
- */
-function rankAmenities(
-  data: DataProvider,
-  matched: Room[],
-  originId: string,
-): { room: Room; distance?: number }[] {
-  return matched
-    .map((room) => ({ room, distance: data.route(originId, room.id)?.distance }))
-    .sort((a, b) => (a.distance ?? Infinity) - (b.distance ?? Infinity));
-}
-
 export default function SearchScreen() {
   const data = useData();
   const anchor = useAnchor();
   const [query, setQuery] = useState('');
   const suggestions = data.searchAutocomplete(query, 8);
   const total = data.searchAll(query).length;
+  // Room rows above object rows: galleries (exact number → number prefixes →
+  // title matches, ranked in shared/search.ts) then amenities nearest-first.
+  const galleryRows = data.searchGalleries(query, 4);
   const matchedAmenities = matchAmenities(data.amenities(), query);
   const originId = anchor?.roomId ?? 'great-hall';
   const amenities = useMemo(
@@ -64,6 +31,7 @@ export default function SearchScreen() {
     [data, originId, matchedAmenities.map((r) => r.id).join(',')],
   );
   const hasQuery = query.trim().length > 0;
+  const hasRoomRows = galleryRows.length > 0 || amenities.length > 0;
 
   const galleryChip = (o: MetObject) => {
     if (!o.gallery) return 'Not on view';
@@ -88,42 +56,28 @@ export default function SearchScreen() {
         keyExtractor={(o) => String(o.objectID)}
         keyboardShouldPersistTaps="handled"
         ListHeaderComponent={
-          amenities.length > 0 ? (
+          hasRoomRows ? (
             <View>
+              {/* One row anatomy, one tap grammar (user mandate): a room row
+                  carries NO inline actions — tapping it lands on the home map
+                  with the room's sheet open (DIRECTIONS / I'M HERE there). */}
+              {galleryRows.map((room) => (
+                <RoomRow
+                  key={room.id}
+                  room={room}
+                  meta={room.kind === 'gallery' ? `Gallery ${room.id}` : undefined}
+                  testID={`gallery-${room.id}`}
+                />
+              ))}
               {/* Amenity rows are ranked nearest-first by graph distance from
-                  the anchor, so the top row IS the nearest instance. Tapping
-                  a row offers DIRECTIONS to it (never silently moves the
-                  visitor); "I'm here" is the explicit secondary action that
-                  re-anchors to the amenity. */}
-              {amenities.map(({ room: r, distance }) => (
-                <View key={r.id} style={styles.row}>
-                  <Pressable
-                    style={styles.amenityMain}
-                    onPress={() => router.push(`/route/${originId}/${r.id}`)}
-                    testID={`amenity-${r.id}`}
-                  >
-                    <View style={styles.rowText}>
-                      <Text style={styles.rowTitle} numberOfLines={1}>
-                        {r.name}
-                      </Text>
-                      <Text style={type.meta} numberOfLines={1}>
-                        {distance !== undefined
-                          ? `~${Math.round(distance)} m walk · tap for directions`
-                          : 'Amenity · tap for directions'}
-                      </Text>
-                    </View>
-                    {/* Floor only: the row title already names the amenity,
-                        and the I'm-here button needs the width. */}
-                    <Text style={styles.galleryChip}>F{r.floor}</Text>
-                  </Pressable>
-                  <Pressable
-                    style={styles.amenityImHere}
-                    onPress={() => router.push(`/?room=${r.id}`)}
-                    testID={`amenity-im-here-${r.id}`}
-                  >
-                    <Text style={styles.amenityImHereText}>I'm here</Text>
-                  </Pressable>
-                </View>
+                  the anchor, so the top row IS the nearest instance. */}
+              {amenities.map(({ room, distance }) => (
+                <RoomRow
+                  key={room.id}
+                  room={room}
+                  meta={distance !== undefined ? `~${Math.round(distance)} m walk` : 'Amenity'}
+                  testID={`amenity-${room.id}`}
+                />
               ))}
             </View>
           ) : null
@@ -169,7 +123,7 @@ export default function SearchScreen() {
               >
                 <Text style={styles.askDifferentlyLabel}>Ask differently</Text>
                 <Text style={type.meta}>
-                  {'Let MuseWalk interpret your words and re-search →'}
+                  {'Let MuseWalk interpret your words and re-search →'}
                 </Text>
               </Pressable>
             )}
@@ -177,7 +131,7 @@ export default function SearchScreen() {
         }
         ListEmptyComponent={
           hasQuery ? (
-            amenities.length > 0 ? null : (
+            hasRoomRows ? null : (
               <Text style={styles.empty}>No quick matches on view.</Text>
             )
           ) : (
@@ -242,25 +196,6 @@ const styles = StyleSheet.create({
     ...type.label,
     color: colors.red,
     textAlign: 'right',
-  },
-  // Amenity row: the row body is the DIRECTIONS tap; "I'm here" is the
-  // explicit, secondary re-anchor action (≥44pt, HIG).
-  amenityMain: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.md,
-  },
-  amenityImHere: {
-    minHeight: 44,
-    justifyContent: 'center',
-    paddingHorizontal: spacing.md,
-    borderWidth: 1,
-    borderColor: colors.homeBlue,
-  },
-  amenityImHereText: {
-    ...type.label,
-    color: colors.homeBlue,
   },
   allResults: {
     paddingVertical: spacing.md,

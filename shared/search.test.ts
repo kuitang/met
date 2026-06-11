@@ -6,6 +6,7 @@ import {
   normalizeQuery,
   toPrefixMatch,
   relaxQuery,
+  buildAccessionSearchQuery,
   buildAutocompleteQuery,
   buildFullQuery,
   buildGalleryNeighborsQuery,
@@ -14,6 +15,7 @@ import {
   amenityIntent,
   autocomplete,
   fullSearch,
+  matchGalleries,
   type DbHandle,
   type SearchRow,
 } from "./search.ts";
@@ -467,6 +469,129 @@ describe.skipIf(!hasDb)("gallery browse primitives: against real data/met.sqlite
         expect(getNeighbors(raw, off.objectID)).toBeUndefined();
       }
     }));
+});
+
+// ------------------------------- gallery + digit (accession) search rows
+
+describe("matchGalleries (pure)", () => {
+  const gals = [
+    { galleryNumber: "131", title: "The Temple of Dendur" },
+    { galleryNumber: "130", title: "The First Millennium Study Room" },
+    { galleryNumber: "13", title: "A Cloisters Room" },
+    { galleryNumber: "1310", title: "Imaginary Annex" },
+    { galleryNumber: "746 South", title: "Art of Native America" },
+    { galleryNumber: "Exhibition Galleries 999", title: "The Cantor Exhibition Hall" },
+  ];
+
+  it("digit query: exact number first, then numeric-ordered prefixes, capped", () => {
+    expect(matchGalleries(gals, "131").map((g) => g.galleryNumber)).toEqual(["131", "1310"]);
+    expect(matchGalleries(gals, "13").map((g) => g.galleryNumber)).toEqual([
+      "13", "130", "131", "1310",
+    ]);
+    expect(matchGalleries(gals, "13", 2).map((g) => g.galleryNumber)).toEqual(["13", "130"]);
+  });
+
+  it("letter query: every token must prefix a title/number word", () => {
+    expect(matchGalleries(gals, "dendur")[0].galleryNumber).toBe("131");
+    expect(matchGalleries(gals, "temple of dendur")[0].galleryNumber).toBe("131");
+    expect(matchGalleries(gals, "746 south")[0].galleryNumber).toBe("746 South");
+    expect(matchGalleries(gals, "exhibition hall")[0].galleryNumber).toBe(
+      "Exhibition Galleries 999",
+    );
+    expect(matchGalleries(gals, "zzz")).toEqual([]);
+  });
+
+  it("empty/punctuation input matches nothing", () => {
+    expect(matchGalleries(gals, "")).toEqual([]);
+    expect(matchGalleries(gals, " !? ")).toEqual([]);
+  });
+});
+
+describe("buildAccessionSearchQuery (pure)", () => {
+  it("null without a digit token; LIKE containment with %-joined tokens", () => {
+    expect(buildAccessionSearchQuery("monet")).toBeNull();
+    expect(buildAccessionSearchQuery("")).toBeNull();
+    const q = buildAccessionSearchQuery("21.131")!;
+    expect(q.params[0]).toBe("%21%131%");
+    expect(q.sql).toContain("accession LIKE ?");
+    // LIKE wildcards in raw input are stripped by normalizeQuery before the
+    // pattern is built (the ESCAPE clause is belt-and-braces).
+    const esc = buildAccessionSearchQuery("100%_legit")!;
+    expect(esc.params[0]).toBe("%100%legit%");
+  });
+});
+
+describe.skipIf(!hasDb)("gallery + digit search: against real data/met.sqlite", () => {
+  const withDb = <T>(fn: (raw: InstanceType<typeof Database>) => T): T => {
+    const raw = new Database(DB_PATH, { readonly: true });
+    try {
+      return fn(raw);
+    } finally {
+      raw.close();
+    }
+  };
+  const galleries = withDb(
+    (raw) =>
+      raw.prepare("SELECT galleryNumber, title FROM galleries").all() as {
+        galleryNumber: string;
+        title: string | null;
+      }[],
+  );
+
+  it('"131" → Gallery 131 (The Temple of Dendur) first', () => {
+    const hits = matchGalleries(galleries, "131");
+    expect(hits[0]?.galleryNumber).toBe("131");
+    expect(hits[0]?.title).toContain("Dendur");
+  });
+
+  it('"dendur" → the gallery row by title', () => {
+    const hits = matchGalleries(galleries, "dendur");
+    expect(hits.map((g) => g.galleryNumber)).toContain("131");
+  });
+
+  it('"13" → exact-or-prefix gallery numbers, ordered', () => {
+    const hits = matchGalleries(galleries, "13");
+    expect(hits.length).toBeGreaterThan(0);
+    for (const h of hits) expect(h.galleryNumber.startsWith("13")).toBe(true);
+  });
+
+  it('"131" matches artworks by accession containment (digit root-cause fix)', () =>
+    withDb((raw) => {
+      const q = buildAccessionSearchQuery("131", 8)!;
+      const rows = raw.prepare(q.sql).all(...q.params) as SearchRow[];
+      expect(rows.length).toBeGreaterThan(0);
+      const ids = rows.map((r) => r.objectID);
+      const accs = raw
+        .prepare(
+          `SELECT accession FROM objects WHERE objectID IN (${ids.map(() => "?").join(",")})`,
+        )
+        .all(...ids) as { accession: string }[];
+      for (const a of accs) expect(a.accession).toContain("131");
+    }));
+
+  it("mixed digit autocomplete eval: FTS + accession union is non-empty and deduped", async () => {
+    // Not withDb: the sync close in its finally would race this async body.
+    const raw = new Database(DB_PATH, { readonly: true });
+    try {
+      const db: DbHandle = {
+        all: (sql, params) => raw.prepare(sql).all(...params) as SearchRow[],
+      };
+      const fts = await autocomplete(db, "131");
+      const aq = buildAccessionSearchQuery("131", 8)!;
+      const acc = raw.prepare(aq.sql).all(...aq.params) as SearchRow[];
+      const merged = [...new Set([...fts, ...acc].map((r) => r.objectID))];
+      console.log(
+        `digit eval '131': galleries=${matchGalleries(galleries, "131")
+          .map((g) => g.galleryNumber)
+          .join(",")} ftsHits=${fts.length} accessionHits=${acc.length} merged=${merged.length}`,
+      );
+      expect(merged.length).toBeGreaterThan(0);
+      expect(merged.length).toBeLessThanOrEqual(fts.length + acc.length);
+      expect(merged.length).toBeGreaterThanOrEqual(Math.max(fts.length, acc.length));
+    } finally {
+      raw.close();
+    }
+  });
 });
 
 if (!hasDb) {
