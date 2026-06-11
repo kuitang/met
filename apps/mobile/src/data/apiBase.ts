@@ -5,7 +5,7 @@
  *     native builds (release builds pointing at prod) and DEV web (metro
  *     :8081 page → :8787 API). Deliberately IGNORED in production web
  *     bundles: the web export must be origin-portable — the same dist serves
- *     a custom domain, met-nav.fly.dev, and ephemeral PR preview apps, so a
+ *     the custom domain (musewalk.app) and ephemeral PR preview apps, so a
  *     baked absolute API origin would break every origin but one.
  *  2. Web: '' (same-origin). In production one server serves both the web
  *     export and /api.

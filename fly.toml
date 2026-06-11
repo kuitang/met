@@ -1,8 +1,8 @@
 # Fly.io config for the production app (app + region fixed by the infra
-# setup: app `met-nav`, org `personal`, region ewr). PR preview apps clone
-# this config via superfly/fly-pr-review-apps with --app met-nav-pr-{n} and
+# setup: app `musewalk`, org `personal`, region ewr). PR preview apps clone
+# this config via superfly/fly-pr-review-apps with --app musewalk-pr-{n} and
 # their own vm sizing (see .github/workflows/fly-preview.yml).
-app = 'met-nav'
+app = 'musewalk'
 primary_region = 'ewr'
 
 [build]

@@ -55,7 +55,7 @@ RUN npm -w server run build
 # is same-origin; a baked API origin would pin the image to one domain).
 RUN EXPO_PUBLIC_DATA=real npm -w apps/mobile run export:web
 # Origin-portability gate: fail the image build if the exported bundle bakes
-# in any deploy origin (fly.dev / localhost / met-nav / private IPs).
+# in any deploy origin (fly.dev / localhost / met-nav / musewalk / private IPs).
 COPY scripts/check-origin-portability.mjs scripts/
 RUN node scripts/check-origin-portability.mjs apps/mobile/dist
 

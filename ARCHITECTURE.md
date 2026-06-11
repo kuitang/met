@@ -393,7 +393,7 @@ Tigris s3://met-artifacts                           ▼
     └──── build secrets (AWS_*) ─────────► (sha256-verified in-build, fail hard)
                                                     │
                                                     ▼
-                                           Fly.io app met-nav (ewr, no volumes,
+                                           Fly.io app musewalk (ewr, no volumes,
                                            min_machines_running=1)
 ```
 
@@ -424,7 +424,7 @@ Tigris s3://met-artifacts                           ▼
   dev box without artifacts boots degraded instead of crashing. Clients pick
   new data up via the version poll + ETag.
 - **PR previews** (`fly-preview.yml`, superfly/fly-pr-review-apps@1.5.0): app
-  `met-nav-pr-{n}`, shared-cpu-1x/512 MB, same Dockerfile + Tigris build
+  `musewalk-pr-{n}`, shared-cpu-1x/512 MB, same Dockerfile + Tigris build
   secrets, real Gemini key with `LLM_DAILY_BUDGET=100`, URL commented on the
   PR, destroyed on close.
 - **Branch protection** (armed after the first PR merges): require PRs with

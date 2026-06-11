@@ -4,7 +4,7 @@ EAS project: `@kuitang/met-navigator` (projectId `2503719e-2d3a-4698-abc7-9c56bf
 https://expo.dev/accounts/kuitang/projects/met-navigator). Auth: `export EXPO_TOKEN=$(cat ~/expo_key.txt)`.
 
 Profiles live in `apps/mobile/eas.json`. The `preview` profile builds an internal-distribution
-Android APK with `EXPO_PUBLIC_API_URL=https://met-nav.fly.dev` and `EXPO_PUBLIC_DATA=real`
+Android APK with `EXPO_PUBLIC_API_URL=https://musewalk.app` and `EXPO_PUBLIC_DATA=real`
 baked in — the APK talks to the prod Fly server and uses the real SQLite data provider.
 
 ## Android
@@ -40,7 +40,7 @@ to let EAS create/store the cert + profile, after which `--non-interactive` work
 
 ### Fallback: testing on iPhone without an Apple Developer account
 
-1. **Web (zero install, prod parity)** — open https://met-nav.fly.dev in mobile Safari. This is
+1. **Web (zero install, prod parity)** — open https://musewalk.app in mobile Safari. This is
    the same Expo app exported for web (real data provider, COEP-safe image proxy) and is the
    canonical preview surface today.
 2. **Expo Go (native shell, dev server required)** — EAS Update is NOT configured for this
@@ -48,7 +48,7 @@ to let EAS create/store the cert + profile, after which `--non-interactive` work
    recipe instead (dev/demo only — this is a metro dev session, not a production build):
    ```sh
    export PATH="$HOME/.nvm/versions/node/v24.14.0/bin:$PATH"
-   EXPO_PUBLIC_DATA=real EXPO_PUBLIC_API_URL=https://met-nav.fly.dev \
+   EXPO_PUBLIC_DATA=real EXPO_PUBLIC_API_URL=https://musewalk.app \
      npx expo start --tunnel        # from apps/mobile; install "Expo Go" from the App Store
    ```
    Scan the printed QR code with the iPhone camera → opens in Expo Go via the `exp://` tunnel

@@ -3,11 +3,11 @@
  * check-origin-portability — fail the build if the static web export bakes in
  * an absolute origin it must not.
  *
- * The SAME apps/mobile/dist must serve correctly at a custom domain,
- * https://met-nav.fly.dev, and ephemeral PR preview apps
- * (https://met-nav-pr-{n}.fly.dev). Any absolute http(s) URL in the bundle
- * that points at a deploy origin or a dev machine (fly.dev, localhost,
- * private IPs, the met-nav app name) is a portability bug: it pins the build
+ * The SAME apps/mobile/dist must serve correctly at the custom domain
+ * (https://musewalk.app), https://musewalk.fly.dev, and ephemeral PR preview
+ * apps (https://musewalk-pr-{n}.fly.dev). Any absolute http(s) URL in the
+ * bundle that points at a deploy origin or a dev machine (fly.dev, localhost,
+ * private IPs, the app/domain name) is a portability bug: it pins the build
  * to one origin. API/image/share URLs must be derived at runtime
  * (same-origin '' on web — see apps/mobile/src/data/apiBase.ts).
  *
@@ -30,8 +30,10 @@ const distDir = path.resolve(process.argv[2] ?? 'apps/mobile/dist');
 // Hard failures: any absolute URL whose host matches one of these pins the
 // build to a deploy origin or a dev machine.
 const DENY = [
-  /(^|\.)fly\.dev$/i, // met-nav.fly.dev, met-nav-pr-7.fly.dev, any future app
-  /^met-nav/i, // the Fly app name leaking via any other TLD
+  /(^|\.)fly\.dev$/i, // musewalk.fly.dev, musewalk-pr-7.fly.dev, any future app
+  /^met-nav/i, // the legacy Fly app name leaking via any other TLD
+  /^(www\.)?musewalk\.app$/i, // the canonical domain itself must not be baked in
+
   /^localhost$/i,
   /^127\./,
   /^0\.0\.0\.0$/,

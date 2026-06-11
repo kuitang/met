@@ -1,4 +1,4 @@
-# PR preview apps: one Fly app per PR (met-nav-pr-{n}), deployed on open/push,
+# PR preview apps: one Fly app per PR (musewalk-pr-{n}), deployed on open/push,
 # destroyed on close. Uses the org-wide FLY_PREVIEW_TOKEN (app creation needs
 # org scope). The action at 1.5.0 supports Docker build secrets natively
 # (`build_secrets` input → `flyctl deploy --build-secret …`, verified against
@@ -37,7 +37,7 @@ jobs:
         id: deploy
         uses: superfly/fly-pr-review-apps@1.5.0
         with:
-          name: met-nav-pr-${{ github.event.number }}
+          name: musewalk-pr-${{ github.event.number }}
           region: ewr
           org: personal
           cpu: 1
