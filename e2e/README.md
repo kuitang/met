@@ -5,7 +5,7 @@ Playwright suite with two projects: **checks** (`npx playwright test --project=c
 ```sh
 npm -w server run build
 EXPO_PUBLIC_DATA=real npm -w apps/mobile run export:web
-DATA_DIR=$PWD/data LLM_MOCK=1 PORT=8789 RUN_REFRESH=0 node server/dist/index.js &
+DATA_DIR=$PWD/data LLM_MOCK=1 PORT=8789 node server/dist/index.js &
 cd e2e && JOURNEY_TARGET=http://localhost:8789 npm run journeys
 ```
 

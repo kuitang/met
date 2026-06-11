@@ -108,7 +108,11 @@ test('home passes the HIG sweep', async ({ page }) => {
 test('search with open suggestions passes the HIG sweep', async ({ page }) => {
   await page.goto('/search');
   await page.getByTestId('search-input').fill('Monet', FIRST_PAINT);
-  await expect(page.getByTestId('suggestion-438008')).toBeVisible();
+  // First suggestion row, not a pinned objectID: suggestion ranking differs
+  // between the stub fixture set and the real artifact, and this sweep
+  // audits layout, not relevance — it must run against both providers
+  // (JOURNEY_TARGET previews use the real one).
+  await expect(page.locator('[data-testid^="suggestion-"]').first()).toBeVisible();
   expect(await audit(page)).toEqual([]);
 });
 

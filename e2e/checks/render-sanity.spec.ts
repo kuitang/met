@@ -113,7 +113,9 @@ test('home renders without clipped content', async ({ page }) => {
 test('search with open suggestions renders without clipped content', async ({ page }) => {
   await page.goto('/search');
   await page.getByTestId('search-input').fill('Monet', FIRST_PAINT);
-  await expect(page.getByTestId('suggestion-438008')).toBeVisible();
+  // First suggestion row, not a pinned objectID — see hig.spec.ts: the
+  // render audits must run against both the stub and the real provider.
+  await expect(page.locator('[data-testid^="suggestion-"]').first()).toBeVisible();
   expect(await clipAudit(page)).toEqual([]);
 });
 
@@ -121,7 +123,9 @@ test('results with a LONG list keeps the filter chips visible', async ({ page })
   // "a" matches all 79 stub objects — enough rows that a flex-shrinkable
   // chip strip would collapse (the original bug needed a long sibling list).
   await page.goto('/results?q=a');
-  await expect(page.getByTestId('result-436535')).toBeVisible(FIRST_PAINT);
+  // First row, not a pinned objectID — the row set differs between the stub
+  // fixture set and the real artifact; the audits only need A long list.
+  await expect(page.locator('[data-testid^="result-"]').first()).toBeVisible(FIRST_PAINT);
   expect(await chipsAudit(page)).toEqual([]);
   expect(await clipAudit(page)).toEqual([]);
 });

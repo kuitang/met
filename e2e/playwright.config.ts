@@ -17,9 +17,18 @@ import { defineConfig, devices } from '@playwright/test';
  * Target selection: by default tests hit the local Expo web dev server on
  * http://localhost:8081 (started automatically via webServer below). Set
  * JOURNEY_TARGET=https://…fly.dev to run the same suite against a deployed
- * app — webServer is skipped entirely in that case.
+ * app — webServer is skipped entirely in that case. Set CHECKS_STATIC=1 to
+ * serve an ALREADY-BUILT static export (apps/mobile/dist) via
+ * e2e/static-server.mjs instead of compiling under Metro — used by CI, where
+ * the dev-server compile takes ~25 min on a 2-core runner. The dist must be
+ * exported with EXPO_PUBLIC_DATA=stub (the checks specs assert stub-provider
+ * data) — and beware the Metro transform cache: it does NOT key on
+ * EXPO_PUBLIC_* env, so flipping real→stub requires `expo export -c`
+ * (measured 2026-06-11: a stub export after a real one silently re-served
+ * the real bundle).
  */
 const journeyTarget = process.env.JOURNEY_TARGET;
+const staticChecks = !!process.env.CHECKS_STATIC;
 const baseURL = journeyTarget ?? 'http://localhost:8081';
 
 export default defineConfig({
@@ -77,7 +86,12 @@ export default defineConfig({
           // npm 9 swallows `--port` as config when forwarding to the nested
           // workspace script and expo receives a bare `8081` as project root.
           // The exec form below forwards args correctly (verified live).
-          command: 'npm -w apps/mobile exec -- expo start --web --port 8081',
+          // CHECKS_STATIC uses e2e/static-server.mjs, NOT `expo serve`:
+          // web.output is "single" (SPA) and expo serve 404s every deep link
+          // (/search, /object/…) — measured 2026-06-11.
+          command: staticChecks
+            ? 'node e2e/static-server.mjs 8081'
+            : 'npm -w apps/mobile exec -- expo start --web --port 8081',
           cwd: '..',
           url: 'http://localhost:8081',
           timeout: 120_000,
