@@ -24,6 +24,7 @@ import Animated, {
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
+  withSpring,
   withTiming,
 } from 'react-native-reanimated';
 import Svg, {
@@ -62,6 +63,9 @@ const STUB_FLOOR_CHIPS = [
 // Real-map label policy: big rooms always labeled; every room once zoomed in.
 const LABEL_ZOOM = 1.6;
 const LABEL_AREA_M2 = 150;
+
+// One tap of the + / − map buttons multiplies the scale by this.
+const ZOOM_STEP = 1.4;
 
 /**
  * Tap handler for an SVG shape. On web, react-native-svg implements onPress
@@ -206,12 +210,30 @@ function MapViewport({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fit?.key, layout]);
 
+  // ---- zoom anchoring -------------------------------------------------------
+  // The transform is translate(t) then scale(s) about the view center C, so a
+  // layout point L lands at C + s·(L − C) + t. The invariant point of a scale
+  // change at constant t is L = C → screen C + t: the map point that was at
+  // the viewport center BEFORE any pan — zooming after panning visibly pulled
+  // the map toward/away from an off-center (even off-screen) point (measured:
+  // pan (120,150) → pinch fixed point drifted (108,135) from center). The
+  // idiomatic anchor is the CURRENT viewport center: keep C + s(L−C) + t
+  // fixed at C for the L now under the center (L − C = −t/s), which gives
+  // t' = t · s'/s. Every zoom path below (pinch, wheel, buttons) applies it.
+  const MIN_SCALE = 0.75;
+
   const pinch = Gesture.Pinch()
     .onUpdate((e) => {
-      scale.value = Math.min(maxScale, Math.max(0.75, savedScale.value * e.scale));
+      const next = Math.min(maxScale, Math.max(MIN_SCALE, savedScale.value * e.scale));
+      const r = next / savedScale.value;
+      scale.value = next;
+      tx.value = savedTx.value * r;
+      ty.value = savedTy.value * r;
     })
     .onEnd(() => {
       savedScale.value = scale.value;
+      savedTx.value = tx.value;
+      savedTy.value = ty.value;
       if (onZoomEnd) runOnJS(onZoomEnd)(scale.value);
     });
 
@@ -245,31 +267,75 @@ function MapViewport({
             e.preventDefault?.();
             const next = Math.min(
               maxScale,
-              Math.max(0.75, scale.value * Math.exp(-e.deltaY / 300)),
+              Math.max(MIN_SCALE, scale.value * Math.exp(-e.deltaY / 300)),
             );
+            const r = next / scale.value; // center anchoring — see above
             scale.value = next;
             savedScale.value = next;
+            tx.value *= r;
+            ty.value *= r;
+            savedTx.value = tx.value;
+            savedTy.value = ty.value;
             onZoomEnd?.(next);
           },
         } as object)
       : null;
 
+  // Floating + / − controls: one ZOOM_STEP per tap, spring-animated, same
+  // viewport-center anchoring as pinch/wheel (t' = t·s'/s on the targets).
+  const zoomBy = (factor: number) => {
+    const next = Math.min(maxScale, Math.max(MIN_SCALE, savedScale.value * factor));
+    if (next === savedScale.value) return;
+    const r = next / savedScale.value;
+    const nextTx = savedTx.value * r;
+    const nextTy = savedTy.value * r;
+    const spring = { stiffness: 320, damping: 30, mass: 0.7 }; // DetentSheet's snap feel
+    scale.value = withSpring(next, spring);
+    tx.value = withSpring(nextTx, spring);
+    ty.value = withSpring(nextTy, spring);
+    savedScale.value = next;
+    savedTx.value = nextTx;
+    savedTy.value = nextTy;
+    onZoomEnd?.(next);
+  };
+
   return (
-    <GestureDetector gesture={gesture}>
-      <Animated.View
-        style={[styles.mapArea, animatedStyle]}
-        testID="map-viewport"
-        onLayout={(e) =>
-          setLayout({
-            w: Math.round(e.nativeEvent.layout.width),
-            h: Math.round(e.nativeEvent.layout.height),
-          })
-        }
-        {...wheelProps}
-      >
-        {children}
-      </Animated.View>
-    </GestureDetector>
+    <View style={styles.mapFill}>
+      <GestureDetector gesture={gesture}>
+        <Animated.View
+          style={[styles.mapArea, animatedStyle]}
+          testID="map-viewport"
+          onLayout={(e) =>
+            setLayout({
+              w: Math.round(e.nativeEvent.layout.width),
+              h: Math.round(e.nativeEvent.layout.height),
+            })
+          }
+          {...wheelProps}
+        >
+          {children}
+        </Animated.View>
+      </GestureDetector>
+      {/* pointerEvents in style — the prop form warns on RN-web (see chips). */}
+      <View style={styles.zoomCtrls}>
+        <Pressable
+          style={styles.zoomBtn}
+          onPress={() => zoomBy(ZOOM_STEP)}
+          accessibilityLabel="Zoom in"
+          testID="zoom-in"
+        >
+          <Text style={styles.zoomGlyph}>+</Text>
+        </Pressable>
+        <Pressable
+          style={styles.zoomBtn}
+          onPress={() => zoomBy(1 / ZOOM_STEP)}
+          accessibilityLabel="Zoom out"
+          testID="zoom-out"
+        >
+          <Text style={styles.zoomGlyph}>−</Text>
+        </Pressable>
+      </View>
+    </View>
   );
 }
 
@@ -691,7 +757,13 @@ function stubRoomLabel(room: Room): string {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    overflow: 'hidden',
+    // Web: 'clip', not 'hidden' — overflow:hidden makes the container a
+    // programmatically-scrollable box, and Chrome's scroll-into-view (e.g.
+    // focusing the zoom buttons) silently scrolled it by the pan offset,
+    // visually un-panning the map (measured scrollLeft=88 after an 88px
+    // pan). 'clip' clips identically but can never scroll. Native 'hidden'
+    // has no scroll semantics, so it keeps the supported value.
+    overflow: Platform.OS === 'web' ? ('clip' as 'hidden') : 'hidden',
     backgroundColor: colors.surface,
   },
   mapFill: {
@@ -741,6 +813,32 @@ const styles = StyleSheet.create({
   },
   chipTextActive: {
     color: colors.white,
+  },
+  // Floating + / − zoom controls: bottom-right, above the bottom band where
+  // the locate chip / sheets live, left of nothing — the floor-chip column
+  // anchors to the top of the same right rail, so the two never meet.
+  zoomCtrls: {
+    position: 'absolute',
+    right: spacing.md,
+    bottom: 120,
+    gap: spacing.sm,
+    pointerEvents: 'box-none',
+  },
+  zoomBtn: {
+    width: 44, // HIG tap target
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: colors.hairline,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  zoomGlyph: {
+    ...type.title,
+    fontSize: 20,
+    lineHeight: 24,
+    color: colors.ink,
   },
   // Mini home/star bubbles on the floor chips (see ChipBadges).
   chipBadge: {

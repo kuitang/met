@@ -96,9 +96,11 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
 <circle cx="${START[0]}" cy="${START[1]}" r="12" fill="#ffffff" stroke="${RED}" stroke-width="6.5"/>
 ${pin(DEST[0], DEST[1], 1.45, RED, '#ffffff')}
 
-<!-- Branding (regenerable text block) -->
+<!-- Branding (regenerable text block). Wordmark matches the app header
+     (apps/mobile/src/app/index.tsx styles.wordmark / wordmarkAccent): serif
+     bold uppercase, default tracking, MUSE in ink + WALK in Met red. -->
 <g id="text-layer">
-  <text x="600" y="288" text-anchor="middle" font-family="${SERIF}" font-size="128" font-weight="bold" fill="${INK}" letter-spacing="5">MUSEWALK</text>
+  <text x="600" y="288" text-anchor="middle" font-family="${SERIF}" font-size="128" font-weight="bold" fill="${INK}">MUSE<tspan fill="${RED}">WALK</tspan></text>
   <text x="600" y="352" text-anchor="middle" font-family="${SANS}" font-size="32" fill="#494643" letter-spacing="0.5">Find any artwork. Never get lost.</text>
   <text x="600" y="403" text-anchor="middle" font-family="${SANS}" font-size="21" fill="#6b6660" letter-spacing="0.4">An unofficial companion for The Met</text>
 </g>
