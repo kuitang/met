@@ -17,13 +17,14 @@
  * memoized per (site, floor) and each <RoomShape> is React.memo'd so a
  * highlight change re-renders one path, not ~300.
  */
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
+  withTiming,
 } from 'react-native-reanimated';
 import Svg, {
   Defs,
@@ -121,7 +122,19 @@ export interface FloorMapProps {
    * markers pan/zoom with the floor plan in every gesture state.
    */
   overlay?: React.ReactNode;
+  /**
+   * Fit request (nav mode): animate the viewport to frame these viewBox-space
+   * bounds, keeping `insetBottom` px clear at the bottom (the nav sheet).
+   * Re-applied whenever `key` changes (route / floor / detent), so user pans
+   * in between are respected, not fought.
+   */
+  fitBounds?: { x: number; y: number; w: number; h: number; insetBottom: number; key: string };
 }
+
+/** fitBounds + the active viewBox, resolved by Real/Stub map for MapViewport. */
+type FitRequest = NonNullable<FloorMapProps['fitBounds']> & {
+  viewBox: { x: number; y: number; w: number; h: number };
+};
 
 export default function FloorMap(props: FloorMapProps) {
   const data = useData();
@@ -141,11 +154,14 @@ function MapViewport({
   children,
   maxScale = 4,
   onZoomEnd,
+  fit,
 }: {
   children: React.ReactNode;
   maxScale?: number;
   /** Reported when a pinch/wheel settles — drives zoom-gated labels. */
   onZoomEnd?: (scale: number) => void;
+  /** Frame these viewBox bounds in the area above `insetBottom` (nav mode). */
+  fit?: FitRequest;
 }) {
   const scale = useSharedValue(1);
   const savedScale = useSharedValue(1);
@@ -153,6 +169,42 @@ function MapViewport({
   const ty = useSharedValue(0);
   const savedTx = useSharedValue(0);
   const savedTy = useSharedValue(0);
+
+  // ---- fit-to-bounds (nav mode) -------------------------------------------
+  // Math: the SVG fills the layout box with preserveAspectRatio "meet", so a
+  // viewBox point p lands at L(p) = letterboxOffset + (p - vbOrigin) * k.
+  // The pan/zoom transform then maps it to C + s·(L(p) − C) + (tx,ty), where
+  // C is the view center (RN transforms pivot on the view center). Solving
+  // for "bounds center → center of the visible band, bounds fit inside it"
+  // gives s and (tx,ty) directly.
+  const [layout, setLayout] = useState<{ w: number; h: number } | undefined>();
+  useEffect(() => {
+    if (!fit || !layout || layout.w === 0 || layout.h === 0) return;
+    const { viewBox: vb, insetBottom } = fit;
+    const W = layout.w;
+    const H = layout.h;
+    const visH = Math.max(80, H - insetBottom);
+    const k = Math.min(W / vb.w, H / vb.h);
+    // Breathing room around the route (15%, min 6 viewBox units ≈ one room).
+    const bw = Math.max(fit.w * 1.3, 12);
+    const bh = Math.max(fit.h * 1.3, 12);
+    const s = Math.min(maxScale, Math.max(0.75, Math.min(W / (k * bw), visH / (k * bh))));
+    const lcx = (W - k * vb.w) / 2 + (fit.x + fit.w / 2 - vb.x) * k;
+    const lcy = (H - k * vb.h) / 2 + (fit.y + fit.h / 2 - vb.y) * k;
+    const nextTx = -s * (lcx - W / 2);
+    const nextTy = visH / 2 - H / 2 - s * (lcy - H / 2);
+    const t = { duration: 350 };
+    scale.value = withTiming(s, t);
+    tx.value = withTiming(nextTx, t);
+    ty.value = withTiming(nextTy, t);
+    savedScale.value = s;
+    savedTx.value = nextTx;
+    savedTy.value = nextTy;
+    onZoomEnd?.(s);
+    // Re-fit only when the request identity or the layout changes — user
+    // gestures in between must not be clobbered per render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fit?.key, layout]);
 
   const pinch = Gesture.Pinch()
     .onUpdate((e) => {
@@ -204,7 +256,17 @@ function MapViewport({
 
   return (
     <GestureDetector gesture={gesture}>
-      <Animated.View style={[styles.mapArea, animatedStyle]} testID="map-viewport" {...wheelProps}>
+      <Animated.View
+        style={[styles.mapArea, animatedStyle]}
+        testID="map-viewport"
+        onLayout={(e) =>
+          setLayout({
+            w: Math.round(e.nativeEvent.layout.width),
+            h: Math.round(e.nativeEvent.layout.height),
+          })
+        }
+        {...wheelProps}
+      >
         {children}
       </Animated.View>
     </GestureDetector>
@@ -348,6 +410,7 @@ function RealFloorMap({
   homeRoom,
   targetRoom,
   overlay,
+  fitBounds,
 }: FloorMapProps & { geometry: GeometryFn }) {
   const siteGeo = useMemo(() => buildSiteGeometry(geometry, site), [geometry, site]);
 
@@ -396,7 +459,12 @@ function RealFloorMap({
       {/* Marker for e2e: this subtree means real polygons, not the stub. */}
       <View style={styles.mapFill} testID="floor-map-real">
         {/* key={site}: reset pan/zoom when jumping between buildings. */}
-        <MapViewport key={site} maxScale={8} onZoomEnd={setZoom}>
+        <MapViewport
+          key={site}
+          maxScale={8}
+          onZoomEnd={setZoom}
+          fit={fitBounds ? { ...fitBounds, viewBox: vb } : undefined}
+        >
           <Svg
             width="100%"
             height="100%"
@@ -496,6 +564,7 @@ function StubFloorMap({
   homeRoom,
   targetRoom,
   overlay,
+  fitBounds,
 }: FloorMapProps) {
   const data = useData();
   const [floorState, setFloorState] = useState(1);
@@ -513,7 +582,13 @@ function StubFloorMap({
 
   return (
     <View style={styles.container} testID="floor-map">
-      <MapViewport>
+      <MapViewport
+        fit={
+          fitBounds
+            ? { ...fitBounds, viewBox: { x: 0, y: 0, w: STUB_VIEW_W, h: STUB_VIEW_H } }
+            : undefined
+        }
+      >
         <Svg
           width="100%"
           height="100%"

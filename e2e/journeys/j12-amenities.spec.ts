@@ -63,15 +63,15 @@ test('J12 amenities: "restroom" → nearest-first → amenity sheet → route', 
   await step(page, 'DIRECTIONS from my gallery to the restroom', async () => {
     await page.getByTestId('room-directions').click();
   });
-  await expect(page).toHaveURL(new RegExp(`/route/${F.galleryId}/${firstRowId}`));
+  await expect(page).toHaveURL(new RegExp(`[?&]nav=${F.galleryId}(:|%3A)${firstRowId}`));
   await expect(page.getByTestId('route-summary')).toContainText(/Restroom/i);
   await expect(page.getByTestId('route-step-0')).toContainText('Start in');
 
-  // The tap did NOT relocate the visitor: one tap on the header HOME button
-  // lands back on the map with the Gallery anchor untouched.
-  await step(page, 'One tap home — my location never moved', async () => {
-    await page.getByTestId('home-button').last().click();
+  // The tap did NOT relocate the visitor: ✕ exits nav mode in place (variant
+  // D — navigation has no top chrome) with the Gallery anchor untouched.
+  await step(page, 'One tap back to browsing — my location never moved', async () => {
+    await page.getByTestId('nav-close').click();
   });
-  await expect(page.getByTestId('home-search-bar')).toBeVisible();
-  await expect(page.getByTestId('locate-chip')).toContainText(`Gallery ${F.galleryId}`);
+  await expect(page.getByTestId('home-search-bar').last()).toBeVisible();
+  await expect(page.getByTestId('locate-chip').last()).toContainText(`Gallery ${F.galleryId}`);
 });

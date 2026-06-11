@@ -216,6 +216,48 @@ through the southwest door into Gallery 374 (European Ceremonial Armor)" /
 "Take the stairs to Floor 2". Sample 131→822: 309 m, 24 steps. Runs entirely
 on-device (offline routing works; J11 asserts it).
 
+## Navigation mode: the map IS the app (variant D, user-approved)
+
+Navigation is not a screen — it is a **mode of the home screen**, addressed
+by URL params: `/?nav=<fromId>:<toId>[&avoid=stairs][&obj=<objectID>]`.
+Entering navigation (object page NAVIGATE HERE, room/amenity sheet
+DIRECTIONS) **pushes** a home entry with those params, so the native/browser
+back button exits the mode; the ✕ in the sheet header exits **in place**
+(params cleared via `setParams` — browse chrome returns, the anchor is
+preserved). `/route/[from]/[to]` survives as a redirect into home-nav-mode
+(existing deep links keep working, `?avoid=` preserved). While navigating the
+top chrome (wordmark + search bar) and the locate chip disappear — the map
+plus the **NavSheet** teardown are the whole app; floor chips stay (they are
+map controls, and they carry the home/star bubbles for cross-floor routes).
+
+NavSheet (`apps/mobile/src/components/NavSheet.tsx`) runs on **DetentSheet**
+(`DetentSheet.tsx`) — the three-detent drag/snap/cycle machinery extracted
+verbatim from HomeRoomSheet so the navigation teardown and the artifacts
+teardown are the IDENTICAL mechanism (one spring tuning, two consumers; a
+user-confirmed requirement). Its header is the destination identity (★ +
+serif title — the artwork title when entered from an object page via `obj=`,
+else the room name — plus gallery/floor/step/distance meta and a 44×44 ✕);
+the sheet's top border doubles as a route progress bar (red over ink),
+glanceable even at HEADER-ONLY. Tapping the title opens search in retarget
+mode (`/search?retarget=<originId>`): room rows there swap the nav target in
+place (`RoomRow.focusRoom`'s retarget branch) instead of opening a browse
+sheet. The body is the room-grouped step list (instruction phrasing ported
+from the retired route screen into `NavSheet.displayInstruction`) with the
+avoid-stairs chip (URL-backed: toggling rewrites `?avoid=`) and the I'M HERE
+checkpoint button. Arrival swaps the header for WHAT'S HERE (exits nav and
+opens the destination's artifacts teardown, anchored there — the modal hands
+back to browse seamlessly) and DONE (exits nav, re-anchors at the
+destination). Room taps during navigation still open the room sheet — it
+stacks over the nav sheet, and its I'M HERE doubles as a manual location fix.
+
+The positioning machine wiring moved into `app/index.tsx` unchanged:
+anchor changes run `onRouteAnchor` (auto-advance / exactly-once reroute with
+the "Rerouting…" toast; a reroute rewrites the `nav=` origin in place).
+Cross-floor steps auto-switch the visible floor; `RoutePolyline` draws the
+current floor's segments solid and other floors' dimmed; and FloorMap accepts
+a `fitBounds` request — on route/floor/detent changes (below FULL) the
+viewport animates to frame the visible route segment above the sheet.
+
 ## Search: three tiers, LLM strictly server-side
 
 1. **Autocomplete** (every keystroke, local, p50 0.3 ms): normalized input →
@@ -379,8 +421,11 @@ loads whatever shards exist.
 | `apps/mobile/src/data/DataGate.tsx:DataGate` | boot: local-first open, download, version poll, hot swap |
 | `apps/mobile/src/data/sqlite.ts` / `sqlite.web.ts` (`MetDb`) | per-platform SQLite backends behind one contract |
 | `apps/mobile/src/components/MapGeometry.ts:buildSiteGeometry` | geojson → projected render model |
-| `apps/mobile/src/components/FloorMap.tsx:FloorMap` | SVG floor-plan renderer (real + stub paths) |
-| `apps/mobile/src/components/RoutePolyline.tsx` | route overlay from `Route.geo` |
+| `apps/mobile/src/components/FloorMap.tsx:FloorMap` | SVG floor-plan renderer (real + stub paths) + fit-to-bounds viewport requests |
+| `apps/mobile/src/components/RoutePolyline.tsx` | route overlay from `Route.geo` (solid on-floor, dimmed off-floor) |
+| `apps/mobile/src/components/DetentSheet.tsx:DetentSheet` | shared three-detent bottom-sheet machinery (room + nav teardowns) |
+| `apps/mobile/src/components/NavSheet.tsx:NavSheet` | navigation teardown: destination header, progress border, step list, arrival |
+| `apps/mobile/src/app/index.tsx:HomeScreen` | browse + nav modes of the one map screen (`?nav=` params, route-machine wiring) |
 | `apps/mobile/src/components/LocateState.tsx:setAnchor` / `useAnchor` / `useVenue` / `applyVenue` | global anchor + venue state for the UI (and the venue-switch toast) |
 | `server/src/index.ts` | Hono wiring: COOP/COEP, x-data-version, rate limits, static SPA |
 | `server/src/meta.ts:injectOgMeta` / `requestOrigin` | per-request og/twitter meta injection into index.html with absolute URLs from the request origin (Host + x-forwarded-proto) — keeps the export origin-portable; assets authored in `assets/share/`, served from `apps/mobile/public/` |

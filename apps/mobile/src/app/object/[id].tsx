@@ -136,14 +136,16 @@ export default function ObjectScreen() {
         <Pressable
           style={styles.navigateBtn}
           onPress={() =>
+            // Home in nav mode (variant D), PUSHED so back = exit nav. The
+            // `obj` param makes the artwork the destination identity in the
+            // nav sheet header. Origin precedence: explicit ?anchor= deep-link
+            // param, then the visitor's live anchor, then the Great Hall
+            // fallback — routes start from where the visitor actually is.
             router.push({
-              pathname: '/route/[from]/[to]',
-              // Origin precedence: explicit ?anchor= deep-link param, then the
-              // visitor's live anchor, then the Great Hall fallback — routes
-              // start from where the visitor actually is.
+              pathname: '/',
               params: {
-                from: anchor ?? getAnchor()?.roomId ?? 'great-hall',
-                to: gallery.id,
+                nav: `${anchor ?? getAnchor()?.roomId ?? 'great-hall'}:${gallery.id}`,
+                obj: String(object.objectID),
               },
             })
           }
