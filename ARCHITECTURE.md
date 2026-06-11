@@ -427,9 +427,15 @@ Tigris s3://met-artifacts                           ▼
   `musewalk-pr-{n}`, shared-cpu-1x/512 MB, same Dockerfile + Tigris build
   secrets, real Gemini key with `LLM_DAILY_BUDGET=100`, URL commented on the
   PR, destroyed on close.
-- **Branch protection** (armed after the first PR merges): require PRs with
+- **Branch protection** (armed 2026-06-11): require PRs with
   required status check `ci`, linear history, no force-push/deletion; admin
   bypass for kuitang. All changes land as squash PRs.
+- **Live domain** (2026-06-11): canonical https://musewalk.app — registrar
+  A/AAAA on the apex + CNAME `www` → `musewalk.fly.dev`, both Fly-managed
+  certs issued; the server 301s every non-canonical host (www, fly.dev) to
+  the apex. Mobile: EAS builds from `apps/mobile` (Android APK `preview`
+  profile, iOS store + TestFlight submit config in `eas.json`) — operator
+  details, tokens, and knobs in DEPLOY_NOTES.md.
 
 ## Abuse protection
 
