@@ -29,3 +29,5 @@ geojson, routing graph, LLM synonyms, the objects snapshot) and `data/raw/`
 rebuilds `met.sqlite`, uploads + verifies a new version, commits the pointer,
 and redeploys — the Docker image bakes the artifacts at build time, so
 machines have zero runtime bucket dependencies.
+
+Live at https://musewalk.app.
