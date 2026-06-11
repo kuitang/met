@@ -14,7 +14,14 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://met-nav.fly.dev",
+        "EXPO_PUBLIC_API_URL": "https://musewalk.app",
+        "EXPO_PUBLIC_DATA": "real"
+      }
+    },
+    "production": {
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://musewalk.app",
         "EXPO_PUBLIC_DATA": "real"
       }
     }

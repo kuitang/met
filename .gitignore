@@ -48,10 +48,22 @@ test-results/
 data/raw/met-images/
 data/raw/met-objects/
 
-# Image-proxy disk cache (server/src/routes/img.ts; lives on the Fly volume in prod)
+# Image-proxy disk cache (server/src/routes/img.ts; ephemeral in prod — it
+# refills from the Met CDN after each deploy)
 data/img-cache/
 
 # Image-embedding vector index (~100 MB at full scale, rebuilt incrementally by
-# data/src/embed-images.ts; server loads it from DATA_DIR — lives on the Fly
-# volume in prod, never in git)
+# data/src/embed-images.ts; server loads it from DATA_DIR — lives in the
+# Tigris artifact bucket in prod, never in git)
 data/snapshots/image-embeddings/
+
+# Built data artifacts: the Tigris bucket (s3://met-artifacts) is the artifact
+# registry — met.sqlite + VERSION are pulled from latest/ (CI, Docker bake; see
+# data/src/fetch-artifacts.ts) or rebuilt locally via `npm -w data run
+# build-db`. The reproducible SOURCES (snapshots/ geojson + graph + synonyms +
+# objects snapshot, raw/ Living Map tiles) stay in git.
+data/met.sqlite
+data/VERSION
+
+# Nightly pipeline scratch (data/src/nightly.ts)
+data/.nightly/

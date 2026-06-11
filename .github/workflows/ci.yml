@@ -1,0 +1,143 @@
+# CI gate + prod deploy. The `ci` job is the required status check for
+# merging to main (branch protection); the `deploy` job runs only on push to
+# main and is gated with `needs: ci` — chosen over a separate
+# workflow_run-triggered file because a same-file job dependency is the
+# simplest form that guarantees "deploy only after green CI" with no
+# cross-workflow event plumbing.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      # Node pinned to 24.14.0: under 24.16.0 (current latest LTS) `npx
+      # playwright install` hangs forever during zip extraction (~18 MB into
+      # chrome-linux64.zip, zero CPU) — reproduced deterministically on
+      # 24.16.0 and absent on 24.14.0 in side-by-side local runs (2026-06-11);
+      # this caused the 3x "browser download stalled" CI failures.
+      # Re-test before unpinning.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.14.0
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck (apps/mobile, server, e2e, data)
+        run: |
+          (cd apps/mobile && npx tsc --noEmit)
+          (cd server && npx tsc --noEmit)
+          (cd e2e && npx tsc --noEmit)
+          (cd data && npx tsc --noEmit)
+
+      - name: OpenAPI types are up to date
+        run: |
+          npm -w shared run gen
+          git diff --exit-code shared/api-types.d.ts
+
+      - name: Unit tests (shared + data + server)
+        run: |
+          npm -w shared test
+          npm -w data test
+          npm -w server test
+
+      # Origin portability gate: export the real web bundle exactly like the
+      # Docker build does (EXPO_PUBLIC_DATA=real, no EXPO_PUBLIC_API_URL) and
+      # fail if any deploy origin (fly.dev/localhost/met-nav/musewalk/private IP) got
+      # baked in — the same dist must serve custom domains and PR previews.
+      - name: Web export is origin-portable
+        run: |
+          npm run export:web
+          npm run check:origin
+
+      - name: Fetch met.sqlite from Tigris (evals input)
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.TIGRIS_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.TIGRIS_AWS_SECRET_ACCESS_KEY }}
+          AWS_ENDPOINT_URL_S3: ${{ secrets.TIGRIS_AWS_ENDPOINT }}
+        run: npx tsx data/src/fetch-artifacts.ts --dest data --sqlite-only
+
+      - name: Data evals
+        run: npm run evals
+
+      # Browser binaries cached: a cdn.playwright.dev download stalled
+      # mid-transfer with no timeout and hung the job to the 30-min kill
+      # (observed live, run 27305073014) — a cache hit skips the download
+      # entirely; misses are bounded by the timeout+retry loop below.
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      # Wait discipline: no unconditional waits / oversized timeouts in
+      # e2e/checks/** — the budget that keeps a red suite minutes, not 27
+      # (see e2e/playwright.config.ts "TIMEOUT BUDGET").
+      - name: E2E wait-discipline guard
+        run: node scripts/check-e2e-discipline.mjs
+
+      # CHECKS_STATIC: e2e/static-server.mjs serving a pre-built stub export —
+      # the Metro dev-server compile alone takes ~25 min on a 2-core runner
+      # and timed out the job. webkit-render runs alongside checks
+      # (iPhone-engine render guard; +~80MB browser download, +~5s test time).
+      # The canary project runs first via Playwright project dependencies: a
+      # broken export = 1 failure in seconds, rest of the suite skipped.
+      # (The old `expo export -c` workaround is gone: metro.config.js keys
+      # the transform cache on the EXPO_PUBLIC_* fingerprint since #11, so
+      # the real-mode export above can no longer poison this stub one.)
+      - name: Playwright checks (stub mode, static export) + webkit render guard
+        run: |
+          EXPO_PUBLIC_DATA=stub npm -w apps/mobile exec -- expo export -p web
+          cd e2e
+          npx playwright install-deps chromium webkit
+          ok=""
+          for i in 1 2 3; do
+            if timeout 360 npx playwright install chromium webkit; then ok=1; break; fi
+            echo "browser download attempt $i stalled or failed; retrying"
+          done
+          [ "$ok" = 1 ]
+          CHECKS_STATIC=1 npx playwright test --project=checks --project=webkit-render
+
+      - name: Upload playwright artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: e2e/test-results
+          retention-days: 7
+          if-no-files-found: ignore
+
+  deploy:
+    name: deploy
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: fly-deploy-musewalk
+      cancel-in-progress: false
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Deploy musewalk (bakes latest/ artifacts)
+        run: |
+          flyctl deploy --remote-only \
+            --build-secret AWS_ACCESS_KEY_ID="${{ secrets.TIGRIS_AWS_ACCESS_KEY_ID }}" \
+            --build-secret AWS_SECRET_ACCESS_KEY="${{ secrets.TIGRIS_AWS_SECRET_ACCESS_KEY }}" \
+            --build-secret AWS_ENDPOINT_URL_S3="${{ secrets.TIGRIS_AWS_ENDPOINT }}" \
+            --build-arg ARTIFACT_CACHE_BUST="${{ github.run_id }}"

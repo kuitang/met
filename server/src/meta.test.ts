@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
-import { injectOgMeta, requestOrigin } from './meta.js'
+import { canonicalRedirect, injectOgMeta, requestOrigin } from './meta.js'
 
 // Mirrors the head the Expo web export emits (title + favicon, no og tags).
 const TEMPLATE = `<!DOCTYPE html>
@@ -27,6 +27,30 @@ describe('requestOrigin', () => {
   })
   it('takes the first proto from a multi-proxy list', () => {
     expect(requestOrigin('musewalk.app', 'https, http')).toBe('https://musewalk.app')
+  })
+})
+
+describe('canonicalRedirect', () => {
+  it('301s the alias hosts to the apex, preserving path + query', () => {
+    expect(canonicalRedirect('musewalk.fly.dev', '/', '')).toBe('https://musewalk.app/')
+    expect(canonicalRedirect('www.musewalk.app', '/object/123', '')).toBe(
+      'https://musewalk.app/object/123',
+    )
+    expect(canonicalRedirect('met-nav.fly.dev', '/search', '?q=monet')).toBe(
+      'https://musewalk.app/search?q=monet',
+    )
+    expect(canonicalRedirect('WWW.MUSEWALK.APP', '/', '')).toBe('https://musewalk.app/')
+  })
+
+  it('does not redirect the canonical host', () => {
+    expect(canonicalRedirect('musewalk.app', '/', '')).toBeNull()
+  })
+
+  it('does not redirect PR previews, localhost, or unknown hosts', () => {
+    expect(canonicalRedirect('musewalk-pr-9.fly.dev', '/', '')).toBeNull()
+    expect(canonicalRedirect('met-nav-pr-9.fly.dev', '/', '')).toBeNull()
+    expect(canonicalRedirect('localhost', '/', '')).toBeNull()
+    expect(canonicalRedirect('evil.example.com', '/', '')).toBeNull()
   })
 })
 

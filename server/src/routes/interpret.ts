@@ -57,24 +57,6 @@ function getDb(): Database.Database | null {
   return db
 }
 
-/**
- * Refresh hook (server/src/refresh.ts): after the nightly job atomically swaps
- * met.sqlite, close the old handle and drop the response cache. The next
- * request reopens the new file; vocab.ts is keyed by handle so its cache
- * invalidates with it.
- */
-export function reopenInterpretDb(): void {
-  if (db) {
-    try {
-      db.close()
-    } catch {
-      /* already closed */
-    }
-  }
-  db = null
-  cache.clear()
-}
-
 // ---------------------------------------------------------------------------
 // Gemini client (mocked at this boundary when LLM_MOCK=1)
 // ---------------------------------------------------------------------------

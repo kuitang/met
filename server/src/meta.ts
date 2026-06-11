@@ -1,8 +1,8 @@
 /**
  * Social-preview meta injection for the served index.html.
  *
- * The same web export serves a custom domain (musewalk.app), met-nav.fly.dev
- * and PR preview apps, so og:url / og:image MUST be absolute URLs derived
+ * The same web export serves the custom domain (musewalk.app) and PR preview
+ * apps, so og:url / og:image MUST be absolute URLs derived
  * from the *request* origin at serve time — nothing absolute may be baked
  * into apps/mobile/dist (enforced by scripts/check-origin-portability.mjs).
  *
@@ -35,6 +35,21 @@ const esc = (s: string) =>
 export function requestOrigin(host: string, forwardedProto: string | undefined): string {
   const proto = forwardedProto?.split(',')[0]?.trim() || 'http'
   return `${proto}://${host}`
+}
+
+/**
+ * Canonical-host redirect: the prod app answers on several hostnames
+ * (musewalk.fly.dev, www.musewalk.app, plus the legacy met-nav.fly.dev), all
+ * of which 301 to the apex https://musewalk.app preserving path + query.
+ * PR previews (musewalk-pr-{n}.fly.dev), localhost and any other host are NOT
+ * redirected — the same build must keep serving them as-is. Returns the
+ * absolute redirect target, or null when the host is already canonical /
+ * unknown.
+ */
+const REDIRECT_HOSTS = new Set(['musewalk.fly.dev', 'www.musewalk.app', 'met-nav.fly.dev'])
+export function canonicalRedirect(host: string, pathname: string, search: string): string | null {
+  if (!REDIRECT_HOSTS.has(host.toLowerCase())) return null
+  return `https://musewalk.app${pathname}${search}`
 }
 
 /**

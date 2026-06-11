@@ -10,30 +10,55 @@
  *   index.json     — { model, dims, normalized, shardSize, count,
  *                      objects: { objectID: {shard, offset, title, artist, gallery} } }
  *
- * RESUMABLE: objectIDs already in index.json are skipped; index.json is flushed
- * every 25 embeds, so a killed run loses at most a few vectors' bookkeeping
- * (orphan bytes at a shard tail are truncated on the next run).
+ * RESUMABLE + CONTENT-ADDRESSED: an objectID already in index.json is skipped
+ * unless its imageHash (sha256 of the imageUrl it was embedded from) differs
+ * from the snapshot's current imageUrl — the index is the durable embedding
+ * cache, the corpus is NEVER re-embedded. index.json is flushed every 25
+ * embeds, so a killed run loses at most a few vectors' bookkeeping (orphan
+ * bytes at a shard tail are truncated on the next run).
+ *
+ * COMPACTION (--compact, run by the nightly pipeline before embedding): drops
+ * (a) entries whose objectID is no longer in the snapshot (tombstones),
+ * (b) entries whose imageHash no longer matches the snapshot imageUrl (they
+ *     re-embed as new), and
+ * (c) orphan vector rows no entry references — historical re-embeds appended
+ *     a fresh row and re-pointed the map entry, leaving stale twins behind
+ *     (3,017 of them measured on 2026-06-10) — then rewrites the shards
+ *     densely and refreshes entry metadata from the snapshot. Entries from
+ *     before content-addressing (no imageHash) are kept and backfilled with
+ *     the current imageUrl hash (re-embedding 30k vectors to learn what we
+ *     already have is exactly what the cache exists to avoid).
  *
  * Usage (Node 24):
- *   npx tsx data/src/embed-images.ts                 # all imageUrl rows in objects.json.gz (~34k, ≈$4, ~2.5h)
+ *   npx tsx data/src/embed-images.ts                 # all imageUrl rows in objects.json.gz (~34k, ≈$4, ~2.5h first time; only new/changed after)
+ *   npx tsx data/src/embed-images.ts --compact       # tombstone + compaction only (no Gemini)
  *   npx tsx data/src/embed-images.ts --subset gatec  # Gate C eval subset (~1.6k, ≈$0.20)
  *   npx tsx data/src/embed-images.ts --ids ids.json  # explicit JSON array of objectIDs
- *   --limit N caps any of the above.
+ *   --limit N caps any of the above. MET_DATA_DIR overrides the data root
+ *   (snapshots read/written under $MET_DATA_DIR/snapshots) like build-db.ts.
  *
  * Object metadata comes from data/snapshots/objects.json.gz (B1 pipeline) when
  * present; otherwise each id is hydrated from the Met API (cached under
  * data/raw/met-objects/{id}.json, ~30 req/s, well under the 80 req/s cap).
  */
 import { GoogleGenAI } from '@google/genai'
+import { createHash } from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
+import { pathToFileURL } from 'node:url'
 import { gunzipSync } from 'node:zlib'
 
 const ROOT = path.resolve(import.meta.dirname, '../..')
-const SNAPSHOT = path.join(ROOT, 'data/snapshots/objects.json.gz')
+// MET_DATA_DIR overrides the data root (same contract as build-db.ts /
+// synonyms.ts); the raw image/object caches stay repo-level — they are
+// content-keyed by objectID and shared across staging dirs.
+const DATA_ROOT = process.env.MET_DATA_DIR
+  ? path.resolve(process.env.MET_DATA_DIR)
+  : path.join(ROOT, 'data')
+const SNAPSHOT = path.join(DATA_ROOT, 'snapshots/objects.json.gz')
 const IMG_CACHE = path.join(ROOT, 'data/raw/met-images')
 const OBJ_CACHE = path.join(ROOT, 'data/raw/met-objects')
-const OUT_DIR = path.join(ROOT, 'data/snapshots/image-embeddings')
+const OUT_DIR = path.join(DATA_ROOT, 'snapshots/image-embeddings')
 const BENCH = path.join(ROOT, 'data/evals/planning-bench')
 const MET_API = 'https://collectionapi.metmuseum.org/public/collection/v1'
 const DIMS = 768
@@ -50,14 +75,27 @@ interface ObjMeta {
   imageUrl: string
 }
 
-interface Index {
+export interface IndexEntry {
+  shard: number
+  offset: number
+  title: string
+  artist: string
+  gallery: string
+  /** sha256 hex of the imageUrl the vector was embedded from (content address). */
+  imageHash?: string
+}
+
+export interface Index {
   model: string
   dims: number
   normalized: boolean
   shardSize: number
   count: number
-  objects: Record<string, { shard: number; offset: number; title: string; artist: string; gallery: string }>
+  objects: Record<string, IndexEntry>
 }
+
+export const imageHash = (imageUrl: string): string =>
+  createHash('sha256').update(imageUrl).digest('hex')
 
 // ---------- args ----------
 const args = process.argv.slice(2)
@@ -195,9 +233,11 @@ async function gateCIds(snapshot: Map<number, ObjMeta> | null): Promise<number[]
 
 // ---------- image download ----------
 let lastImgCall = 0
-async function imageFor(meta: ObjMeta): Promise<Buffer | null> {
+/** `ignoreCache`: the disk cache is keyed by objectID only, so a re-embed
+ * triggered by an imageUrl change must NOT trust the cached bytes. */
+async function imageFor(meta: ObjMeta, ignoreCache = false): Promise<Buffer | null> {
   const cache = path.join(IMG_CACHE, `${meta.objectID}.jpg`)
-  if (fs.existsSync(cache)) return fs.readFileSync(cache)
+  if (!ignoreCache && fs.existsSync(cache)) return fs.readFileSync(cache)
   if (!meta.imageUrl) return null
   const wait = lastImgCall + 100 - Date.now() // ≤10 req/s on the Met CDN
   if (wait > 0) await sleep(wait)
@@ -221,7 +261,13 @@ async function imageFor(meta: ObjMeta): Promise<Buffer | null> {
 }
 
 // ---------- embedding (pool of 4, adaptive backoff on 429) ----------
-const ai = new GoogleGenAI({})
+let _ai: GoogleGenAI | null = null
+const ai = {
+  get models() {
+    if (!_ai) _ai = new GoogleGenAI({})
+    return _ai.models
+  },
+}
 let backoffUntil = 0
 async function embed(buf: Buffer): Promise<Float32Array> {
   for (let a = 0; ; a++) {
@@ -258,10 +304,145 @@ function loadIndex(): Index {
   return { model: 'gemini-embedding-2', dims: DIMS, normalized: true, shardSize: SHARD_SIZE, count: 0, objects: {} }
 }
 
-function saveIndex(idx: Index) {
-  const p = path.join(OUT_DIR, 'index.json')
+function saveIndexTo(dir: string, idx: Index) {
+  const p = path.join(dir, 'index.json')
   fs.writeFileSync(p + '.tmp', JSON.stringify(idx))
   fs.renameSync(p + '.tmp', p)
+}
+const saveIndex = (idx: Index) => saveIndexTo(OUT_DIR, idx)
+
+// ---------- tombstone + compaction (see header) ----------
+export interface CurrentObject {
+  title: string
+  artist: string
+  gallery: string
+  imageHash: string
+}
+
+export interface CompactionPlan {
+  /** Old row numbers to keep, with their objectID, in old-row order. */
+  keep: Array<{ row: number; objectID: number }>
+  dropped: { offView: number; imageChanged: number; orphanRows: number }
+}
+
+/**
+ * Pure planning step (unit-tested without shards): decide which vector rows
+ * survive. A row survives iff an index entry references it, its objectID is
+ * still in the current snapshot, and its content address (imageHash) — when it
+ * has one — still matches the snapshot's imageUrl.
+ */
+export function planCompaction(idx: Index, current: Map<number, CurrentObject>): CompactionPlan {
+  const keep: Array<{ row: number; objectID: number }> = []
+  let offView = 0
+  let imageChanged = 0
+  const referenced = new Set<number>()
+  for (const [id, e] of Object.entries(idx.objects)) {
+    const row = e.shard * idx.shardSize + e.offset
+    referenced.add(row)
+    const cur = current.get(Number(id))
+    if (!cur) {
+      offView++
+      continue
+    }
+    if (e.imageHash && e.imageHash !== cur.imageHash) {
+      imageChanged++
+      continue
+    }
+    keep.push({ row, objectID: Number(id) })
+  }
+  keep.sort((a, b) => a.row - b.row)
+  return {
+    keep,
+    dropped: { offView, imageChanged, orphanRows: idx.count - referenced.size },
+  }
+}
+
+/**
+ * Apply a compaction plan: rewrite the shard files densely in keep-order and
+ * emit a fresh index whose entry metadata (title/artist/gallery/imageHash) is
+ * refreshed from the snapshot. Atomic per file (tmp + rename); stale shard
+ * files beyond the new count are deleted.
+ */
+export function applyCompaction(
+  dir: string,
+  idx: Index,
+  plan: CompactionPlan,
+  current: Map<number, CurrentObject>,
+): Index {
+  const vecBytes = idx.dims * 4
+  const oldShard = new Map<number, Buffer>()
+  const readRow = (row: number): Buffer => {
+    const s = Math.floor(row / idx.shardSize)
+    if (!oldShard.has(s)) oldShard.set(s, fs.readFileSync(path.join(dir, `shard-${s}.bin`)))
+    const off = (row % idx.shardSize) * vecBytes
+    const buf = oldShard.get(s)!.subarray(off, off + vecBytes)
+    if (buf.length !== vecBytes) throw new Error(`shard-${s}.bin truncated at row ${row}`)
+    return buf
+  }
+
+  const next: Index = {
+    model: idx.model,
+    dims: idx.dims,
+    normalized: idx.normalized,
+    shardSize: idx.shardSize,
+    count: plan.keep.length,
+    objects: {},
+  }
+  const shardCount = Math.ceil(plan.keep.length / idx.shardSize)
+  for (let s = 0; s < shardCount; s++) {
+    const rows = plan.keep.slice(s * idx.shardSize, (s + 1) * idx.shardSize)
+    const buf = Buffer.concat(rows.map((r) => readRow(r.row)))
+    const p = path.join(dir, `shard-${s}.bin`)
+    fs.writeFileSync(p + '.tmp', buf)
+    fs.renameSync(p + '.tmp', p)
+  }
+  plan.keep.forEach(({ objectID }, newRow) => {
+    const cur = current.get(objectID)!
+    next.objects[objectID] = {
+      shard: Math.floor(newRow / idx.shardSize),
+      offset: newRow % idx.shardSize,
+      title: cur.title,
+      artist: cur.artist,
+      gallery: cur.gallery,
+      imageHash: cur.imageHash, // backfills pre-content-addressing entries
+    }
+  })
+  saveIndexTo(dir, next)
+  // remove shard files past the new tail (also handles count shrinking to 0)
+  for (let s = shardCount; ; s++) {
+    const p = path.join(dir, `shard-${s}.bin`)
+    if (!fs.existsSync(p)) break
+    fs.rmSync(p)
+  }
+  return next
+}
+
+function currentFromSnapshot(snapshot: Map<number, ObjMeta>): Map<number, CurrentObject> {
+  const m = new Map<number, CurrentObject>()
+  for (const o of snapshot.values()) {
+    if (!o.imageUrl) continue // no image → nothing to keep a vector for
+    m.set(o.objectID, {
+      title: o.title,
+      artist: o.artist,
+      gallery: o.gallery,
+      imageHash: imageHash(o.imageUrl),
+    })
+  }
+  return m
+}
+
+function runCompaction(): void {
+  const snapshot = loadSnapshot()
+  if (!snapshot) throw new Error(`--compact needs ${SNAPSHOT}`)
+  const idx = loadIndex()
+  const current = currentFromSnapshot(snapshot)
+  const plan = planCompaction(idx, current)
+  const next = applyCompaction(OUT_DIR, idx, plan, current)
+  console.log(
+    `compacted: ${idx.count} rows → ${next.count} ` +
+      `(dropped ${plan.dropped.orphanRows} orphan/duplicate rows, ` +
+      `${plan.dropped.offView} off-view, ${plan.dropped.imageChanged} image-changed)`,
+  )
 }
 
 async function main() {
@@ -286,7 +467,17 @@ async function main() {
     if (fs.statSync(sp).size > expected) fs.truncateSync(sp, expected)
   }
 
-  const todo = ids.filter((id) => !idx.objects[id]).slice(0, limit === Infinity ? undefined : limit)
+  // Content-addressed skip: an id is done iff an entry exists AND (when both
+  // sides have a content address) the entry's imageHash matches the snapshot's
+  // current imageUrl. Hash-mismatched ids re-embed (append + re-point; the
+  // orphaned old row is reclaimed by the next --compact).
+  const needsEmbed = (id: number): boolean => {
+    const e = idx.objects[id]
+    if (!e) return true
+    const url = snapshot?.get(id)?.imageUrl
+    return Boolean(url && e.imageHash && e.imageHash !== imageHash(url))
+  }
+  const todo = ids.filter(needsEmbed).slice(0, limit === Infinity ? undefined : limit)
   console.log(`${ids.length} ids selected, ${Object.keys(idx.objects).length} already embedded, ${todo.length} to do`)
 
   let done = 0
@@ -299,14 +490,22 @@ async function main() {
       try {
         const meta = snapshot?.get(id)?.imageUrl ? snapshot.get(id)! : await hydrate(id)
         if (!meta) { skipped++; continue }
-        const buf = await imageFor(meta)
+        // an existing entry here means a content-address mismatch → stale cache
+        const buf = await imageFor(meta, Boolean(idx.objects[id]))
         if (!buf) { skipped++; continue }
         const vec = await embed(buf)
         // append serially (single-threaded JS — no interleaving within this block)
         const shard = Math.floor(idx.count / SHARD_SIZE)
         const offset = idx.count % SHARD_SIZE
         fs.appendFileSync(path.join(OUT_DIR, `shard-${shard}.bin`), Buffer.from(vec.buffer))
-        idx.objects[id] = { shard, offset, title: meta.title, artist: meta.artist, gallery: meta.gallery }
+        idx.objects[id] = {
+          shard,
+          offset,
+          title: meta.title,
+          artist: meta.artist,
+          gallery: meta.gallery,
+          imageHash: imageHash(meta.imageUrl),
+        }
         idx.count++
         if (++done % 25 === 0) {
           saveIndex(idx)
@@ -327,4 +526,11 @@ async function main() {
   )
 }
 
-main()
+// Run only when executed as a script (nightly.test.ts imports the compaction
+// functions; importing must not kick off an embedding run).
+const isMain =
+  process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href
+if (isMain) {
+  if (args.includes('--compact')) runCompaction()
+  else void main()
+}

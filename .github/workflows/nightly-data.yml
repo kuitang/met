@@ -1,0 +1,52 @@
+# Nightly data refresh: data/src/nightly.ts (Met API delta → incremental
+# embeddings w/ tombstone+compaction → build-db → Tigris upload + verified
+# pointer commit + 14-day GC), then a prod deploy whose Docker build bakes the
+# fresh latest/ artifacts.
+#
+# Dead-man's switch: GitHub emails the repo owner when a scheduled workflow
+# run fails — a silent skip/failure does not go unnoticed. No extra alerting.
+name: nightly-data
+
+on:
+  schedule:
+    - cron: '23 3 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: nightly-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300 # delta is normally minutes; WAF backoff can stretch it
+    steps:
+      - uses: actions/checkout@v4
+
+      # 24.14.0 pin: see ci.yml — Node 24.16.0 zlib/extract stream hang.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.14.0
+          cache: npm
+
+      - run: npm ci
+
+      - name: Run nightly pipeline (delta → embed → build → upload → commit pointer)
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.TIGRIS_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.TIGRIS_AWS_SECRET_ACCESS_KEY }}
+          AWS_ENDPOINT_URL_S3: ${{ secrets.TIGRIS_AWS_ENDPOINT }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: npm -w data run nightly
+
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deploy musewalk (rebuild bakes the fresh artifacts)
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          flyctl deploy --remote-only \
+            --build-secret AWS_ACCESS_KEY_ID="${{ secrets.TIGRIS_AWS_ACCESS_KEY_ID }}" \
+            --build-secret AWS_SECRET_ACCESS_KEY="${{ secrets.TIGRIS_AWS_SECRET_ACCESS_KEY }}" \
+            --build-secret AWS_ENDPOINT_URL_S3="${{ secrets.TIGRIS_AWS_ENDPOINT }}" \
+            --build-arg ARTIFACT_CACHE_BUST="${{ github.run_id }}"

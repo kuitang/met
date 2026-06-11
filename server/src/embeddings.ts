@@ -17,7 +17,8 @@ import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-// Same DATA_DIR resolution as routes/data.ts (Fly volume via DATA_DIR=/data).
+// Same DATA_DIR resolution as routes/data.ts (baked into the Docker image at
+// DATA_DIR=/app/data in prod).
 const DATA_DIR =
   process.env.DATA_DIR ?? fileURLToPath(new URL('../../data', import.meta.url))
 const EMBED_DIR = path.join(DATA_DIR, 'snapshots', 'image-embeddings')
@@ -76,16 +77,6 @@ async function load(): Promise<EmbeddingIndex | null> {
   }
   console.log(`embedding index loaded: ${count} vectors × ${dims}d (${EMBED_DIR})`)
   return { dims, count, matrix, objects }
-}
-
-/**
- * Refresh hook (server/src/refresh.ts): drop the in-RAM index so the next
- * query lazily reloads whatever shards the embedding pipeline has written —
- * also useful while data/src/embed-images.ts is still filling shards.
- */
-export function reloadEmbeddingIndex(): void {
-  index = null
-  loading = null
 }
 
 /** Memoized lazy load; resolves null (and allows a retry) while the index is absent. */

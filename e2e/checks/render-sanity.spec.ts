@@ -44,18 +44,18 @@ function clipAudit(page: Page): Promise<string[]> {
     for (const el of Array.from(document.body.querySelectorAll('*'))) {
       // SVG internals pan/zoom past the map viewport by design.
       if (el.closest('svg')) continue;
+      // The map-viewport itself is the pan/zoom TRANSFORM LAYER (pinch/drag,
+      // and nav-mode fitBounds animates it to frame the route segment) — it
+      // overflows its clipping wrapper by design, same rationale as the SVG
+      // exemption above. Without this the route audit is a race against the
+      // fitBounds animation (green locally, red on CI).
+      if (el.closest('[data-testid="map-viewport"]')) continue;
       // Detent sheets (room/nav teardowns) are FULL-height views translated
       // down inside a clipping wrapper; their below-the-fold body is revealed
       // by DRAGGING the sheet up, not scrolling — by design, not a defect.
       // The sheets' children are still audited against their own ancestors.
       const tid = (el as HTMLElement).dataset?.testid;
       if (tid === 'room-sheet' || tid === 'nav-sheet') continue;
-      // The map's pan/zoom transform layer extends past floor-map's clip by
-      // design (same rationale as the svg-internals skip above): any pan,
-      // zoom, or nav-mode fit overflows it. Its CONTENT is still reachable
-      // by gesture, never lost. (Pre-existing borderline failure: the nav
-      // fit overshoots the 1px tolerance by ~0.3px depending on timing.)
-      if (tid === 'map-viewport') continue;
       const r = el.getBoundingClientRect();
       if (!r.width || !r.height || hidden(el)) continue;
       if (getComputedStyle(el).position === 'fixed') continue;

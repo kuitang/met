@@ -9,9 +9,14 @@
     "geometry": "tsx src/geometry.ts",
     "graph": "tsx src/graph.ts",
     "build-db": "tsx src/build-db.ts",
-    "evals": "tsx src/evals.ts"
+    "evals": "tsx src/evals.ts",
+    "embed-images": "tsx src/embed-images.ts",
+    "nightly": "tsx src/nightly.ts",
+    "fetch-artifacts": "tsx src/fetch-artifacts.ts",
+    "test": "vitest run"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1065.0",
     "@mapbox/vector-tile": "^3.0.0",
     "better-sqlite3": "^12.10.0",
     "pbf": "^5.1.0",
@@ -20,6 +25,7 @@
   },
   "devDependencies": {
     "tsx": "^4.22.4",
-    "typescript": "~6.0.3"
+    "typescript": "~6.0.3",
+    "vitest": "^4.1.8"
   }
 }

@@ -710,13 +710,19 @@ describe.skipIf(!hasDb)("gallery + digit search: against real data/met.sqlite", 
       raw.close();
     }
   };
-  const galleries = withDb(
-    (raw) =>
-      raw.prepare("SELECT galleryNumber, title FROM galleries").all() as {
-        galleryNumber: string;
-        title: string | null;
-      }[],
-  );
+  // Lazy: a skipped describe still EXECUTES its body at collection (skipIf
+  // only marks the tests) — without the hasDb guard this throws
+  // SQLITE_CANTOPEN wherever met.sqlite is not in the checkout (the deploy
+  // pipeline moves it out of git and into the Tigris artifact registry).
+  const galleries = hasDb
+    ? withDb(
+        (raw) =>
+          raw.prepare("SELECT galleryNumber, title FROM galleries").all() as {
+            galleryNumber: string;
+            title: string | null;
+          }[],
+      )
+    : [];
 
   it('"131" → Gallery 131 (The Temple of Dendur) first', () => {
     const hits = matchGalleries(galleries, "131");

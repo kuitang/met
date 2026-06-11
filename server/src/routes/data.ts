@@ -6,8 +6,9 @@ import { Readable } from 'node:stream'
 import { fileURLToPath } from 'node:url'
 import type { components } from '@met/shared'
 
-// The data workspace (or the Fly volume via DATA_DIR=/data) holds the
-// nightly-built met.sqlite plus a VERSION file written by the same build.
+// The data workspace (dev) or the directory baked into the Docker image
+// (prod, DATA_DIR=/app/data) holds the nightly-built met.sqlite plus a
+// VERSION file written by the same build.
 const DATA_DIR =
   process.env.DATA_DIR ?? fileURLToPath(new URL('../../../data', import.meta.url))
 const SQLITE_PATH = path.join(DATA_DIR, 'met.sqlite')

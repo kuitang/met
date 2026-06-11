@@ -1,6 +1,6 @@
 # MuseWalk
 
-MuseWalk — an unofficial indoor-navigation web/mobile companion app for the Metropolitan Museum of Art. (Brand: "MuseWalk", one word; never display a TLD/domain in UI copy. Infra identifiers — npm package `met-navigator`, Fly app `met-nav`, EAS slug `met-navigator`, bundle ids `com.kuitang.metnav`, `met.sqlite` — keep their names.) npm-workspaces monorepo: `apps/mobile` (Expo SDK 56 + expo-router), `server` (Node + Hono), `shared` (OpenAPI contract), `data` (pipelines + snapshots + evals), `e2e` (Playwright).
+MuseWalk — an unofficial indoor-navigation web/mobile companion app for the Metropolitan Museum of Art. (Brand: "MuseWalk", one word; never display a TLD/domain in UI copy. Infra identifiers — npm package `met-navigator`, Fly app `musewalk` (domain musewalk.app), EAS slug `met-navigator`, bundle ids `com.kuitang.metnav`, `met.sqlite` — keep their names.) npm-workspaces monorepo: `apps/mobile` (Expo SDK 56 + expo-router), `server` (Node + Hono), `shared` (OpenAPI contract), `data` (pipelines + snapshots + evals), `e2e` (Playwright).
 
 ## Node version
 
@@ -48,7 +48,7 @@ Client env: `EXPO_PUBLIC_API_URL` — API origin override for native builds and 
 
 ## Deploy
 
-Fly.io app name: `met-nav` (not yet created; Phase 3). Image = web export + Node server serving `dist/` and `/api`, 1 GB volume at `/data`.
+Fly.io app name: `musewalk` (prod, https://musewalk.app). Image = web export + Node server serving `dist/` and `/api`; artifacts baked at build, no volumes.
 
 ## Architecture rules (hard)
 

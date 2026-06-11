@@ -6,16 +6,26 @@ import { cors } from 'hono/cors'
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { injectOgMeta, requestOrigin } from './meta.js'
+import { canonicalRedirect, injectOgMeta, requestOrigin } from './meta.js'
 import { imgRateLimit, llmRateLimit } from './middleware/ratelimit.js'
 import { dataRoutes, getDataVersion } from './routes/data.js'
 import { healthRoutes } from './routes/health.js'
 import { imgRoutes } from './routes/img.js'
 import { interpretRoutes } from './routes/interpret.js'
 import { locateRoutes } from './routes/locate.js'
-import { adminRefreshRoutes, startRefreshScheduler } from './refresh.js'
 
 const app = new Hono()
+
+// Canonical-host 301 (musewalk.fly.dev / www.musewalk.app / legacy
+// met-nav.fly.dev → https://musewalk.app, path+query preserved). First, so
+// alias hosts never serve content. PR previews/localhost pass through —
+// see canonicalRedirect in meta.ts (host matrix unit-tested there).
+app.use('*', async (c, next) => {
+  const url = new URL(c.req.url)
+  const target = canonicalRedirect(url.hostname, url.pathname, url.search)
+  if (target) return c.redirect(target, 301)
+  await next()
+})
 
 // Cross-origin isolation on EVERY response. The web SQLite backend no longer
 // needs SharedArrayBuffer (main-thread @sqlite.org/sqlite-wasm — see
@@ -60,7 +70,6 @@ app.route('/api/v1/data', dataRoutes)
 app.route('/api/v1/img', imgRoutes)
 app.route('/api/v1/search/interpret', interpretRoutes)
 app.route('/api/v1/locate/photo', locateRoutes)
-app.route('/api/v1/admin/refresh', adminRefreshRoutes)
 
 // Unknown API paths get the error envelope, not the SPA fallback
 app.all('/api/*', (c) =>
@@ -74,7 +83,7 @@ app.all('/api/*', (c) =>
 // raw — the template is read once at boot and every response gets the
 // social-preview meta block injected with the *request* origin (Host header
 // + x-forwarded-proto; see meta.ts for why), because the same build serves a
-// custom domain, met-nav.fly.dev, and PR preview apps — nothing absolute may
+// custom domain (musewalk.app) and PR preview apps — nothing absolute may
 // live in dist/index.html itself (scripts/check-origin-portability.mjs
 // enforces).
 const distRootAbs = fileURLToPath(new URL('../../apps/mobile/dist', import.meta.url))
@@ -110,6 +119,3 @@ const port = Number(process.env.PORT ?? 8787)
 serve({ fetch: app.fetch, port }, (info) => {
   console.log(`met-navigator server listening on :${info.port} (static: ${distRoot})`)
 })
-
-// Nightly data self-refresh (RUN_REFRESH=0 disables; see server/src/refresh.ts)
-startRefreshScheduler()
