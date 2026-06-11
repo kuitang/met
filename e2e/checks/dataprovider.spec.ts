@@ -58,8 +58,10 @@ function pickFixtureObject(): FixtureObject {
 
 const fixture = process.env.REAL_TARGET ? pickFixtureObject() : null!;
 
-// First navigation bundles the dev server; the DB download + provider boot
-// follow. Be generous once per test.
+// The DB download + provider boot follow the first navigation: real network
+// bytes (met.sqlite is ~30 MB), not a static-export paint.
+// e2e-discipline: allow(REAL_TARGET-gated spec — skipped in CI; the budget
+// covers a genuine first-run met.sqlite download, not a missing element)
 const FIRST_PAINT = { timeout: 60_000 };
 
 /** Navigate and wait until the real provider is live (DataGate resolved). */

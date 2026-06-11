@@ -8,15 +8,13 @@ import { expect, test } from '@playwright/test';
  * apps/mobile/src/components/ObjectImage.tsx.
  */
 
-const FIRST_PAINT = { timeout: 45_000 };
-
 test('object screen on stub renders the hero image via direct CDN fallback', async ({
   page,
 }) => {
   // 436535 = Wheat Field with Cypresses, a stub object with a CC0 image.
   await page.goto('/object/436535');
   const img = page.getByTestId('object-image');
-  await expect(img).toBeVisible(FIRST_PAINT);
+  await expect(img).toBeVisible();
   const src = await img.getAttribute('src');
   expect(src).toMatch(/^https:\/\/images\.metmuseum\.org\//);
   expect(src).not.toContain('/api/v1/img/');

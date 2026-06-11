@@ -32,13 +32,10 @@ function loadGeometryJson(): string {
 
 const geometryJson = loadGeometryJson();
 
-// First navigation may trigger the dev-server bundle build; be generous once.
-const FIRST_PAINT = { timeout: 45_000 };
-
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(`globalThis.__MET_GEOMETRY__ = ${geometryJson};`);
   await page.goto('/');
-  await expect(page.getByTestId('floor-map-real')).toBeVisible(FIRST_PAINT);
+  await expect(page.getByTestId('floor-map-real')).toBeVisible();
 });
 
 test('floor 1 renders >100 real gallery polygons', async ({ page }) => {
@@ -115,7 +112,7 @@ test('initial real-map render performance', async ({ page }) => {
   // the first painted gallery path, and count rendered SVG path elements.
   const t0 = Date.now();
   await page.goto('/');
-  await expect(page.locator('[data-testid^="room-"]').first()).toBeVisible(FIRST_PAINT);
+  await expect(page.locator('[data-testid^="room-"]').first()).toBeVisible();
   const elapsed = Date.now() - t0;
   const paths = await page.locator('svg path').count();
   console.log(`[realmap] cold home render: ${elapsed} ms, ${paths} svg paths on floor 1`);

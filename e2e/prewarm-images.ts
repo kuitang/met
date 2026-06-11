@@ -1,20 +1,59 @@
 /**
- * Playwright globalSetup: pre-warm the server's image-proxy disk cache
- * (GET /api/v1/img/{objectID}) for every object the journey recordings open,
- * so videos never show the cold-cache grey block on object pages (a CDN
- * miss → proxy fill can take seconds; warmed, the hero paints immediately
- * and helpers/journey.ts:awaitHeroImage is instant).
+ * Playwright globalSetup, two jobs:
  *
- * No-op without JOURNEY_TARGET (the checks project runs against stub data).
- * The ID set comes from the same loadJourneyFixtures() the specs read, so it
- * is exact by construction. 404s are fine — imageless objects exist and
- * render no hero image.
+ * 1. probeTarget — pay one-time target costs HERE, not inside the first test,
+ *    so every test runs under the tight timeout budget (playwright.config):
+ *      - dev-server mode: GET / and every <script src> bundle. The first
+ *        bundle request triggers the Metro compile (tens of seconds locally);
+ *        absorbing it in setup is what lets the expect timeout stay at 7 s.
+ *      - CHECKS_STATIC mode: the same fetches validate the export in
+ *        milliseconds — a missing/broken dist fails the run in seconds with
+ *        a real error (the canary project then checks the rendered DOM).
+ *    (Playwright starts webServer before globalSetup, so the target is up.)
+ *
+ * 2. prewarm the server's image-proxy disk cache (GET /api/v1/img/{objectID})
+ *    for every object the journey recordings open, so videos never show the
+ *    cold-cache grey block on object pages (a CDN miss → proxy fill can take
+ *    seconds; warmed, the hero paints immediately and
+ *    helpers/journey.ts:awaitHeroImage is instant). JOURNEY_TARGET only.
+ *    The ID set comes from the same loadJourneyFixtures() the specs read, so
+ *    it is exact by construction. 404s are fine — imageless objects exist
+ *    and render no hero image.
  */
 import { loadJourneyFixtures } from './helpers/db';
 
-export default async function prewarmImages(): Promise<void> {
+/** Bounded fetch helper: dev-mode Metro compiles can take a while. */
+async function fetchOk(url: string, timeoutMs: number): Promise<string> {
+  const res = await fetch(url, { signal: AbortSignal.timeout(timeoutMs) });
+  if (!res.ok) throw new Error(`${url} → HTTP ${res.status}`);
+  return res.text();
+}
+
+async function probeTarget(base: string): Promise<void> {
+  const t0 = Date.now();
+  const html = await fetchOk(`${base}/`, 30_000);
+  if (!/<div id="root">/.test(html)) {
+    throw new Error(`probe: ${base}/ returned HTML without the #root mount — broken export?`);
+  }
+  // Compile/validate every entry bundle (dev Metro compiles on first request;
+  // 5 min bound is for that compile, the static export answers in ms).
+  const scripts = [...html.matchAll(/<script[^>]+src="([^"]+)"/g)].map((m) => m[1]);
+  for (const src of scripts) {
+    const url = src.startsWith('http') ? src : `${base}${src}`;
+    const js = await fetchOk(url, 300_000);
+    if (js.length < 10_000) throw new Error(`probe: bundle ${url} is ${js.length} B — truncated?`);
+  }
+  console.log(`[probe] ${base} shell + ${scripts.length} bundle(s) ready in ${Date.now() - t0} ms`);
+}
+
+export default async function globalSetup(): Promise<void> {
   const target = process.env.JOURNEY_TARGET;
-  if (!target) return;
+  // Local webServer modes (static export or dev server): probe + pre-compile.
+  // Same port resolution as playwright.config.ts (E2E_PORT override).
+  if (!target) {
+    await probeTarget(`http://localhost:${Number(process.env.E2E_PORT ?? 8081)}`);
+    return;
+  }
 
   const F = loadJourneyFixtures();
   const ids = new Set<number>([

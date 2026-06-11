@@ -2,6 +2,8 @@ import { expect, test, type Page } from '@playwright/test';
 import fs from 'node:fs';
 import path from 'node:path';
 
+import { stepScrollSettled } from '../helpers/settle';
+
 /**
  * Gate A mockup smoke — every screen renders and the core interactions work,
  * all against StubDataProvider (apps/mobile/src/data/stub.json).
@@ -11,12 +13,9 @@ import path from 'node:path';
  *   lsof -ti:8081 | xargs -r kill && npx playwright test --project=checks
  */
 
-// First navigation may trigger the dev-server bundle build; be generous once.
-const FIRST_PAINT = { timeout: 45_000 };
-
 test('home renders map shell, search bar, and locate chip', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByTestId('app-root')).toBeVisible(FIRST_PAINT);
+  await expect(page.getByTestId('app-root')).toBeVisible();
   await expect(page.getByTestId('floor-map')).toBeVisible();
   await expect(page.getByTestId('home-search-bar')).toBeVisible();
   await expect(page.getByTestId('locate-chip')).toBeVisible();
@@ -27,7 +26,7 @@ test('home renders map shell, search bar, and locate chip', async ({ page }) => 
 
 test("home room tap opens the room sheet with directions AND I'm-here", async ({ page }) => {
   await page.goto('/');
-  await page.getByTestId('room-131').click(FIRST_PAINT);
+  await page.getByTestId('room-131').click();
   await expect(page.getByTestId('room-sheet')).toBeVisible();
   await expect(page.getByTestId('room-sheet')).toContainText('Temple of Dendur');
   // Both actions present (user mandate): equal-weight DIRECTIONS + I'M HERE.
@@ -38,7 +37,7 @@ test("home room tap opens the room sheet with directions AND I'm-here", async ({
 
 test('search "Monet" shows suggestion rows with gallery chips', async ({ page }) => {
   await page.goto('/search');
-  await page.getByTestId('search-input').fill('Monet', FIRST_PAINT);
+  await page.getByTestId('search-input').fill('Monet');
   // Water Lilies hangs in Gallery 822, which is on the stub map → full chip.
   const waterLilies = page.getByTestId('suggestion-438008');
   await expect(waterLilies).toBeVisible();
@@ -55,7 +54,7 @@ test('search amenity intent surfaces restrooms; tap = directions, not relocation
   page,
 }) => {
   await page.goto('/search');
-  await page.getByTestId('search-input').fill('restroom', FIRST_PAINT);
+  await page.getByTestId('search-input').fill('restroom');
   await expect(page.getByTestId('amenity-restroom-1')).toBeVisible();
   await expect(page.getByTestId('amenity-restroom-2')).toBeVisible();
   // Tapping an amenity offers DIRECTIONS to it (bug fix: it used to silently
@@ -71,7 +70,7 @@ test('weak query offers Ask differently → interpret flow (offline degrade here
   await page.goto('/search');
   await page
     .getByTestId('search-input')
-    .fill('that huge painting of washington crossing a river in a boat', FIRST_PAINT);
+    .fill('that huge painting of washington crossing a river in a boat');
   await page.getByTestId('ask-differently').click();
   await expect(page.getByTestId('interpreted-banner')).toBeVisible();
   // Interpretation is server-side (POST /api/v1/search/interpret) since the
@@ -84,7 +83,7 @@ test('weak query offers Ask differently → interpret flow (offline degrade here
 
 test('results page renders rows and all filter chips', async ({ page }) => {
   await page.goto('/results?q=Monet');
-  await expect(page.getByTestId('result-438008')).toBeVisible(FIRST_PAINT);
+  await expect(page.getByTestId('result-438008')).toBeVisible();
   for (const chip of [
     'filter-floor-1',
     'filter-floor-2',
@@ -105,10 +104,7 @@ test('results page renders rows and all filter chips', async ({ page }) => {
 
 test('object page renders synopsis card with Navigate here', async ({ page }) => {
   await page.goto('/object/436535');
-  await expect(page.getByTestId('object-title')).toContainText(
-    'Wheat Field with Cypresses',
-    FIRST_PAINT,
-  );
+  await expect(page.getByTestId('object-title')).toContainText('Wheat Field with Cypresses');
   await expect(page.getByTestId('object-image')).toBeVisible();
   await expect(page.getByTestId('object-gallery-chip')).toContainText('GALLERY 822');
   await expect(page.getByTestId('object-position')).toContainText('in Gallery 822');
@@ -120,7 +116,7 @@ test('object page renders synopsis card with Navigate here', async ({ page }) =>
 test('object page next/prev cycles within the gallery (J15)', async ({ page }) => {
   await page.goto('/object/436535');
   const position = page.getByTestId('object-position');
-  await expect(position).toContainText('in Gallery 822', FIRST_PAINT);
+  await expect(position).toContainText('in Gallery 822');
   const before = await position.textContent();
   await page.getByTestId('object-next').click();
   await expect(position).not.toHaveText(before!);
@@ -130,22 +126,20 @@ test('object page next/prev cycles within the gallery (J15)', async ({ page }) =
 
 test('route view renders steps; I\'m-here advances to arrival', async ({ page }) => {
   await page.goto('/route/great-hall/822');
-  await expect(page.getByTestId('route-summary')).toContainText(
-    'Great Hall',
-    FIRST_PAINT,
-  );
+  await expect(page.getByTestId('route-summary')).toContainText('Great Hall');
   await expect(page.getByTestId('route-step-0')).toBeVisible();
   await expect(page.getByTestId('avoid-stairs')).toBeVisible();
   await expect(page.getByTestId('route-polyline')).toBeVisible();
 
   // Checkpoint-advance through every step; the stub route is ≤ 12 steps.
-  // Pause between taps: each advance animates the step-card scroll, and the
-  // list's onScroll sync would round a mid-animation offset back down.
+  // Each advance animates the step-card scroll, and the list's onScroll sync
+  // would round a mid-animation offset back down — wait for the list's actual
+  // rest state between taps (helpers/settle.ts), never a fixed pause.
   for (let i = 0; i < 12; i++) {
     const imHere = page.getByTestId('im-here');
     if (!(await imHere.isVisible())) break;
     await imHere.click();
-    await page.waitForTimeout(500);
+    await stepScrollSettled(page, `route-advance-${i}`);
   }
   await expect(page.getByTestId('route-arrived')).toBeVisible();
   await expect(page.getByTestId('arrived-whats-here')).toBeVisible();
@@ -153,7 +147,7 @@ test('route view renders steps; I\'m-here advances to arrival', async ({ page })
 
 test('avoid-stairs toggle reroutes via the elevator', async ({ page }) => {
   await page.goto('/route/great-hall/822');
-  await expect(page.getByTestId('route-summary')).toBeVisible(FIRST_PAINT);
+  await expect(page.getByTestId('route-summary')).toBeVisible();
   await page.getByTestId('avoid-stairs').click();
 
   // Walk every step card (the horizontal list virtualizes, so visit them via
@@ -167,7 +161,7 @@ test('avoid-stairs toggle reroutes via the elevator', async ({ page }) => {
     const imHere = page.getByTestId('im-here');
     if (!(await imHere.isVisible())) break;
     await imHere.click();
-    await page.waitForTimeout(500); // let the card scroll settle (see above)
+    await stepScrollSettled(page, `avoid-stairs-${i}`); // card scroll at rest (see above)
   }
   const all = seen.join(' ').toLowerCase();
   expect(all).toContain('elevator');
@@ -185,7 +179,7 @@ test.describe('locate sheet', () => {
 
   test('GPS resolves first to a wing-level anchor; all controls render', async ({ page }) => {
     await page.goto('/locate');
-    await expect(page.getByTestId('gps-status')).toBeVisible(FIRST_PAINT);
+    await expect(page.getByTestId('gps-status')).toBeVisible();
     await expect(page.getByTestId('gps-status')).toContainText('Near Great Hall · Floor 1');
     await expect(page.getByTestId('locate-input')).toBeVisible();
     await expect(page.getByTestId('locate-room-btn')).toBeVisible();
@@ -195,21 +189,21 @@ test.describe('locate sheet', () => {
 
   test('locate by gallery number anchors the home map', async ({ page }) => {
     await page.goto('/locate');
-    await page.getByTestId('locate-input').fill('131', FIRST_PAINT);
+    await page.getByTestId('locate-input').fill('131');
     await page.getByTestId('locate-room-btn').click();
     await expect(page.getByTestId('locate-chip')).toContainText('Gallery 131');
   });
 
   test('locate by artifact name anchors to its gallery', async ({ page }) => {
     await page.goto('/locate');
-    await page.getByTestId('locate-input').fill('Wheat Field', FIRST_PAINT);
+    await page.getByTestId('locate-input').fill('Wheat Field');
     await page.getByTestId('locate-artifact-btn').click();
     await expect(page.getByTestId('locate-chip')).toContainText('Gallery 822');
   });
 
   test('invalid gallery number shows an inline error', async ({ page }) => {
     await page.goto('/locate');
-    await page.getByTestId('locate-input').fill('9999', FIRST_PAINT);
+    await page.getByTestId('locate-input').fill('9999');
     await page.getByTestId('locate-room-btn').click();
     await expect(page.getByTestId('locate-error')).toContainText('9999');
   });
@@ -237,32 +231,42 @@ test.describe('gate A screenshots', () => {
       content:
         'body > div:not(#root), .__expo_fast_refresh { display: none !important; }',
     });
-    await page.waitForTimeout(400); // let images/SVG settle
+    // Fonts + every mounted <img> decoded — the actual "settled" condition
+    // for a docs screenshot (best-effort: a CDN hiccup must not fail checks).
+    await page
+      .waitForFunction(
+        () =>
+          document.fonts.status === 'loaded' &&
+          Array.from(document.images).every((i) => !i.src || i.complete),
+        undefined,
+        { timeout: 7_000 },
+      )
+      .catch(() => {});
     await page.screenshot({ path: path.join(outDir, `${name}.png`) });
   };
 
   test('capture home', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByTestId('floor-map')).toBeVisible(FIRST_PAINT);
+    await expect(page.getByTestId('floor-map')).toBeVisible();
     await shoot(page, 'home');
   });
 
   test('capture search', async ({ page }) => {
     await page.goto('/search');
-    await page.getByTestId('search-input').fill('Monet', FIRST_PAINT);
+    await page.getByTestId('search-input').fill('Monet');
     await expect(page.getByTestId('suggestion-438008')).toBeVisible();
     await shoot(page, 'search');
   });
 
   test('capture results', async ({ page }) => {
     await page.goto('/results?q=gold'); // multi-row, multi-floor result set
-    await expect(page.getByTestId('app-root')).toContainText('results', FIRST_PAINT);
+    await expect(page.getByTestId('app-root')).toContainText('results');
     await shoot(page, 'results');
   });
 
   test('capture object', async ({ page }) => {
     await page.goto('/object/436535');
-    await expect(page.getByTestId('object-title')).toBeVisible(FIRST_PAINT);
+    await expect(page.getByTestId('object-title')).toBeVisible();
     // Wait for the Met CDN hero image so the screenshot isn't a grey box.
     await page
       .waitForFunction(() => {
@@ -270,20 +274,20 @@ test.describe('gate A screenshots', () => {
           '[data-testid="object-image"]',
         );
         return !!img && img.naturalWidth > 0;
-      }, undefined, { timeout: 15_000 })
+      }, undefined, { timeout: 7_000 })
       .catch(() => {}); // CDN hiccup → still capture the card
     await shoot(page, 'object');
   });
 
   test('capture route', async ({ page }) => {
     await page.goto('/route/great-hall/822');
-    await expect(page.getByTestId('route-step-0')).toBeVisible(FIRST_PAINT);
+    await expect(page.getByTestId('route-step-0')).toBeVisible();
     await shoot(page, 'route');
   });
 
   test('capture locate', async ({ page }) => {
     await page.goto('/locate');
-    await expect(page.getByTestId('locate-input')).toBeVisible(FIRST_PAINT);
+    await expect(page.getByTestId('locate-input')).toBeVisible();
     await expect(page.getByTestId('gps-status')).toContainText('Near Great Hall');
     await shoot(page, 'locate');
   });
