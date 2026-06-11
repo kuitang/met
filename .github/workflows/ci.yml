@@ -83,20 +83,24 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
-      # CHECKS_STATIC: `expo serve` of a pre-built stub export — the Metro
-      # dev-server compile alone takes ~25 min on a 2-core runner and timed
-      # out the job. webkit-render runs alongside checks (iPhone-engine
-      # render guard; +~80MB browser download, +~5s test time).
+      # Wait discipline: no unconditional waits / oversized timeouts in
+      # e2e/checks/** — the budget that keeps a red suite minutes, not 27
+      # (see e2e/playwright.config.ts "TIMEOUT BUDGET").
+      - name: E2E wait-discipline guard
+        run: node scripts/check-e2e-discipline.mjs
+
+      # CHECKS_STATIC: e2e/static-server.mjs serving a pre-built stub export —
+      # the Metro dev-server compile alone takes ~25 min on a 2-core runner
+      # and timed out the job. webkit-render runs alongside checks
+      # (iPhone-engine render guard; +~80MB browser download, +~5s test time).
+      # The canary project runs first via Playwright project dependencies: a
+      # broken export = 1 failure in seconds, rest of the suite skipped.
+      # (The old `expo export -c` workaround is gone: metro.config.js keys
+      # the transform cache on the EXPO_PUBLIC_* fingerprint since #11, so
+      # the real-mode export above can no longer poison this stub one.)
       - name: Playwright checks (stub mode, static export) + webkit render guard
-        # `expo export -c` (clear Metro cache), NOT the plain export:web
-        # script: the origin-portability step above exports with
-        # EXPO_PUBLIC_DATA=real, and Metro's transform cache does not key on
-        # EXPO_PUBLIC_* env — without -c this stub export silently reuses the
-        # real-provider bundle and every check fails on "Couldn't load museum
-        # data" (observed live in run 27313603005; same behavior reproduced
-        # locally).
         run: |
-          EXPO_PUBLIC_DATA=stub npm -w apps/mobile exec -- expo export -p web -c
+          EXPO_PUBLIC_DATA=stub npm -w apps/mobile exec -- expo export -p web
           cd e2e
           npx playwright install-deps chromium webkit
           ok=""
