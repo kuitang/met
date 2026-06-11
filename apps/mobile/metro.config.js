@@ -1,8 +1,30 @@
 // Learn more: https://docs.expo.dev/guides/customizing-metro/
 const { getDefaultConfig } = require('expo/metro-config');
+const crypto = require('crypto');
 
 /** @type {import('expo/metro-config').MetroConfig} */
 const config = getDefaultConfig(__dirname);
+
+// ROOT-CAUSE FIX for the "poisoned bundle" class of bug: babel-preset-expo
+// inlines EXPO_PUBLIC_* values into transformed modules, but Metro's
+// transform-cache key does not include them — so exporting with
+// EXPO_PUBLIC_DATA=real and then =stub silently re-serves the real-mode
+// transforms (measured 2026-06-11; previously worked around with
+// `expo export -c`). Namespacing the cache by a hash of every EXPO_PUBLIC_*
+// variable makes each env combination its own cache: correct AND still
+// cached, dev server and exports alike.
+const envFingerprint = crypto
+  .createHash('sha256')
+  .update(
+    JSON.stringify(
+      Object.entries(process.env)
+        .filter(([k]) => k.startsWith('EXPO_PUBLIC_'))
+        .sort(([a], [b]) => a.localeCompare(b)),
+    ),
+  )
+  .digest('hex')
+  .slice(0, 16);
+config.cacheVersion = `${config.cacheVersion ?? '1'}-env-${envFingerprint}`;
 
 // wasm as a metro asset: src/data/sqlite.web.ts ships
 // @sqlite.org/sqlite-wasm's sqlite3.wasm through the asset pipeline
