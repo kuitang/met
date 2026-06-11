@@ -33,33 +33,67 @@ export interface RoutePolylineProps {
   activeStep: number;
 }
 
+/** Route line geometry: the real node path when present, else step centers. */
+function linePoints(route: Route): { x: number; y: number; floor: number }[] {
+  return (
+    route.geo?.path ??
+    route.steps.map((s) => {
+      const [x, y, w, h] = s.room.rect;
+      return { x: x + w / 2, y: y + h / 2, floor: s.room.floor };
+    })
+  );
+}
+
+/**
+ * Bounding box (viewBox coords) of the route's segment on `floor` — what the
+ * nav-mode map fit centers on. Undefined when the route never touches the
+ * floor (the map then keeps its current viewport).
+ */
+export function routeBoundsOnFloor(
+  route: Route,
+  floor: number,
+): { x: number; y: number; w: number; h: number } | undefined {
+  const pts = linePoints(route).filter((p) => p.floor === floor);
+  for (const s of route.steps) {
+    if (s.room.floor !== floor) continue;
+    const [x, y, w, h] = s.room.rect;
+    pts.push({ x: x + w / 2, y: y + h / 2, floor });
+  }
+  if (pts.length === 0) return undefined;
+  const xs = pts.map((p) => p.x);
+  const ys = pts.map((p) => p.y);
+  const minX = Math.min(...xs);
+  const minY = Math.min(...ys);
+  return { x: minX, y: minY, w: Math.max(...xs) - minX, h: Math.max(...ys) - minY };
+}
+
 export default function RoutePolyline({ route, floor, activeStep }: RoutePolylineProps) {
   const vb = route.geo?.view ?? STUB_VIEW;
   // Stroke/marker sizes are tuned for the 130-unit stub box; scale them with
   // the viewBox so the real meter-space map gets the same visual weight.
   const u = vb.w / STUB_VIEW.w;
 
-  // Line geometry: the real node path when present, else step-room centers.
-  const linePts =
-    route.geo?.path ??
-    route.steps.map((s) => {
-      const [x, y, w, h] = s.room.rect;
-      return { x: x + w / 2, y: y + h / 2, floor: s.room.floor };
-    });
+  const linePts = linePoints(route);
 
-  // Split the path into contiguous runs on the displayed floor so we never
-  // draw a line "through" a stairs/elevator floor change.
-  const runs: string[] = [];
+  // Split the path into contiguous same-floor runs so a line never crosses
+  // "through" a stairs/elevator floor change. The displayed floor's runs draw
+  // solid; other floors' runs draw dimmed underneath — cross-floor routes
+  // stay legible without switching floors (the Met Explorer pattern).
+  const runs: { points: string; onFloor: boolean }[] = [];
   let current: string[] = [];
+  let currentOn: boolean | null = null;
+  const flush = () => {
+    if (current.length > 1 && currentOn !== null)
+      runs.push({ points: current.join(' '), onFloor: currentOn });
+    current = [];
+  };
   for (const p of linePts) {
-    if (p.floor === floor) {
-      current.push(`${p.x},${p.y}`);
-    } else if (current.length) {
-      if (current.length > 1) runs.push(current.join(' '));
-      current = [];
-    }
+    const on = p.floor === floor;
+    if (currentOn !== null && on !== currentOn) flush();
+    currentOn = on;
+    current.push(`${p.x},${p.y}`);
   }
-  if (current.length > 1) runs.push(current.join(' '));
+  flush();
 
   // Checkpoint dots always sit at step rooms (rect centers work in both
   // spaces: real-provider Room.rect is the projected polygon bbox).
@@ -72,13 +106,14 @@ export default function RoutePolyline({ route, floor, activeStep }: RoutePolylin
   return (
     // Pass-through pointer events: route art must never intercept room taps.
     <G testID="route-polyline" {...labelPassThrough}>
-      {runs.map((points, i) => (
+      {runs.map((run, i) => (
         <Polyline
           key={i}
-          points={points}
+          points={run.points}
           fill="none"
           stroke={colors.red}
-          strokeWidth={1 * u}
+          strokeOpacity={run.onFloor ? 1 : 0.25}
+          strokeWidth={(run.onFloor ? 1 : 0.7) * u}
           strokeDasharray={`${2.5 * u} ${1.5 * u}`}
           strokeLinejoin="round"
           strokeLinecap="round"

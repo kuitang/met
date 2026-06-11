@@ -32,7 +32,8 @@ test("home room tap opens the room sheet with directions AND I'm-here", async ({
   // Both actions present (user mandate): equal-weight DIRECTIONS + I'M HERE.
   await expect(page.getByTestId('room-im-here')).toBeVisible();
   await page.getByTestId('room-directions').click();
-  await expect(page).toHaveURL(/\/route\/great-hall\/131/);
+  // Nav mode (variant D): navigation IS the home screen with ?nav= params.
+  await expect(page).toHaveURL(/[?&]nav=great-hall(:|%3A)131/);
 });
 
 test('search "Monet" shows suggestion rows with gallery chips', async ({ page }) => {
@@ -68,7 +69,7 @@ test('search amenity intent surfaces restrooms; tap opens the amenity sheet', as
   await expect(page.getByTestId('room-sheet')).toContainText('Restrooms');
   await expect(page.getByTestId('sheet-amenity-glyph')).toContainText('WC');
   await page.getByTestId('room-directions').click();
-  await expect(page).toHaveURL(/\/route\/great-hall\/restroom-1/);
+  await expect(page).toHaveURL(/[?&]nav=great-hall(:|%3A)restroom-1/);
   await expect(page.getByTestId('route-summary')).toContainText('Restrooms');
 });
 
@@ -151,7 +152,9 @@ test('object page renders synopsis card with Navigate here', async ({ page }) =>
   await expect(page.getByTestId('object-position')).toContainText('in Gallery 822');
   await expect(page.getByTestId('object-met-link')).toBeVisible();
   await page.getByTestId('navigate-here').click();
-  await expect(page).toHaveURL(/\/route\/great-hall\/822/);
+  await expect(page).toHaveURL(/[?&]nav=great-hall(:|%3A)822/);
+  // Object entry: the artwork is the destination identity in the nav header.
+  await expect(page.getByTestId('route-summary')).toContainText('Wheat Field');
 });
 
 test('object page next/prev cycles within the gallery (J15)', async ({ page }) => {
@@ -166,8 +169,10 @@ test('object page next/prev cycles within the gallery (J15)', async ({ page }) =
 });
 
 test('route view renders steps; I\'m-here advances to arrival', async ({ page }) => {
-  await page.goto('/route/great-hall/822');
-  await expect(page.getByTestId('route-summary')).toContainText('Great Hall');
+  await page.goto('/route/great-hall/822'); // legacy URL → home nav mode
+  // Variant D header is the DESTINATION identity (origin lives in step 0).
+  await expect(page.getByTestId('route-summary')).toContainText('Van Gogh');
+  await expect(page.getByTestId('route-step-0')).toContainText('Start in');
   await expect(page.getByTestId('route-step-0')).toBeVisible();
   await expect(page.getByTestId('avoid-stairs')).toBeVisible();
   await expect(page.getByTestId('route-polyline')).toBeVisible();

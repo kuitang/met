@@ -73,8 +73,9 @@ test('J9 navigate 131→822: route, checkpoint advance, one reroute, arrival', a
     await page.getByTestId('room-directions').click();
   });
 
+  // Variant D: the nav header is the DESTINATION identity; the origin reads
+  // from step 0 ("Start in Gallery 131").
   const summary = page.getByTestId('route-summary');
-  await expect(summary).toContainText('Temple of Dendur');
   await expect(summary).toContainText('Annenberg');
   await expect(page.getByTestId('route-step-0')).toContainText('Start in Gallery 131');
   expect(await activeStepIndex(page)).toBe(0);
@@ -106,8 +107,9 @@ test('J9 navigate 131→822: route, checkpoint advance, one reroute, arrival', a
     await page.getByTestId('simulate-fix').click();
   });
   await expect(page.getByTestId('rerouting-toast')).toBeVisible();
-  await expect(summary).not.toContainText('Temple of Dendur'); // new origin
-  await expect(summary).toContainText('Annenberg'); // same destination
+  // New origin (step 0 restarts somewhere that isn't 131), same destination.
+  await expect(page.getByTestId('route-step-0')).not.toContainText('Gallery 131');
+  await expect(summary).toContainText('Annenberg');
   await expect(page.getByTestId('rerouting-toast')).toHaveCount(0, { timeout: 5_000 });
   expect(await activeStepIndex(page)).toBe(0); // recalc restarts the steps
 

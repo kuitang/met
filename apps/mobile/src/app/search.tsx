@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
@@ -16,6 +16,10 @@ const EXAMPLE_QUERIES = ['Monet', 'gold swords', 'sphinx', 'restroom'];
 export default function SearchScreen() {
   const data = useData();
   const anchor = useAnchor();
+  // Nav-mode retarget (opened from the nav sheet's destination title):
+  // `retarget` carries the route origin — room rows swap the navigation
+  // target in place instead of opening a browse sheet (see RoomRow).
+  const { retarget, avoid } = useLocalSearchParams<{ retarget?: string; avoid?: string }>();
   const [query, setQuery] = useState('');
   const suggestions = data.searchAutocomplete(query, 8);
   const total = data.searchAll(query).length;
@@ -67,6 +71,8 @@ export default function SearchScreen() {
                   room={room}
                   meta={room.kind === 'gallery' ? `Gallery ${room.id}` : undefined}
                   testID={`gallery-${room.id}`}
+                  navFrom={retarget}
+                  avoidStairs={avoid === 'stairs'}
                 />
               ))}
               {/* Amenity rows are ranked nearest-first by graph distance from
@@ -77,6 +83,8 @@ export default function SearchScreen() {
                   room={room}
                   meta={distance !== undefined ? `~${Math.round(distance)} m walk` : 'Amenity'}
                   testID={`amenity-${room.id}`}
+                  navFrom={retarget}
+                  avoidStairs={avoid === 'stairs'}
                 />
               ))}
             </View>

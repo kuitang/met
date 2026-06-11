@@ -47,7 +47,7 @@ test('J13 deep links: cold object + route URLs hydrate; share copies canonical U
   await step(page, 'Cold deep link: /route/131/822?avoid=stairs', async () => {
     await bootReal(page, '/route/131/822?avoid=stairs');
   });
-  await expect(page.getByTestId('route-summary')).toContainText('Temple of Dendur');
+  // Variant D: destination identity in the header; origin hydrates step 0.
   await expect(page.getByTestId('route-summary')).toContainText('Annenberg');
   // The avoid=stairs param hydrated the toggle.
   await expect(page.getByTestId('avoid-stairs')).toHaveAttribute('aria-checked', 'true');

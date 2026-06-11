@@ -46,8 +46,24 @@ export function roomGlyph(room: Room): string {
  * stacking a second home screen (same idiom as the header HOME button).
  * `ts` busts expo-router's param equality so re-tapping the same room after
  * closing the sheet works.
+ *
+ * RETARGET branch (nav mode): when search was opened from the nav sheet's
+ * destination title, `navFrom` carries the live origin — the tap swaps the
+ * navigation target IN PLACE (`?nav=` on the existing home-nav entry, avoid
+ * setting preserved) instead of opening the room's browse sheet.
  */
-export function focusRoom(room: Room): void {
+export function focusRoom(room: Room, navFrom?: string, avoidStairs?: boolean): void {
+  if (navFrom) {
+    router.dismissTo({
+      pathname: '/',
+      params: {
+        nav: `${navFrom}:${room.id}`,
+        ...(avoidStairs ? { avoid: 'stairs' } : null),
+        ts: String(Date.now()),
+      },
+    });
+    return;
+  }
   router.dismissTo({ pathname: '/', params: { focus: room.id, ts: String(Date.now()) } });
 }
 
@@ -55,14 +71,23 @@ export default function RoomRow({
   room,
   meta,
   testID,
+  navFrom,
+  avoidStairs,
 }: {
   room: Room;
   /** Second line, e.g. "Gallery 131" or "~42 m walk". */
   meta?: string;
   testID?: string;
+  /** Nav-mode retarget origin (see focusRoom). */
+  navFrom?: string;
+  avoidStairs?: boolean;
 }) {
   return (
-    <Pressable style={styles.row} onPress={() => focusRoom(room)} testID={testID}>
+    <Pressable
+      style={styles.row}
+      onPress={() => focusRoom(room, navFrom, avoidStairs)}
+      testID={testID}
+    >
       <View style={styles.glyphBox}>
         <Text style={styles.glyphText} numberOfLines={1}>
           {roomGlyph(room)}

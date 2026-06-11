@@ -46,10 +46,10 @@ test('J10 avoid stairs: elevator-only route 131→822, end to end', async ({ pag
   // Arrived on the destination floor: the STAR target marker is visible.
   await expect(page.getByTestId('marker-target').last()).toBeVisible();
 
-  // Bug-5: even from a cold route deep link, the header HOME button is a
-  // one-tap return to the home map.
-  await step(page, 'One tap back to the home map', async () => {
-    await page.getByTestId('home-button').last().click();
+  // Variant D: navigation already IS the home map — ✕ in the nav sheet
+  // header is the one-tap exit that restores the browse chrome in place.
+  await step(page, 'One tap back to browsing', async () => {
+    await page.getByTestId('nav-close').click();
   });
   await expect(page.getByTestId('home-search-bar')).toBeVisible();
 });

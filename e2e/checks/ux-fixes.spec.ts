@@ -47,12 +47,13 @@ test('amenity tap opens the amenity sheet; DIRECTIONS routes from the anchor —
   await expect(page.getByTestId('room-sheet')).toBeVisible();
   await expect(page.getByTestId('sheet-amenity-glyph')).toContainText('WC');
   await page.getByTestId('room-directions').click();
-  await expect(page).toHaveURL(new RegExp(`/route/131/${nearestId}`));
+  await expect(page).toHaveURL(new RegExp(`[?&]nav=131(:|%3A)${nearestId}`));
   await expect(page.getByTestId('route-summary')).toContainText('Restrooms');
 
-  // The visitor was NOT teleported: home still shows the Gallery 131 anchor.
-  await page.getByTestId('home-button').last().click();
-  await expect(page.getByTestId('locate-chip')).toContainText('Gallery 131');
+  // The visitor was NOT teleported: exiting nav (✕ in the sheet header — nav
+  // mode has no top chrome) still shows the Gallery 131 anchor.
+  await page.getByTestId('nav-close').click();
+  await expect(page.getByTestId('locate-chip').last()).toContainText('Gallery 131');
 });
 
 test("amenity sheet 'I'm here' is the explicit re-anchor action", async ({ page }) => {
@@ -212,18 +213,18 @@ test('HOME button: one tap from a 3-deep stack, anchor intact', async ({ page })
   await expect(page.getByTestId('object-title')).toContainText('Water Lilies');
   await page.getByTestId('navigate-here').click();
   // Origin honesty: the route starts from the live anchor, not the Great Hall.
-  await expect(page).toHaveURL(/\/route\/131\/822/);
+  await expect(page).toHaveURL(/[?&]nav=131(:|%3A)822/);
 
-  // Every non-home screen carries the ≥44pt house-glyph header button; the
-  // top-most (route) one is a single tap home.
-  const homeBtn = page.getByTestId('home-button').last();
-  const box = (await homeBtn.boundingBox())!;
+  // Nav mode owns the screen (no header chrome): the ≥44pt ✕ in the nav
+  // sheet header is the single-tap exit back to browsing.
+  const closeBtn = page.getByTestId('nav-close').last();
+  const box = (await closeBtn.boundingBox())!;
   expect(box.width).toBeGreaterThanOrEqual(43.5);
   expect(box.height).toBeGreaterThanOrEqual(43.5);
-  await homeBtn.click();
+  await closeBtn.click();
 
-  await expect(page.getByTestId('home-search-bar')).toBeVisible();
-  await expect(page.getByTestId('locate-chip')).toContainText('Gallery 131'); // anchor survived
+  await expect(page.getByTestId('home-search-bar').last()).toBeVisible();
+  await expect(page.getByTestId('locate-chip').last()).toContainText('Gallery 131'); // anchor survived
 });
 
 test('HOME button is present on search, results, object, and locate too', async ({ page }) => {
