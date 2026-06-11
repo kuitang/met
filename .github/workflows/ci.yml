@@ -88,8 +88,15 @@ jobs:
       # out the job. webkit-render runs alongside checks (iPhone-engine
       # render guard; +~80MB browser download, +~5s test time).
       - name: Playwright checks (stub mode, static export) + webkit render guard
+        # `expo export -c` (clear Metro cache), NOT the plain export:web
+        # script: the origin-portability step above exports with
+        # EXPO_PUBLIC_DATA=real, and Metro's transform cache does not key on
+        # EXPO_PUBLIC_* env — without -c this stub export silently reuses the
+        # real-provider bundle and every check fails on "Couldn't load museum
+        # data" (observed live in run 27313603005; same behavior reproduced
+        # locally).
         run: |
-          EXPO_PUBLIC_DATA=stub npm -w apps/mobile run export:web
+          EXPO_PUBLIC_DATA=stub npm -w apps/mobile exec -- expo export -p web -c
           cd e2e
           npx playwright install-deps chromium webkit
           ok=""
