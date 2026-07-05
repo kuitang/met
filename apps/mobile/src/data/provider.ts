@@ -46,6 +46,20 @@ export interface MetObject {
   museum?: string;
   /** Globally-unique site id the object's gallery belongs to (schema v2). */
   site?: string;
+  /**
+   * Museum-native record id — fills the museum's objectUrlTemplate for the
+   * outbound "view on ..." link. undefined on the stub; the Met's sourceId
+   * equals String(objectID).
+   */
+  sourceId?: string;
+}
+
+/** Outbound deep link to the object's page on its museum's own site. */
+export function objectSourceUrl(o: MetObject, museums: MuseumEntry[]): string | null {
+  const m = museums.find((e) => e.id === objectMuseumId(o));
+  const template = m?.objectUrlTemplate;
+  if (!template) return null;
+  return template.replace('{sourceId}', o.sourceId ?? String(o.objectID));
 }
 
 /** `object.museum` with the pre-v2/stub convention resolved: undefined = 'met'. */

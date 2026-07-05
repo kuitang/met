@@ -14,7 +14,7 @@ import {
 
 import ObjectImage from '@/components/ObjectImage';
 import { applyVenue, getAnchor, getVenue, useVenue } from '@/components/LocateState';
-import { museumForSite, useData } from '@/data/provider';
+import { museumForSite, objectSourceUrl, useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
 export default function ObjectScreen() {
@@ -83,7 +83,12 @@ export default function ObjectScreen() {
       params: anchor ? { id: String(nextID), anchor } : { id: String(nextID) },
     });
 
-  const objectURL = `https://www.metmuseum.org/art/collection/search/${object.objectID}`;
+  // Outbound link to the object's page on its own museum's site (schema-v2
+  // objectUrlTemplate + sourceId; Met fallback covers stub/pre-v2 artifacts).
+  const objectURL =
+    objectSourceUrl(object, museums) ??
+    `https://www.metmuseum.org/art/collection/search/${object.objectID}`;
+  const objectURLHost = new URL(objectURL).hostname.replace(/^www\./, '');
 
   // Share = copy the canonical deep link (web clipboard; native share sheet).
   // Always derived from the RUNTIME origin — window.location.origin on web,
@@ -210,7 +215,7 @@ export default function ObjectScreen() {
         onPress={() => Linking.openURL(objectURL)}
         testID="object-met-link"
       >
-        <Text style={styles.linkOutText}>View on metmuseum.org ↗</Text>
+        <Text style={styles.linkOutText}>View on {objectURLHost} ↗</Text>
       </Pressable>
     </ScrollView>
   );

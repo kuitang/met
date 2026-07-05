@@ -74,6 +74,7 @@ interface ObjectRow {
   imageUrl: string;
   thumbKey: string;
   museum: string;
+  sourceId: string;
 }
 
 // `site` has existed since schema v1 (SELECT_CORE in shared/search.ts already
@@ -101,6 +102,8 @@ function toMetObject(r: ObjectRow): MetObject {
     thumbKey: r.thumbKey,
     museum: r.museum || undefined,
     site: r.site,
+    // Pre-v2 artifacts select '' — the Met's sourceId IS its objectID.
+    sourceId: r.sourceId || String(r.objectID),
   };
 }
 
@@ -184,7 +187,7 @@ export class SqliteDataProvider implements DataProvider {
    * the proxy fallback for images, and treat museum '' as 'met' — see
    * toMetObject / objectMuseumId).
    */
-  private objectCols = `${OBJECT_COLS}, '' AS thumbKey, '' AS museum`;
+  private objectCols = `${OBJECT_COLS}, '' AS thumbKey, '' AS museum, '' AS sourceId`;
 
   private constructor(
     private met: MetDb,
@@ -409,7 +412,9 @@ export class SqliteDataProvider implements DataProvider {
     provider.objectCols = [
       OBJECT_COLS,
       thumbCol.length > 0 ? 'thumbKey' : `'' AS thumbKey`,
+      // museum + sourceId arrived together in schema v2 — one detection gates both.
       museumCol.length > 0 ? 'museum' : `'' AS museum`,
+      museumCol.length > 0 ? 'sourceId' : `'' AS sourceId`,
     ].join(', ');
     return provider;
   }
