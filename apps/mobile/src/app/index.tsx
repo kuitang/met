@@ -37,7 +37,6 @@ import FloorMap from '@/components/FloorMap';
 import HomeRoomSheet, { AMENITY_HALF_VISIBLE } from '@/components/HomeRoomSheet';
 import {
   Anchor,
-  VENUE_NAMES,
   anchorForRoom,
   applyVenue,
   dismissVenueToast,
@@ -46,11 +45,12 @@ import {
   useAnchor,
   useVenue,
   useVenueToast,
+  venueName,
 } from '@/components/LocateState';
 import NavSheet from '@/components/NavSheet';
 import RoomListBrowse from '@/components/RoomListBrowse';
 import RoutePolyline, { routeBoundsOnFloor } from '@/components/RoutePolyline';
-import { museumForSite, Room, useData } from '@/data/provider';
+import { decodeNavId, encodeNavId, museumForSite, Room, useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
 /** Map height kept clear above the nav sheet at the HEADER-ONLY detent. */
@@ -124,7 +124,12 @@ export default function HomeScreen() {
   const [floor, setFloor] = useState(1);
 
   // ---- navigation mode (URL is the source of truth) ----------------------
-  const [navFrom, navTo] = (navParam ?? '').split(':');
+  // See provider.ts encodeNavId/decodeNavId: each id's own ':' (site-scoped
+  // rooms) is escaped before the join, so this split always sees exactly one
+  // separator regardless of which museum(s) are involved.
+  const [navFromRaw, navToRaw] = (navParam ?? '').split(':');
+  const navFrom = navFromRaw ? decodeNavId(navFromRaw) : navFromRaw;
+  const navTo = navToRaw ? decodeNavId(navToRaw) : navToRaw;
   const navActive = Boolean(navFrom && navTo);
   const avoidStairs = avoidParam === 'stairs';
   const navRoute = useMemo(
@@ -197,7 +202,7 @@ export default function HomeScreen() {
       clearTimeout(toastTimer.current);
       toastTimer.current = setTimeout(() => setRerouting(false), 1600);
       // New origin in the URL: the routeKey effect resets step + floor.
-      router.setParams({ nav: `${fixRoom.id}:${navTo}` });
+      router.setParams({ nav: `${encodeNavId(fixRoom.id)}:${encodeNavId(navTo)}` });
     }
     // The machine must run exactly once per anchor change.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -349,6 +354,7 @@ export default function HomeScreen() {
             highlightId={highlightId}
             onRoomPress={setSelected}
             site={mapSite}
+            floorOrder={browseFloorOrder}
             homeRoom={homeRoom}
             targetRoom={navRoute?.to}
             routeRoomIds={navRoute?.steps.map((s) => s.room.id)}
@@ -425,7 +431,7 @@ export default function HomeScreen() {
               {anchor ? anchor.label : 'Location unknown — tap to set'}
             </Text>
             <Text style={styles.locateChipVenue} numberOfLines={1} testID="locate-chip-venue">
-              {VENUE_NAMES[venue.venue]}
+              {venueName(venue.venue)}
             </Text>
           </Pressable>
 
@@ -531,10 +537,16 @@ export default function HomeScreen() {
             if (navActive) {
               // Already navigating: swap the target in place (same history
               // entry — back still exits the whole nav session).
-              router.setParams({ nav: `${origin}:${selected.id}`, obj: '' });
+              router.setParams({
+                nav: `${encodeNavId(origin)}:${encodeNavId(selected.id)}`,
+                obj: '',
+              });
             } else {
               // Entering nav PUSHES a new home entry: back = exit nav mode.
-              router.push({ pathname: '/', params: { nav: `${origin}:${selected.id}` } });
+              router.push({
+                pathname: '/',
+                params: { nav: `${encodeNavId(origin)}:${encodeNavId(selected.id)}` },
+              });
             }
             setSelected(undefined);
           }}

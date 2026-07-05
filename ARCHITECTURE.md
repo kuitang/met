@@ -212,6 +212,33 @@ Verified by `apps/mobile/scripts/check-room-scoping.mts` against the real
 artifact (museum isolation on "241", browse-ring closure, Met route 131→822
 byte-stable at 24 steps / 309 m).
 
+The D8 gate-video pass closed the remaining UI seams of this rule (all found
+driving the Louvre/AIC journeys end-to-end):
+
+- **`?nav=` grammar**: the pair separator is `:` but a scoped id carries its
+  own `:` — each endpoint's colons are escaped as `~` before the join and
+  unescaped after the split (`provider.ts: encodeNavId/decodeNavId`, applied
+  at every nav-param producer and the one consumer in `index.tsx`). Bare Met
+  ids round-trip unchanged, so `/?nav=131:822`-shaped links are untouched;
+  a Louvre route reads `/?nav=louvre~345:louvre~711`.
+- **Map shape ids are scoped** (`MapGeometry.ts`): a bare `galleryNumber`
+  shape id mismatched the provider's scoped room keys, feeding the Met's
+  objects into a tapped Louvre salle's sheet.
+- **Locate-sheet gallery-number entry is venue-scoped** (`locate.tsx`):
+  typing "345" at the Louvre resolves `louvre:345`, never the Met's Arts of
+  Africa (which would also silently drag the venue back to Fifth Ave).
+- **Display always shows the bare code**: every `Gallery ${id}` template that
+  could receive a scoped id renders `parseRoomId(id).galleryNumber` instead
+  (RoomRow glyph/meta, room-list rows, anchors, nav sheet, object page).
+- **Floor vocabulary is per-site** (`MapGeometry.ts: floorLabel(floor, site?)`):
+  the G/1M contraction is Met vocabulary — the Louvre's floor 0 reads "0",
+  and `FloorMap` takes the registry `floorOrder` so non-Met floor labels
+  (-1/0) build chips at all (the Met default lists only its own labels).
+- **Locate-sheet museum picker is a one-line horizontal scroller** (>1
+  museum): six museum groups stacked vertically pushed the action card below
+  a 390×844 viewport and squeezed the photo/artifact results list to zero
+  height (measured — venue row 448px).
+
 ## Positioning: ranked signals, fused in one state machine
 
 `shared/positioning.ts`. The signal ranking (strongest wins):

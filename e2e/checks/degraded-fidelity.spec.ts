@@ -107,7 +107,10 @@ test('AIC object page: no Directions, WayfindingCard instead, AIC attribution', 
   // museum from the object's own — that's the pre-existing crossMuseum
   // "VIEW AT ART INSTITUTE" case (C2), not what this spec is after.
   await gotoAicHome(page);
-  await page.getByTestId(`room-list-row-${fixture.object.galleryNumber}`).click();
+  // Room-list testIDs are keyed on the SITE-SCOPED room id ("aic:243"),
+  // not the bare gallery number — see provider.ts scopedRoomId (P0 room-id
+  // collision fix, commit a8120f1).
+  await page.getByTestId(`room-list-row-aic:${fixture.object.galleryNumber}`).click();
   await page.getByTestId(`sheet-object-${fixture.object.objectID}`).click();
 
   await expect(page.getByTestId('object-title')).toHaveText(fixture.object.title);
@@ -150,7 +153,9 @@ test('locate sheet: AIC venue group always shows its staleness line', async ({ p
 
 test('home at the AIC venue: RoomListBrowse, never the map or its stub fallback', async ({ page }) => {
   await gotoAicHome(page);
-  await expect(page.getByTestId(`room-list-row-${fixture.object.galleryNumber}`)).toBeVisible();
+  await expect(
+    page.getByTestId(`room-list-row-aic:${fixture.object.galleryNumber}`),
+  ).toBeVisible();
   // Neither the real-geometry map nor the stub schematic ever renders here —
   // there is no map at all for a hasGeometry:false museum (both FloorMap
   // variants share the container testID 'floor-map').

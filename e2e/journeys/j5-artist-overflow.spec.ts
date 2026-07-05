@@ -27,9 +27,13 @@ test('J5 artist overflow: suggestions w/ galleries → full results page', async
   await expect(rows.first()).toBeVisible();
   const visible = await rows.count();
   expect(visible).toBeGreaterThanOrEqual(Math.min(F.artistCount, 8) > 1 ? 2 : 1);
-  // Every suggestion row carries a room (or an explicit not-on-view flag).
+  // Every suggestion row carries a room (or an explicit not-on-view flag) —
+  // except rows from ANOTHER museum (C2 sectioning), whose trailing marker
+  // is the owning museum's badge instead of a gallery chip.
   for (let i = 0; i < visible; i++) {
-    await expect(rows.nth(i)).toContainText(/Gallery \d+|Not on view/);
+    const row = rows.nth(i);
+    if ((await row.locator('[data-testid^="museum-badge-"]').count()) > 0) continue;
+    await expect(row).toContainText(/Gallery \d+|Not on view/);
   }
 
   // Footer count and the results page must agree.
@@ -42,11 +46,15 @@ test('J5 artist overflow: suggestions w/ galleries → full results page', async
   });
   await expect(page.getByText(new RegExp(`^${total} results? ·`))).toBeVisible();
   // The list is virtualized (FlatList windowing): the DOM holds the initial
-  // render window, not all `total` rows. Assert the window is populated and
-  // never exceeds the advertised total.
+  // render window, not all `total` rows — and the C2 section headers (AT THE
+  // MET / OTHER MUSEUMS) occupy list-item slots of that window too, so the
+  // 10th OBJECT row only appears once a later render batch lands: assert via
+  // the auto-retrying visibility matcher, then bound by the total.
   const resultRows = page.locator('[data-testid^="result-"]');
-  const rendered = await resultRows.count();
-  expect(rendered).toBeGreaterThanOrEqual(Math.min(total, 10));
-  expect(rendered).toBeLessThanOrEqual(total);
-  await expect(resultRows.first()).toContainText(/Gallery \d+|Not on view/);
+  await expect(resultRows.nth(Math.min(total, 10) - 1)).toBeVisible();
+  expect(await resultRows.count()).toBeLessThanOrEqual(total);
+  const firstRow = resultRows.first();
+  if ((await firstRow.locator('[data-testid^="museum-badge-"]').count()) === 0) {
+    await expect(firstRow).toContainText(/Gallery \d+|Not on view/);
+  }
 });

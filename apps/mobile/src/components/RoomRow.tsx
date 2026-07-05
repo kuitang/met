@@ -10,7 +10,7 @@ import { router } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { floorLabel } from '@/components/MapGeometry';
-import { Room } from '@/data/provider';
+import { encodeNavId, parseRoomId, Room } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
 /** Amenity-kind glyph codes (wayfinding voice; map uses the same idiom). */
@@ -38,7 +38,10 @@ export function roomGlyph(room: Room): string {
   if (room.kind === 'gallery') {
     // The gallery number IS the room icon when it fits the box; non-numeric
     // codes ("Exhibition Galleries 999") fall back to a generic room glyph.
-    return /^\d{1,4}[A-Za-z]?$/.test(room.id) ? room.id : 'GAL';
+    // room.id is site-scoped ("aic:243") — glyph against the bare code so
+    // every non-Met museum's rows don't all collapse to "GAL".
+    const { galleryNumber } = parseRoomId(room.id);
+    return /^\d{1,4}[A-Za-z]?$/.test(galleryNumber) ? galleryNumber : 'GAL';
   }
   return KIND_GLYPH[room.kind] ?? 'ROOM';
 }
@@ -61,7 +64,7 @@ export function focusRoom(room: Room, navFrom?: string, avoidStairs?: boolean): 
     router.dismissTo({
       pathname: '/',
       params: {
-        nav: `${navFrom}:${room.id}`,
+        nav: `${encodeNavId(navFrom)}:${encodeNavId(room.id)}`,
         ...(avoidStairs ? { avoid: 'stairs' } : null),
         ts: String(Date.now()),
       },
@@ -109,8 +112,8 @@ export default function RoomRow({
       </View>
       {/* Unknown floor (C3: AIC/SMK ship galleries with no authoritative
           floor mapping) — omit the chip rather than print a bare "F". */}
-      {floorLabel(room.floor) ? (
-        <Text style={styles.floorChip}>F{floorLabel(room.floor)}</Text>
+      {floorLabel(room.floor, room.site) ? (
+        <Text style={styles.floorChip}>F{floorLabel(room.floor, room.site)}</Text>
       ) : null}
     </Pressable>
   );

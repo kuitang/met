@@ -43,13 +43,18 @@ test('J11 offline: room entry, objects, routing, search — all from cache', asy
   await expect(page.getByTestId('object-title')).toHaveText(first.title);
   await page.goBack();
 
-  // 3. Full routing still works (top gallery → 131, real graph, local).
+  // 3. Full routing still works (top gallery → 822, real graph, local).
+  // 822 (Annenberg, floor 2) rather than 131: the Temple of Dendur is
+  // currently flagged CLOSED on the Met's live map (data drift, 2026-07-05
+  // artifact), and closed rooms honestly offer no DIRECTIONS. J9's fixed
+  // destination — if 822 ever closes too, both journeys re-point together.
   await step(page, 'Routing offline', async () => {
     if ((await page.getByTestId('room-sheet').count()) > 0) {
       await page.getByTestId('room-sheet-close').click();
     }
-    await tapRoom(page, '131');
-    await expect(page.getByTestId('room-sheet')).toContainText('Dendur');
+    await page.getByTestId('floor-chip-2').click();
+    await tapRoom(page, '822');
+    await expect(page.getByTestId('room-sheet')).toContainText('Annenberg');
     await page.getByTestId('room-directions').click();
   });
   await expect(page.getByTestId('route-summary')).toBeVisible();

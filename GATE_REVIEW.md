@@ -1,4 +1,59 @@
-# Gate review — Gates A · B · C (Phase 1) · D (Phase 2) — ALL HISTORICAL
+# Gate review — Gates A–D (Phase 1–2, historical) · Gate M (multi-museum)
+
+## Gate M — Universal Museum Navigator (multi-museum) — READY FOR REVIEW
+
+Shipped 2026-07-05/06 as squash PRs #21–#36 per the approved plan
+(`Universal Museum Navigator` brief; single merged artifact, sites are the
+museum dimension). Every number measured on this machine; reproduce with the
+inline commands.
+
+**Watch:** 18 journey videos (J1–J17, 390×844, 20/20 specs passing) +
+UI screenshots + eval reports on the tailnet review server —
+`http://100.87.13.37:8123`. J16 (multi-museum search) and J17 (Louvre
+walking navigation) are the new centerpieces.
+
+### Museums in the artifact (7; 118,132 on-view objects, 103.2 MB raw / 49.5 MB gz)
+
+| Museum | Rows | Fidelity | Goldens | License posture |
+|---|---|---|---|---|
+| Met | 44,842 | routed (2 sites) | **50/50 — held through every milestone** | CC0 |
+| AIC | 3,510 | room-labels | 23/25 (2 synonyms-pending) | CC0 machine-readable |
+| Cleveland | 6,899 | room-labels | 13/15 | CC0 + per-record image gate |
+| NGA DC | 2,808 | room-labels (2 sites) | 14/14 | CC0, images excluded |
+| SMK | 1,481 | room-labels | 13/14 | PD-marked |
+| V&A | 58,092 | room-labels | 11/12 | NC + **28-day license TTL (enforced in-client, live-verified)** |
+| Louvre | 500 partial → 26,653 (hydration in flight) | **routed** (OSM/ODbL; gate: 1 component, 500/500 pairs, Joconde→Vénus 263 m) | FR/EN bilingual via titleAlt | Etalab (attribution) |
+
+### Search guarantees (the north star — plan requirement)
+- Met goldens **50/50 at every single milestone** including the 118k-row merge;
+  bm25 bit-identical across the contentless-FTS cutover (0.00% drift).
+- English queries match French Louvre titles at full title weight
+  ("funerary papyrus" → "papyrus funéraire"); French queries unaffected.
+- Typo evals ALL TARGETS MET on the merged corpus.
+- Room-code collisions (102 across museums, a live prod bug found mid-build)
+  fixed via site-scoped room ids (#32) + 6 seam regressions caught by the
+  video gate (#36) — `apps/mobile/scripts/check-room-scoping.mts` is the
+  regression harness.
+
+### Pipeline LLM decisions (measured bake-off, $0.47 total; report on the review server)
+- Translation: DeepSeek V4 Flash via OpenRouter (Kui-approved; 5.1× cheaper,
+  statistically tied; id-keyed batches mandatory — echo-keyed measured
+  off-by-one). Baseline prompt, T=0 (3 enhancement variants measured: all CIs
+  straddle null).
+- Synonyms + ALL runtime LLM: Gemini (unchanged locked rule).
+
+### Known-partial / follow-ups
+- Louvre full snapshot lands after the overnight hydration (collections.louvre.fr
+  serves HTML bot-challenges with HTTP 200 at ≥2 req/s — politeFetch hardened
+  #34, pace 1 req/s) → `feat/mm-d6c-louvre-full` + final nightly.
+- Kui-action items: Harvard API key (form), Paris Musées token (signup),
+  Rijksmuseum inclusion (spike verdict: include; recommended next sprint).
+- Artifact size 49.5 MB gz vs ~35 MB planned (V&A's 58k rows) — accepted,
+  revisit trigger documented in ARCHITECTURE.md.
+
+---
+# Historical gates below (Phase 1–2)
+
 
 **LAUNCHED 2026-06-11.** Every gate below (including the final deployment
 gate #24 — user approval of the PR-2 preview) was reviewed, approved, and is

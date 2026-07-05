@@ -35,7 +35,7 @@ import {
 } from '@/components/LocateState';
 import StalenessBadge from '@/components/StalenessBadge';
 import { apiBase } from '@/data/apiBase';
-import { MetObject, museumFreshness, useData } from '@/data/provider';
+import { MetObject, museumFreshness, scopedRoomId, useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
 type LocatePhotoResponse = components['schemas']['LocatePhotoResponse'];
@@ -82,7 +82,7 @@ function sharedAnchorOf(a: Anchor | undefined): SharedAnchor | undefined {
   return {
     kind: 'room',
     gallery: a.roomId,
-    floor: floorLabel(a.floor ?? 1),
+    floor: floorLabel(a.floor ?? 1, site),
     site,
     source: a.source === 'gallery' ? 'manual' : a.source,
     confidence: 1,
@@ -186,11 +186,17 @@ export default function LocateScreen() {
   };
 
   const locateRoom = () => {
-    const id = input.trim();
+    const raw = input.trim();
+    // Bare gallery numbers collide across museums (Met's own Gallery 711 vs.
+    // Louvre's Salle 711) — scope the typed number to the currently active
+    // venue before lookup, same rule every other room id in the app already
+    // follows (provider.ts scopedRoomId). Met sites keep bare ids, so this is
+    // a no-op there — existing Met-only journeys are unaffected.
+    const id = raw ? scopedRoomId(venue.venue, raw) : '';
     const room = id ? data.getGallery(id) : undefined;
     if (!room) {
       setArtifactHits([]);
-      setError(`Gallery “${id}” isn't on the map — check the number posted at the room entrance.`);
+      setError(`Gallery “${raw}” isn't on the map — check the number posted at the room entrance.`);
       return;
     }
     apply(anchorForRoom(room, 'gallery'));
@@ -315,46 +321,58 @@ export default function LocateScreen() {
         <Text style={styles.venueKicker}>Venue</Text>
         {museums.length > 1
           ? // Multi-museum picker (C2): sites grouped under each museum's
-            // shortName (Met's two sites + AIC's one, etc).
-            museums.map((m) => (
-              <View key={m.id} style={styles.venueGroup}>
-                <View style={styles.venueGroupHeader}>
-                  <Text style={styles.venueGroupLabel}>{m.shortName}</Text>
-                  {/* Picker variant (C3): always renders, even under 14 days
-                      — reassurance about data freshness before picking a
-                      venue, not just a staleness warning. */}
-                  <StalenessBadge
-                    fetchedAt={museumFreshness(m, data)}
-                    variant="picker"
-                    testID={`venue-staleness-${m.id}`}
-                  />
-                </View>
-                <View style={styles.venueGroupBtns}>
-                  {m.sites.map((s) => {
-                    const active = venue.venue === s.siteId;
-                    return (
-                      <Pressable
-                        key={s.siteId}
-                        style={[
-                          styles.venueBtn,
-                          styles.venueBtnGrouped,
-                          active && styles.venueBtnActive,
-                        ]}
-                        onPress={() => applyVenue(s.siteId, 'manual')}
-                        testID={`venue-${s.siteId}`}
-                      >
-                        <Text
-                          style={[styles.venueBtnText, active && styles.venueBtnTextActive]}
-                          numberOfLines={1}
+            // shortName (Met's two sites + AIC's one, etc). ONE line,
+            // horizontally scrollable: six museum groups stacked vertically
+            // used to push the whole action card below a 390×844 viewport
+            // and squeeze the results list to 0 height (measured during the
+            // D8 gate-video pass — venue row 448px tall, the photo/artifact
+            // candidate rows physically unreachable).
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={styles.venueScroller}
+              contentContainerStyle={styles.venueScrollerContent}
+            >
+              {museums.map((m) => (
+                <View key={m.id} style={styles.venueGroup}>
+                  <View style={styles.venueGroupHeader}>
+                    <Text style={styles.venueGroupLabel}>{m.shortName}</Text>
+                    {/* Picker variant (C3): always renders, even under 14 days
+                        — reassurance about data freshness before picking a
+                        venue, not just a staleness warning. */}
+                    <StalenessBadge
+                      fetchedAt={museumFreshness(m, data)}
+                      variant="picker"
+                      testID={`venue-staleness-${m.id}`}
+                    />
+                  </View>
+                  <View style={styles.venueGroupBtns}>
+                    {m.sites.map((s) => {
+                      const active = venue.venue === s.siteId;
+                      return (
+                        <Pressable
+                          key={s.siteId}
+                          style={[
+                            styles.venueBtn,
+                            styles.venueBtnGrouped,
+                            active && styles.venueBtnActive,
+                          ]}
+                          onPress={() => applyVenue(s.siteId, 'manual')}
+                          testID={`venue-${s.siteId}`}
                         >
-                          {s.name}
-                        </Text>
-                      </Pressable>
-                    );
-                  })}
+                          <Text
+                            style={[styles.venueBtnText, active && styles.venueBtnTextActive]}
+                            numberOfLines={1}
+                          >
+                            {s.name}
+                          </Text>
+                        </Pressable>
+                      );
+                    })}
+                  </View>
                 </View>
-              </View>
-            ))
+              ))}
+            </ScrollView>
           : museums[0].sites.map((s) => {
               const active = venue.venue === s.siteId;
               return (
@@ -561,6 +579,17 @@ const styles = StyleSheet.create({
   // site buttons.
   venueGroup: {
     gap: spacing.xs,
+  },
+  // The horizontal one-line scroller those groups ride in (>1 museum). The
+  // explicit flexGrow: 0 stops the ScrollView from claiming the column's
+  // spare height like a plain flex child would.
+  venueScroller: {
+    flexGrow: 0,
+  },
+  venueScrollerContent: {
+    flexDirection: 'row',
+    gap: spacing.md,
+    alignItems: 'flex-end',
   },
   // C3: shortName + the museum's StalenessBadge on one line.
   venueGroupHeader: {

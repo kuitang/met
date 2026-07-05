@@ -20,7 +20,7 @@ import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { floorLabel } from '@/components/MapGeometry';
 import RoomRow from '@/components/RoomRow';
-import { Room } from '@/data/provider';
+import { parseRoomId, Room } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
 const UNKNOWN_FLOOR_KEY = ' unknown'; // sorts after any real floorOrder entry, never collides with a label
@@ -62,7 +62,7 @@ export default function RoomListBrowse({
     }
     const bySection = new Map<string, Room[]>();
     for (const room of rooms) {
-      const key = Number.isFinite(room.floor) ? floorLabel(room.floor) : UNKNOWN_FLOOR_KEY;
+      const key = Number.isFinite(room.floor) ? floorLabel(room.floor, room.site) : UNKNOWN_FLOOR_KEY;
       if (!bySection.has(key)) bySection.set(key, []);
       bySection.get(key)!.push(room);
     }
@@ -119,7 +119,11 @@ export default function RoomListBrowse({
           ) : (
             <RoomRow
               room={item.room}
-              meta={`Gallery ${item.room.id}`}
+              // Bare gallery number for display — item.room.id is site-scoped
+              // ("aic:243") to disambiguate the testID/lookup key, but the
+              // visible meta line should read "Gallery 243", not the scope
+              // prefix (found during the D8 multi-museum gate-video work).
+              meta={`Gallery ${parseRoomId(item.room.id).galleryNumber}`}
               testID={`room-list-row-${item.room.id}`}
             />
           )

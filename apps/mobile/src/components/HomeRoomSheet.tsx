@@ -102,10 +102,10 @@ export default function HomeRoomSheet({
           {/* Label vocabulary (G / 1M / …), not the numeric floor; omitted
               entirely when unknown (C3: AIC/SMK ship galleries with no
               authoritative floor mapping — floorLabel('') signals this). */}
-          {floorLabel(room.floor) ? `Floor ${floorLabel(room.floor)}` : ''}
+          {floorLabel(room.floor, room.site) ? `Floor ${floorLabel(room.floor, room.site)}` : ''}
           {/* Honest count: the list is capped, the total is not. */}
           {!isAmenity && totalCount > 0
-            ? (floorLabel(room.floor) ? ' · ' : '') +
+            ? (floorLabel(room.floor, room.site) ? ' · ' : '') +
               (objects.length < totalCount
                 ? `Showing ${fmt(objects.length)} of ${fmt(totalCount)} objects`
                 : `${fmt(totalCount)} ${totalCount === 1 ? 'object' : 'objects'}`)
