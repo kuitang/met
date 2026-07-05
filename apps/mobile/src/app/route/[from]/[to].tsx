@@ -9,6 +9,8 @@
  */
 import { Redirect, useLocalSearchParams } from 'expo-router';
 
+import { encodeNavId } from '@/data/provider';
+
 export default function RouteRedirect() {
   const { from, to, avoid } = useLocalSearchParams<{
     from: string;
@@ -19,7 +21,13 @@ export default function RouteRedirect() {
     <Redirect
       href={{
         pathname: '/',
-        params: { nav: `${from}:${to}`, ...(avoid === 'stairs' ? { avoid: 'stairs' } : null) },
+        params: {
+          // Site-scoped ids (e.g. "louvre:711") carry their own ':' — escape
+          // before joining so index.tsx's nav-param split sees exactly one
+          // separator (see provider.ts encodeNavId).
+          nav: `${encodeNavId(from)}:${encodeNavId(to)}`,
+          ...(avoid === 'stairs' ? { avoid: 'stairs' } : null),
+        },
       }}
     />
   );

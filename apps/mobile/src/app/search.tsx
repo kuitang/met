@@ -10,6 +10,7 @@ import {
   MetObject,
   museumForSite,
   museumSiteIds,
+  parseRoomId,
   partitionByMuseum,
   useData,
 } from '@/data/provider';
@@ -78,7 +79,10 @@ export default function SearchScreen() {
   const galleryChip = (o: MetObject) => {
     if (!o.gallery) return 'Not on view';
     const floor = data.getGallery(o.gallery)?.floor;
-    return floor !== undefined ? `Gallery ${o.gallery} · F${floor}` : `Gallery ${o.gallery}`;
+    // o.gallery is site-scoped ("aic:243") to disambiguate the lookup key —
+    // the visible chip reads the bare gallery number.
+    const num = parseRoomId(o.gallery).galleryNumber;
+    return floor !== undefined ? `Gallery ${num} · F${floor}` : `Gallery ${num}`;
   };
 
   const listItems: ListItem[] = (() => {
@@ -135,7 +139,11 @@ export default function SearchScreen() {
                 <RoomRow
                   key={room.id}
                   room={room}
-                  meta={room.kind === 'gallery' ? `Gallery ${room.id}` : undefined}
+                  meta={
+                    room.kind === 'gallery'
+                      ? `Gallery ${parseRoomId(room.id).galleryNumber}`
+                      : undefined
+                  }
                   testID={`gallery-${room.id}`}
                   navFrom={retarget}
                   avoidStairs={avoid === 'stairs'}

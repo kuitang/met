@@ -17,7 +17,7 @@ import { useSyncExternalStore } from 'react';
 import type { Site, VenueSource, VenueState } from '@met/shared/positioning';
 
 import { floorLabel } from '@/components/MapGeometry';
-import { Room } from '@/data/provider';
+import { parseRoomId, Room } from '@/data/provider';
 
 export type AnchorSource = 'gallery' | 'artifact' | 'photo' | 'gps';
 
@@ -156,8 +156,11 @@ export function useVenueToast(): string | undefined {
  * authoritative floor mapping; floorLabel('') signals this).
  */
 export function anchorForRoom(room: Room, source: AnchorSource): Anchor {
-  const name = room.kind === 'gallery' ? `Gallery ${room.id}` : room.name;
-  const floorTxt = floorLabel(room.floor);
+  // room.id is site-scoped ("louvre:711") to disambiguate the lookup key —
+  // the visible chip text should read the bare gallery number.
+  const name =
+    room.kind === 'gallery' ? `Gallery ${parseRoomId(room.id).galleryNumber}` : room.name;
+  const floorTxt = floorLabel(room.floor, room.site);
   return {
     roomId: room.id,
     label: floorTxt ? `${name} · Floor ${floorTxt}` : name,

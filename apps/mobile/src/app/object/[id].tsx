@@ -18,7 +18,15 @@ import { floorLabel } from '@/components/MapGeometry';
 import ObjectImage from '@/components/ObjectImage';
 import StalenessBadge from '@/components/StalenessBadge';
 import WayfindingCard from '@/components/WayfindingCard';
-import { BUILTIN_MET_ENTRY, museumForSite, museumFreshness, objectSourceUrl, useData } from '@/data/provider';
+import {
+  BUILTIN_MET_ENTRY,
+  encodeNavId,
+  museumForSite,
+  museumFreshness,
+  objectSourceUrl,
+  parseRoomId,
+  useData,
+} from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
 export default function ObjectScreen() {
@@ -136,7 +144,8 @@ export default function ObjectScreen() {
           </Pressable>
           <Text style={styles.cycleLabel} testID="object-position">
             {galleryPos.position.toLocaleString('en-US')} of{' '}
-            {galleryPos.total.toLocaleString('en-US')} in Gallery {object.gallery}
+            {galleryPos.total.toLocaleString('en-US')} in Gallery{' '}
+            {object.gallery ? parseRoomId(object.gallery).galleryNumber : ''}
           </Text>
           <Pressable
             style={styles.cycleBtn}
@@ -162,12 +171,18 @@ export default function ObjectScreen() {
 
       <View style={styles.galleryRow}>
         <Text style={styles.galleryChip} testID="object-gallery-chip">
-          {object.gallery ? `GALLERY ${object.gallery}` : 'NOT ON VIEW'}
+          {/* object.gallery is site-scoped ("aic:243") to disambiguate the
+              lookup key — the visible chip reads the bare gallery number. */}
+          {object.gallery ? `GALLERY ${parseRoomId(object.gallery).galleryNumber}` : 'NOT ON VIEW'}
         </Text>
         {crossMuseum && objectMuseum ? (
           <Text style={type.meta} testID="object-cross-museum-location">
             {objectMuseum.name} ·{' '}
-            {gallery ? gallery.name : object.gallery ? `Gallery ${object.gallery}` : 'Not on view'}
+            {gallery
+              ? gallery.name
+              : object.gallery
+                ? `Gallery ${parseRoomId(object.gallery).galleryNumber}`
+                : 'Not on view'}
           </Text>
         ) : (
           <>
@@ -213,7 +228,7 @@ export default function ObjectScreen() {
               router.push({
                 pathname: '/',
                 params: {
-                  nav: `${anchor ?? getAnchor()?.roomId ?? 'great-hall'}:${gallery.id}`,
+                  nav: `${encodeNavId(anchor ?? getAnchor()?.roomId ?? 'great-hall')}:${encodeNavId(gallery.id)}`,
                   obj: String(object.objectID),
                 },
               })

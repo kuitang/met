@@ -26,6 +26,7 @@ import {
   MetObject,
   museumForSite,
   museumSiteIds,
+  parseRoomId,
   partitionByMuseum,
   useData,
 } from '@/data/provider';
@@ -157,7 +158,7 @@ export default function ResultsScreen() {
   const floorOf = (galleryId: string) => data.getGallery(galleryId)?.floor;
   const results = applyFilters(base, filters, floorOf);
   const heading = gallery
-    ? data.getGallery(gallery)?.name ?? `Gallery ${gallery}`
+    ? (data.getGallery(gallery)?.name ?? `Gallery ${parseRoomId(gallery).galleryNumber}`)
     : `“${q ?? ''}”`;
 
   const listItems: ListItem[] = (() => {
@@ -188,7 +189,10 @@ export default function ResultsScreen() {
   const galleryChip = (o: MetObject) => {
     if (!o.gallery) return 'Not on view';
     const floor = floorOf(o.gallery);
-    return floor !== undefined ? `Gallery ${o.gallery} · F${floor}` : `Gallery ${o.gallery}`;
+    // o.gallery is site-scoped ("aic:243") to disambiguate the lookup key —
+    // the visible chip reads the bare gallery number.
+    const num = parseRoomId(o.gallery).galleryNumber;
+    return floor !== undefined ? `Gallery ${num} · F${floor}` : `Gallery ${num}`;
   };
 
   return (
@@ -239,7 +243,11 @@ export default function ResultsScreen() {
                 <RoomRow
                   key={room.id}
                   room={room}
-                  meta={room.kind === 'gallery' ? `Gallery ${room.id}` : undefined}
+                  meta={
+                    room.kind === 'gallery'
+                      ? `Gallery ${parseRoomId(room.id).galleryNumber}`
+                      : undefined
+                  }
                   testID={`gallery-${room.id}`}
                 />
               ))}

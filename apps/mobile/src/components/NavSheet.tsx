@@ -29,7 +29,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import DetentSheet, { SheetDetent } from '@/components/DetentSheet';
 import { floorLabel } from '@/components/MapGeometry';
 import { StarGlyph } from '@/components/MapMarkers';
-import { Room, Route, RouteStep } from '@/data/provider';
+import { parseRoomId, Room, Route, RouteStep } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
 /* ---- instruction phrasing (ported verbatim from route/[from]/[to]) ---- */
@@ -50,7 +50,9 @@ function direction(a: Room, b: Room): string {
 }
 
 function shortName(room: Room): string {
-  if (room.kind === 'gallery') return `Gallery ${room.id}`;
+  // room.id is site-scoped ("louvre:711") to disambiguate the lookup key —
+  // step instructions should read the bare gallery number.
+  if (room.kind === 'gallery') return `Gallery ${parseRoomId(room.id).galleryNumber}`;
   if (room.kind === 'stairs' || room.kind === 'elevator' || room.kind === 'restroom') {
     return `the ${room.name.toLowerCase()}`;
   }
@@ -132,8 +134,8 @@ export default function NavSheet({
 
   const dest = route.to;
   const destMeta = [
-    dest.kind === 'gallery' ? `Gallery ${dest.id}` : null,
-    `Floor ${floorLabel(dest.floor)}`,
+    dest.kind === 'gallery' ? `Gallery ${parseRoomId(dest.id).galleryNumber}` : null,
+    `Floor ${floorLabel(dest.floor, dest.site)}`,
     `Step ${Math.min(activeStep + 1, route.steps.length)} of ${route.steps.length}`,
     `~${Math.round(route.distance)} m`,
   ]
@@ -275,7 +277,7 @@ export default function NavSheet({
                     {displayInstruction(route.steps, index)}
                   </Text>
                   <Text style={type.meta}>
-                    {item.room.name} · Floor {floorLabel(item.room.floor)}
+                    {item.room.name} · Floor {floorLabel(item.room.floor, item.room.site)}
                   </Text>
                 </Pressable>
               );

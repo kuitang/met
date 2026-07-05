@@ -89,6 +89,25 @@ export function parseRoomId(id: string): { site?: string; galleryNumber: string 
   return i === -1 ? { galleryNumber: id } : { site: id.slice(0, i), galleryNumber: id.slice(i + 1) };
 }
 
+/**
+ * The `?nav=<from>:<to>` URL param (index.tsx) joins two room ids with ':' —
+ * but a site-scoped id (e.g. "louvre:711") already contains one, so a naive
+ * join+split breaks the moment either endpoint is a non-Met room (found
+ * during the D8 multi-museum gate-video work: `nav=louvre:345:louvre:711`
+ * has three colons, and a plain `.split(':')` destructure silently takes the
+ * first two — neither a valid room id). Escape each id's internal ':' before
+ * joining, and reverse it after splitting; bare Met ids (never containing
+ * ':') round-trip unchanged, so every existing `?nav=131:822`-shaped deep
+ * link and test assertion is untouched.
+ */
+export function encodeNavId(id: string): string {
+  return id.replace(/:/g, '~');
+}
+
+export function decodeNavId(id: string): string {
+  return id.replace(/~/g, ':');
+}
+
 /** All site ids belonging to a museum entry, for room/object site membership checks. */
 export function museumSiteIds(museum: MuseumEntry): Set<string> {
   return new Set(museum.sites.map((s) => s.siteId));

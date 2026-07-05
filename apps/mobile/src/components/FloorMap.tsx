@@ -110,6 +110,16 @@ export interface FloorMapProps {
    */
   site?: Site;
   /**
+   * The site's own floor label vocabulary (registry MuseumSite.floorOrder,
+   * bottom → top), e.g. the Louvre's ["-1","0","1","2"] — MapGeometry's
+   * buildSiteGeometry() otherwise defaults to the Met's own FLOOR_ORDER
+   * ("G"/"1"/"1M"/…), which silently drops any non-Met floor label a site's
+   * real geometry uses (found during the D8 multi-museum gate-video work:
+   * the Louvre's floors -1 and 0 never rendered a chip). Omitted → the Met
+   * default, so every existing fifthAve/cloisters caller is unaffected.
+   */
+  floorOrder?: readonly string[];
+  /**
    * The visitor's current anchor room → HOME glyph marker (colors.homeBlue)
    * at the room's center, plus a mini home badge on that floor's chip.
    */
@@ -548,16 +558,20 @@ function RealFloorMap({
   floor: floorProp,
   onFloorChange,
   site = 'fifthAve',
+  floorOrder,
   homeRoom,
   targetRoom,
   overlay,
   fitBounds,
   controlsBottomInset,
 }: FloorMapProps & { geometry: GeometryFn }) {
-  const siteGeo = useMemo(() => buildSiteGeometry(geometry, site), [geometry, site]);
+  const siteGeo = useMemo(
+    () => (floorOrder ? buildSiteGeometry(geometry, site, floorOrder) : buildSiteGeometry(geometry, site)),
+    [geometry, site, floorOrder],
+  );
 
   const [floorState, setFloorState] = useState('1');
-  const requested = floorProp !== undefined ? floorLabel(floorProp) : floorState;
+  const requested = floorProp !== undefined ? floorLabel(floorProp, site) : floorState;
   // A floor the venue doesn't have (e.g. arriving at the Cloisters on "3")
   // falls back to 1 / the lowest — venue switches never strand the map.
   const floor = siteGeo.floors.includes(requested)
@@ -709,8 +723,8 @@ function RealFloorMap({
               </Text>
               <ChipBadges
                 label={label}
-                homeLabel={homeRoom && floorLabel(homeRoom.floor)}
-                targetLabel={targetRoom && floorLabel(targetRoom.floor)}
+                homeLabel={homeRoom && floorLabel(homeRoom.floor, homeRoom.site)}
+                targetLabel={targetRoom && floorLabel(targetRoom.floor, targetRoom.site)}
               />
             </Pressable>
           );
@@ -833,8 +847,8 @@ function StubFloorMap({
               </Text>
               <ChipBadges
                 label={c.label}
-                homeLabel={homeRoom && floorLabel(homeRoom.floor)}
-                targetLabel={targetRoom && floorLabel(targetRoom.floor)}
+                homeLabel={homeRoom && floorLabel(homeRoom.floor, homeRoom.site)}
+                targetLabel={targetRoom && floorLabel(targetRoom.floor, targetRoom.site)}
               />
             </Pressable>
           );

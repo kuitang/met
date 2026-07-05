@@ -35,7 +35,7 @@ export default function WayfindingCard({
   compact?: boolean;
   testID?: string;
 }) {
-  const floorTxt = floorLabel(room.floor);
+  const floorTxt = floorLabel(room.floor, room.site);
   const metaLine = [floorTxt ? `Floor ${floorTxt}` : null, museumShortName]
     .filter(Boolean)
     .join(' · ');

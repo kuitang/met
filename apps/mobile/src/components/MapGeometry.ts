@@ -17,6 +17,7 @@
  * (~450 m) the distortion is sub-decimeter, so local XY is treated as meters.
  */
 import type { DataProvider, RoomKind } from '@/data/provider';
+import { MET_SITE_IDS, scopedRoomId } from '@/data/provider';
 
 /** Globally-unique site id (schema v2 opens the set beyond the Met's two buildings). */
 export type Site = string;
@@ -52,14 +53,24 @@ export type GeometryFn = (site: Site, floor: string) => GalleryFeature[];
 /** Every floor label the dataset can carry, in display (bottom-up) order. */
 export const FLOOR_ORDER = ['G', '1', '1M', '2', '3', '4', '5'] as const;
 
-export function floorLabel(floor: number | string): string {
+/**
+ * Numeric floor → display label. "G"/"1M" are the MET's own ground-floor/
+ * mezzanine vocabulary, not a universal numeric convention — a non-Met site
+ * can have a real, differently-meant floor 0 (the Louvre's own "-1"/"0"/"1"/
+ * "2" labels; Salle 345 is genuinely floor "0", not "G" — found during the
+ * D8 multi-museum gate-video work). The contraction only applies when `site`
+ * is a Met site (or omitted — every pre-C2 caller predates multi-museum and
+ * always meant the Met), so every existing call site is unaffected.
+ */
+export function floorLabel(floor: number | string, site?: string): string {
   if (typeof floor === 'string') return floor;
   // Unknown floor (C3: museums whose gallery rows ship without an
   // authoritative floor mapping — AIC, SMK; see data/src/sources/{aic,smk}.ts)
   // — '' so callers can omit the "Floor …" line rather than print "Floor NaN".
   if (Number.isNaN(floor)) return '';
-  if (floor === 0) return 'G';
-  if (floor === 1.5) return '1M';
+  const metVocabulary = site === undefined || MET_SITE_IDS.has(site);
+  if (metVocabulary && floor === 0) return 'G';
+  if (metVocabulary && floor === 1.5) return '1M';
   return String(floor);
 }
 
@@ -279,7 +290,17 @@ export function buildSiteGeometry(
         }
       });
       shapes.push({
-        id: kind === 'gallery' && p.galleryNumber ? p.galleryNumber : `g${p.geomId}`,
+        // Site-scoped to match the provider's `rooms` map key (provider.ts
+        // scopedRoomId) — bare codes collide across museums ("711" is both a
+        // Met gallery and a Louvre salle), and a bare shape id here would
+        // silently mismatch the scoped ids objectsInGallery/route steps use,
+        // breaking room-sheet contents, route highlighting, and DIRECTIONS
+        // for every non-Met site with real geometry (found during the D8
+        // multi-museum gate-video work, while wiring up Louvre routing).
+        id:
+          kind === 'gallery' && p.galleryNumber
+            ? scopedRoomId(p.site, p.galleryNumber)
+            : `g${p.geomId}`,
         d,
         kind,
         label: kind === 'gallery' ? (p.galleryNumber ?? p.name ?? undefined) : undefined,
