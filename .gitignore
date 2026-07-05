@@ -69,6 +69,7 @@ data/snapshots/image-embeddings/
 # build-db`. The reproducible SOURCES (snapshots/ geojson + graph + synonyms +
 # objects snapshot, raw/ Living Map tiles) stay in git.
 data/met.sqlite
+data/met.sqlite.prev
 data/VERSION
 
 # Nightly pipeline scratch (data/src/nightly.ts)

@@ -74,7 +74,8 @@ Prereq: `export PATH="$HOME/.nvm/versions/node/v24.14.0/bin:$PATH"` (Node ≥ 22
 | `npm -w data run geometry` | `data/raw/livingmap/` cache → `snapshots/galleries.geojson` (828 rooms, 463 galleries), `amenities.geojson` (125), `routes.geojson` | No network once cached; MVT decode + cross-tile polygon union |
 | `npm -w data run graph` | raw tiles + galleries.geojson → `snapshots/graph.json` (2,125 nodes / 8,096 edges) | Doors probed from barrier lines (probe both sides → connected room pair); vertical shafts by cross-floor polygon overlap; inline verification gates |
 | `npm -w data run build-db` | all snapshots → `data/met.sqlite` + `data/VERSION` | Atomic tmp+rename; FTS5 (porter, prefix 2/3/4); geometry blobs gzipped in a `blobs` table |
-| `npm -w data run evals` | snapshots + met.sqlite → `data/evals/reports/*.md` + `floors/*.svg` | No network; exit 1 on FAIL |
+| `npm -w data run evals` | snapshots + met.sqlite → `data/evals/reports/*.md` + `floors/*.svg` | No network; exit 1 on FAIL; also runs the Louvre gate + the museums audit below |
+| `npm -w data run audit` | met.sqlite (+ optional `PREV_DB=<path>` previous artifact) → `data/evals/reports/museums-audit.md` | Per-museum fill rates, structural invariants, distribution sanity, churn — see below; also chained into `npm run evals` |
 | `GEMINI_API_KEY=$(cat ~/.gemini_key) npm -w data run embed-images` | objects snapshot → `snapshots/image-embeddings/` | ~34k images ≈ $4 one-time; incremental |
 
 Order matters only as: objects/geometry → graph → build-db → evals.
@@ -122,6 +123,15 @@ the 2026-06-10 run:
   polygon with the routing graph, doorway nodes, stair/elevator markers, and
   gallery numbers overlaid — inspect these to judge the geometry with your own
   eyes.
+
+The five reports above are Met-specific (Gate B, predating the multi-museum
+registry). Every OTHER registry museum's fill rates, structural invariants
+(site-scoped object→gallery join, sourceId/objectID uniqueness, license/TTL
+consistency), catalog-noise clusters, and artifact-to-artifact churn are in
+**`data/evals/reports/museums-audit.md`** (`data/src/museums-audit.ts`,
+`npm -w data run audit`) — the cross-museum data-quality dashboard, Kui's
+replacement for a hard per-museum merge gate: only true structural bugs FAIL
+the process, everything else is a measured WARN.
 
 ## Update story
 

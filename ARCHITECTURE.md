@@ -972,6 +972,7 @@ loads whatever shards exist.
 | `Dockerfile` / `fly.toml` / `.github/workflows/` | image bake + Fly config + CI/deploy/preview/nightly automation |
 | `data/src/evals.ts` | regenerates all eval reports (`npm run evals`, which also runs the Louvre gate) |
 | `data/src/evals-louvre.ts` | Louvre geometry/routing gate: match rates, routability, on-view salle accounting, per-floor SVGs → `data/evals/reports/louvre.md` |
+| `data/src/museums-audit.ts` | per-museum data-quality audit (D10): field fill rates, room-label coverage, structural invariants (hard-FAIL: objectID collisions, sourceId uniqueness, site values ⊆ registry, license non-empty, TTL meta, site-scoped object→gallery join), distribution sanity (catalog-noise clusters, rows/gallery, license histogram — WARN with numbers), and artifact-to-artifact churn vs `PREV_DB` → `data/evals/reports/museums-audit.md` (chained into `npm run evals`; `npm -w data run audit` standalone) |
 | `e2e/checks/` · `e2e/journeys/` | fast assertion gate (incl. HIG sweep) · J1–J15 user-journey videos |
 
 ## Testing
