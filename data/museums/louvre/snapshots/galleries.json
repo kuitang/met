@@ -1,0 +1,2336 @@
+[
+  {
+    "galleryNumber": "200538",
+    "site": "louvre",
+    "title": "Rotonde Goujon",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "323",
+    "site": "louvre",
+    "title": "Salle 323 - Crypte d'Osiris",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "338",
+    "site": "louvre",
+    "title": "Salle 338 - Crypte du sphinx",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "101",
+    "site": "louvre",
+    "title": "Salle 101 - Galerie Richelieu",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "104",
+    "site": "louvre",
+    "title": "Salle 104 - Crypte François Girardon (1628-1715)",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "130",
+    "site": "louvre",
+    "title": "Salle 130 - Rotonde Sully Sud",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "131",
+    "site": "louvre",
+    "title": "Salle 131 - Rotonde Sully Nord",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "132",
+    "site": "louvre",
+    "title": "Salle 132 - Crypte Sully",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "134",
+    "site": "louvre",
+    "title": "Salle 134 - Salle de la maquette",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "136",
+    "site": "louvre",
+    "title": "Salle 136 - Salle saint Louis Nord",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "137",
+    "site": "louvre",
+    "title": "Salle 137 - Salle saint Louis Sud",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "160",
+    "site": "louvre",
+    "title": "Salle 160 - Galerie Donatello",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "161",
+    "site": "louvre",
+    "title": "Salle 161 - Galerie d'étude 1 - Espace adapté aux visiteurs non et malvoyants",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "162",
+    "site": "louvre",
+    "title": "Salle 162 - Galerie d'étude 2",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "163",
+    "site": "louvre",
+    "title": "Salle 163 - La Botega des Della Robbia",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "164",
+    "site": "louvre",
+    "title": "Salle 164 - Sculptures espagnoles",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "165",
+    "site": "louvre",
+    "title": "Salle 165 - Angleterre",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "166",
+    "site": "louvre",
+    "title": "Salle 166 - Salle des Belles Madones",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "167",
+    "site": "louvre",
+    "title": "Salle 167 - Galerie d'étude 3",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "170",
+    "site": "louvre",
+    "title": "Salle 170 - Grèce préclassique",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "171",
+    "site": "louvre",
+    "title": "Salle 171 - Inscriptions grecques",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "185",
+    "site": "louvre",
+    "title": "Salle 185 - Arts de l'Islam - De 632 à 1000",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "186",
+    "site": "louvre",
+    "title": "Salle 186 - Arts du Proche-Orient et de l'Égypte - Mosaïques et tissus / Arts de l'Islam / Salle 186 - Arts de l'Islam - De 1250 à 1800",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "100",
+    "site": "louvre",
+    "title": "Salle 100 - Sud de la Cour Marly",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "168",
+    "site": "louvre",
+    "title": "Salle 168 - Gothique tardif",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "169",
+    "site": "louvre",
+    "title": "Salle 169 - Gothique tardif",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "133",
+    "site": "louvre",
+    "title": "Salle 133 - Fossés",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "135",
+    "site": "louvre",
+    "title": "Salle 135 - Donjon",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "187",
+    "site": "louvre",
+    "title": "Salle 187 - Arts de l'Islam - De 1000 à 1250",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "102",
+    "site": "louvre",
+    "title": "Salle 102 - Cour Marly",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "105",
+    "site": "louvre",
+    "title": "Salle 105 - Cour Puget",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "172",
+    "site": "louvre",
+    "title": "Salle 172 - Palier su style sévère",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "165205",
+    "site": "louvre",
+    "title": "Escalier Daru - Palier inférieur",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "197658",
+    "site": "louvre",
+    "title": "Sculptures italiennes des collections royales - Escalier Mollien",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "199369",
+    "site": "louvre",
+    "title": "Escalier du ministre",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "199370",
+    "site": "louvre",
+    "title": "Escalier Lefuel - Rez-de-chaussée",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "200342",
+    "site": "louvre",
+    "title": "Escalier Henri IV",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "343",
+    "site": "louvre",
+    "title": "Salle 343 - Art grec classique et hellénistique (monuments votifs et funéraires attiques IVe siècle av. J.-C.)",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "346",
+    "site": "louvre",
+    "title": "Salle 346 - Art grec classique et hellénistique (monuments votifs et funéraires attiques Ve siècle av. J.-C.)",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "345",
+    "site": "louvre",
+    "title": "Salle 345 - Art grec classique et hellénistique (Vénus de Milo)",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "347",
+    "site": "louvre",
+    "title": "Salle 347 - Salle de Diane",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "348",
+    "site": "louvre",
+    "title": "Salle 348 - Dieux et héros du monde grec antique : Apollon, Artémis, Dionysos",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "400",
+    "site": "louvre",
+    "title": "Salle 400 - Galerie Thorvaldsen",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "403",
+    "site": "louvre",
+    "title": "Salle 403 - Galerie Michel-Ange",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "405",
+    "site": "louvre",
+    "title": "Salle 405 - Salle du Manège",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "404",
+    "site": "louvre",
+    "title": "Salle 404 - Palier Denon",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "406",
+    "site": "louvre",
+    "title": "Salle 406 - Galerie Daru",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "324",
+    "site": "louvre",
+    "title": "Salle 324 - Le temple",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "325",
+    "site": "louvre",
+    "title": "Salle 325 - Les chapelles",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "329",
+    "site": "louvre",
+    "title": "Salle 329 - Les loisirs",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "330",
+    "site": "louvre",
+    "title": "Salle 330 - La parure",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "331",
+    "site": "louvre",
+    "title": "Salle 331 - La maison et le mobilier",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "332",
+    "site": "louvre",
+    "title": "Salle 332 - Élevage, chasse et pêche",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "333",
+    "site": "louvre",
+    "title": "Salle 333 - Les travaux des champs",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "334",
+    "site": "louvre",
+    "title": "Salle 334 - Matériaux et techniques",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "335",
+    "site": "louvre",
+    "title": "Salle 335 - L'écriture et les scribes",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "336",
+    "site": "louvre",
+    "title": "Salle 336 - Le Nil",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "337",
+    "site": "louvre",
+    "title": "Salle 337 - Salle d'actualités",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "339",
+    "site": "louvre",
+    "title": "Salle 339 - Art grec classique et hellénistique (monde lagide)",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "340",
+    "site": "louvre",
+    "title": "Salle 340 - Art grec classique et hellénistique (Grèce d'Asie)",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "341",
+    "site": "louvre",
+    "title": "Salle 341 - Art grec classique et hellénistique (Grèce du Nord)",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "342",
+    "site": "louvre",
+    "title": "Salle 342 - Art grec classique et hellénistique (Italie du Sud)",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "407",
+    "site": "louvre",
+    "title": "Salle 407 - Olympie",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "408",
+    "site": "louvre",
+    "title": "Salle 408 - Rotonde de Mars",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "106",
+    "site": "louvre",
+    "title": "Salle 106 - Vestibule des terres cuites",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "200",
+    "site": "louvre",
+    "title": "Salle 200 - Porte d'Estagel - La sculpture du 6e au 12e siècle",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "201",
+    "site": "louvre",
+    "title": "Salle 201 - Cluny - La sculpture romane au 12e siècle",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "202",
+    "site": "louvre",
+    "title": "Salle 202 - Saint-Denis - La naissance de l’art gothique vers 1150",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "203",
+    "site": "louvre",
+    "title": "Salle 203 - Chartres - La sculpture gothique au 13e siècle",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "103",
+    "site": "louvre",
+    "title": "Salle 103 - Actualités du département des sculptures",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "204",
+    "site": "louvre",
+    "title": "Salle 204 - Royaumont - Le développement de la sculpture au 13e siècle",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "205",
+    "site": "louvre",
+    "title": "Salle 205 - Maubuisson - L’évolution de la sculpture gothique au 14e siècle",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "206",
+    "site": "louvre",
+    "title": "Salle 206 - Blanchelande - La sculpture gothique au 14e siècle : la dévotion mariale",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "207",
+    "site": "louvre",
+    "title": "Salle 207 - Gisants gothiques - La sculpture funéraire au 14e siècle",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "208",
+    "site": "louvre",
+    "title": "Salle 208 - Tête de feuilles",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "209",
+    "site": "louvre",
+    "title": "Salle 209 - Jean de Liège (connu à partir de 1357-1381) - La sculpture gothique au 14e siècle : les grandes commandes",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "210",
+    "site": "louvre",
+    "title": "Salle 210 - Le tombeau de Philippe Pot - La sculpture gothique au 15e siècle : Paris, la Bourgogne",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "212",
+    "site": "louvre",
+    "title": "Salle 212 - La Mort Saint-Innocent - La sculpture au début du 16e siècle : traditions et nouveautés",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "213",
+    "site": "louvre",
+    "title": "Salle 213 - Jean Goujon (vers 1510-1569) - La sculpture au milieu du 16e siècle : le classicisme",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "215",
+    "site": "louvre",
+    "title": "Salle 215 - Ligier Richier (vers 1500-1567) - Collections d’étude",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "216",
+    "site": "louvre",
+    "title": "Salle 216 - Pierre Francqueville (1548-1615) - La sculpture autour de 1600 : au service de la monarchie",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "217",
+    "site": "louvre",
+    "title": "Salle 217 - Monument du Pont au Change",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "219",
+    "site": "louvre",
+    "title": "Salle 219 - La Petite Galerie de l’Académie",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "223",
+    "site": "louvre",
+    "title": "Salle 223 - Claude Michel, dit Clodion (1738-1814)",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "224",
+    "site": "louvre",
+    "title": "Salle 224 - Monuments funéraires du 18e siècle",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "226",
+    "site": "louvre",
+    "title": "Salle 226 - Antoine-Louis Barye (1796-1875) - Le romantisme en sculpture",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "227",
+    "site": "louvre",
+    "title": "Salle 227 - Salle du code d'Hammurabi",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "228",
+    "site": "louvre",
+    "title": "Salle 228 - Mésopotamie",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "229",
+    "site": "louvre",
+    "title": "Salle 229 - Elahé Omidyar - Mir-Djalali",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "231",
+    "site": "louvre",
+    "title": "Salle 231 - Iran - Suse au IIIe millénaire av. J.-C.",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "232",
+    "site": "louvre",
+    "title": "Salle 232 - Iran - Susiane et plateau iranien",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "233",
+    "site": "louvre",
+    "title": "Salle 233 - Actualité du département AO",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "234",
+    "site": "louvre",
+    "title": "Salle 234 - Mari. Le nord de la Mésopotamie à l’époque Dynastique Archaïque (2600 – 2300 av. J.-C.)",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "235",
+    "site": "louvre",
+    "title": "Salle 235 - Mésopotamie archaïque (IIIe millénaire av. J.-C.)",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "236",
+    "site": "louvre",
+    "title": "Salle 236 - Mésopotamie archaïque (du néolithique à l'époque des dynasties archaïques de Sumer)",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "300",
+    "site": "louvre",
+    "title": "Salle 300 - Levant - Chypre, des origines à l'âge du fer",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "301",
+    "site": "louvre",
+    "title": "Salle 301 - Levant - Syrie côtière, Ougarit et Byblos, des origines à l'âge du fer",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "302",
+    "site": "louvre",
+    "title": "Salle 302 - Levant - Syrie intérieure, des origines à l'âge du fer",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "303",
+    "site": "louvre",
+    "title": "Salle 303 - Levant - Palestine et Transjordanie, des origines à l'âge du fer",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "304",
+    "site": "louvre",
+    "title": "Salle 304 - Iran - La Susiane à l'époque médio-élamite",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "305",
+    "site": "louvre",
+    "title": "Salle 305 - Iran et Bactriane",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "306",
+    "site": "louvre",
+    "title": "Salle 306 - Iran - L'Iran à l'âge du fer (XIVe - milieu du VIe siècle av. J.-C.) et les dynasties néo-élamites",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "308",
+    "site": "louvre",
+    "title": "Salle 308 - Iran - L'empire perse achéménide : le palais de Darius Ier à Suse (ex-salle 13)",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "309",
+    "site": "louvre",
+    "title": "Salle 309 - Iran - L'empire perse achéménide : Persépolis et Suse",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "310",
+    "site": "louvre",
+    "title": "Salle 310 - Mésopotamie, Iran, Levant",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "311",
+    "site": "louvre",
+    "title": "Salle 311 - Byblos - Phénicie - Sidon - Les royaumes phéniciens du Nord - Umm el-Amed",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "312",
+    "site": "louvre",
+    "title": "Salle 312 - Levant - Les royaumes phéniciens",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "313",
+    "site": "louvre",
+    "title": "Salle 313 - Présence et influences phéniciennes et puniques en Méditerranée (1100-100 av. J.-C.)",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "315",
+    "site": "louvre",
+    "title": "Salle 315 - Arabie - Les cités caravanières, Dura Europos, Palmyre",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "316",
+    "site": "louvre",
+    "title": "Salle 316 - Levant - Chypre, IXe siècle av. J.-C. - Ier siècle av. J.-C.",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "317",
+    "site": "louvre",
+    "title": "Salle 317 - Les dieux et la magie",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "318",
+    "site": "louvre",
+    "title": "Salle 318 - Animaux et dieux",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "320",
+    "site": "louvre",
+    "title": "Salle 320 - Les tombes",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "321",
+    "site": "louvre",
+    "title": "Salle 321 - Les sarcophages",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "322",
+    "site": "louvre",
+    "title": "Salle 322 - La momie",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "230",
+    "site": "louvre",
+    "title": "Salle 230 - Mésopotamie - Syrie du Nord",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "401",
+    "site": "louvre",
+    "title": "Salle 401 - Baroque et Rococo, XVIIe-XVIIIe siècle",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "402",
+    "site": "louvre",
+    "title": "Salle 402 - Baroque et Rococo, XVIIe-XVIIIe siècle",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "327",
+    "site": "louvre",
+    "title": "Salle 327 - Le parvis du temple nord",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "328",
+    "site": "louvre",
+    "title": "Salle 328 - Le parvis du temple sud",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "227bis",
+    "site": "louvre",
+    "title": "Salle 227 bis - Actualité du département AO",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "214",
+    "site": "louvre",
+    "title": "Salle 214 - La sculpture de la seconde moitié du 16e siècle : le maniérisme",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "218",
+    "site": "louvre",
+    "title": "Salle 218 - François Anguier (1604-1669) et Jacques Sarazin (1592-1660)",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "211",
+    "site": "louvre",
+    "title": "Salle 211 - Michel Colombe (vers 1430 - vers 1512-1515) - La sculpture vers 1500 : vers la Renaissance",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "220",
+    "site": "louvre",
+    "title": "Salle 220 - Jean Jacques Caffieri (1725-1792) et Jean-Baptiste Pigalle (1714-1785)",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "221",
+    "site": "louvre",
+    "title": "Salle 221 - Augustin Pajou (1730-1809) et Edme Bouchardon (1698-1762)",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "222",
+    "site": "louvre",
+    "title": "Salle 222 - Etienne Maurice Falconet (1716-1791) et Jean Antoine Houdon (1741-1828)",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "225",
+    "site": "louvre",
+    "title": "Salle 225 - Antoine-Denis Chaudet (1763-1810), le néoclassicisme en sculpture / James Pradier (1790-1852)",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "307",
+    "site": "louvre",
+    "title": "Salle 307 - Iran - L'empire perse achéménide : le palais de Darius Ier à Suse",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "314",
+    "site": "louvre",
+    "title": "Salle 314 - Arabie Heureuse, Arabie Déserte, VIIe s. av.-IIIe s. ap. J.-C",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "344",
+    "site": "louvre",
+    "title": "Salle 344 - Art grec classique et hellénistique",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "319",
+    "site": "louvre",
+    "title": "Salle 319 - Livre des Morts",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "165624",
+    "site": "louvre",
+    "title": "Palier du Midi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "165627",
+    "site": "louvre",
+    "title": "Palier escalier nord",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "198804",
+    "site": "louvre",
+    "title": "Escalier Colbert - Palier",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "198805",
+    "site": "louvre",
+    "title": "Escalier d'honneur",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "198807",
+    "site": "louvre",
+    "title": "Escalier Lefuel - 1er étage",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "232197",
+    "site": "louvre",
+    "title": "Pavillon Sully, palier du premier étage",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "517",
+    "site": "louvre",
+    "title": "Salle 517 - Passage de la majolique française",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "518",
+    "site": "louvre",
+    "title": "Salle 518 - Sauvageot",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "519",
+    "site": "louvre",
+    "title": "Salle 519 - Effiat",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "520",
+    "site": "louvre",
+    "title": "Salle 520 - Henri IV",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "521",
+    "site": "louvre",
+    "title": "Salle 521 - Bernard Palissy",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "523",
+    "site": "louvre",
+    "title": "Salle 523 - Salle de l'ordre du Saint-Esprit",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "525",
+    "site": "louvre",
+    "title": "Salle 525 - Henri III",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "526",
+    "site": "louvre",
+    "title": "Salle 526 - Rotonde Jean Boulogne",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "527",
+    "site": "louvre",
+    "title": "Salle 527 - Adolphe Rothschild",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "528",
+    "site": "louvre",
+    "title": "Salle 528 - Charles Quint",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "529",
+    "site": "louvre",
+    "title": "Salle 529 - Léonard Limosin",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "530",
+    "site": "louvre",
+    "title": "Salle 530 - Henri II",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "531",
+    "site": "louvre",
+    "title": "Salle 531 - Paul Garnier",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "532",
+    "site": "louvre",
+    "title": "Salle 532 - Café Richelieu Est",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "501",
+    "site": "louvre",
+    "title": "Salle 501 - Charlemagne",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "502",
+    "site": "louvre",
+    "title": "Salle 502 - Suger",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "503",
+    "site": "louvre",
+    "title": "Salle 503 - Jeanne d'Evreux",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "504",
+    "site": "louvre",
+    "title": "Salle 504 - Sceptre de Charles V",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "522",
+    "site": "louvre",
+    "title": "Salle 522 - Arconati Viconti",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "506",
+    "site": "louvre",
+    "title": "Salle 506 - Saint Anatoile",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "507",
+    "site": "louvre",
+    "title": "Salle 507 - Galerie des Chasses de Maximilien",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "508",
+    "site": "louvre",
+    "title": "Salle 508 - Millefleurs",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "509",
+    "site": "louvre",
+    "title": "Salle 509 - Larcade",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "510",
+    "site": "louvre",
+    "title": "Salle 510 - Louis XII",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "511",
+    "site": "louvre",
+    "title": "Salle 511 - Riccio",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "512",
+    "site": "louvre",
+    "title": "Salle 512 - Della Torre",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "513",
+    "site": "louvre",
+    "title": "Salle 513 - Salle des Médailles",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "514",
+    "site": "louvre",
+    "title": "Salle 514 - Maître de l'Enéide",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "515",
+    "site": "louvre",
+    "title": "Salle 515 - François Ier",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "535",
+    "site": "louvre",
+    "title": "Salle 535 - Appartements Napoléon III - Anciens petits appartements, Chambre du ministre, actualité du département",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "536",
+    "site": "louvre",
+    "title": "Salle 536 - Appartements Napoléon III - Anciens petits appartements, Salon Bibliothèque",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "537",
+    "site": "louvre",
+    "title": "Salle 537 - Collection Edmond de Rothschild",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "538",
+    "site": "louvre",
+    "title": "Salle 538 -  Appartements Napoléon III - Anciens petits appartements",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "539",
+    "site": "louvre",
+    "title": "Salle 539 - Appartements Napoléon III - Anciens petits appartements, Premier Salon",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "540",
+    "site": "louvre",
+    "title": "Salle 540 - Appartements Napoléon III - Antichambre",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "541",
+    "site": "louvre",
+    "title": "Salle 541 - Appartements Napoléon III - Galerie d'introduction",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "542",
+    "site": "louvre",
+    "title": "Salle 542 - Collection Thiers",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "543",
+    "site": "louvre",
+    "title": "Salle 543 - Appartements Napoléon III - Salon de famille",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "544",
+    "site": "louvre",
+    "title": "Salle 544 - Appartements Napoléon III - Grand salon",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "545",
+    "site": "louvre",
+    "title": "Salle 545 - Appartements Napoléon III - Salon théâtre",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "546",
+    "site": "louvre",
+    "title": "Salle 546 - Appartements Napoléon III - Boudoir ou salon de la Terrasse",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "547",
+    "site": "louvre",
+    "title": "Salle 547 - Appartements Napoléon III - Petite salle à manger",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "548",
+    "site": "louvre",
+    "title": "Salle 548 - Appartements Napoléon III - Grande salle à manger",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "549",
+    "site": "louvre",
+    "title": "Salle 549 - Appartements Napoléon III - Corridor",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "550",
+    "site": "louvre",
+    "title": "Salle 550 - Elise Dosne-Thiers",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "551",
+    "site": "louvre",
+    "title": "Salle 551 - Simone et Cino Del Duca, Grands donateurs",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "552",
+    "site": "louvre",
+    "title": "Salle 552 - Jacob-Desmalter",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "553",
+    "site": "louvre",
+    "title": "Salle 553 - Valadier",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "554",
+    "site": "louvre",
+    "title": "Salle 554 - Alexandre Brongniart",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "555",
+    "site": "louvre",
+    "title": "Salle 555 - Biennais",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "556",
+    "site": "louvre",
+    "title": "Salle 556 - Chambre de Madame Récamier",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "557",
+    "site": "louvre",
+    "title": "Salle 557 - Jacob Frères",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "558",
+    "site": "louvre",
+    "title": "Salle 558 - Chambre du Roi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "559",
+    "site": "louvre",
+    "title": "Salle 559 - Louis XVIII",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "560",
+    "site": "louvre",
+    "title": "Salle 560 - Claude Ott",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "561",
+    "site": "louvre",
+    "title": "Salle 561 - Duc d'Orléans",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "562",
+    "site": "louvre",
+    "title": "Salle 562 - Marie d'Orléans",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "563",
+    "site": "louvre",
+    "title": "Salle 563 - Chenavard",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "564",
+    "site": "louvre",
+    "title": "Salle 564 - Duc de Nemours",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "600",
+    "site": "louvre",
+    "title": "Salle 600 - Chapelle",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "605",
+    "site": "louvre",
+    "title": "Salle 605 - Stavros S. Niarchos",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "606",
+    "site": "louvre",
+    "title": "Salle 606 - Gilbert et Rose-Marie Chagoury",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "607",
+    "site": "louvre",
+    "title": "Salle 607 - Isaac de Camondo",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "608",
+    "site": "louvre",
+    "title": "Salle 608 - Cabinet de l’hôtel Villemaré-Dangé",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "609",
+    "site": "louvre",
+    "title": "Salle 609 - Nicolas et Simone Landau",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "610",
+    "site": "louvre",
+    "title": "Salle 610 - Marie Leszczynska",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "611",
+    "site": "louvre",
+    "title": "Salle 611 - Jean-François Oeben",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "612",
+    "site": "louvre",
+    "title": "Salle 612 - Rocaille",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "613",
+    "site": "louvre",
+    "title": "Salle 613 - Cabinet chinois",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "614",
+    "site": "louvre",
+    "title": "Salle 614 - Galerie Louis XV",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "615",
+    "site": "louvre",
+    "title": "Salle 615 - L. Lafon",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "616",
+    "site": "louvre",
+    "title": "Salle 616 - Piranèse",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "618",
+    "site": "louvre",
+    "title": "Salle 618 - Breteuil",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "619",
+    "site": "louvre",
+    "title": "Salle 619 - Cabinet René Grog et Marie-Louise Grog-Carven",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "620",
+    "site": "louvre",
+    "title": "Salle 620 - Djahangir Riahi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "621",
+    "site": "louvre",
+    "title": "Salle 621 - Passage de Luynes",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "622",
+    "site": "louvre",
+    "title": "Salle 622 - Chambre de Parade de l’hôtel de Chevreuse",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "623",
+    "site": "louvre",
+    "title": "Salle 623 - Galerie Basile de Schlichting",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "624",
+    "site": "louvre",
+    "title": "Salle 624 - Robert-Joseph Auguste",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "625",
+    "site": "louvre",
+    "title": "Salle 625 - Aline Guerrand-Hermès",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "626",
+    "site": "louvre",
+    "title": "Salle 626 - David, Pierre et Michel David-Weill",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "627",
+    "site": "louvre",
+    "title": "Salle 627 - Galerie Marie-Antoinette",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "628",
+    "site": "louvre",
+    "title": "Salle 628 - Cabinet de Marie-Antoinette",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "629",
+    "site": "louvre",
+    "title": "Salle 629 - René Grog et Marie-Louise Grog-Carven",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "630",
+    "site": "louvre",
+    "title": "Salle 630 - Cabinet turc",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "631",
+    "site": "louvre",
+    "title": "Salle 631 - Louis XVI",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "632",
+    "site": "louvre",
+    "title": "Salle 632 - Marie-Antoinette",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "633",
+    "site": "louvre",
+    "title": "Salle 633 - L'époque de Nagada",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "634",
+    "site": "louvre",
+    "title": "Salle 634 - L'époque thinite",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "635",
+    "site": "louvre",
+    "title": "Salle 635 - L'Ancien Empire",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "636",
+    "site": "louvre",
+    "title": "Salle 636 - Le Moyen Empire",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "637",
+    "site": "louvre",
+    "title": "Salle 637 - Le Nouvel Empire - De la reconquête à Aménophis III",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "638",
+    "site": "louvre",
+    "title": "Salle 638 - Le Nouvel Empire - Au temps d'Akhénaton et de Néfertiti",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "641",
+    "site": "louvre",
+    "title": "Salle 641 - Le Nouvel Empire - Le temps des Ramsès",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "642",
+    "site": "louvre",
+    "title": "Salle 642 - Le Nouvel Empire - Le temps des Ramsès",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "643",
+    "site": "louvre",
+    "title": "Salle 643 - De l'an mille à la première domination perse",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "644",
+    "site": "louvre",
+    "title": "Salle 644 - Des derniers pharaons égyptiens à Cléopâtre",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "645",
+    "site": "louvre",
+    "title": "Salle 645 - Salle des Colonnes",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "646",
+    "site": "louvre",
+    "title": "Salle 646 - Figurines en terre cuite grecques - Époques hellénistique et romaine (Myrina)",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "647",
+    "site": "louvre",
+    "title": "Salle 647 - Figurines en terre cuite grecques - Époques hellénistique et romaine",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "648",
+    "site": "louvre",
+    "title": "Salle 648 - Figurines en terre cuite grecques - Époques archaïque et classique",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "649",
+    "site": "louvre",
+    "title": "Salle 649 - Clarac",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "650",
+    "site": "louvre",
+    "title": "Salle 650 - Vestibule Clarac",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "660",
+    "site": "louvre",
+    "title": "Salle 660 - Salle des Sept Cheminées",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "661",
+    "site": "louvre",
+    "title": "Salle 661 - Salle des verres",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "662",
+    "site": "louvre",
+    "title": "Salle 662 - Henri II",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "663",
+    "site": "louvre",
+    "title": "Salle 663 - Salle des Séances",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "700",
+    "site": "louvre",
+    "title": "Salle 700 - Salle Mollien, romantisme",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "701",
+    "site": "louvre",
+    "title": "Salle 701 - Salle Denon",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "702",
+    "site": "louvre",
+    "title": "Salle 702 - Salle Daru, néoclassicisme",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "704",
+    "site": "louvre",
+    "title": "Salle 704 - Rotonde de la Galerie d'Apollon",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "706",
+    "site": "louvre",
+    "title": "Salle 706 - Percier et Fontaine",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "707",
+    "site": "louvre",
+    "title": "Salle 707 - Duchâtel",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "708",
+    "site": "louvre",
+    "title": "Salle 708 - Salon Carré",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "709",
+    "site": "louvre",
+    "title": "Salle 709 - Salle des Sept Mètres",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "713",
+    "site": "louvre",
+    "title": "Salle 713 - Grande Bretagne / États-Unis",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "714",
+    "site": "louvre",
+    "title": "Salle 714 - Collection Beistegui",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "715",
+    "site": "louvre",
+    "title": "Salle 715 - Passage/ancienne salle exposition Arts graphiques",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "717",
+    "site": "louvre",
+    "title": "Salle 717 - Salvator Rosa",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "719",
+    "site": "louvre",
+    "title": "Salle 719 - Goya",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "533",
+    "site": "louvre",
+    "title": "Salle 533 - Café Richelieu Centre",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "534",
+    "site": "louvre",
+    "title": "Salle 534 - Café Richelieu Ouest",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "524",
+    "site": "louvre",
+    "title": "Salle 524 - Ordre du Saint-Esprit",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "639",
+    "site": "louvre",
+    "title": "Salle 639 - Le Nouvel Empire - Toutankhamon et ses successeurs",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "640",
+    "site": "louvre",
+    "title": "Salle 640 - Le Nouvel Empire - Toutankhamon et ses successeurs",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "505",
+    "site": "louvre",
+    "title": "Salle 505 - Corridor de Valence / Anne de Bretagne / Corridor de Faenza",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "617",
+    "site": "louvre",
+    "title": "Salle 617 - De Louis XIV à Louis XVI",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "703",
+    "site": "louvre",
+    "title": "Salle 703 - Palier Samothrace",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "710",
+    "site": "louvre",
+    "title": "Salle 710 - Grande Galerie",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "712",
+    "site": "louvre",
+    "title": "Salle 712 - Grande Galerie",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "711",
+    "site": "louvre",
+    "title": "Salle 711 - Salle de la Joconde",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "716",
+    "site": "louvre",
+    "title": "Salle 716 - Grande Galerie",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "718",
+    "site": "louvre",
+    "title": "Salle 718",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "165568",
+    "site": "louvre",
+    "title": "Escalier Lefuel - 2eme étage",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "800",
+    "site": "louvre",
+    "title": "Salle 800 - Peintures, Europe du Nord",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "801",
+    "site": "louvre",
+    "title": "Salle 801 - Galerie Médicis",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "802",
+    "site": "louvre",
+    "title": "Salle 802 - Grande peinture flamande de la première moitié du 17e siècle",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "803",
+    "site": "louvre",
+    "title": "Salle 803 - La peinture flamande vers 1600",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "804",
+    "site": "louvre",
+    "title": "Salle 804 - Tableaux en attente de restitution",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "805",
+    "site": "louvre",
+    "title": "Salle 805 - Tableaux en attente de restitution",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "806",
+    "site": "louvre",
+    "title": "Salle 806 - Tableaux de cabinet, entre paysage et nature morte",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "807",
+    "site": "louvre",
+    "title": "Salle 807 - La peinture flamande vers 1600",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "808",
+    "site": "louvre",
+    "title": "Salle 808 - La peinture flamande vers 1600",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "809",
+    "site": "louvre",
+    "title": "Salle 809 - Allemagne, 16e siècle",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "810",
+    "site": "louvre",
+    "title": "Salle 810 - Lucas Cranach dit l’Ancien (1472-1553)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "811",
+    "site": "louvre",
+    "title": "Salle 811 - Pays-Bas du Sud : Anvers, 1550-1580",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "812",
+    "site": "louvre",
+    "title": "Salle 812 - Pays-Bas du Sud, 1550-1580",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "813",
+    "site": "louvre",
+    "title": "Salle 813 - Pays-Bas, vers 1550",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "814",
+    "site": "louvre",
+    "title": "Salle 814 - Humanisme et Réforme",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "815",
+    "site": "louvre",
+    "title": "Salle 815 - Pays-Bas du Nord, 1500-1550",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "816",
+    "site": "louvre",
+    "title": "Salle 816 - Peintures, Europe du Nord",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "817",
+    "site": "louvre",
+    "title": "Salle 817 - Répéter et décliner les modèles des grands peintres",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "818",
+    "site": "louvre",
+    "title": "Salle 818 - Peindre pour les marchands",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "819",
+    "site": "louvre",
+    "title": "Salle 819 - Tradition et innovations à Cologne",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "820",
+    "site": "louvre",
+    "title": "Salle 820 - La peinture dans le royaume de France entre 1440 et 1500",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "821",
+    "site": "louvre",
+    "title": "Salle 821 - Les foyers artistiques provinciaux, 1500-1550",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "822",
+    "site": "louvre",
+    "title": "Salle 822 - Les portraits",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "823",
+    "site": "louvre",
+    "title": "Salle 823 - Première École de Fontainebleau",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "824",
+    "site": "louvre",
+    "title": "Salle 824 - Seconde École de Fontainebleau",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "825",
+    "site": "louvre",
+    "title": "Salle 825 - Nicolas Poussin (1594-1665) : les chefs-d’œuvre",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "826",
+    "site": "louvre",
+    "title": "Salle 826 - Nicolas Poussin (1594-1665) : entre Rome et Paris",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "827",
+    "site": "louvre",
+    "title": "Salle 827 - Claude Gellée, dit le Lorrain (1600-1682) et le paysage classique",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "828",
+    "site": "louvre",
+    "title": "Salle 828 - Les peintres de Louis XIII, roi de France de 1610 à 1643",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "829",
+    "site": "louvre",
+    "title": "Salle 829 - La peinture en France sous Louis XIII",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "830",
+    "site": "louvre",
+    "title": "Salle 830 - Valentin de Boulogne (1591-1632)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "831",
+    "site": "louvre",
+    "title": "Salle 831 - Présentations temporaires",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "832",
+    "site": "louvre",
+    "title": "Salle 832 - La Provence vers 1450-1500 : un carrefour cosmopolite",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "833",
+    "site": "louvre",
+    "title": "Salle 833 - Le réveil artistique en Provence",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "834",
+    "site": "louvre",
+    "title": "Salle 834 - Le mécénat des ducs de Berry et de Bourgogne",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "836",
+    "site": "louvre",
+    "title": "Salle 836 - Le paysage hollandais",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "837",
+    "site": "louvre",
+    "title": "Salle 837 - Autour de Jacob van Ruisdael (vers 1628-1682)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "838",
+    "site": "louvre",
+    "title": "Salle 838 - Frans Post (1612-1680)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "839",
+    "site": "louvre",
+    "title": "Salle 839 - Peinture de genre, Leyde",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "840",
+    "site": "louvre",
+    "title": "Salle 840 - Autour des natures mortes",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "841",
+    "site": "louvre",
+    "title": "Salle 841 - Utrecht et Dordrecht",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "842",
+    "site": "louvre",
+    "title": "Salle 842 - Passage",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "843",
+    "site": "louvre",
+    "title": "Salle 843 - Le portrait",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "844",
+    "site": "louvre",
+    "title": "Salle 844 - Autour de Rembrandt Harmensz van Rijn, dit Rembrandt (1606-1669)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "845",
+    "site": "louvre",
+    "title": "Salle 845 - La Hollande et l’Italie",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "846",
+    "site": "louvre",
+    "title": "Salle 846 - Frans Hals (1581/1585-1666) et la peinture à Haarlem",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "847",
+    "site": "louvre",
+    "title": "Salle 847 (entre salles 846 et 848)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "848",
+    "site": "louvre",
+    "title": "Salle 848 - Jacob Jordaens (1593-1678)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "849",
+    "site": "louvre",
+    "title": "Salle 849 - Autour des vues d’architectures",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "850",
+    "site": "louvre",
+    "title": "Salle 850 - Antoon van Dyck (1599-1641) (ex-salle 26)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "851",
+    "site": "louvre",
+    "title": "Salle 851 - Le pittoresque dans la peinture hollandaise (ex-salle 27-1)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "852",
+    "site": "louvre",
+    "title": "Salle 852  - Le pittoresque dans la peinture hollandaise (ex-salle 27-2)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "853",
+    "site": "louvre",
+    "title": "Salle 853 - Antoon van Dyck (1599-1641) (ex-salle 24)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "854",
+    "site": "louvre",
+    "title": "Salle 854 - Le paysage flamand",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "855",
+    "site": "louvre",
+    "title": "Salle 855 - Pierre Paul Rubens (1577-1640)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "856",
+    "site": "louvre",
+    "title": "Salle 856 - Esquisses de Pierre Paul Rubens (1577-1640)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "857",
+    "site": "louvre",
+    "title": "Salle 857 - David Teniers le Jeune (1610-1690)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "858",
+    "site": "louvre",
+    "title": "Salle 858 - Passage",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "859",
+    "site": "louvre",
+    "title": "Salle 859 - Flandres, Hollande",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "860",
+    "site": "louvre",
+    "title": "Salle 860 - Flandres, Hollande, Russie",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "861",
+    "site": "louvre",
+    "title": "Salle 861 - Hollande, Belgique",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "862",
+    "site": "louvre",
+    "title": "Salle 862 - Pays scandinaves",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "863",
+    "site": "louvre",
+    "title": "Salle 863 - Allemagne, Russie, Suisse",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "864",
+    "site": "louvre",
+    "title": "Salle 864 - Allemagne, Autriche",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "902",
+    "site": "louvre",
+    "title": "Salle 902 - Donation de la princesse Louis de Croÿ, née Eugénie de l'Espine",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "903",
+    "site": "louvre",
+    "title": "Salle 903 - Donation Hélène et Victor Lyon",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "904",
+    "site": "louvre",
+    "title": "Salle 904 - Salle d'actualités du département des peintures",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "905",
+    "site": "louvre",
+    "title": "Salle 905 - Salle d'actualités du département des peintures",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "906",
+    "site": "louvre",
+    "title": "Salle 906 - Salle d'actualités du département des peintures",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "907",
+    "site": "louvre",
+    "title": "Salle 907 - Salle d'actualités du département des peintures",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "908",
+    "site": "louvre",
+    "title": "Salle 908 - Tableaux d'autels",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "909",
+    "site": "louvre",
+    "title": "Salle 909 - Tableaux de dévotion",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "910",
+    "site": "louvre",
+    "title": "Salle 910 - La Vie de saint Bruno d'Eustache Le Sueur (1616-1655)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "913",
+    "site": "louvre",
+    "title": "Salle 913 - Philippe de Champaigne (1602-1674)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "914",
+    "site": "louvre",
+    "title": "Salle 914 - Charles Le Brun (1619-1690)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "915",
+    "site": "louvre",
+    "title": "Salle 915 - Jean Jouvenet (1644-1717)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "917",
+    "site": "louvre",
+    "title": "Salle 917 - Jean-Antoine Watteau (1684-1721)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "918",
+    "site": "louvre",
+    "title": "Salle 918 - Collection La Caze",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "919",
+    "site": "louvre",
+    "title": "Salle 919 - Les peintres de Louis XV",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "920",
+    "site": "louvre",
+    "title": "Salle 920 - Jean-Siméon Chardin (1699-1779)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "921",
+    "site": "louvre",
+    "title": "Salle 921 - Peinture de genre",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "922",
+    "site": "louvre",
+    "title": "Salle 922",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "923",
+    "site": "louvre",
+    "title": "Salle 923 - Couloir des Poules",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "924",
+    "site": "louvre",
+    "title": "Salle 924 - Jean Restout (1692-1768) et la peinture d'histoire au 18e siècle",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "925",
+    "site": "louvre",
+    "title": "Salle 925 - Pastels du 18e siècle (ex-salle 44)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "926",
+    "site": "louvre",
+    "title": "Salle 926 - Pastels du 18e siècle  (ex-salle 45)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "927",
+    "site": "louvre",
+    "title": "Salle 927 - François Boucher (1703-1770)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "928",
+    "site": "louvre",
+    "title": "Salle 928 - Les peintres de Diderot",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "929",
+    "site": "louvre",
+    "title": "Salle 929 - Jean-Honoré Fragonard (1732-1806)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "930",
+    "site": "louvre",
+    "title": "Salle 930 - Hubert Robert (1733-1808), le Paysage entre France et Italie (ex-salle 49)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "931",
+    "site": "louvre",
+    "title": "Salle 931 - Hubert Robert (1733-1808), le Paysage entre France et Italie (ex-salle 50)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "932",
+    "site": "louvre",
+    "title": "Salle 932 - Jean-Baptiste Greuze (1725-1805)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "933",
+    "site": "louvre",
+    "title": "Salle 933 - Élisabeth Vigée-Le Brun (1755-1842)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "934",
+    "site": "louvre",
+    "title": "Salle 934 - La peinture d’histoire à la fin du 18e siècle (1785-1800)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "935",
+    "site": "louvre",
+    "title": "Salle 935 - Jacques-Louis David (1745-1825) et ses élèves, l’art du portrait",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "937",
+    "site": "louvre",
+    "title": "Salle 937 - La peinture de genre anecdotique (1800-1820)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "938",
+    "site": "louvre",
+    "title": "Salle 938 - Louis Léopold Boilly (1761-1845) et la scène de moeurs parisiennes",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "939",
+    "site": "louvre",
+    "title": "Salle 939 - L’Italie pittoresque (1800-1820)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "940",
+    "site": "louvre",
+    "title": "Salle 940 - Jean-Auguste-Dominique Ingres (1780-1867)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "941",
+    "site": "louvre",
+    "title": "Salle 941 - Théodore Géricault (1791-1824)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "942",
+    "site": "louvre",
+    "title": "Salle 942 - Eugène Delacroix (1798-1863)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "943",
+    "site": "louvre",
+    "title": "Salle 943 - Théodore Chassériau (1819-1856) et l’art du portrait autour de 1840",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "944",
+    "site": "louvre",
+    "title": "Salle 944 - Théodore Rousseau (1812-1867)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "945",
+    "site": "louvre",
+    "title": "Salle 945 - Collection Étienne Moreau-Nélaton (1859-1927), l’école de Barbizon",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "946",
+    "site": "louvre",
+    "title": "Salle 946 - L’idylle et le drame romantique (1820-1835)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "948",
+    "site": "louvre",
+    "title": "Salle 948 - Le paysage français (1820-1850)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "949",
+    "site": "louvre",
+    "title": "Salle 949 - Collection Étienne Moreau-Nélaton (1859-1927), une passion pour Corot",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "950",
+    "site": "louvre",
+    "title": "Salle 950 - Collection Étienne Moreau-Nélaton (1859-1927), les romantiques",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "951",
+    "site": "louvre",
+    "title": "Salle 951 - Collection Georges Thomy Thiéry (1823-1902)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "952",
+    "site": "louvre",
+    "title": "Salle 952 - Jean-Baptiste Camille Corot (1796-1875)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "900",
+    "site": "louvre",
+    "title": "Salle 900",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "911",
+    "site": "louvre",
+    "title": "Salle 911- L'atticisme",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "912",
+    "site": "louvre",
+    "title": "Salle 912 - Georges de La Tour et Les frères Le Nain",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "916",
+    "site": "louvre",
+    "title": "Salle 916 - Les peintres de Louis XIV",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "936",
+    "site": "louvre",
+    "title": "Salle 936 - Pierre Henri de Valenciennes (1750-1819) et l’étude d’après nature / Pierre-Paul Prud’hon (1758-1823)",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "947",
+    "site": "louvre",
+    "title": "Salle 947 - Salle de bains décorée par Camille Corot",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "835",
+    "site": "louvre",
+    "title": "Salle 835 - La peinture au 14e siècle / Le style gothique international",
+    "floor": "2"
+  }
+]

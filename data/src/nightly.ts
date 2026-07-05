@@ -172,21 +172,16 @@ async function main(): Promise<void> {
     if (m.id === "met") continue;
     const mSnap = path.join(stage, "museums", m.id, "snapshots");
     fs.mkdirSync(mSnap, { recursive: true });
-    try {
-      await sourceFor(m.id).fullFetch({ snapDir: mSnap });
-    } catch (err) {
-      museumFailures.push(m.id);
-      console.error(`${m.id} refresh FAILED — reusing last night's rows:`, err);
-      const prevRows = exportObjectsFromDb(path.join(pulled, "met.sqlite"), m.id);
-      if (prevRows.length === 0) {
-        console.warn(`${m.id}: no previous rows in the artifact either — museum ships empty tonight`);
-        continue;
-      }
+    // Reconstruct last night's rows + gallery labels FIRST: they are (a) the
+    // baseline a delta-capable source refreshes in place — critical for the
+    // Louvre, whose fullFetch is a ~26.6k-request hydration — and (b) the
+    // stale-but-present fallback if tonight's source pull fails.
+    const prevRows = exportObjectsFromDb(path.join(pulled, "met.sqlite"), m.id);
+    if (prevRows.length > 0) {
       fs.writeFileSync(
         path.join(mSnap, "objects.json.gz"),
         zlib.gzipSync(JSON.stringify(prevRows)),
       );
-      // Gallery labels from the previous artifact's galleries rows.
       const db = new Database(path.join(pulled, "met.sqlite"), { readonly: true });
       try {
         const sites = new Set(m.sites.map((s) => s.siteId));
@@ -201,6 +196,21 @@ async function main(): Promise<void> {
         fs.writeFileSync(path.join(mSnap, "galleries.json"), JSON.stringify(gals, null, 2));
       } finally {
         db.close();
+      }
+    }
+    try {
+      if (prevRows.length > 0) {
+        await sourceFor(m.id).delta(mSnap, since);
+      } else {
+        // First night for this museum (or it shipped empty): full hydration.
+        await sourceFor(m.id).fullFetch({ snapDir: mSnap });
+      }
+    } catch (err) {
+      museumFailures.push(m.id);
+      if (prevRows.length > 0) {
+        console.error(`${m.id} refresh FAILED — shipping last night's rows (one day stale):`, err);
+      } else {
+        console.error(`${m.id} refresh FAILED and no previous rows — museum ships empty tonight:`, err);
       }
     }
   }

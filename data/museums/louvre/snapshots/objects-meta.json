@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-07-05T19:14:50.055Z",
+  "sallesListed": 389,
+  "membershipArks": 26653,
+  "hydrated": 500,
+  "rows": 500,
+  "skipped": {
+    "notFound": 0
+  },
+  "distinctGalleryNumbers": 15,
+  "runtimeSeconds": 251,
+  "partial": true,
+  "limit": 500
+}
