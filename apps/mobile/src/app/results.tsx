@@ -11,19 +11,34 @@ import {
 
 import type { components } from '@met/shared';
 
-import { useAnchor } from '@/components/LocateState';
+import { useAnchor, useVenue } from '@/components/LocateState';
+import MuseumBadge from '@/components/MuseumBadge';
 import { ObjectThumb } from '@/components/ObjectImage';
 import RoomRow from '@/components/RoomRow';
+import ScopeChips, { type MuseumScope } from '@/components/ScopeChips';
 import SearchFilterChips, {
   ResultFilters,
   applyFilters,
 } from '@/components/SearchFilterChips';
 import { apiBase } from '@/data/apiBase';
-import { DataProvider, MetObject, useData } from '@/data/provider';
+import {
+  DataProvider,
+  MetObject,
+  museumForSite,
+  museumSiteIds,
+  partitionByMuseum,
+  useData,
+} from '@/data/provider';
 import { matchAmenities, rankAmenities } from '@/data/roomSearch';
 import { colors, spacing, type } from '@/theme';
 
 type InterpretResponse = components['schemas']['InterpretResponse'];
+
+/** One flat FlatList item: either an object row or a section header (C2
+ *  sectioned multi-museum results — see the module doc in ScopeChips.tsx). */
+type ListItem =
+  | { kind: 'object'; key: string; object: MetObject; other: boolean }
+  | { kind: 'header'; key: string; label: string };
 
 /**
  * Server-side LLM interpret flow (POST /api/v1/search/interpret): the server
@@ -67,6 +82,18 @@ export default function ResultsScreen() {
     interpreted?: string;
   }>();
   const [filters, setFilters] = useState<ResultFilters>({});
+  const [scope, setScope] = useState<MuseumScope>('all');
+
+  // Multi-museum sectioning (C2) — see the identical block in search.tsx.
+  const venue = useVenue();
+  const museums = data.museums();
+  const isMultiMuseum = museums.length > 1;
+  const activeMuseum = museumForSite(museums, venue.venue) ?? museums[0];
+  const activeSiteIds = useMemo(() => museumSiteIds(activeMuseum), [activeMuseum]);
+  // Gallery browsing (?gallery=) is inherently single-site; scoping only
+  // applies to text queries.
+  const scopedMuseum = isMultiMuseum && scope === 'here' && !gallery ? activeMuseum.id : undefined;
+  const showSections = isMultiMuseum && scope === 'all' && !gallery;
 
   const isInterpreted = interpreted === '1' && !!q;
   const [interp, setInterp] = useState<InterpretState>({ phase: 'loading' });
@@ -78,7 +105,11 @@ export default function ResultsScreen() {
       const res = await fetch(`${apiBase()}/api/v1/search/interpret`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ query: q, maxResults: 20 }),
+        body: JSON.stringify({
+          query: q,
+          maxResults: 20,
+          ...(scopedMuseum ? { museum: scopedMuseum } : null),
+        }),
       });
       if (!res.ok) throw new Error(`interpret ${res.status}`);
       const body = (await res.json()) as InterpretResponse;
@@ -89,15 +120,24 @@ export default function ResultsScreen() {
     return () => {
       cancelled = true;
     };
-  }, [isInterpreted, q]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isInterpreted, q, scopedMuseum]);
 
   // Gallery + amenity rows for text searches — same anatomy and one-tap
   // grammar as the search omnibar (rows open the home-map sheet; no inline
   // actions). Skipped for ?gallery= listings (already a single room's view).
+  // Always scoped to the active museum's sites (never surface another
+  // museum's gallery/amenity row here).
   const anchor = useAnchor();
   const originId = anchor?.roomId ?? 'great-hall';
-  const galleryRows = !gallery && q ? data.searchGalleries(q, 4) : [];
-  const matchedAmenities = !gallery && q ? matchAmenities(data.amenities(), q) : [];
+  const galleryRowsRaw = !gallery && q ? data.searchGalleries(q, 4) : [];
+  const galleryRows = isMultiMuseum
+    ? galleryRowsRaw.filter((r) => activeSiteIds.has(r.site ?? 'fifthAve'))
+    : galleryRowsRaw;
+  const matchedAmenitiesRaw = !gallery && q ? matchAmenities(data.amenities(), q) : [];
+  const matchedAmenities = isMultiMuseum
+    ? matchedAmenitiesRaw.filter((r) => activeSiteIds.has(r.site ?? 'fifthAve'))
+    : matchedAmenitiesRaw;
   const amenityRows = useMemo(
     () => rankAmenities(data, matchedAmenities, originId),
     // matchedAmenities is identity-unstable per render; key on its ids.
@@ -111,14 +151,39 @@ export default function ResultsScreen() {
       ? interp.phase === 'done'
         ? hydrateResults(data, interp.body)
         : interp.phase === 'offline'
-          ? data.searchAll(q ?? '') // graceful degrade: local index still works
+          ? data.searchAll(q ?? '', scopedMuseum ? { museum: scopedMuseum } : undefined) // graceful degrade: local index still works
           : []
-      : data.searchAll(q ?? '');
+      : data.searchAll(q ?? '', scopedMuseum ? { museum: scopedMuseum } : undefined);
   const floorOf = (galleryId: string) => data.getGallery(galleryId)?.floor;
   const results = applyFilters(base, filters, floorOf);
   const heading = gallery
     ? data.getGallery(gallery)?.name ?? `Gallery ${gallery}`
     : `“${q ?? ''}”`;
+
+  const listItems: ListItem[] = (() => {
+    const asItem = (o: MetObject, other: boolean): ListItem => ({
+      kind: 'object',
+      key: String(o.objectID),
+      object: o,
+      other,
+    });
+    if (!showSections) return results.map((o) => asItem(o, false));
+    const { active, other } = partitionByMuseum(results, activeMuseum.id);
+    const items: ListItem[] = [];
+    if (active.length > 0) {
+      items.push({
+        kind: 'header',
+        key: 'hdr-active',
+        label: `AT ${activeMuseum.shortName.toUpperCase()}`,
+      });
+      items.push(...active.map((o) => asItem(o, false)));
+    }
+    if (other.length > 0) {
+      items.push({ kind: 'header', key: 'hdr-other', label: 'OTHER MUSEUMS' });
+      items.push(...other.map((o) => asItem(o, true)));
+    }
+    return items;
+  })();
 
   const galleryChip = (o: MetObject) => {
     if (!o.gallery) return 'Not on view';
@@ -160,10 +225,13 @@ export default function ResultsScreen() {
       <Text style={styles.heading}>
         {results.length} result{results.length === 1 ? '' : 's'} · {heading}
       </Text>
+      {isMultiMuseum && !gallery && (
+        <ScopeChips activeLabel={activeMuseum.shortName} scope={scope} onChange={setScope} />
+      )}
       <SearchFilterChips filters={filters} onChange={setFilters} />
       <FlatList
-        data={results}
-        keyExtractor={(o) => String(o.objectID)}
+        data={listItems}
+        keyExtractor={(item) => item.key}
         ListHeaderComponent={
           galleryRows.length > 0 || amenityRows.length > 0 ? (
             <View>
@@ -186,30 +254,41 @@ export default function ResultsScreen() {
             </View>
           ) : null
         }
-        renderItem={({ item }) => (
-          <Pressable
-            style={styles.row}
-            onPress={() => router.push(`/object/${item.objectID}`)}
-            testID={`result-${item.objectID}`}
-          >
-            {item.img ? (
-              // Tigris CDN first, proxy fallback — see data/imageCdn.ts.
-              <ObjectThumb object={item} style={styles.thumb} />
-            ) : (
-              <View style={[styles.thumb, styles.thumbEmpty]} />
-            )}
-            <View style={styles.rowText}>
-              <Text style={styles.rowTitle} numberOfLines={2}>
-                {item.title}
-              </Text>
-              <Text style={type.meta} numberOfLines={1}>
-                {item.artist || item.dept}
-                {item.date ? ` · ${item.date}` : ''}
-              </Text>
-              <Text style={styles.galleryChip}>{galleryChip(item)}</Text>
-            </View>
-          </Pressable>
-        )}
+        renderItem={({ item }) =>
+          item.kind === 'header' ? (
+            <Text style={styles.sectionHeader}>{item.label}</Text>
+          ) : (
+            <Pressable
+              style={styles.row}
+              onPress={() => router.push(`/object/${item.object.objectID}`)}
+              testID={`result-${item.object.objectID}`}
+            >
+              {item.object.img ? (
+                // Tigris CDN first, proxy fallback — see data/imageCdn.ts.
+                <ObjectThumb object={item.object} style={styles.thumb} />
+              ) : (
+                <View style={[styles.thumb, styles.thumbEmpty]} />
+              )}
+              <View style={styles.rowText}>
+                <Text style={styles.rowTitle} numberOfLines={2}>
+                  {item.object.title}
+                </Text>
+                <Text style={type.meta} numberOfLines={1}>
+                  {item.object.artist || item.object.dept}
+                  {item.object.date ? ` · ${item.object.date}` : ''}
+                </Text>
+                {item.other ? (
+                  <MuseumBadge
+                    shortName={museumForSite(museums, item.object.site)?.shortName ?? ''}
+                    testID={`museum-badge-${item.object.objectID}`}
+                  />
+                ) : (
+                  <Text style={styles.galleryChip}>{galleryChip(item.object)}</Text>
+                )}
+              </View>
+            </Pressable>
+          )
+        }
         ListEmptyComponent={<Text style={styles.empty}>No results.</Text>}
       />
     </View>
@@ -277,6 +356,15 @@ const styles = StyleSheet.create({
     ...type.label,
     color: colors.red,
     marginTop: 2,
+  },
+  // Multi-museum section headers ("AT THE MET" / "OTHER MUSEUMS") — small
+  // caps, secondary color, matching the codebase's all-caps label idiom.
+  sectionHeader: {
+    ...type.label,
+    color: colors.inkSecondary,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.md,
+    paddingBottom: spacing.sm,
   },
   empty: {
     ...type.meta,

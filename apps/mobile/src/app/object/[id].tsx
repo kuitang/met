@@ -13,8 +13,8 @@ import {
 } from 'react-native';
 
 import ObjectImage from '@/components/ObjectImage';
-import { applyVenue, getAnchor, getVenue } from '@/components/LocateState';
-import { useData } from '@/data/provider';
+import { applyVenue, getAnchor, getVenue, useVenue } from '@/components/LocateState';
+import { museumForSite, objectSourceUrl, useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
 export default function ObjectScreen() {
@@ -27,11 +27,22 @@ export default function ObjectScreen() {
 
   // Cross-venue browse: opening an object at the other venue switches the
   // app venue (map, chip) with the dismissible toast — same coupling as the
-  // GPS auto-switch (shared/positioning venue rules; cause 'browse').
+  // GPS auto-switch (shared/positioning venue rules; cause 'browse'). This
+  // auto-switch only applies WITHIN a museum (Fifth Ave ⇄ Cloisters, existing
+  // behavior, unchanged); crossing to a DIFFERENT museum (C2) instead shows a
+  // "VIEW AT {museum}" action the visitor taps explicitly — see crossMuseum.
   const gallerySite = object?.gallery ? data.getGallery(object.gallery)?.site : undefined;
+  const venueState = useVenue();
+  const museums = data.museums();
+  const objectMuseum = museumForSite(museums, object?.site ?? gallerySite);
+  const activeMuseum = museumForSite(museums, venueState.venue);
+  const crossMuseum = !!(objectMuseum && activeMuseum && objectMuseum.id !== activeMuseum.id);
   useEffect(() => {
-    if (gallerySite && gallerySite !== getVenue().venue) applyVenue(gallerySite, 'browse');
-  }, [gallerySite]);
+    if (gallerySite && gallerySite !== getVenue().venue && !crossMuseum) {
+      applyVenue(gallerySite, 'browse');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gallerySite, crossMuseum]);
 
   if (!object) {
     return (
@@ -44,6 +55,20 @@ export default function ObjectScreen() {
   }
 
   const gallery = object.gallery ? data.getGallery(object.gallery) : undefined;
+
+  // Cross-museum "VIEW AT {shortName}" (C2): switches the active venue to the
+  // object's site, then routes home focused on its room — reusing the same
+  // `/?focus=` grammar RoomRow's focusRoom uses for room-row taps.
+  const viewAtOtherMuseum = () => {
+    const site = object.site ?? gallery?.site;
+    if (site) applyVenue(site, 'browse');
+    router.dismissTo({
+      pathname: '/',
+      params: object.gallery
+        ? { focus: object.gallery, ts: String(Date.now()) }
+        : { ts: String(Date.now()) },
+    });
+  };
 
   // J15: next/previous within the same room — browse a gallery's objects
   // sequentially without re-searching. Position + neighbors are computed in
@@ -58,7 +83,12 @@ export default function ObjectScreen() {
       params: anchor ? { id: String(nextID), anchor } : { id: String(nextID) },
     });
 
-  const objectURL = `https://www.metmuseum.org/art/collection/search/${object.objectID}`;
+  // Outbound link to the object's page on its own museum's site (schema-v2
+  // objectUrlTemplate + sourceId; Met fallback covers stub/pre-v2 artifacts).
+  const objectURL =
+    objectSourceUrl(object, museums) ??
+    `https://www.metmuseum.org/art/collection/search/${object.objectID}`;
+  const objectURLHost = new URL(objectURL).hostname.replace(/^www\./, '');
 
   // Share = copy the canonical deep link (web clipboard; native share sheet).
   // Always derived from the RUNTIME origin — window.location.origin on web,
@@ -122,37 +152,58 @@ export default function ObjectScreen() {
         <Text style={styles.galleryChip} testID="object-gallery-chip">
           {object.gallery ? `GALLERY ${object.gallery}` : 'NOT ON VIEW'}
         </Text>
-        {gallery && (
-          <Text style={type.meta}>
-            On view · {gallery.name} · Floor {gallery.floor}
+        {crossMuseum && objectMuseum ? (
+          <Text style={type.meta} testID="object-cross-museum-location">
+            {objectMuseum.name} ·{' '}
+            {gallery ? gallery.name : object.gallery ? `Gallery ${object.gallery}` : 'Not on view'}
           </Text>
-        )}
-        {object.gallery && !gallery && (
-          <Text style={type.meta}>On view (gallery not in stub map)</Text>
+        ) : (
+          <>
+            {gallery && (
+              <Text style={type.meta}>
+                On view · {gallery.name} · Floor {gallery.floor}
+              </Text>
+            )}
+            {object.gallery && !gallery && (
+              <Text style={type.meta}>On view (gallery not in stub map)</Text>
+            )}
+          </>
         )}
       </View>
 
-      {gallery && (
-        <Pressable
-          style={styles.navigateBtn}
-          onPress={() =>
-            // Home in nav mode (variant D), PUSHED so back = exit nav. The
-            // `obj` param makes the artwork the destination identity in the
-            // nav sheet header. Origin precedence: explicit ?anchor= deep-link
-            // param, then the visitor's live anchor, then the Great Hall
-            // fallback — routes start from where the visitor actually is.
-            router.push({
-              pathname: '/',
-              params: {
-                nav: `${anchor ?? getAnchor()?.roomId ?? 'great-hall'}:${gallery.id}`,
-                obj: String(object.objectID),
-              },
-            })
-          }
-          testID="navigate-here"
-        >
-          <Text style={styles.navigateBtnText}>Navigate here</Text>
+      {crossMuseum && objectMuseum ? (
+        <Pressable style={styles.navigateBtn} onPress={viewAtOtherMuseum} testID="view-at-museum">
+          <Text style={styles.navigateBtnText}>
+            VIEW AT {objectMuseum.shortName.toUpperCase()}
+          </Text>
         </Pressable>
+      ) : (
+        // Directions only when this museum's site actually has a routing
+        // graph (AIC today is room-labels-only, hasGraph: false) — unchanged
+        // for the Met, where hasGraph has always been true.
+        gallery &&
+        objectMuseum?.capabilities.hasGraph && (
+          <Pressable
+            style={styles.navigateBtn}
+            onPress={() =>
+              // Home in nav mode (variant D), PUSHED so back = exit nav. The
+              // `obj` param makes the artwork the destination identity in the
+              // nav sheet header. Origin precedence: explicit ?anchor= deep-link
+              // param, then the visitor's live anchor, then the Great Hall
+              // fallback — routes start from where the visitor actually is.
+              router.push({
+                pathname: '/',
+                params: {
+                  nav: `${anchor ?? getAnchor()?.roomId ?? 'great-hall'}:${gallery.id}`,
+                  obj: String(object.objectID),
+                },
+              })
+            }
+            testID="navigate-here"
+          >
+            <Text style={styles.navigateBtnText}>Navigate here</Text>
+          </Pressable>
+        )
       )}
 
       <Pressable style={styles.linkOut} onPress={onShare} testID="object-share">
@@ -164,7 +215,7 @@ export default function ObjectScreen() {
         onPress={() => Linking.openURL(objectURL)}
         testID="object-met-link"
       >
-        <Text style={styles.linkOutText}>View on metmuseum.org ↗</Text>
+        <Text style={styles.linkOutText}>View on {objectURLHost} ↗</Text>
       </Pressable>
     </ScrollView>
   );

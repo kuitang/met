@@ -69,13 +69,22 @@ interface ObjectRow {
   classification: string;
   medium: string;
   galleryNumber: string;
+  site: string;
   isHighlight: number;
   imageUrl: string;
   thumbKey: string;
+  museum: string;
+  sourceId: string;
 }
 
+// `site` has existed since schema v1 (SELECT_CORE in shared/search.ts already
+// selects it unconditionally); thumbKey/museum are schema-v2-era additions,
+// feature-detected in create() below (a pre-v2 artifact selects '' literals
+// for both, and toMetObject()'s `|| undefined` turns that into "no thumbnail"
+// / "museum unknown → treat as met", exactly like the pre-existing thumbKey
+// convention).
 const OBJECT_COLS =
-  'objectID, accession, title, artist, period, classification, medium, galleryNumber, isHighlight, imageUrl';
+  'objectID, accession, title, artist, period, classification, medium, galleryNumber, isHighlight, imageUrl, site';
 
 function toMetObject(r: ObjectRow): MetObject {
   return {
@@ -91,6 +100,10 @@ function toMetObject(r: ObjectRow): MetObject {
     isHighlight: r.isHighlight === 1,
     img: r.imageUrl,
     thumbKey: r.thumbKey,
+    museum: r.museum || undefined,
+    site: r.site,
+    // Pre-v2 artifacts select '' — the Met's sourceId IS its objectID.
+    sourceId: r.sourceId || String(r.objectID),
   };
 }
 
@@ -168,12 +181,13 @@ export class SqliteDataProvider implements DataProvider {
 
   /**
    * Object SELECT list. Older met.sqlite artifacts (downloaded/cached before
-   * the thumbnail pipeline landed) have no thumbKey column — create()
-   * detects it and selects a '' literal instead, so the provider keeps
-   * working against any artifact version (components then use the proxy
-   * fallback, exactly like an object without thumbnails).
+   * the thumbnail pipeline / schema v2 landed) have no thumbKey/museum
+   * columns — create() detects each and selects a '' literal instead, so the
+   * provider keeps working against any artifact version (components then use
+   * the proxy fallback for images, and treat museum '' as 'met' — see
+   * toMetObject / objectMuseumId).
    */
-  private objectCols = `${OBJECT_COLS}, '' AS thumbKey`;
+  private objectCols = `${OBJECT_COLS}, '' AS thumbKey, '' AS museum, '' AS sourceId`;
 
   private constructor(
     private met: MetDb,
@@ -191,14 +205,19 @@ export class SqliteDataProvider implements DataProvider {
     private entranceNodeId: string | null,
     /** meta.museums (schema v2); [BUILTIN_MET_ENTRY] for pre-v2 artifacts. */
     private museumEntries: MuseumEntry[],
+    /** objects.museum exists (schema v2) — gates whether museum-scoped search is safe to run. */
+    private hasMuseumColumn: boolean,
   ) {
     this.dataVersion = met.dataVersion;
   }
 
   static async create(met: MetDb): Promise<SqliteDataProvider> {
-    const [thumbCol, galleryRows, amenityRows, nodes, edges, blob, museumsMeta] = await Promise.all([
+    const [thumbCol, museumCol, galleryRows, amenityRows, nodes, edges, blob, museumsMeta] = await Promise.all([
       met.allAsync<{ name: string }>(
         `SELECT name FROM pragma_table_info('objects') WHERE name = 'thumbKey'`,
+      ),
+      met.allAsync<{ name: string }>(
+        `SELECT name FROM pragma_table_info('objects') WHERE name = 'museum'`,
       ),
       met.allAsync<DbGalleryRow>(
         'SELECT galleryNumber, title, floor, site, centroidLat, centroidLon FROM galleries',
@@ -388,8 +407,15 @@ export class SqliteDataProvider implements DataProvider {
       viewBoxBySite,
       entranceNodeId,
       museumEntries,
+      museumCol.length > 0,
     );
-    if (thumbCol.length > 0) provider.objectCols = `${OBJECT_COLS}, thumbKey`;
+    provider.objectCols = [
+      OBJECT_COLS,
+      thumbCol.length > 0 ? 'thumbKey' : `'' AS thumbKey`,
+      // museum + sourceId arrived together in schema v2 — one detection gates both.
+      museumCol.length > 0 ? 'museum' : `'' AS museum`,
+      museumCol.length > 0 ? 'sourceId' : `'' AS sourceId`,
+    ].join(', ');
     return provider;
   }
 
@@ -412,9 +438,9 @@ export class SqliteDataProvider implements DataProvider {
    * digit queries surface almost nothing. FTS hits (bm25-ranked title/artist
    * relevance) come first; accession-containment hits are appended, deduped.
    */
-  private withAccessionMatches(query: string, ids: number[], limit: number): number[] {
+  private withAccessionMatches(query: string, ids: number[], limit: number, museum?: string): number[] {
     if (ids.length >= limit) return ids.slice(0, limit);
-    const aq = buildAccessionSearchQuery(query, limit);
+    const aq = buildAccessionSearchQuery(query, limit, museum);
     if (aq === null) return ids.slice(0, limit);
     const seen = new Set(ids);
     const merged = [...ids];
@@ -425,16 +451,28 @@ export class SqliteDataProvider implements DataProvider {
     return merged;
   }
 
-  searchAutocomplete(query: string, limit = 8): MetObject[] {
+  /** museum scoping is a no-op unless the artifact's objects table actually has the column. */
+  private scopedMuseum(museum: string | undefined): string | undefined {
+    return this.hasMuseumColumn ? museum : undefined;
+  }
+
+  searchAutocomplete(query: string, limit = 8, museum?: string): MetObject[] {
     // exact prefix path first; on zero rows, trigram+edit-distance correction
     // over the vocab tables ("harlw" -> harlequin). Caps at top 8.
-    const rows = autocompleteFuzzy((sql, params) => this.met.allSync(sql, params), query);
-    const ids = this.withAccessionMatches(query, rows.slice(0, limit).map((r) => r.objectID), limit);
+    const scoped = this.scopedMuseum(museum);
+    const rows = autocompleteFuzzy((sql, params) => this.met.allSync(sql, params), query, scoped);
+    const ids = this.withAccessionMatches(
+      query,
+      rows.slice(0, limit).map((r) => r.objectID),
+      limit,
+      scoped,
+    );
     return this.hydrate(ids);
   }
 
   searchAll(query: string, filters: SearchFilters = {}): MetObject[] {
-    const q = buildFullQuery(query, filters, { limit: SEARCH_ALL_LIMIT });
+    const scopedFilters = this.hasMuseumColumn ? filters : { ...filters, museum: undefined };
+    const q = buildFullQuery(query, scopedFilters, { limit: SEARCH_ALL_LIMIT });
     const rows = q === null ? [] : this.met.allSync<{ objectID: number }>(q.sql, q.params);
     // Accession matches join the pool only for unfiltered searches — the
     // accession scan doesn't apply the SQL-level filters.

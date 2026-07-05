@@ -417,6 +417,13 @@ components:
           minimum: 1
           maximum: 50
           default: 10
+        museum:
+          type: string
+          description: >-
+            Optional museum registry id ("met", "aic", …) to scope
+            interpretation and execution to one museum (schema v2
+            multi-museum artifacts; the client's ScopeChips "AT {museum}"
+            selection). Omitted = search across every museum in the artifact.
 
     InterpretedQuery:
       type: object
