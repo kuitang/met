@@ -456,6 +456,7 @@ function main(): void {
   for (const m of museums) {
     db.transaction(() => {
       if (m.galleriesGeo) {
+        const withPolygon = new Set<string>();
         for (const f of m.galleriesGeo.features) {
           if (!f.properties.galleryNumber) continue;
           const c = centroid(f.geometry);
@@ -467,6 +468,16 @@ function main(): void {
             c.lat,
             c.lon,
           );
+          withPolygon.add(String(f.properties.galleryNumber));
+          galleryCount++;
+        }
+        // Geometry + labels can coexist (Louvre: OSM polygons cover ~2/3 of
+        // the plan's salles): room codes the geometry couldn't match still get
+        // label rows from galleries.json so search/browse/"n of N" know every
+        // room. No-op for the Met, which ships no galleries.json.
+        for (const g of m.galleryLabels ?? []) {
+          if (withPolygon.has(g.galleryNumber)) continue;
+          insGallery.run(g.galleryNumber, g.title ?? null, g.floor ?? null, g.site, null, null);
           galleryCount++;
         }
         return;

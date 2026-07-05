@@ -1,0 +1,57 @@
+{
+  "generatedBy": "data/src/geometry-osm.ts",
+  "source": "OpenStreetMap via Overpass (2026-07-05 extract, committed raw)",
+  "license": "ODbL — © OpenStreetMap contributors",
+  "salleMatch": {
+    "planCodes": 389,
+    "planRealSalles": 376,
+    "matchedCodes": 259,
+    "matchedRealSalles": 256,
+    "matchedOsmSpaces": 278,
+    "via": {
+      "code": 123,
+      "name": 155
+    },
+    "nameAmbiguousDropped": 32,
+    "floorRejected": 0,
+    "arksTotal": 26653,
+    "arksMatched": 17012,
+    "perFloor": {
+      "0": {
+        "plan": 100,
+        "matched": 53
+      },
+      "1": {
+        "plan": 139,
+        "matched": 95
+      },
+      "2": {
+        "plan": 118,
+        "matched": 96
+      },
+      "-1": {
+        "plan": 32,
+        "matched": 15
+      }
+    }
+  },
+  "osm": {
+    "spaces": 833,
+    "walkableRooms": 643,
+    "stairsUnits": 144,
+    "elevatorUnits": 46,
+    "doorsProbed": 766,
+    "doorsTwoSided": 726,
+    "doorsNoWall": 20
+  },
+  "graph": {
+    "nodes": 1618,
+    "doorNodes": 721,
+    "edges": 3140,
+    "walkEdges": 1379,
+    "vertEdges": 75,
+    "stepsEdges": 6,
+    "unitBridges": 73,
+    "repairEdges": 172
+  }
+}

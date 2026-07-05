@@ -1,8 +1,8 @@
 # Coverage: on-view objects ↔ gallery polygons
 
 - Status: **PASS**
-- Generated: 2026-06-10T15:35:23.504Z by `data/src/evals.ts`
-- Data version: 2026-06-10-2e5aaf37
+- Generated: 2026-07-05T20:28:48.268Z by `data/src/evals.ts`
+- Data version: 2026-07-05-5327ac27
 
 Snapshot is complete: 44842 rows vs 45502 on-view search total (202 drifted off-view, 458 dead IDs).
 
@@ -12,7 +12,7 @@ Snapshot is complete: 44842 rows vs 45502 on-view search total (202 drifted off-
 - Resolution: 43118 exact, 505 via `src/gallery-aliases.json`, 1145 via the Cloisters zero-pad rule
 - Distinct orphan gallery numbers (objects with no polygon): 20
 - Gallery polygons with zero objects in this snapshot: 56/463
-- met.sqlite counts: {"objects":44842,"galleries":463,"amenities":125,"graphNodes":2125,"graphEdges":8096} — consistent with snapshots
+- met.sqlite Met rows: 44842 objects / 463 galleries — consistent with snapshots
 
 ## Orphan gallery numbers (objects → no polygon)
 

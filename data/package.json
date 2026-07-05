@@ -7,9 +7,11 @@
   "scripts": {
     "objects": "tsx src/objects.ts",
     "geometry": "tsx src/geometry.ts",
+    "geometry:louvre": "tsx src/geometry-osm.ts",
     "graph": "tsx src/graph.ts",
     "build-db": "tsx src/build-db.ts",
-    "evals": "tsx src/evals.ts",
+    "evals": "tsx src/evals.ts && tsx src/evals-louvre.ts",
+    "evals:louvre": "tsx src/evals-louvre.ts",
     "embed-images": "tsx src/embed-images.ts",
     "nightly": "tsx src/nightly.ts",
     "fetch-artifacts": "tsx src/fetch-artifacts.ts",
