@@ -1,0 +1,626 @@
+[
+  {
+    "galleryNumber": "204",
+    "site": "cleveland",
+    "title": "Colonial American",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "208",
+    "site": "cleveland",
+    "title": "American Gilded Age and Realism",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "207",
+    "site": "cleveland",
+    "title": "American Realism",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "222",
+    "site": "cleveland",
+    "title": "Impressionism & Post-Impressionism",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "206",
+    "site": "cleveland",
+    "title": "American Landscape",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "226A",
+    "site": "cleveland",
+    "title": "American Modern",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "223",
+    "site": "cleveland",
+    "title": "20th Century Avant-Garde",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "226B",
+    "site": "cleveland",
+    "title": "American Modern",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "215",
+    "site": "cleveland",
+    "title": "French, German, and Dutch",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "201",
+    "site": "cleveland",
+    "title": "French Neoclassical Painting & Sculpture",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "118",
+    "site": "cleveland",
+    "title": "Italian Renaissance",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "203A",
+    "site": "cleveland",
+    "title": "British Painting and Decorative Arts",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "213",
+    "site": "cleveland",
+    "title": "Dutch Painting",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "205",
+    "site": "cleveland",
+    "title": "Federal American",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "217",
+    "site": "cleveland",
+    "title": "Italian Baroque",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "114",
+    "site": "cleveland",
+    "title": "Late Northern Renaissance",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "212",
+    "site": "cleveland",
+    "title": "Baroque Painting and Sculpture",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "225",
+    "site": "cleveland",
+    "title": "German Expressionism & Surrealism",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "203B",
+    "site": "cleveland",
+    "title": "British Painting and Decorative Arts",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "220",
+    "site": "cleveland",
+    "title": "19th Century European",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "218",
+    "site": "cleveland",
+    "title": "European Sculpture",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "109",
+    "site": "cleveland",
+    "title": "Gothic Painting and Sculpture",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "112",
+    "site": "cleveland",
+    "title": "Northern Renaissance",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "244",
+    "site": "cleveland",
+    "title": "Indian and Southeast Asian",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "102D",
+    "site": "cleveland",
+    "title": "Pre-Roman",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "116",
+    "site": "cleveland",
+    "title": "Islamic",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "219",
+    "site": "cleveland",
+    "title": "19th Century European",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "111",
+    "site": "cleveland",
+    "title": "German and Austrian Gothic",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "236",
+    "site": "cleveland",
+    "title": "Korean",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "105",
+    "site": "cleveland",
+    "title": "Byzantine",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "235B",
+    "site": "cleveland",
+    "title": "Japanese",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "110B",
+    "site": "cleveland",
+    "title": "Late Gothic",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "237",
+    "site": "cleveland",
+    "title": "Himalayan",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "232",
+    "site": "cleveland",
+    "title": "Andean",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "229C",
+    "site": "cleveland",
+    "title": "Contemporary",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "240B",
+    "site": "cleveland",
+    "title": "Chinese Decorative Arts",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "233",
+    "site": "cleveland",
+    "title": "Mesoamerican and Intermediate Region",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "216B",
+    "site": "cleveland",
+    "title": "French and German",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "106A",
+    "site": "cleveland",
+    "title": "Migration Period & Coptic",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "238",
+    "site": "cleveland",
+    "title": "Chinese Ceramics",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "100",
+    "site": "cleveland",
+    "title": "1916 Lobby",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "229B",
+    "site": "cleveland",
+    "title": "Contemporary",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "108A",
+    "site": "cleveland",
+    "title": "African",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "243",
+    "site": "cleveland",
+    "title": "Indian and Southeast Asian",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "101B",
+    "site": "cleveland",
+    "title": "Prints & Drawings",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "242A",
+    "site": "cleveland",
+    "title": "Ancient India",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "004",
+    "site": "cleveland",
+    "title": "Special Exhibition Gallery",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "106C",
+    "site": "cleveland",
+    "title": "Medieval Treasury",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "104",
+    "site": "cleveland",
+    "title": "Late Antiquity",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "102A",
+    "site": "cleveland",
+    "title": "Ancient Near East",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "235A",
+    "site": "cleveland",
+    "title": "Japanese",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "228B",
+    "site": "cleveland",
+    "title": "Cleveland Artists",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "241A",
+    "site": "cleveland",
+    "title": "Arts of Ancient China",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "239",
+    "site": "cleveland",
+    "title": "Chinese Ceramics and Metalwork",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "227",
+    "site": "cleveland",
+    "title": "Abstract Expressionism",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "107",
+    "site": "cleveland",
+    "title": "Egyptian",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "202",
+    "site": "cleveland",
+    "title": "French Neoclassical Decorative Arts",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "241C",
+    "site": "cleveland",
+    "title": "Chinese Buddhist Sculptures",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "102B",
+    "site": "cleveland",
+    "title": "Greek",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "117A",
+    "site": "cleveland",
+    "title": "Italian Renaissance",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "224A",
+    "site": "cleveland",
+    "title": "Contemporary Corridor",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "106B",
+    "site": "cleveland",
+    "title": "Romanesque & Gothic Sculpture",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "103",
+    "site": "cleveland",
+    "title": "Roman",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "211",
+    "site": "cleveland",
+    "title": "Fabergé",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "200",
+    "site": "cleveland",
+    "title": "Rotunda",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "229A",
+    "site": "cleveland",
+    "title": "Contemporary",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "228A",
+    "site": "cleveland",
+    "title": "Cleveland Artists",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "209",
+    "site": "cleveland",
+    "title": "Tiffany",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "210A",
+    "site": "cleveland",
+    "title": "Armor Court",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "108C",
+    "site": "cleveland",
+    "title": "African Jewelry and Metalwork",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "113",
+    "site": "cleveland",
+    "title": "French Tapestries & Illuminated Manuscripts",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "110A",
+    "site": "cleveland",
+    "title": "Italian Gothic",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "101A",
+    "site": "cleveland",
+    "title": "Prints & Drawings",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "221",
+    "site": "cleveland",
+    "title": "19th Century Decorative Arts",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "241B",
+    "site": "cleveland",
+    "title": "Arts of Ancient China",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "242B",
+    "site": "cleveland",
+    "title": "Indian Painting",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "003",
+    "site": "cleveland",
+    "title": "Special Exhibition Hall",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "301",
+    "site": "cleveland",
+    "title": "Baroque Sculpture Mezzanine",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "117B",
+    "site": "cleveland",
+    "title": "Italian Renaissance",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "102C",
+    "site": "cleveland",
+    "title": "Greek",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "230",
+    "site": "cleveland",
+    "title": "Photography",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "000",
+    "site": "cleveland",
+    "title": "Education Gallery",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "216A",
+    "site": "cleveland",
+    "title": "French and German",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "WT",
+    "site": "cleveland",
+    "title": "West Terrace",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "210B",
+    "site": "cleveland",
+    "title": "Firearms",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "210C",
+    "site": "cleveland",
+    "title": "Firearms",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "ET",
+    "site": "cleveland",
+    "title": "East Terrace",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "108B",
+    "site": "cleveland",
+    "title": "Southern African",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "010",
+    "site": "cleveland",
+    "title": "Focus Gallery",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "NL",
+    "site": "cleveland",
+    "title": "North Lawn",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "ATRM",
+    "site": "cleveland",
+    "title": "Atrium",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "234",
+    "site": "cleveland",
+    "title": "Textile Gallery",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "WL",
+    "site": "cleveland",
+    "title": "West Lawn",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "214",
+    "site": "cleveland",
+    "title": "Central and Northern European",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "240A",
+    "site": "cleveland",
+    "title": "Chinese Paintings and Calligraphy",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "SE",
+    "site": "cleveland",
+    "title": "South Entrance",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "231",
+    "site": "cleveland",
+    "title": "Native North American",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "AAE",
+    "site": "cleveland",
+    "title": "Art Allée East",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "NG",
+    "site": "cleveland",
+    "title": "North Sculpture Garden",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "AAW",
+    "site": "cleveland",
+    "title": "Art Allée West",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "ALOB",
+    "site": "cleveland",
+    "title": "Asian Lobby",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "115",
+    "site": "cleveland",
+    "title": "Manuscripts & Textiles",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "224B",
+    "site": "cleveland",
+    "title": "Video",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "ILMA",
+    "site": "cleveland",
+    "title": "Ingalls Library and Museum Archives",
+    "floor": "1"
+  }
+]

@@ -496,6 +496,58 @@ cap), ~190 requests nightly; per-record `imageLicense` gates derivatives on
 `is_public_domain`; per-museum goldens at `data/evals/aic/search-cases.json`
 (23/25 measured, 2 known synonyms-pending cases; Met set unaffected at 50/50).
 
+**Cleveland Museum of Art** (D4): public Open Access API, no key, explicit
+per-record `share_license_status` (CC0 vs Copyrighted — CMA's own vocabulary,
+distinct from AIC's boolean); the `currently_on_view=1` filter IS the on-view
+enumeration (measured 2026-07-05: 6,903 of 68,743 records), paged at
+limit=500 (~14 requests, full pull ≈5 s); no separate gallery-listing
+endpoint, so gallery labels/floors are collected as a byproduct of parsing
+each record's `current_location` string ("204 Colonial American" → room
+"204" + label; room-code numeric prefix < 200 = floor 1, else floor 2 — the
+on-view set only spans 004-118/200-244, no 3xx+ galleries currently on
+view); per-record `imageLicense` gates on CC0 status AND an image existing;
+goldens at `data/evals/cleveland/search-cases.json` (13/15 measured, 2
+documented misses — a catalog-title/popular-name mismatch and an
+artist-disambiguation gap, same class of miss as AIC's).
+
+**National Gallery of Art** (Washington DC; D4): daily-refreshed CSVs at
+github.com/NationalGalleryOfArt/opendata (CC0, no API/key) — `objects.csv`
+(~145.6k rows) joined to `locations.csv` (~1,189 public locations) via
+`locationid`; only ~1.9% of objects resolve to a room (measured: 2,808 of
+145,565) — location is the product, everything else is skipped. Two sites
+(`nga-west`/`nga-east`, floor labels parsed from the already-structured
+`locations.csv.room` code prefix — no free-text parsing needed). Images are
+EXCLUDED per the open-data grant's own caveat (linked iiif URLs' rights are
+unclear outside the open-access subset) — `imageUrl`/`imageLicense` are `''`
+for every row, by registry default. CSVs are downloaded once to
+`data/raw/nga/` (gitignored, ~82 MB `objects.csv`) via a minimal hand-rolled
+RFC4180 parser (`data/src/lib/csv.ts` — no CSV dependency existed in the
+workspace); full pull (2 downloads + parse of ~145.6k rows) ≈11 s. Goldens at
+`data/evals/nga/search-cases.json` (14/14 measured).
+
+**SMK — Statens Museum for Kunst** (Copenhagen; D4): public search API, no
+key; `on_display:true` filter (measured 2026-07-05: found=1,481, matching the
+plan's ~1.5k estimate) returns the whole on-view set in 3 `rows=500` pages
+(≈3 s). Titles are catalogued in Danish (`titles[]` carries a `language` tag;
+an "engelsk" entry, when present, becomes `titleAlt` — rare in the on-view
+set). `current_location_name` ("Sal 217") parses the same way as
+Cleveland's leading-token room code; no authoritative gallery→floor mapping
+is published, so floors stay null per gallery (site `floorOrder` is a single
+placeholder floor, same non-guessing convention as AIC's). Danish letters ø/æ
+do NOT diacritic-fold under `unicode61` (they're atomic Latin Extended-A
+code points, not base+combining-mark sequences) — golden queries and any
+future Nordic-language typo tolerance must use the real letters, not ASCII
+transliterations. `imageLicense` gates on `public_domain` (rights URL is the
+Public Domain Mark, not CC0 — treated as the fleet's binary "derivatives OK"
+signal, same treatment AIC gives `is_public_domain`). Goldens at
+`data/evals/smk/search-cases.json` (13/14 measured; 1 documented miss — a
+pure-English translation of a Danish title with no anchor-token overlap,
+a limitation of the offline relaxed-FTS goldens stand-in, not the real
+Gemini-powered interpret tier).
+
+Met and AIC goldens are unaffected by the D4 museums (50/50 and 23/25
+respectively, re-measured against the 5-museum merged artifact).
+
 **Known state**: the committed `data/met.sqlite` is a partial snapshot (120
 objects) while the full 45.5k hydration runs; a watcher rebuilds the DB and
 re-runs evals + goldens when it lands. The schema, code paths, and all suites
@@ -533,8 +585,9 @@ loads whatever shards exist.
 | `server/src/embeddings.ts:searchByEmbedding` | in-RAM cosine over the sharded vector index |
 | `server/src/vocab.ts:getVocabulary` | DB-derived vocabulary for the interpret prompt |
 | `data/src/objects.ts` / `geometry.ts` / `graph.ts` / `synonyms.ts` / `build-db.ts` / `embed-images.ts` | pipelines (scripts; embed-images also does `--compact` tombstone/dedupe) |
-| `data/src/sources/types.ts:MuseumSource` / `sources/registry.ts` / `sources/met.ts` | per-museum source-adapter seam: the ONE copy of each museum's row mapper + hydration/delta logic (objects.ts is a thin driver; nightly.ts calls `sourceFor(id).delta`) |
+| `data/src/sources/types.ts:MuseumSource` / `sources/registry.ts` / `sources/met.ts` / `aic.ts` / `cleveland.ts` / `nga.ts` / `smk.ts` | per-museum source-adapter seam: the ONE copy of each museum's row mapper + hydration/delta logic (objects.ts is a thin driver; nightly.ts calls `sourceFor(id).delta`) |
 | `data/src/lib/politeFetch.ts:createPoliteClient` | shared WAF-aware paced fetch (cookie reuse, 403≥60s wait, 429/5xx backoff) — per-source etiquette via options |
+| `data/src/lib/csv.ts:parseCsv` | minimal RFC4180 CSV parser (quoted/embedded-newline fields) — only NGA's CSV-based source needs one, no dependency existed |
 | `data/src/nightly.ts` | nightly delta → embed delta → build → Tigris upload + verified pointer commit + GC |
 | `data/src/artifacts.ts` / `fetch-artifacts.ts` | Tigris manifest helpers · sha256-verified artifact pull (Docker bake, CI) |
 | `Dockerfile` / `fly.toml` / `.github/workflows/` | image bake + Fly config + CI/deploy/preview/nightly automation |

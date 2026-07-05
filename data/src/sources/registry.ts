@@ -12,6 +12,9 @@ import { fileURLToPath } from "node:url";
 import type { MuseumSource } from "./types.ts";
 import { metSource } from "./met.ts";
 import { aicSource } from "./aic.ts";
+import { clevelandSource } from "./cleveland.ts";
+import { ngaSource } from "./nga.ts";
+import { smkSource } from "./smk.ts";
 
 const DATA_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 
@@ -101,6 +104,86 @@ export const MUSEUMS: MuseumInfo[] = [
     },
     objectUrlTemplate: "https://www.artic.edu/artworks/{sourceId}",
   },
+  {
+    id: "cleveland",
+    name: "The Cleveland Museum of Art",
+    shortName: "Cleveland Museum",
+    city: "Cleveland",
+    country: "US",
+    sites: [
+      {
+        siteId: "cleveland",
+        name: "The Cleveland Museum of Art",
+        entrance: { lat: 41.5085, lon: -81.6118, floor: "1" },
+        // Room codes are 3-digit(+letter); on-view set spans 004-118 (floor 1)
+        // and 200-244 (floor 2) — see sources/cleveland.ts floorForCode.
+        floorOrder: ["1", "2"],
+      },
+    ],
+    fidelity: "room-labels",
+    license: {
+      text: "CC0-1.0", // per-record: Copyrighted-status rows override (share_license_status)
+      images: "CC0-1.0", // per-record: rows without CC0 status or without an image get imageLicense=''
+      attribution: "Cleveland Museum of Art Open Access API (CC0)",
+      termsUrl: "https://www.clevelandart.org/open-access",
+    },
+    objectUrlTemplate: "https://clevelandart.org/art/{sourceId}",
+  },
+  {
+    id: "nga",
+    name: "National Gallery of Art",
+    shortName: "National Gallery",
+    city: "Washington, D.C.",
+    country: "US",
+    sites: [
+      {
+        siteId: "nga-west",
+        name: "West Building",
+        entrance: { lat: 38.8913, lon: -77.0199, floor: "Main" },
+        floorOrder: ["Ground", "Main", "Garden"],
+      },
+      {
+        siteId: "nga-east",
+        name: "East Building",
+        entrance: { lat: 38.8915, lon: -77.0167, floor: "Concourse" },
+        floorOrder: ["Concourse", "Ground", "Mezzanine", "Tower"],
+      },
+    ],
+    fidelity: "room-labels",
+    license: {
+      text: "CC0-1.0",
+      images: "", // open-data grant excludes images entirely (see sources/nga.ts)
+      attribution: "National Gallery of Art Open Data Program (CC0)",
+      termsUrl: "https://github.com/NationalGalleryOfArt/opendata",
+    },
+    objectUrlTemplate: "https://www.nga.gov/collection/art-object-page.{sourceId}.html",
+  },
+  {
+    id: "smk",
+    name: "SMK — National Gallery of Denmark",
+    shortName: "SMK",
+    city: "Copenhagen",
+    country: "DK",
+    sites: [
+      {
+        siteId: "smk",
+        name: "SMK — Statens Museum for Kunst",
+        entrance: { lat: 55.6889, lon: 12.5786 },
+        // No authoritative gallery->floor mapping is published (see
+        // sources/smk.ts) — one placeholder floor, same non-guessing
+        // convention as AIC's floorOrder.
+        floorOrder: ["1"],
+      },
+    ],
+    fidelity: "room-labels",
+    license: {
+      text: "CC0-1.0",
+      images: "", // per-record: public_domain rows get imageLicense='CC0-1.0'
+      attribution: "SMK (Statens Museum for Kunst) open data API",
+      termsUrl: "https://www.smk.dk/en/article/smk-api/",
+    },
+    objectUrlTemplate: "https://open.smk.dk/artwork/image/{sourceId}",
+  },
 ];
 
 export function museumInfo(id: string): MuseumInfo {
@@ -119,6 +202,9 @@ export function snapDirFor(id: string): string {
 const SOURCES: Record<string, MuseumSource> = {
   met: metSource,
   aic: aicSource,
+  cleveland: clevelandSource,
+  nga: ngaSource,
+  smk: smkSource,
 };
 
 export function sourceFor(id: string): MuseumSource {

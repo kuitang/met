@@ -1,0 +1,19 @@
+{
+  "description": "SMK (Statens Museum for Kunst, Copenhagen) golden search cases (14): the per-museum accuracy north-star for the SMK rows in the merged artifact. Authored 2026-07-05 against the 1,481-row on-view set (on_display:true filter). Titles are catalogued in Danish (SMK ships no English titleAlt for almost any on-view row) — queries are Danish or artist-name based; llm-tier cases use English descriptive phrasing to check the interpret-tier stand-in still finds the Danish-titled row. Tiers mirror the Met/AIC/Cleveland/NGA sets.",
+  "cases": [
+    { "query": "grønne stribe matisse", "tier": "autocomplete", "expectTitleContains": "grønne stribe", "note": "SMK icon; Matisse Portrait of Madame Matisse (The Green Stripe); ø/æ don't diacritic-fold under unicode61 so the query must use the real letters" },
+    { "query": "stue i strandgade", "tier": "autocomplete", "expectArtistContains": "Hammershøi", "note": "Hammershøi interior icon; Danish title" },
+    { "query": "krøyer skagens strand", "tier": "autocomplete", "expectTitleContains": "Skagens strand", "note": "Skagen-school beach scene; accented artist name" },
+    { "query": "købke frederiksborg", "tier": "autocomplete", "expectArtistContains": "Købke", "note": "Danish Golden Age artist name" },
+    { "query": "eckersberg galathea", "tier": "autocomplete", "expectTitleContains": "Galathea", "note": "Danish Golden Age; distinctive title token" },
+    { "query": "badende matisse", "tier": "autocomplete", "expectTitleContains": "Badende", "expectArtistContains": "Matisse", "note": "artist + title mix" },
+    { "query": "krøyer sardineri concarneau", "tier": "full", "expectTitleContains": "sardineri", "note": "word-order + artist mix" },
+    { "query": "hammershøi kunstigt lys", "tier": "full", "expectTitleContains": "Kunstigt lys", "note": "Hammershøi interior; artist + title" },
+    { "query": "eckersberg familien nathanson", "tier": "full", "expectTitleContains": "Nathanson", "note": "artist + sitter family name" },
+    { "query": "matisse odalisk skærm", "tier": "full", "expectTitleContains": "Odalisk", "note": "æ-bearing title token" },
+    { "query": "hammershøi strandgade sunlight on the floor", "tier": "llm", "expectTitleContains": "solskin på gulvet", "note": "mixed Danish proper noun (street name, untranslatable) + English descriptive phrasing for the icon" },
+    { "query": "eckersberg ship storm nordsøen", "tier": "llm", "expectTitleContains": "storm", "note": "mixed English + Danish place-name (\"the North Sea\") anchor" },
+    { "query": "krøyer boys bathing on the beach at skagen", "tier": "llm", "expectTitleContains": "Skagens strand", "note": "mixed artist + Danish place name + English scene phrasing" },
+    { "query": "matisse's green stripe portrait of his wife", "tier": "llm", "expectTitleContains": "grønne stribe", "note": "English translation of the Danish title phrase, anchored by the artist name" }
+  ]
+}
