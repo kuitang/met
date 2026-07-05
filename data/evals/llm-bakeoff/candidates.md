@@ -120,3 +120,19 @@ vs. the very new V4-Flash). Not in the core 6 only to keep the run count small.
   report non-null cache pricing on OpenRouter, so a static prefix should get materially cheaper on repeat
   calls within a batch run.
 - No paid inference was run for this task — all figures are catalog/pricing/doc lookups only, per instructions.
+
+## Post-bake-off addendum (2026-07-05, milestone G run)
+
+- **Pricing re-pulled from the OpenRouter catalog on 2026-07-05 before the paid runs: zero drift** —
+  all $/M figures in the table above matched byte-for-byte (incl. `deepseek/deepseek-v4-pro`, used as
+  the bake-off judge at $0.435/$0.87).
+- Two provider behaviors discovered during the run that the catalog does not tell you (details and
+  measurements in `data/evals/reports/llm-bakeoff.md`):
+  - `qwen/qwen3.6-flash`'s provider path (DashScope) **silently downgrades `json_schema` to
+    `json_object`** and 400s unless the prompt literally contains the word "json" — 0% strict-schema
+    compliance in practice despite `structured_outputs` in `supported_parameters`.
+  - `deepseek/deepseek-v4-flash` mis-aligned an echo-keyed batch (term N echoed with term N−1's
+    payload) while id-keyed batches were flawless — echo-keyed pipelines (current `synonyms.ts`)
+    cannot trust it; id-keyed ones can.
+- Bake-off outcome: FR→EN translation → `deepseek/deepseek-v4-flash`; synonym generation → keep
+  incumbent `google/gemini-3.1-flash-lite`. See the report for CIs and the decision rationale.

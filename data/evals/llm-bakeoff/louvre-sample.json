@@ -1,0 +1,2405 @@
+{
+ "fetchedAt": "2026-07-05T19:08:59.048Z",
+ "records": [
+  {
+   "ark": "010004035",
+   "fr": {
+    "title": "statue",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : basalte\r\nTechnique : ronde-bosse",
+    "period": "Ramsès II"
+   },
+   "enLabel": "Thot as baboon protecting a general of Ramesses II-E 25398",
+   "onView": true,
+   "collection": "Département des Antiquités égyptiennes"
+  },
+  {
+   "ark": "010004172",
+   "fr": {
+    "title": "statue de couple",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : calcaire\r\nTechnique : peinture, ronde-bosse\r\nCouleur : noir",
+    "period": "fin Ve dynastie (?) ; VIe dynastie (?)"
+   },
+   "enLabel": "Ankhudjes and Tepemnefret-E 25368-E 25369",
+   "onView": true,
+   "collection": "Département des Antiquités égyptiennes"
+  },
+  {
+   "ark": "010006108",
+   "fr": {
+    "title": "stèle d'Horus",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : stéatite\r\nTechnique : haut-relief, gravure",
+    "period": "XXXe dynastie ; époque ptolémaïque"
+   },
+   "enLabel": "Horus as child taming animals-E 20008",
+   "onView": true,
+   "collection": "Département des Antiquités égyptiennes"
+  },
+  {
+   "ark": "010006136",
+   "fr": {
+    "title": "figurine ; statue",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : ivoire\r\nTechnique : gravure, ronde-bosse\r\nCouleur : gris",
+    "period": "XIIe dynastie"
+   },
+   "enLabel": "Woman-E 14697",
+   "onView": true,
+   "collection": "Département des Antiquités égyptiennes"
+  },
+  {
+   "ark": "010007029",
+   "fr": {
+    "title": "boîte à fard",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : bois\r\nMatériau secondaire : ivoire\r\nTechnique : ronde-bosse, gravure, incrustation (yeux incrustés), assemblage par tenon (chevilles maintenant les ailes pivotantes formant le couvercle)",
+    "period": "Nouvel Empire"
+   },
+   "enLabel": "Duck-shaped box-N 1740",
+   "onView": true,
+   "collection": "Département des Antiquités égyptiennes"
+  },
+  {
+   "ark": "010007246",
+   "fr": {
+    "title": "amulette",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : lapis-lazuli\r\nMatériau secondaire : or (cerclé d'or)\r\nTechnique : relief découpé",
+    "period": "Ramsès II"
+   },
+   "enLabel": "Amulet-E 77",
+   "onView": true,
+   "collection": "Département des Antiquités égyptiennes"
+  },
+  {
+   "ark": "010007285",
+   "fr": {
+    "title": "statue",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : alliage cuivreux\r\nTechnique : ronde-bosse, gravure, incrustation (yeux incrustés d'albâtre(?))",
+    "period": "Basse Époque ; XXVe dynastie"
+   },
+   "enLabel": "Statue of Padiimen-E 10586",
+   "onView": true,
+   "collection": "Département des Antiquités égyptiennes"
+  },
+  {
+   "ark": "010007461",
+   "fr": {
+    "title": "figurine ; pion de jeu",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : ivoire d'éléphant\r\nTechnique : ronde-bosse",
+    "period": "Ière dynastie"
+   },
+   "enLabel": "Lion-shaped game counter-E 16668",
+   "onView": true,
+   "collection": "Département des Antiquités égyptiennes"
+  },
+  {
+   "ark": "010008441",
+   "fr": {
+    "title": "figurine",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : alliage cuivreux\r\nTechnique : ronde-bosse",
+    "period": "Basse Époque"
+   },
+   "enLabel": "Sekhmet-E 14252",
+   "onView": true,
+   "collection": "Département des Antiquités égyptiennes"
+  },
+  {
+   "ark": "010009942",
+   "fr": {
+    "title": "figurine",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : alliage cuivreux\r\nTechnique : gravure, incrustation",
+    "period": "Basse Époque"
+   },
+   "enLabel": "Ptah-N 3682 B",
+   "onView": true,
+   "collection": "Département des Antiquités égyptiennes"
+  },
+  {
+   "ark": "010012605",
+   "fr": {
+    "title": "figurine de donateur",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : alliage cuivreux",
+    "period": "Basse Époque (?) ; époque ptolémaïque (?)"
+   },
+   "enLabel": "King kneeling-AF 12856",
+   "onView": true,
+   "collection": "Département des Antiquités égyptiennes"
+  },
+  {
+   "ark": "010016105",
+   "fr": {
+    "title": "claquoir courbe à tête d'animal",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : ivoire d'hippopotame (canine d'hippopotame, identification par François Poplin)\r\nTechnique : incision",
+    "period": "époque thinite"
+   },
+   "enLabel": "Clappers-E 13920",
+   "onView": true,
+   "collection": "Département des Antiquités égyptiennes"
+  },
+  {
+   "ark": "010021196",
+   "fr": {
+    "title": "stèle d'Horus ; stèle miniature",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : pierre\r\nCouleur : vert clair",
+    "period": "XXVIIe dynastie - 1ère domination perse (?)"
+   },
+   "enLabel": "Stele of Horus-E 1051",
+   "onView": true,
+   "collection": "Département des Antiquités égyptiennes"
+  },
+  {
+   "ark": "010038332",
+   "fr": {
+    "title": "empreinte de sceau",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : cire (?), terre crue (?)",
+    "period": "XXVIe dynastie"
+   },
+   "enLabel": "Clay seal-AF 12903",
+   "onView": true,
+   "collection": "Département des Antiquités égyptiennes"
+  },
+  {
+   "ark": "010059091",
+   "fr": {
+    "title": "L'appartement du comte de Mornay",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "2e quart du XIXe siècle"
+   },
+   "enLabel": "L'appartement du comte de Mornay",
+   "onView": true,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010059238",
+   "fr": {
+    "title": "L'Entrée des animaux dans l'arche de Noé",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "XVIIe siècle"
+   },
+   "enLabel": "Noah's Ark; (Entry of the Animals into Noah’s Ark)",
+   "onView": true,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010059244",
+   "fr": {
+    "title": "Salomon sacrifiant aux idoles",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "2e quart du XVIIe siècle"
+   },
+   "enLabel": "Solomon Sacrificing to the Idols",
+   "onView": true,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010060279",
+   "fr": {
+    "title": "Bateaux hollandais au large d'une côte sableuse",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "Fin du XVIIe siècle - début du XVIIIè siècle"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010060628",
+   "fr": {
+    "title": "Jésus portant sa croix",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur bois",
+    "period": "2e quart du XVIIe siècle"
+   },
+   "enLabel": "Jesus carrying his cross",
+   "onView": true,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010060928",
+   "fr": {
+    "title": "Vénus debout dans un paysage",
+    "objectType": "",
+    "materialsAndTechniques": "bois (hêtre)",
+    "period": "1e moitié du XVIe siècle"
+   },
+   "enLabel": "Venus in a Landscape",
+   "onView": true,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010061753",
+   "fr": {
+    "title": "Nu assis (Trine Nielsen, modèle à l'Académie de Copenhague)",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "2e quart du XIXe siècle"
+   },
+   "enLabel": "Seated Nude",
+   "onView": true,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010061958",
+   "fr": {
+    "title": "Combat de cavalerie au passage d'un pont",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur bois",
+    "period": "XVIIe siècle"
+   },
+   "enLabel": "Battle near the entrance to a forest",
+   "onView": true,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010062105",
+   "fr": {
+    "title": "Fruits et riche vaisselle sur une table, dit autrefois Un dessert",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile (transposition)",
+    "period": "2e quart du XVIIe siècle"
+   },
+   "enLabel": "Still life of fruit and sumptuous tableware",
+   "onView": true,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010062241",
+   "fr": {
+    "title": "La Résurrection de Lazare",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile (transposition)",
+    "period": "1e quart du XVIIe siècle"
+   },
+   "enLabel": "The Raising of Lazarus",
+   "onView": true,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010063598",
+   "fr": {
+    "title": "Portrait de Francis George Hare (1786-1842) dit Master Hare et dit aussi Infancy",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "4e quart du XVIIIe siècle"
+   },
+   "enLabel": "Francis George Hare, aka Master Hare, as child",
+   "onView": true,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010064256",
+   "fr": {
+    "title": "Ruines d'une arcade touffée d'herbes",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur papier collé sur carton",
+    "period": "1e quart du XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010064405",
+   "fr": {
+    "title": "Les joueurs de paume",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur bois",
+    "period": "2e quart du XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010064892",
+   "fr": {
+    "title": "Rivière dans une vallée montagneuse",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "2e quart du XVIIe siècle"
+   },
+   "enLabel": "Scandinavian Caprice",
+   "onView": true,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010065738",
+   "fr": {
+    "title": "« Vue de Copenhague (esquisse) »",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur carton",
+    "period": "XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010065887",
+   "fr": {
+    "title": "Allégorie sur l'état de la France avant le retour d'Égypte",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "1e quart du XIXe siècle"
+   },
+   "enLabel": "Allegory of the State of France before the Return from Egypt",
+   "onView": true,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010067057",
+   "fr": {
+    "title": "Saint Augustin",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur bois",
+    "period": "3e quart du XVe siècle"
+   },
+   "enLabel": "St. Augustine",
+   "onView": true,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010067640",
+   "fr": {
+    "title": "Le rêve de Pâris",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur bois",
+    "period": "1e tiers du XVIe siècle"
+   },
+   "enLabel": "The Dream of Paris",
+   "onView": true,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010091266",
+   "fr": {
+    "title": "La Renommée",
+    "objectType": "statue",
+    "materialsAndTechniques": "bronze",
+    "period": "Fin du XVIe siècle - début du XVIIe siècle"
+   },
+   "enLabel": "Fame",
+   "onView": true,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010092142",
+   "fr": {
+    "title": "La Loire et le Loiret",
+    "objectType": "groupe",
+    "materialsAndTechniques": "marbre",
+    "period": "Fin du XVIIe siècle - début du XVIIIe siècle"
+   },
+   "enLabel": "La Loire et le Loiret by van Clève",
+   "onView": true,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010092183",
+   "fr": {
+    "title": "Le cardinal de Richelieu (1585-1642)",
+    "objectType": "buste",
+    "materialsAndTechniques": "marbre",
+    "period": "XVIIe siècle"
+   },
+   "enLabel": "Bust of Cardinal Richelieu",
+   "onView": true,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010092409",
+   "fr": {
+    "title": "Le Secours d'Arques (21 septembre 1589)",
+    "objectType": "bas-relief",
+    "materialsAndTechniques": "bronze doré=dorure",
+    "period": "XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010092850",
+   "fr": {
+    "title": "Le gladiateur Borghèse",
+    "objectType": "statuette",
+    "materialsAndTechniques": "terre cuite",
+    "period": "XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010093001",
+   "fr": {
+    "title": "Statuette acéphale d'un roi de France vêtu d'un manteau fleurdelysé, et portant le collier de l'ordre de saint Michel",
+    "objectType": "statuette",
+    "materialsAndTechniques": "marbre",
+    "period": "2e moitié du XVIe siècle"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010093139",
+   "fr": {
+    "title": "La Prudence, élément du décor du monument au coeur de Louis XIII",
+    "objectType": "médaillon ovale",
+    "materialsAndTechniques": "marbre",
+    "period": "XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010093168",
+   "fr": {
+    "title": "Scène de bataille (le passage du Granique ?)",
+    "objectType": "bas-relief",
+    "materialsAndTechniques": "bronze",
+    "period": "Milieu du XVIe siècle"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010094264",
+   "fr": {
+    "title": "Apollon et les Arts",
+    "objectType": "dessus de porte",
+    "materialsAndTechniques": "marbre",
+    "period": "XVIIIe siècle"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010094541",
+   "fr": {
+    "title": "Tête d'apôtre (Saint Pierre ?)",
+    "objectType": "tête",
+    "materialsAndTechniques": "terre cuite",
+    "period": "XVIe siècle"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010094598",
+   "fr": {
+    "title": "Portrait présumé du chancelier Antoine Duprat (1463-1535)",
+    "objectType": "buste",
+    "materialsAndTechniques": "terre cuite traces de polychromie",
+    "period": "XVIe siècle"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010094944",
+   "fr": {
+    "title": "Fragment de chambranle",
+    "objectType": "bas-relief",
+    "materialsAndTechniques": "pierre",
+    "period": "1er quart du XVIe siècle"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010095074",
+   "fr": {
+    "title": "Julien David Le Roy",
+    "objectType": "buste",
+    "materialsAndTechniques": "terre cuite",
+    "period": "Début du XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010095299",
+   "fr": {
+    "title": "Phryné remettant ses voiles",
+    "objectType": "statuette",
+    "materialsAndTechniques": "bronze à patine claire fonte au sable = fondu au sable à patine rougeâtre",
+    "period": "XIXe siècle"
+   },
+   "enLabel": "Phryne by James Pradier",
+   "onView": true,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010101278",
+   "fr": {
+    "title": "Terrine (service Penthièvre-Orléans)",
+    "objectType": "orfèvrerie, argenterie ; terrine",
+    "materialsAndTechniques": "Matériau : argent (fondu, repoussé & ciselé)\r\nTechnique : techniques métal (orfèvrerie)",
+    "period": "Milieu du XVIIIe siècle"
+   },
+   "enLabel": "Tureen",
+   "onView": true,
+   "collection": "Département des Objets d'art du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010102796",
+   "fr": {
+    "title": "Plaque : le prophète Joël",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : ivoire d'éléphant = défense d'éléphant",
+    "period": "Fin du VIIe siècle (?) ; VIIIe siècle (?) ; IXe siècle (?)"
+   },
+   "enLabel": "Plaque with the prophet Joel",
+   "onView": true,
+   "collection": "Département des Arts de Byzance et des chrétientés en Orient"
+  },
+  {
+   "ark": "010103352",
+   "fr": {
+    "title": "Fauteuil à la reine, d'une paire avec OA 11737",
+    "objectType": "mobilier ; fauteuil \"à la reine\"",
+    "materialsAndTechniques": "Matériau : hêtre\r\nTechnique : doré = dorure (techniques métal)\r\nTechnique : lampas (techniques textile->tissu façonné)\r\nTechnique : doré = dorure (techniques bambou/ bois/ corne/ ivoire/ écaille)\r\nTechnique :",
+    "period": "2e quart du XIXe siècle"
+   },
+   "enLabel": "Pair of armchairs",
+   "onView": true,
+   "collection": "Département des Objets d'art du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010112506",
+   "fr": {
+    "title": "Groupe d'applique : Prédication d'un apôtre ?",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau/Technique : L'ivoire semble avoir été teinté mais pas à l'origine\r\nMatériau : ivoire d'éléphant = défense d'éléphant",
+    "period": "Milieu du VIe siècle (?) ; 2e moitié du VIe siècle (?)"
+   },
+   "enLabel": "Fragmentary relief St. Paul preaching",
+   "onView": true,
+   "collection": "Département des Arts de Byzance et des chrétientés en Orient"
+  },
+  {
+   "ark": "010112688",
+   "fr": {
+    "title": "Compas triangulaire",
+    "objectType": "instrument scientifique (mesure, calcul, observation, etc.)",
+    "materialsAndTechniques": "Matériau : alliage cuivreux\r\nMatériau : acier",
+    "period": "XVIIIe siècle"
+   },
+   "enLabel": "three-legged divider",
+   "onView": true,
+   "collection": "Département des Objets d'art du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010115541",
+   "fr": {
+    "title": "Grand cartel en faïence de Strasbourg",
+    "objectType": "horlogerie",
+    "materialsAndTechniques": "Matériau : faïence (de Strasbourg)\r\nTechnique : techniques céramique",
+    "period": "1750 - 1760"
+   },
+   "enLabel": "Wall clock",
+   "onView": true,
+   "collection": "Département des Objets d'art du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010120707",
+   "fr": {
+    "title": "Cone C d'Urukagina",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argile",
+    "period": "Dynastique archaïque IIIB : Uruinimgina  = Dynastique archaïque IIIB : Urukagina"
+   },
+   "enLabel": "Clay cone of Uru-KA-gina-AO 3149",
+   "onView": true,
+   "collection": "Département des Antiquités orientales"
+  },
+  {
+   "ark": "010124679",
+   "fr": {
+    "title": "tête funéraire",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : albâtre\r\nTechnique : ronde-bosse, incisé (décor)",
+    "period": "Période des rois de Saba' (?)"
+   },
+   "enLabel": "Head",
+   "onView": true,
+   "collection": "Département des Antiquités orientales"
+  },
+  {
+   "ark": "010125897",
+   "fr": {
+    "title": "Figurine féminine",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : terre cuite\r\nTechnique : moulé à moule simple",
+    "period": "Bronze récent"
+   },
+   "enLabel": "Naked woman Hathor style-AO 18524",
+   "onView": true,
+   "collection": "Département des Antiquités orientales"
+  },
+  {
+   "ark": "010127809",
+   "fr": {
+    "title": "relief",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : calcaire\r\nTechnique : haut-relief",
+    "period": "Romain Impérial"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Antiquités orientales"
+  },
+  {
+   "ark": "010132519",
+   "fr": {
+    "title": "statue ; ex-voto",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : calcaire\r\nTechnique : ronde-bosse, polychromie",
+    "period": "Romain Impérial"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Antiquités orientales"
+  },
+  {
+   "ark": "010136172",
+   "fr": {
+    "title": "Bronze Donato",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : bronze",
+    "period": "Romain Impérial"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Antiquités orientales"
+  },
+  {
+   "ark": "010136191",
+   "fr": {
+    "title": "Ivoire d’Arslan Tash",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : ivoire\r\nTechnique : sculpté (traces d’outil : sciage au revers.), doré (dorure, traces violettes sur les ailes et les éléments végétaux)",
+    "period": "Néo-assyrien"
+   },
+   "enLabel": "Plaque fragment: Egyptian-style scene",
+   "onView": true,
+   "collection": "Département des Antiquités orientales"
+  },
+  {
+   "ark": "010136211",
+   "fr": {
+    "title": "Ivoire d’Arslan Tash : dignitaire",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : ivoire\r\nTechnique : sculpté, doré (traces d’or sur les franges du pagne), polychromie (sur les cheveux, la barbe, les yeux (noirs ou bleus))",
+    "period": "Néo-assyrien"
+   },
+   "enLabel": "Plaque fragment: Syrian dignitary",
+   "onView": true,
+   "collection": "Département des Antiquités orientales"
+  },
+  {
+   "ark": "010144533",
+   "fr": {
+    "title": "Tête de lion gardien de temple",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : terre cuite\r\nTechnique : modelé, incisé",
+    "period": "1ère dynastie de Babylone"
+   },
+   "enLabel": "Guardian lion-AO 19808",
+   "onView": true,
+   "collection": "Département des Antiquités orientales"
+  },
+  {
+   "ark": "010146372",
+   "fr": {
+    "title": "marteau",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argent\r\nMatériau secondaire : or",
+    "period": ""
+   },
+   "enLabel": "Hammer head-AO 21636",
+   "onView": true,
+   "collection": "Département des Antiquités orientales"
+  },
+  {
+   "ark": "010146962",
+   "fr": {
+    "title": "poids",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : diorite\r\nTechnique : sculpté",
+    "period": "Ur III : Shulgi"
+   },
+   "enLabel": "Weight-AO 22187",
+   "onView": true,
+   "collection": "Département des Antiquités orientales"
+  },
+  {
+   "ark": "010151474",
+   "fr": {
+    "title": "stèle",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : calcaire",
+    "period": "Bronze récent III"
+   },
+   "enLabel": "God holding a bird-AO 27140",
+   "onView": true,
+   "collection": "Département des Antiquités orientales"
+  },
+  {
+   "ark": "010174538",
+   "fr": {
+    "title": "gâche de porte",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : albâtre\r\nTechnique : ronde-bosse",
+    "period": "Paléo-élamite IA = Suse IV A"
+   },
+   "enLabel": "Lion door element-Sb 118",
+   "onView": true,
+   "collection": "Département des Antiquités orientales"
+  },
+  {
+   "ark": "010177722",
+   "fr": {
+    "title": "figurine",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : marbre\r\nTechnique : polychromie",
+    "period": "Séleucide"
+   },
+   "enLabel": "fragmentary statuette of a crouching man holding fruits-Sb 3785",
+   "onView": true,
+   "collection": "Département des Antiquités orientales"
+  },
+  {
+   "ark": "010220045",
+   "fr": {
+    "title": "Verre vénitien à décor de gueule de lion",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : verre (creux)",
+    "period": "XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Service de l'Histoire du Louvre"
+  },
+  {
+   "ark": "010250729",
+   "fr": {
+    "title": "statue",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : marbre de Paros (tête), marbre blanc (corps)\r\nTechnique : ronde-bosse (sculpture)\r\nPrécision technique : incisions(pointe des seins)",
+    "period": "1e moitié IIe s. ap. J.-C."
+   },
+   "enLabel": "Lycian Apollo",
+   "onView": true,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010258916",
+   "fr": {
+    "title": "calice",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argile\r\nTechnique : bucchero, estampé en relief (estampage = estampé)\r\nPrécision technique : surface poreuse et craquelée due probablement à une cuisson mal maîtrisée",
+    "period": "1e moitié VIe s. av. J.-C."
+   },
+   "enLabel": "Etruscan bucchero high-legged chalice",
+   "onView": true,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010263353",
+   "fr": {
+    "title": "groupe de figurines",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argile (argile blanchâtre)\r\nTechnique : moule univalve (moulé), peinture (traces de peinture bleue sur les ceintures), trou d'évent (rond)",
+    "period": "IIe s. ap. J.-C. (?) ; IIIe s. ap. J.-C. (?)"
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010266685",
+   "fr": {
+    "title": "Antéfixe figurant une tête féminine casquée du type dit \"de Junon Sospita\"",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argile\r\nTechnique : moulé, engobe, peinture (peinture beige (chair, casque, méandre) ; peinture noire (yeux, chevelure, cornes, collier) ; peinture rouge (lèvres, cimier, méandre) ; peintre orange brun (casque))",
+    "period": "1e quart Ve s. av. J.-C."
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010278706",
+   "fr": {
+    "title": "Gladiateur Borghèse",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : marbre du Pentélique\r\nTechnique : ronde-bosse (sculpture) (monolithe)",
+    "period": "4e quart IIe s. av. J.-C. ; 1e quart Ie s. av. J.-C."
+   },
+   "enLabel": "Borghese Gladiator",
+   "onView": true,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010291471",
+   "fr": {
+    "title": "harpago",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : bronze\r\nTechnique : coulé = fondu = fonte (manche creux)",
+    "period": "2e moitié Ve s. av. J.-C. ; IVe s. av. J.-C."
+   },
+   "enLabel": null,
+   "onView": true,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010007003",
+   "fr": {
+    "title": "emblème d'Anouket",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : faïence siliceuse\r\nCouleur : bleu Deir El Bahari-Bleu foncé",
+    "period": "XIXe dynastie"
+   },
+   "enLabel": "Head of a goddess-E 12696",
+   "onView": false,
+   "collection": "Département des Antiquités égyptiennes"
+  },
+  {
+   "ark": "010009175",
+   "fr": {
+    "title": "statue",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : calcaire\r\nTechnique : ronde-bosse",
+    "period": "Kheperkarê Nectanébo I (?)"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Antiquités égyptiennes"
+  },
+  {
+   "ark": "010052850",
+   "fr": {
+    "title": "Érigone, dit aussi Bacchante",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "2e moitié du XVIIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010052908",
+   "fr": {
+    "title": "Les Chênes de Kertregonnec",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "XIXe siècle"
+   },
+   "enLabel": "The Oaks of Kertregonnec",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010052956",
+   "fr": {
+    "title": "Vue intérieure de l'église du couvent de San Benedetto, près Subiaco",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010053299",
+   "fr": {
+    "title": "Paysage",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "Fin du XVIIe siècle - début du XVIIIè siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010053575",
+   "fr": {
+    "title": "Adoration de l'Enfant, avec les instruments de la Passion",
+    "objectType": "",
+    "materialsAndTechniques": "bois",
+    "period": "XVIe siècle"
+   },
+   "enLabel": "Adoration of the Child, with the instruments of the Passion",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010053605",
+   "fr": {
+    "title": "La Mort de sainte Catherine de Sienne",
+    "objectType": "",
+    "materialsAndTechniques": "toile (bois transposé sur toile)",
+    "period": "XVe siècle"
+   },
+   "enLabel": "Death of Saint Catherine",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010053787",
+   "fr": {
+    "title": "Vierge et l'Enfant",
+    "objectType": "",
+    "materialsAndTechniques": "bois",
+    "period": "XVe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010054167",
+   "fr": {
+    "title": "Diane à la chasse",
+    "objectType": "",
+    "materialsAndTechniques": "bois",
+    "period": "XVIIe siècle"
+   },
+   "enLabel": "Diana at the Hunt",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010054594",
+   "fr": {
+    "title": "Le Martyre de sainte Thècle",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "XVIIIe siècle"
+   },
+   "enLabel": "Martyrdom of female Saint",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010054606",
+   "fr": {
+    "title": "Caroline Louise Margravine de Bade et ses enfants (Caroline Louise de Hesse-Darmstadt (1723-1783) avec ses fils Carl Ludwig (1755-1801) et Friedrich (1756-1817)",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "XVIIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010054729",
+   "fr": {
+    "title": "Portrait d'homme tenant un livre",
+    "objectType": "",
+    "materialsAndTechniques": "bois",
+    "period": "XVIe siècle"
+   },
+   "enLabel": "Portrait of a man",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010054809",
+   "fr": {
+    "title": "Le Repos pendant la bataille, dit aussi Grenadiers",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "1e quart du XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010054870",
+   "fr": {
+    "title": "Paysage à l'escalier",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "XVIIIe siècle"
+   },
+   "enLabel": "staircase in a park + staffage",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010055396",
+   "fr": {
+    "title": "L'Archevêché, le pont de la Tournelle et le quai Saint-Bernard vus de l'Hôtel-Dieu",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "4e quart du XVIIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010056053",
+   "fr": {
+    "title": "L'Été",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010056278",
+   "fr": {
+    "title": "Le Marché aux chevaux à Metz. Esquisse.",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "XVIIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010056398",
+   "fr": {
+    "title": "Le Président Molé, saisi par les factieux, au temps des guerres de la Fronde. La scène se passe près de la Croix du Trahoir",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "XVIIIe siècle"
+   },
+   "enLabel": "President Molé Confronted by Insurgents",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010056573",
+   "fr": {
+    "title": "Vue de Malte prise du fort Saint-Elme",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "XVIIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010056751",
+   "fr": {
+    "title": "Portrait de jeune femme",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur vélin",
+    "period": "XVIIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010057308",
+   "fr": {
+    "title": "Faucon et corbeau",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010057321",
+   "fr": {
+    "title": "La Justice et la Clémence",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "3e quart du XVIIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010057496",
+   "fr": {
+    "title": "Un Amour et deux paons",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010057530",
+   "fr": {
+    "title": "Théagène prend le flambeau des mains de Chariclée",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "XVIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010057558",
+   "fr": {
+    "title": "Cybèle vient réveiller le Sommeil",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "XVIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010057567",
+   "fr": {
+    "title": "Saint Louis délivrant des prisonniers français à Damiette",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010058917",
+   "fr": {
+    "title": "Les Bords du Rhône à Givors",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "3e tiers du XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010059308",
+   "fr": {
+    "title": "Sainte Madeleine renonçant aux vanités du monde",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "Milieu du XVIIe siècle"
+   },
+   "enLabel": "The Repentant Magdalen",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010059407",
+   "fr": {
+    "title": "L'étang",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "Milieu du XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010060102",
+   "fr": {
+    "title": "La Sainte Famille avec sainte Élisabeth et le petit saint Jean Baptiste",
+    "objectType": "",
+    "materialsAndTechniques": "huile, grisaille sur papier collé sur toile",
+    "period": "1e quart du XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010060211",
+   "fr": {
+    "title": "Les baigneuses de Bellinzona. Effet du soir.",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "3e quart du XIXe siècle"
+   },
+   "enLabel": "The Bathers of Bellinzona. Evening effect",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010060468",
+   "fr": {
+    "title": "Paysage.",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "1e moitié du XVIIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010060469",
+   "fr": {
+    "title": "Plafond (compartiment central) : Poussin arrivant de Rome d'où il avait été rappelé par ordre de Louis XIII, est présenté par le cardinal de Richelieu au roi qui le nomme son premier peintre (en 1640).",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur enduit",
+    "period": "2e quart du XIXe siècle"
+   },
+   "enLabel": "Poussin arriving from Rome is presented to Louis XIII by Cardinal Richelieu",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010061034",
+   "fr": {
+    "title": "Dames de Malte se faisant visite.",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "3e quart du XVIIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010061212",
+   "fr": {
+    "title": "Paysage",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur bois",
+    "period": "Fin du XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010061250",
+   "fr": {
+    "title": "Actes des Apôtres. La lapidation de saint Étienne",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010061387",
+   "fr": {
+    "title": "Louis IX, dit saint Louis (1215-1270)",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010061624",
+   "fr": {
+    "title": "Le Printemps. Bergers et bergères",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "1e moitié du XVIIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010061663",
+   "fr": {
+    "title": "Portrait de la jeune Marguerite d'Autriche (1480-1530)",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur bois",
+    "period": "Fin du XVe siècle - début du XVIe siècle"
+   },
+   "enLabel": "Portrait of Margaret of Austria",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010062299",
+   "fr": {
+    "title": "La Sainte Trinité adorée par deux anges",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010063085",
+   "fr": {
+    "title": "La Mise au tombeau",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "1e quart du XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010063322",
+   "fr": {
+    "title": "Nativité",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "2e moitié du XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010064161",
+   "fr": {
+    "title": "Vue de Tivoli",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "Fin du XVIIIe siècle - début du XIXè siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010064319",
+   "fr": {
+    "title": "Portrait de Robert Arnauld d'Andilly (1589-1674), écrivain janséniste",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "3e quart du XVIIe siècle"
+   },
+   "enLabel": "Portrait de Robert Arnauld d'Andilly",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010064470",
+   "fr": {
+    "title": "La Terre ou Le Paradis terrestre",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur métal (cuivre)",
+    "period": "1e quart du XVIIe siècle"
+   },
+   "enLabel": "Earth or The Earthly Paradise",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010064759",
+   "fr": {
+    "title": "Musée Napoléon III, salle des terres cuites au Louvre dit aussi La galerie Campana",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "3e quart du XIXe siècle"
+   },
+   "enLabel": "Musée Napoléon III, Terracotta Room at the Louvre",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010064885",
+   "fr": {
+    "title": "Portrait d'homme",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "Milieu du XVIIe siècle"
+   },
+   "enLabel": "Portrait of a Man (pendant of INV 1334)",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010065046",
+   "fr": {
+    "title": "La Résurrection du Christ. Esquisse pour la décoration de Saint-Germain-des-Prés.",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur carton",
+    "period": "3e quart du XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010065340",
+   "fr": {
+    "title": "Saint Benoit de Nursie (vers 480-547)",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "1e moitié du XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010065407",
+   "fr": {
+    "title": "Cérès",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur bois",
+    "period": "4e quart du XVIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010065435",
+   "fr": {
+    "title": "Madame Jean-Baptiste Mauzaisse, née Marie-Julienne Noë (1757-1827), mère de l'artiste",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "2e quart du XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010065937",
+   "fr": {
+    "title": "La Galerie d'Apollon au Musée du Louvre.",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "3e quart du XIXe siècle"
+   },
+   "enLabel": "The Gallery of Apollo at the Louvre Museum",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010066457",
+   "fr": {
+    "title": "Paysage",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur bois",
+    "period": "Fin du XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010066527",
+   "fr": {
+    "title": "Portrait d'Alexandre Lenoir (1761-1839), archéologue, conservateur du Musée des Monuments français",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur bois",
+    "period": "1e quart du XIXe siècle"
+   },
+   "enLabel": "Portrait d'Alexandre Lenoir",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010066597",
+   "fr": {
+    "title": "Paysans chez un homme de loi, dit aussi Le Paiement de la dîme",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur bois",
+    "period": "Fin du XVIe siècle - début du XVIIè siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010066679",
+   "fr": {
+    "title": "Femme cousant",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur bois",
+    "period": "1e quart du XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010067191",
+   "fr": {
+    "title": "Paysage (chinoiserie)",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010067383",
+   "fr": {
+    "title": "Portrait équestre de Léopold 1er roi des Belges",
+    "objectType": "",
+    "materialsAndTechniques": "huile",
+    "period": "1e moitié du XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010067424",
+   "fr": {
+    "title": "Phaéton sollicitant auprès d’Apollon la conduite du char du Soleil, 1804",
+    "objectType": "",
+    "materialsAndTechniques": "huile",
+    "period": "XVIIIe siècle"
+   },
+   "enLabel": "Phaeton asking Apollo to drive the Sun chariot",
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010067501",
+   "fr": {
+    "title": "Nature morte au chat",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010067619",
+   "fr": {
+    "title": "Le Baptême du Christ, 1841",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010091395",
+   "fr": {
+    "title": "Louis Philippe Ier couronné de feuilles de chêne (1773-1850) roi des Français",
+    "objectType": "buste",
+    "materialsAndTechniques": "marbre",
+    "period": "XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010091533",
+   "fr": {
+    "title": "Louis Visconti",
+    "objectType": "buste en hermès",
+    "materialsAndTechniques": "marbre",
+    "period": "XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010091943",
+   "fr": {
+    "title": "Nymphe assise sur un vaisseau tenant des fleurs de lys",
+    "objectType": "bas-relief",
+    "materialsAndTechniques": "pierre calcaire",
+    "period": "Milieu du XVIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010092223",
+   "fr": {
+    "title": "Portrait d'artiste",
+    "objectType": "buste",
+    "materialsAndTechniques": "marbre",
+    "period": "Fin du XVIIe siècle"
+   },
+   "enLabel": "Bust of Charles Le Brun",
+   "onView": false,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010092955",
+   "fr": {
+    "title": "Un doigt",
+    "objectType": "fragment de main",
+    "materialsAndTechniques": "bronze",
+    "period": "XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010093099",
+   "fr": {
+    "title": "Génie funéraire",
+    "objectType": "bas-relief",
+    "materialsAndTechniques": "bronze",
+    "period": ""
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010093134",
+   "fr": {
+    "title": "Lion et lionne se disputant un sanglier",
+    "objectType": "groupe",
+    "materialsAndTechniques": "bronze",
+    "period": "XIXe siècle"
+   },
+   "enLabel": "Lion and Lioness Fighting over a Boar",
+   "onView": false,
+   "collection": "Sculptures des jardins"
+  },
+  {
+   "ark": "010093684",
+   "fr": {
+    "title": "Deux anges soutenant les armoiries du Cardinal Georges 1er d'Amboise",
+    "objectType": "bas-relief",
+    "materialsAndTechniques": "plâtre teinté=teinture",
+    "period": "XVIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010093907",
+   "fr": {
+    "title": "Loup tenant un cerf à la gorge",
+    "objectType": "groupe modèle",
+    "materialsAndTechniques": "cire patiné, plâtre patiné",
+    "period": "XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010094069",
+   "fr": {
+    "title": "Hector Lefuel",
+    "objectType": "médaillon",
+    "materialsAndTechniques": "bronze",
+    "period": "XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010094084",
+   "fr": {
+    "title": "Orpheline",
+    "objectType": "buste",
+    "materialsAndTechniques": "plâtre",
+    "period": "XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010094127",
+   "fr": {
+    "title": "Pluvié-Guibert à l'âge de cinq ans",
+    "objectType": "buste",
+    "materialsAndTechniques": "plâtre à patine terre cuite=patiné terre cuite, marbre noir",
+    "period": "XVIIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010094763",
+   "fr": {
+    "title": "Panneau décoratif à motifs de candélabres orné d'une femme portant un vase avec rinceaux",
+    "objectType": "bas-relief",
+    "materialsAndTechniques": "plâtre, bois",
+    "period": "XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010094778",
+   "fr": {
+    "title": "Samson terrassant le lion",
+    "objectType": "chapiteau d'applique",
+    "materialsAndTechniques": "pierre calcaire",
+    "period": "Milieu du XIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010094844",
+   "fr": {
+    "title": "Balzac",
+    "objectType": "médaillon",
+    "materialsAndTechniques": "bronze",
+    "period": "XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010095166",
+   "fr": {
+    "title": "Moulure à décor d'oves",
+    "objectType": "fragment",
+    "materialsAndTechniques": "pierre calcaire",
+    "period": "Milieu du XVIe siècle (?) ; XIXe siècle (?)"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Sculptures du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010100291",
+   "fr": {
+    "title": "Médaillon : triomphe marin",
+    "objectType": "médaillon",
+    "materialsAndTechniques": "Matériau : bronze (Bronze, patine noire. Moulé sur un exemplaire brisé ; cire réparée à l’arriere et bronze réparé avec une agrafe en cuivre)\r\nTechnique : techniques métal",
+    "period": "Fin du XVe siècle"
+   },
+   "enLabel": "Neptune, Amphitrite and Triton",
+   "onView": false,
+   "collection": "Département des Objets d'art du Moyen Age, de la Renaissance et des temps modernes"
+  },
+  {
+   "ark": "010125595",
+   "fr": {
+    "title": "figurine",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : terre cuite\r\nTechnique : moulé à moule double",
+    "period": "Romain Impérial"
+   },
+   "enLabel": "Cybele-AO 3164",
+   "onView": false,
+   "collection": "Département des Antiquités orientales"
+  },
+  {
+   "ark": "010152568",
+   "fr": {
+    "title": "mosaïque  ; objet funéraire",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : pierre",
+    "period": "Romain Impérial"
+   },
+   "enLabel": "Funerary mosaic",
+   "onView": false,
+   "collection": "Département des Antiquités orientales"
+  },
+  {
+   "ark": "010174458",
+   "fr": {
+    "title": "kudurru",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : calcaire\r\nTechnique : gravé, sculpté",
+    "period": "Kassite = Médio-babylonien ; Médio-élamite"
+   },
+   "enLabel": "kudurru-Sb 28",
+   "onView": false,
+   "collection": "Département des Antiquités orientales"
+  },
+  {
+   "ark": "010236763",
+   "fr": {
+    "title": "Zéphyr et Flore",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "Début du XVIIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010237507",
+   "fr": {
+    "title": "Bon Boullogne",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "1e quart du XVIIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010238437",
+   "fr": {
+    "title": "Saint Jean l'Evangéliste à Patmos",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "Milieu du XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010239192",
+   "fr": {
+    "title": "Vase orné d'une danse antique, rempli de fleurs et posé devant un terme",
+    "objectType": "",
+    "materialsAndTechniques": "toile",
+    "period": "Fin du XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010241385",
+   "fr": {
+    "title": "Psyché implorant le pardon de Vénus",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "Milieu du XVIIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010242138",
+   "fr": {
+    "title": "Plafond : Salle des Antonins - Les Génies de la Gloire (deux Amours dont l'un tient deux couronnes de lauriers), sur la voûte, côté est, au nord.",
+    "objectType": "",
+    "materialsAndTechniques": "fresque sur enduit",
+    "period": "2e quart du XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010250007",
+   "fr": {
+    "title": "relief architectural",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : marbre\r\nTechnique : bas-relief (sculpture), gravé = gravure (oiseau)",
+    "period": "1e quart Ie s. ap. J.-C."
+   },
+   "enLabel": "Suovetaurilia to the god Mars",
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010251089",
+   "fr": {
+    "title": "peinture murale",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : mortier\r\nTechnique : peinture (Couche picturale : peinture à fresque  sur un mortier antique. Montage : Fragments  insérés dans un lit de plâtre maintenu par un grillage collé au revers maintenu par un cadre en bois)\r\nPrécision technique : fond vert-tunique filet tabouret-blancs-bande rouge-sol brun rouge",
+    "period": "Ie s. ap. J.-C."
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010251103",
+   "fr": {
+    "title": "peinture murale",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : mortier\r\nTechnique : peinture (Couche picturale : peinture à fresque  sur un mortier antique. Montage : Fragments  insérés dans un lit de plâtre maintenu par un grillage collé au revers maintenu par un cadre en bois)\r\nPrécision technique : fond jaune-masque brun et gris vert",
+    "period": "Ie s. ap. J.-C."
+   },
+   "enLabel": "Mural Painting",
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010252294",
+   "fr": {
+    "title": "statue",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : marbre\r\nTechnique : ronde-bosse (sculpture), gravé = gravure\r\nPrécision technique : gravé(iris,pupilles en creux,moustache et barbe)",
+    "period": "2e quart IIIe s. ap. J.-C."
+   },
+   "enLabel": "Bust of Severus Alexander",
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010254992",
+   "fr": {
+    "title": "amphore",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argile (argile beige)\r\nTechnique : peinture\r\nPrécision technique : peinture brun rougeâtre",
+    "period": "4e quart VIIIe s. av. J.-C."
+   },
+   "enLabel": "amphora",
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010256603",
+   "fr": {
+    "title": "Trésor de Boscoreale : skyphos",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argent\r\nTechnique : coulé = fondu = fonte, martelage = martelé, soudé = soudure (les anses et le pied sont soudés), repoussé (le décor est fait au repoussé)",
+    "period": "1e moitié Ie s. ap. J.-C."
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010257640",
+   "fr": {
+    "title": "statue",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : bronze\r\nTechnique : fonte en creux (coulé = fondu = fonte), gravé = gravure (sourcils), incrustation = incrusté (traces dans les yeux)",
+    "period": "2e moitié Ie s. av. J.-C."
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010258387",
+   "fr": {
+    "title": "ceinturon  ; agrafe de ceinturon",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : bronze\r\nTechnique : coulé = fondu = fonte, martelage = martelé (fine tôle de bronze martelé), incisé = incision (décor des agrafes), rivetage = riveté (5 rivets de fixation par agrafe)\r\nPrécision technique : 3 rangées de trous pour régler la taille du ceinturon ; petits trous sur les bords pour la fixation de la doublure en matériau périssable",
+    "period": "IVe s. av. J.-C."
+   },
+   "enLabel": "Italic bronze belt",
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010259487",
+   "fr": {
+    "title": "œnochoé",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argile\r\nTechnique : peinture brillante (peinture), dessin au trait",
+    "period": "2e moitié Ve s. av. J.-C."
+   },
+   "enLabel": "Miniature Attic Red-Figure Oinochoe",
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010262881",
+   "fr": {
+    "title": "pyxis",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argile\r\nTechnique : peinture brillante (peinture), dessin au trait\r\nPrécision technique : peinture brillante brun foncé",
+    "period": "1e quart IXe s. av. J.-C."
+   },
+   "enLabel": "Pointed pyxis",
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010267776",
+   "fr": {
+    "title": "askos",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argile\r\nTechnique : peinture mate (peinture)",
+    "period": "3e quart VIIe s. av. J.-C."
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010268226",
+   "fr": {
+    "title": "cratère",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argile\r\nTechnique : peinture brillante (peinture), incisé = incision, rehaut rouge (peinture->rehaut) (filets à l'intérieur de l'embouchure et sur la vasque, bande sur le pied, languettes, détails sur les animaux, chiton des cavaliers, casques et cnémides des hoplites, bouclier de l'un d'entre eux, chiton de l'autre), rehaut blanc (peinture->rehaut) (motifs sur les plaquettes d'anse, deux des chevaux de la face A, cimiers des casques, bouclier d'un des hoplites, cheval au centre de la face B, filet de part et d'autre de la bande du pied)\r\nPrécision technique : zone réservée sur le bas de la vasque ; défaut de cuisson (vernis de couleur orangée sous les deux anses et sur toute la face B) ; miltos",
+    "period": "2e quart VIe s. av. J.-C."
+   },
+   "enLabel": "Corinthian column-crater",
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010268373",
+   "fr": {
+    "title": "hydrie",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argile\r\nTechnique : peinture brillante (peinture), incisé = incision, rehaut rouge (peinture->rehaut) (filets à l'intérieur de l'embouchure, languettes, détails des animaux, bandeaux, vêtements, chevelure et barbe de deux des hommes, chevelure du cavalier, crinière et queue du premier cheval, filet sous le tableau figuré et au dessus des arêtes rayonnantes, et sur le pied du vase), rehaut blanc (peinture->rehaut) (chairs féminines, broderies des himation des femmes)",
+    "period": "2e quart VIe s. av. J.-C."
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010269613",
+   "fr": {
+    "title": "amphore",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argile\r\nTechnique : peinture brillante (peinture), incisé = incision, rehaut rouge (peinture->rehaut) (couronnes de feuillage, baudriers, bouclier, tunique de l'amazone à la cuirasse, liens de la cuirasse, bonnet, corde de l'arc, crinière et rênes du cheval, liens des filets et de l'aryballe, lignes sur la panse)\r\nPrécision technique : zones ornementales au trait noir (anse, guirlande de palmettes et fleurs de lotus) ; fond blanc (pour les frises de grenades stylisées et la ligne de sol) ; motifs figurés (blancs réservés sur fond noir) ; incision (guirlandes de palmettes et fleurs de lotus), défaut de cuisson (coup de feu autour de la main gauche de la baigneuse à l'aryballe)",
+    "period": "4e quart VIe s. av. J.-C."
+   },
+   "enLabel": "Amphore à figures blanches",
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010269682",
+   "fr": {
+    "title": "amphore",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argile\r\nTechnique : peinture brillante (peinture), incisé = incision, rehaut rouge (peinture->rehaut) (certains bandeaux, deux filets ceinturant la panse sous les tableaux et au dessus des arêtes rayonnantes), rehaut blanc (peinture->rehaut) (chairs féminines, poignée de l'épée)",
+    "period": "3e quart VIe s. av. J.-C."
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010269995",
+   "fr": {
+    "title": "coupe",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argile\r\nTechnique : peinture brillante (peinture), dessin au trait, rehaut rouge (peinture->rehaut) (inscriptions, feuilles des arbres, couronne de feuilles, sang, corde, sandales, baudrier, bracelet de cheville, colliers, bandeaux)\r\nPrécision technique : incisions",
+    "period": "1e quart Ve s. av. J.-C."
+   },
+   "enLabel": "Attic red-figure cup",
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010270022",
+   "fr": {
+    "title": "coupe",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argile\r\nTechnique : peinture brillante (peinture), incisé = incision, rehaut rouge (peinture->rehaut) (couronnes, bandelettes, corde du plectre, feu de lampe, inscriptions), dessin au trait\r\nPrécision technique : incisions (contour des cheveux)",
+    "period": "4e quart VIe s. av. J.-C."
+   },
+   "enLabel": "Louvre G 13",
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010274101",
+   "fr": {
+    "title": "œnochoé ; vase plastique",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argile\r\nTechnique : peinture brillante (peinture), grènetis (cheveux), moulé (tête), rehaut blanc (peinture->rehaut) (sourcils)\r\nPrécision technique : traces de peinture rouge (?, cheveux)",
+    "period": "4e quart VIe s. av. J.-C."
+   },
+   "enLabel": "plastic oinoche in the shape of a Black man's head",
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010274650",
+   "fr": {
+    "title": "cratère",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argile\r\nTechnique : peinture brillante (peinture), dessin au trait, rehaut blanc (peinture->rehaut) (méandre en perspective, tête d'Aphrodite, fleurs, ailes, bijoux, pétase, bandelettes, boucliers, caducée, lignes de point, chevaux, fouet, pilos, épées, roues, nimbe, couronnes, éventails, trône, chaussures, armure, cnémides, casque, lance, naiskos, phiales, rochers, situles, miroirs, thyrse), rehaut jaune (peinture->rehaut) (mascarons face A, cheveux d'Aphrodite, crinière et queue des chevaux, casque, détails des plantes, roues, fouet, pétase, caducée), rehaut rouge (peinture->rehaut) (fourreaux, caisse du char, trône, sang, voile, mascarons face B)",
+    "period": "4e quart IVe s. av. J.-C."
+   },
+   "enLabel": "Lasimos Krater",
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010274812",
+   "fr": {
+    "title": "patère",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : argile\r\nTechnique : peinture brillante (peinture), incisé = incision, rehaut rouge (peinture->rehaut) (bande sur le haut de la vasque à l'intérieur de la phiale et sur le bord de l'omphalos, détails de la frise végétale, lignes de points sur les croissants de l'omphalos, détails des animaux)\r\nPrécision technique : deux trous de suspension (haut de la vasque près du bouquetin)",
+    "period": "1e quart VIe s. av. J.-C."
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010276849",
+   "fr": {
+    "title": "Femme drapée en course",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : marbre\r\nTechnique : ronde-bosse (sculpture)",
+    "period": "1e quart IVe s. av. J.-C. (?)"
+   },
+   "enLabel": "Statue",
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010278838",
+   "fr": {
+    "title": "statuette",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : marbre\r\nTechnique : ronde-bosse (sculpture)",
+    "period": "Epoque / période : romain impérial"
+   },
+   "enLabel": "Pothos, god of longing, yearning and desire",
+   "onView": false,
+   "collection": "Département des Antiquités grecques, étrusques et romaines"
+  },
+  {
+   "ark": "010320023",
+   "fr": {
+    "title": "Coupelle au dromadaire",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : Céramique\r\nMatériau/Technique : Céramique (pâte argileuse), décor champlevé et gravé sur engobe sous glaçure transparente",
+    "period": "XIe siècle ; XIIe siècle ; XIIIe siècle"
+   },
+   "enLabel": "cup with camel",
+   "onView": false,
+   "collection": "Département des Arts de l'Islam"
+  },
+  {
+   "ark": "010320118",
+   "fr": {
+    "title": "Aiguière aux vases fleuris et inscription animée (Lampe à huile en forme d'aiguière)",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : Laiton (Métal), Plomb (Métal)\r\nMatériau/Technique : Métal (laiton au plomb) coulé, décor ciselé, gravé, champlevé, incrusté de pâte noire, d'argent et de cuivre",
+    "period": "4ème quart du XIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Arts de l'Islam"
+  },
+  {
+   "ark": "010320125",
+   "fr": {
+    "title": "Plat tripode au cavalier ailé",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : Céramique\r\nMatériau/Technique : Céramique (pâte argileuse), décor peint sur engobe sous glaçure transparente",
+    "period": "XIe siècle ; XIIe siècle"
+   },
+   "enLabel": "Plat cavalier ailé MAO 434",
+   "onView": false,
+   "collection": "Département des Arts de l'Islam"
+  },
+  {
+   "ark": "010321410",
+   "fr": {
+    "title": "Panneau de revêtement mural : personnages masculins au bord d'un ruisseau\r\nou : Panneau aux quatre mystiques",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : Céramique\r\nMatériau/Technique : Céramique (pâte siliceuse), décor de cuerda seca (ligne noire)",
+    "period": "XVIIIe siècle"
+   },
+   "enLabel": "Louvre MAO 690",
+   "onView": false,
+   "collection": "Département des Arts de l'Islam"
+  },
+  {
+   "ark": "010325779",
+   "fr": {
+    "title": "Pichet à décor de palmettes",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : Céramique\r\nMatériau/Technique : Céramique (pâte argileuse) moulée, lissée à l'engobe",
+    "period": "VIIIe siècle ; IXe siècle"
+   },
+   "enLabel": "pitcher",
+   "onView": false,
+   "collection": "Département des Arts de l'Islam"
+  },
+  {
+   "ark": "010326651",
+   "fr": {
+    "title": "Cruche",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : Céramique\r\nMatériau/Technique : Céramique (pâte argileuse), décor goujé et estampé",
+    "period": "VIIIe siècle ; IXe siècle ; Xe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Arts de l'Islam"
+  },
+  {
+   "ark": "010326780",
+   "fr": {
+    "title": "Ventouse pharmaceutique",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : Verre\r\nMatériau/Technique : Verre soufflé",
+    "period": "IXe siècle ; Xe siècle ; XIe siècle"
+   },
+   "enLabel": "cupping glass",
+   "onView": false,
+   "collection": "Département des Arts de l'Islam"
+  },
+  {
+   "ark": "010329721",
+   "fr": {
+    "title": "Porte-lampe tripode au nom de l'émir Salah al-Din bn Samari, émir du sultan al-Malik al-Nasir Muhammad",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : Métal\r\nMatériau/Technique : Métal (bronze) coulé, décor gravé, incrusté d'argent regravé et de pâte noire",
+    "period": "2ème quart du XIVe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Arts de l'Islam"
+  },
+  {
+   "ark": "010419817",
+   "fr": {
+    "title": "tissu",
+    "objectType": "",
+    "materialsAndTechniques": "Matériau : laine\r\nTechnique : tissage (toile)",
+    "period": "Hellénistique"
+   },
+   "enLabel": "Textile, AO 28444 34, Department of Near Eastern Antiquities of the Louvre",
+   "onView": false,
+   "collection": "Département des Antiquités orientales"
+  },
+  {
+   "ark": "010492082",
+   "fr": {
+    "title": "Le Centenier auprès du Christ",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur toile",
+    "period": "4e quart du XVIIe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "010494642",
+   "fr": {
+    "title": "Portrait de Philippe II, dit le Hardi, duc de Bourgogne (1342-1404)",
+    "objectType": "",
+    "materialsAndTechniques": "huile sur bois",
+    "period": "2e quart du XIXe siècle"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Peintures"
+  },
+  {
+   "ark": "020110150",
+   "fr": {
+    "title": "Feuille de deux études de têtes d'hommes noirs en plâtre",
+    "objectType": "",
+    "materialsAndTechniques": "encre brune à la plume",
+    "period": ""
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Arts graphiques"
+  },
+  {
+   "ark": "020110446",
+   "fr": {
+    "title": "'La lutte pour l'étendard' de la 'Bataille d'Anghiari'",
+    "objectType": "",
+    "materialsAndTechniques": "Pierre noire, plume et encre brune, pinceau et encre brune et grise, lavis gris, rehauts de blanc et de gris-bleu, sur un feuillet agrandi par quatre bandes laterales (feuillet d'origine : H. 0,428 m ; L. 0,577 m. Feuillet agrandi : H. 0,453 m. ; L. 0,636 m).",
+    "period": ""
+   },
+   "enLabel": "The Battle of Anghiari",
+   "onView": false,
+   "collection": "Département des Arts graphiques"
+  },
+  {
+   "ark": "020113128",
+   "fr": {
+    "title": "Cheval bai, à l'écurie",
+    "objectType": "",
+    "materialsAndTechniques": "crayon (noir);lavis (brun);aquarelle",
+    "period": ""
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Arts graphiques"
+  },
+  {
+   "ark": "020123106",
+   "fr": {
+    "title": "Vaste plaine, sous un grand ciel, au soleil couchant",
+    "objectType": "",
+    "materialsAndTechniques": "Pastel. Fausse marge.",
+    "period": "vers 1849"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Arts graphiques"
+  },
+  {
+   "ark": "020221785",
+   "fr": {
+    "title": "Une forge au Creusot",
+    "objectType": "",
+    "materialsAndTechniques": "Aquarelle par endroits vernie, sur traits à la mine de plomb. Indication en bas à gauche : 'Creusot, juillet 1836'. Dessin restauré",
+    "period": "1836"
+   },
+   "enLabel": null,
+   "onView": false,
+   "collection": "Département des Arts graphiques"
+  },
+  {
+   "ark": "020616723",
+   "fr": {
+    "title": "L'Impératrice Joséphine accompagnée du baron Dominique-Vivant Denon visitant le Salon de 1808",
+    "objectType": "",
+    "materialsAndTechniques": "Plume et lavis d'encre grise et d'encre brune sur papier.\nAnnoté en bas au milieu sur le montage ancien : Monsiau inv\nMarque de la collection Georges Dormeuil ( L.1146a ), en bas à droite.",
+    "period": "1808"
+   },
+   "enLabel": "The Empress Joséphine, with Vivant Denon, visiting the Salon of 1808",
+   "onView": false,
+   "collection": "Département des Arts graphiques"
+  }
+ ]
+}

@@ -1,0 +1,1071 @@
+{
+ "generatedAt": "2026-07-05T19:22:10.504Z",
+ "note": "awareness-only; runtime is Gemini-locked",
+ "models": {
+  "google/gemini-3.1-flash-lite": {
+   "tag": "incumbent",
+   "keyTermHits": 13,
+   "total": 13,
+   "hitCI": {
+    "mean": 1,
+    "lo": 1,
+    "hi": 1,
+    "n": 13
+   },
+   "hits": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "schemaComplianceRate": 1,
+   "latencyP50Ms": 1119,
+   "measuredUsd": 0.008263,
+   "rewrites": [
+    {
+     "q": "great wave",
+     "rewrite": {
+      "ftsQuery": "great OR wave",
+      "filters": {
+       "artist": "",
+       "classification": "",
+       "culture_or_period": "",
+       "material": ""
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "sake bottle willow",
+     "rewrite": {
+      "ftsQuery": "sake OR bottle OR willow",
+      "filters": {
+       "classification": "Ceramics-Containers"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "that huge painting of washington crossing a river in a boat",
+     "rewrite": {
+      "ftsQuery": "washington OR crossing OR river OR boat",
+      "filters": {
+       "classification": "Paintings"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "blue ming vases",
+     "rewrite": {
+      "ftsQuery": "blue OR ming OR vase",
+      "filters": {
+       "classification": "Ceramics-Porcelain"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "ancient egyptian cat statues",
+     "rewrite": {
+      "ftsQuery": "ancient OR egyptian OR cat OR statue",
+      "filters": {
+       "classification": "Sculpture",
+       "culture_or_period": "Egyptian"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "armor for horses",
+     "rewrite": {
+      "ftsQuery": "armor OR horse",
+      "filters": {
+       "classification": "Armor for Horse and Man"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "samurai sword",
+     "rewrite": {
+      "ftsQuery": "samurai OR sword",
+      "filters": {
+       "classification": "Swords"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "impressionist gardens",
+     "rewrite": {
+      "ftsQuery": "impressionist OR garden",
+      "filters": {
+       "classification": "Paintings"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "tiffany stained glass",
+     "rewrite": {
+      "ftsQuery": "tiffany OR stained OR glass",
+      "filters": {
+       "classification": "Glass-Stained"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "painting of a woman seated beside a vase of flowers",
+     "rewrite": {
+      "ftsQuery": "painting OR woman OR seated OR vase OR flower",
+      "filters": {
+       "classification": "Paintings"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "stone idol with big eyes",
+     "rewrite": {
+      "ftsQuery": "stone OR idol OR eye",
+      "filters": {
+       "material": "Stone"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "bronze statue of a roman household god",
+     "rewrite": {
+      "ftsQuery": "bronze OR statue OR roman OR household OR god",
+      "filters": {
+       "classification": "Sculpture-Bronze",
+       "culture_or_period": "Roman"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "beads from ancient mesopotamia",
+     "rewrite": {
+      "ftsQuery": "bead OR mesopotamia",
+      "filters": {
+       "culture_or_period": "Sumerian"
+      }
+     },
+     "hit": true
+    }
+   ]
+  },
+  "google/gemini-2.5-flash-lite": {
+   "tag": "prior-gen",
+   "keyTermHits": 13,
+   "total": 13,
+   "hitCI": {
+    "mean": 1,
+    "lo": 1,
+    "hi": 1,
+    "n": 13
+   },
+   "hits": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "schemaComplianceRate": 1,
+   "latencyP50Ms": 673,
+   "measuredUsd": 0.0031866999999999993,
+   "rewrites": [
+    {
+     "q": "great wave",
+     "rewrite": {
+      "ftsQuery": "great OR wave",
+      "filters": {
+       "artist": "",
+       "classification": "",
+       "culture_or_period": "",
+       "material": ""
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "sake bottle willow",
+     "rewrite": {
+      "ftsQuery": "sake OR bottle OR willow",
+      "filters": {
+       "artist": "",
+       "classification": "",
+       "culture_or_period": "",
+       "material": ""
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "that huge painting of washington crossing a river in a boat",
+     "rewrite": {
+      "ftsQuery": "washington OR river OR boat",
+      "filters": {
+       "artist": "",
+       "classification": "Paintings",
+       "culture_or_period": "",
+       "material": ""
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "blue ming vases",
+     "rewrite": {
+      "ftsQuery": "blue OR ming",
+      "filters": {
+       "classification": "Vases"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "ancient egyptian cat statues",
+     "rewrite": {
+      "ftsQuery": "egyptian OR cat OR statue",
+      "filters": {
+       "culture_or_period": "Egyptian",
+       "material": "Stone"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "armor for horses",
+     "rewrite": {
+      "ftsQuery": "armor OR horse",
+      "filters": {
+       "classification": "Armor for Horse and Man",
+       "culture_or_period": ""
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "samurai sword",
+     "rewrite": {
+      "ftsQuery": "samurai OR sword",
+      "filters": {
+       "classification": "Swords",
+       "culture_or_period": "Japan OR Japanese"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "impressionist gardens",
+     "rewrite": {
+      "ftsQuery": "impressionist OR garden",
+      "filters": {
+       "artist": "",
+       "classification": "",
+       "culture_or_period": "",
+       "material": ""
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "tiffany stained glass",
+     "rewrite": {
+      "ftsQuery": "tiffany OR glass",
+      "filters": {
+       "artist": "Tiffany Studios",
+       "classification": "Glass-Stained"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "painting of a woman seated beside a vase of flowers",
+     "rewrite": {
+      "ftsQuery": "painting OR woman OR seated OR vase OR flower",
+      "filters": {
+       "artist": "",
+       "classification": "Paintings",
+       "culture_or_period": "",
+       "material": ""
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "stone idol with big eyes",
+     "rewrite": {
+      "ftsQuery": "stone OR idol OR big OR eye",
+      "filters": {
+       "artist": "",
+       "classification": "Sculpture-Stone OR Stone Sculpture OR Stone OR Sculpture",
+       "culture_or_period": "",
+       "material": "Stone"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "bronze statue of a roman household god",
+     "rewrite": {
+      "ftsQuery": "bronze OR roman OR god",
+      "filters": {
+       "classification": "Sculpture-Bronze OR Bronzes OR Metal-Sculpture OR Sculpture-Stone OR Stone Sculpture",
+       "culture_or_period": "Roman",
+       "material": "Bronze"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "beads from ancient mesopotamia",
+     "rewrite": {
+      "ftsQuery": "bead* FROM museum_index WHERE museum_index MATCH '^bead*'",
+      "filters": {
+       "artist": "",
+       "classification": "",
+       "culture_or_period": "Sumerian",
+       "material": ""
+      }
+     },
+     "hit": true
+    }
+   ],
+   "deltaVsIncumbent": {
+    "mean": 0,
+    "lo": 0,
+    "hi": 0,
+    "n": 13
+   }
+  },
+  "deepseek/deepseek-v4-flash": {
+   "tag": "cheapest-frontier",
+   "keyTermHits": 13,
+   "total": 13,
+   "hitCI": {
+    "mean": 1,
+    "lo": 1,
+    "hi": 1,
+    "n": 13
+   },
+   "hits": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "schemaComplianceRate": 0.9230769230769231,
+   "latencyP50Ms": 1727,
+   "measuredUsd": 0.0029429554999999994,
+   "rewrites": [
+    {
+     "q": "great wave",
+     "rewrite": {
+      "ftsQuery": "great OR wave",
+      "filters": {
+       "artist": "",
+       "classification": "",
+       "culture_or_period": "",
+       "material": ""
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "sake bottle willow",
+     "rewrite": {
+      "ftsQuery": "sake bottle willow",
+      "filters": {
+       "classification": "",
+       "culture_or_period": ""
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "that huge painting of washington crossing a river in a boat",
+     "rewrite": {
+      "ftsQuery": "painting Washington crossing river boat",
+      "filters": {
+       "classification": "Paintings"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "blue ming vases",
+     "rewrite": {
+      "filters": {
+       "classification": "Vases",
+       "culture_or_period": "Chinese"
+      },
+      "ftsQuery": "blue OR ming"
+     },
+     "hit": true
+    },
+    {
+     "q": "ancient egyptian cat statues",
+     "rewrite": {
+      "ftsQuery": "ancient Egyptian cat statue",
+      "filters": {
+       "classification": "Sculpture",
+       "culture_or_period": "Egyptian"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "armor for horses",
+     "rewrite": {
+      "filters": {
+       "classification": "Equestrian Equipment",
+       "culture_or_period": ""
+      },
+      "ftsQuery": "armor OR horse OR equestrian"
+     },
+     "hit": true
+    },
+    {
+     "q": "samurai sword",
+     "rewrite": {
+      "ftsQuery": "samurai sword",
+      "filters": {
+       "classification": "Swords"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "impressionist gardens",
+     "rewrite": {
+      "ftsQuery": "impressionist OR garden",
+      "filters": {}
+     },
+     "hit": true
+    },
+    {
+     "q": "tiffany stained glass",
+     "rewrite": {
+      "filters": {
+       "classification": "Glass-Stained"
+      },
+      "ftsQuery": "tiffany"
+     },
+     "hit": true
+    },
+    {
+     "q": "painting of a woman seated beside a vase of flowers",
+     "rewrite": {
+      "ftsQuery": "paint woman seat vase flower",
+      "filters": {
+       "classification": "Paintings",
+       "culture_or_period": "any"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "stone idol with big eyes",
+     "rewrite": {
+      "filters": {
+       "classification": "Stone Sculpture",
+       "culture_or_period": "Greek"
+      },
+      "ftsQuery": "stone OR idol OR big OR eye"
+     },
+     "hit": true
+    },
+    {
+     "q": "bronze statue of a roman household god",
+     "rewrite": {
+      "ftsQuery": "bronze statue roman household god",
+      "filters": {
+       "classification": "Sculpture-Bronze",
+       "culture_or_period": "Roman"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "beads from ancient mesopotamia",
+     "rewrite": {
+      "filters": {
+       "classification": "Beads-Ornaments",
+       "culture_or_period": "Mesopotamian"
+      },
+      "ftsQuery": "beads OR bead OR ancient OR mesopotamia OR mesopotamian"
+     },
+     "hit": true
+    }
+   ],
+   "deltaVsIncumbent": {
+    "mean": 0,
+    "lo": 0,
+    "hi": 0,
+    "n": 13
+   }
+  },
+  "qwen/qwen3.6-flash": {
+   "tag": "qwen-flash",
+   "keyTermHits": 12,
+   "total": 13,
+   "hitCI": {
+    "mean": 0.9230769230769231,
+    "lo": 0.7692307692307693,
+    "hi": 1,
+    "n": 13
+   },
+   "hits": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1
+   ],
+   "schemaComplianceRate": 0,
+   "latencyP50Ms": 884,
+   "measuredUsd": 0.006484874999999999,
+   "rewrites": [
+    {
+     "q": "great wave",
+     "rewrite": {
+      "fts_query": "wave OR swell OR sea OR ocean",
+      "filters": {
+       "classification": "Paintings"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "sake bottle willow",
+     "rewrite": {
+      "fts_query": "sake OR bottle OR willow",
+      "filters": {
+       "classification": "Ceramics-Containers"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "that huge painting of washington crossing a river in a boat",
+     "rewrite": {
+      "fts_query": "washington cross river boat OR painting",
+      "filters": {
+       "classification": "Paintings"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "blue ming vases",
+     "rewrite": {
+      "fts_query": "blue ming vase",
+      "filters": {
+       "classification": "Vases"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "ancient egyptian cat statues",
+     "rewrite": {
+      "fts_query": "egypt cat statu",
+      "filters": {
+       "culture": "Egyptian",
+       "classification": "Sculpture"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "armor for horses",
+     "rewrite": {
+      "fts_query": "armor horse",
+      "filters": {
+       "classification": "Armor for Horse and Man"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "samurai sword",
+     "rewrite": {
+      "fts_query": "samurai sword",
+      "filters": {
+       "classification": "Swords"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "impressionist gardens",
+     "rewrite": {
+      "fts_query": "impression OR garden",
+      "filters": {
+       "classification": "Paintings"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "tiffany stained glass",
+     "rewrite": {
+      "fts_query": "tiffan OR glass OR stain",
+      "filters": {
+       "classification": "Glass-Stained"
+      }
+     },
+     "hit": false
+    },
+    {
+     "q": "painting of a woman seated beside a vase of flowers",
+     "rewrite": {
+      "fts_query": "paint OR woman OR seated OR vase OR flower",
+      "filters": {
+       "classification": "Paintings"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "stone idol with big eyes",
+     "rewrite": {
+      "fts_query": "stone idol eye",
+      "filters": {
+       "classification": "Sculpture-Stone"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "bronze statue of a roman household god",
+     "rewrite": {
+      "fts_query": "bronze OR statu OR roman OR lar OR lararium OR household OR god OR deity",
+      "filters": {
+       "classification": "Sculpture-Bronze",
+       "culture": "Roman"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "beads from ancient mesopotamia",
+     "rewrite": {
+      "fts_query": "bead OR bead* OR mesopotam*",
+      "filters": {
+       "classification": [
+        "Beads-Ornaments",
+        "Jewelry",
+        "Gems",
+        "Lapidary Work-Gems",
+        "Jewelry, Precious Metals and Precious Stones"
+       ],
+       "culture": [
+        "Mesopotamian",
+        "Sumerian",
+        "Assyrian",
+        "Babylonian",
+        "Akkadian",
+        "Elamite",
+        "Persian",
+        "Iranian"
+       ]
+      }
+     },
+     "hit": true
+    }
+   ],
+   "deltaVsIncumbent": {
+    "mean": -0.07692307692307693,
+    "lo": -0.23076923076923078,
+    "hi": 0,
+    "n": 13
+   }
+  },
+  "mistralai/mistral-small-3.2-24b-instruct": {
+   "tag": "french-native",
+   "keyTermHits": 12,
+   "total": 13,
+   "hitCI": {
+    "mean": 0.9230769230769231,
+    "lo": 0.7692307692307693,
+    "hi": 1,
+    "n": 13
+   },
+   "hits": [
+    1,
+    1,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "schemaComplianceRate": 1,
+   "latencyP50Ms": 1353,
+   "measuredUsd": 0.001622855,
+   "rewrites": [
+    {
+     "q": "great wave",
+     "rewrite": {
+      "ftsQuery": "great OR wave",
+      "filters": {
+       "classification": "Paintings",
+       "culture_or_period": "Japan"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "sake bottle willow",
+     "rewrite": {
+      "ftsQuery": "sake OR bottle OR willow",
+      "filters": {
+       "classification": "Ceramics-Containers",
+       "culture_or_period": ""
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "that huge painting of washington crossing a river in a boat",
+     "rewrite": {
+      "ftsQuery": "wash* OR cross* OR river* OR boat*",
+      "filters": {
+       "artist": "Gilbert Stuart",
+       "classification": "Paintings",
+       "material": "Oil on canvas",
+       "culture_or_period": "American"
+      }
+     },
+     "hit": false
+    },
+    {
+     "q": "blue ming vases",
+     "rewrite": {
+      "ftsQuery": "blue OR ming OR vase",
+      "filters": {
+       "classification": "Vases",
+       "culture_or_period": "China"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "ancient egyptian cat statues",
+     "rewrite": {
+      "ftsQuery": "egyptian OR cat OR statue",
+      "filters": {
+       "culture_or_period": "Egyptian"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "armor for horses",
+     "rewrite": {
+      "ftsQuery": "armor OR horse",
+      "filters": {
+       "classification": "Armor for Horse and Man"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "samurai sword",
+     "rewrite": {
+      "ftsQuery": "samurai OR sword OR katana",
+      "filters": {
+       "classification": "Swords",
+       "culture_or_period": "Japanese"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "impressionist gardens",
+     "rewrite": {
+      "ftsQuery": "impressionist garden",
+      "filters": {
+       "classification": "Paintings",
+       "culture_or_period": ""
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "tiffany stained glass",
+     "rewrite": {
+      "ftsQuery": "tiffany OR stained OR glass",
+      "filters": {
+       "classification": "Glass-Stained"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "painting of a woman seated beside a vase of flowers",
+     "rewrite": {
+      "ftsQuery": "painter OR woman OR seated OR vase OR flower",
+      "filters": {
+       "classification": "Paintings",
+       "material": "Paint"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "stone idol with big eyes",
+     "rewrite": {
+      "ftsQuery": "stone idol eyes",
+      "filters": {
+       "classification": "Stone Sculpture",
+       "material": "Stone"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "bronze statue of a roman household god",
+     "rewrite": {
+      "ftsQuery": "bronze statue household god",
+      "filters": {
+       "classification": "Sculpture-Bronze",
+       "culture_or_period": "Roman"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "beads from ancient mesopotamia",
+     "rewrite": {
+      "ftsQuery": "beads OR ancient OR mesopotamia",
+      "filters": {
+       "culture_or_period": "Mesopotamian"
+      }
+     },
+     "hit": true
+    }
+   ],
+   "deltaVsIncumbent": {
+    "mean": -0.07692307692307693,
+    "lo": -0.23076923076923078,
+    "hi": 0,
+    "n": 13
+   }
+  },
+  "openai/gpt-oss-20b": {
+   "tag": "floor",
+   "keyTermHits": 13,
+   "total": 13,
+   "hitCI": {
+    "mean": 1,
+    "lo": 1,
+    "hi": 1,
+    "n": 13
+   },
+   "hits": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "schemaComplianceRate": 1,
+   "latencyP50Ms": 1964,
+   "measuredUsd": 0.001414073,
+   "rewrites": [
+    {
+     "q": "great wave",
+     "rewrite": {
+      "filters": {},
+      "ftsQuery": "great OR wave"
+     },
+     "hit": true
+    },
+    {
+     "q": "sake bottle willow",
+     "rewrite": {
+      "filters": {
+       "classification": "Glass"
+      },
+      "ftsQuery": "sake OR bottle OR willow"
+     },
+     "hit": true
+    },
+    {
+     "q": "that huge painting of washington crossing a river in a boat",
+     "rewrite": {
+      "ftsQuery": "washington OR crossing OR delaware",
+      "filters": {
+       "artist": "Emanuel Leutze",
+       "classification": "Paintings"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "blue ming vases",
+     "rewrite": {
+      "filters": {
+       "classification": "Vases"
+      },
+      "ftsQuery": "blue OR ming OR vase"
+     },
+     "hit": true
+    },
+    {
+     "q": "ancient egyptian cat statues",
+     "rewrite": {
+      "ftsQuery": "ancient OR egyptian OR cat OR statue",
+      "filters": {
+       "culture_or_period": "Egyptian"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "armor for horses",
+     "rewrite": {
+      "filters": {
+       "classification": "Armor for Horse and Man"
+      },
+      "ftsQuery": "armor OR horse"
+     },
+     "hit": true
+    },
+    {
+     "q": "samurai sword",
+     "rewrite": {
+      "filters": {
+       "classification": "Swords",
+       "culture_or_period": "Japanese"
+      },
+      "ftsQuery": "samurai OR sword"
+     },
+     "hit": true
+    },
+    {
+     "q": "impressionist gardens",
+     "rewrite": {
+      "filters": {},
+      "ftsQuery": "(title OR artist OR culture OR classification OR medium OR tags) MATCH 'impression OR garden'"
+     },
+     "hit": true
+    },
+    {
+     "q": "tiffany stained glass",
+     "rewrite": {
+      "ftsQuery": "(tiffany OR stained OR glass)",
+      "filters": {
+       "classification": "Glass-Stained"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "painting of a woman seated beside a vase of flowers",
+     "rewrite": {
+      "filters": {
+       "classification": "Paintings"
+      },
+      "ftsQuery": "painting OR woman OR seated OR vase OR flower"
+     },
+     "hit": true
+    },
+    {
+     "q": "stone idol with big eyes",
+     "rewrite": {
+      "ftsQuery": "stone OR idol OR big OR eye",
+      "filters": {
+       "classification": "Stone Sculpture"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "bronze statue of a roman household god",
+     "rewrite": {
+      "ftsQuery": "(bronze OR statue OR roman OR household OR god) AND classification:\"Sculpture-Bronze\" AND culture:\"Roman\"",
+      "filters": {
+       "classification": "Sculpture-Bronze",
+       "culture_or_period": "Roman"
+      }
+     },
+     "hit": true
+    },
+    {
+     "q": "beads from ancient mesopotamia",
+     "rewrite": {
+      "ftsQuery": "bead OR beads",
+      "filters": {
+       "culture_or_period": "Mesopotamia OR Ancient Mesopotamia OR Mesopotamian"
+      }
+     },
+     "hit": true
+    }
+   ],
+   "deltaVsIncumbent": {
+    "mean": 0,
+    "lo": 0,
+    "hi": 0,
+    "n": 13
+   }
+  }
+ }
+}
