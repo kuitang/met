@@ -43,6 +43,20 @@ export interface JourneyFixtures {
   walkCoords: { lat: number; lon: number }[];
   /** J14: a Cloisters-sited on-view object, when the catalog has one. */
   cloistersObject: FixtureObject | null;
+  /** J16: an on-view AIC Monet (prefers "Stacks of Wheat" when present, else
+   *  any other AIC Monet), null on an artifact without AIC data yet. */
+  aicMonet: AicMonetFixture | null;
+}
+
+/** J16 — galleryId is the site-scoped room key ("aic:243") the multi-museum
+ *  room-list/search testIDs are keyed on; galleryNumber is the bare display
+ *  code ("243"). AIC is the artifact's only non-Met site (registry.ts), so
+ *  the scope prefix is a plain literal here rather than a shared helper. */
+export interface AicMonetFixture {
+  objectID: number;
+  title: string;
+  galleryNumber: string;
+  galleryId: string;
 }
 
 interface GalleryGeomProps {
@@ -210,6 +224,20 @@ export function loadJourneyFixtures(): JourneyFixtures {
 
     const { query: multiWordQuery, hit: multiWordHit } = pickMultiWordQuery(db);
 
+    // J16: prefer the exact "Stacks of Wheat" landmark (the task's showcase
+    // AIC Monet); any other on-view AIC Monet re-arms the journey once the
+    // registry's AIC snapshot changes.
+    const aicMonetRow = db
+      .prepare(
+        `SELECT objectID, title, galleryNumber FROM objects
+         WHERE site = 'aic' AND artist LIKE '%Monet%' AND galleryNumber != ''
+         ORDER BY (title LIKE '%Stacks of Wheat%') DESC, isHighlight DESC LIMIT 1`,
+      )
+      .get() as { objectID: number; title: string; galleryNumber: string } | undefined;
+    const aicMonet: AicMonetFixture | null = aicMonetRow
+      ? { ...aicMonetRow, galleryId: `aic:${aicMonetRow.galleryNumber}` }
+      : null;
+
     return {
       objectCount,
       galleryId,
@@ -224,6 +252,7 @@ export function loadJourneyFixtures(): JourneyFixtures {
       washingtonPresent,
       walkCoords,
       cloistersObject,
+      aicMonet,
     };
   } finally {
     db.close();

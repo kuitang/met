@@ -62,9 +62,12 @@ async function runInterpretJourney(page: import('@playwright/test').Page) {
   // the ranking, led by the server's top hit.
   const ids = body.results.map((r) => r.objectID);
   const rows = page.locator('[data-testid^="result-"]');
-  const rendered = await rows.count();
-  expect(rendered).toBeGreaterThanOrEqual(Math.min(ids.length, 10));
-  expect(rendered).toBeLessThanOrEqual(ids.length);
+  // The C2 section headers (AT THE MET / OTHER MUSEUMS) occupy list-item
+  // slots of the initial render window, so the 10th OBJECT row only appears
+  // once a later render batch lands — assert via the auto-retrying
+  // visibility matcher, then bound by the server's result count.
+  await expect(rows.nth(Math.min(ids.length, 10) - 1)).toBeVisible();
+  expect(await rows.count()).toBeLessThanOrEqual(ids.length);
   await expect(rows.first()).toHaveAttribute('data-testid', `result-${ids[0]}`);
 
   if (F.washingtonPresent) {
