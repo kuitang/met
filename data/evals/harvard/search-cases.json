@@ -1,0 +1,15 @@
+{
+  "description": "Harvard Art Museums golden search cases (10): the per-museum accuracy north-star for the Harvard rows in the merged artifact. Authored 2026-07-06 against the gallery.gallerynumber:* on-view set (1,817 records at measurement time), all verified live via the Harvard Art Museums API before being written down (id, title, artist/people role=Artist, gallery all confirmed on-display). Highlight candidates were checked against sort=totalpageviews,desc: the museum's own most-viewed on-view works (van Gogh's self-portrait is #1). Tiers mirror the Met set: autocomplete = local FTS top-8; full = all-results; llm = relaxed-FTS stand-in for the interpret tier. Rothko is NOT on view in this dataset (0 gallery-assigned records) and was dropped from the plan's candidate list; Sargent's on-view works are all oil, not watercolor.",
+  "cases": [
+    { "query": "self portrait gauguin", "tier": "autocomplete", "expectArtistContains": "van Gogh", "note": "Self-Portrait Dedicated to Paul Gauguin; #1 most-viewed on-view Harvard object, id 299843, gallery 1220" },
+    { "query": "rocky mountains lander", "tier": "autocomplete", "expectArtistContains": "Bierstadt", "note": "Rocky Mountains, \"Lander's Peak\"; id 303976, gallery 2100" },
+    { "query": "blessed damozel", "tier": "autocomplete", "expectTitleContains": "Blessed Damozel", "note": "Rossetti; gallery 2130" },
+    { "query": "gare saint lazare", "tier": "autocomplete", "expectArtistContains": "Monet", "note": "The Gare Saint-Lazare: Arrival of a Train; gallery 1220" },
+    { "query": "cotton merchants new orleans", "tier": "autocomplete", "expectTitleContains": "Cotton Merchants", "note": "Degas; gallery 2700" },
+    { "query": "klimt pear tree", "tier": "autocomplete", "expectArtistContains": "Klimt", "note": "Pear Tree; gallery 1440" },
+    { "query": "copley john adams painting", "tier": "full", "expectTitleContains": "John Adams", "note": "John Singleton Copley, gallery 2240; artist + title tokens land on different columns of the same row. NOT '... portrait of john adams': the title carries no 'portrait' token and Harvard's classification/medium text has no searchable source for it, zeroing the strict-AND tier (same class of miss as V&A's 'coronation cup' case)" },
+    { "query": "sargent breakfast table painting", "tier": "full", "expectTitleContains": "Breakfast Table", "note": "John Singer Sargent, gallery 2100; on-view Sargents are all oil (no watercolors currently on display)" },
+    { "query": "a dutch painter's self portrait dedicated to his friend gauguin", "tier": "llm", "expectArtistContains": "van Gogh", "note": "descriptive phrasing for the icon; 'gauguin' + 'self' survive stopword relaxation" },
+    { "query": "an american wilderness landscape of snowy peaks with a native encampment below", "tier": "llm", "expectTitleContains": "Rocky Mountains", "note": "descriptive phrasing for the Bierstadt; 'mountains'/'peaks' vocabulary leap tests the relaxed-FTS stand-in" }
+  ]
+}

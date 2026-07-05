@@ -17,6 +17,7 @@ import { ngaSource } from "./nga.ts";
 import { smkSource } from "./smk.ts";
 import { louvreSource } from "./louvre.ts";
 import { vandaSource } from "./vanda.ts";
+import { harvardSource } from "./harvard.ts";
 
 const DATA_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 
@@ -260,6 +261,37 @@ export const MUSEUMS: MuseumInfo[] = [
     },
     objectUrlTemplate: "https://collections.vam.ac.uk/item/{sourceId}",
   },
+  {
+    id: "harvard",
+    name: "Harvard Art Museums",
+    shortName: "Harvard",
+    city: "Cambridge",
+    country: "US",
+    sites: [
+      {
+        siteId: "harvard",
+        name: "Harvard Art Museums",
+        // 32 Quincy Street entrance.
+        entrance: { lat: 42.3743, lon: -71.1144, floor: "1" },
+        // Measured 2026-07-06 across the 1,817-object on-view set: floor "0"
+        // (Lower Level Lobby, 2 objects), "1" (Modern/Contemporary + the
+        // Calderwood Courtyard, 512), "2" (European/American 17th-19th c,
+        // 603), "3" (Ancient Mediterranean/Asian/Islamic, 688), "4"
+        // (Hoffman reception area, 12) — no floor "5" objects exist, so this
+        // deviates from the plan's guessed ["1","2","3","4","5"].
+        floorOrder: ["0", "1", "2", "3", "4"],
+      },
+    ],
+    fidelity: "room-labels",
+    license: {
+      text: "harvard-nc-ttl14",
+      images: "", // conservative under non-commercial terms — no image derivatives shipped
+      attribution: "Harvard Art Museums API (non-commercial terms; data expires after 14 days)",
+      termsUrl: "https://github.com/harvardartmuseums/api-docs",
+      ttlDays: 14,
+    },
+    objectUrlTemplate: "https://harvardartmuseums.org/collections/object/{sourceId}",
+  },
 ];
 
 export function museumInfo(id: string): MuseumInfo {
@@ -283,6 +315,7 @@ const SOURCES: Record<string, MuseumSource> = {
   smk: smkSource,
   louvre: louvreSource,
   vanda: vandaSource,
+  harvard: harvardSource,
 };
 
 export function sourceFor(id: string): MuseumSource {

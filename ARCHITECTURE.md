@@ -848,7 +848,50 @@ did. Result: Met goldens **50/50** on the 7-museum artifact, V&A goldens
 AIC 23/25 / Cleveland 13/15 / NGA 14/14 / SMK 13/14 all unchanged. Goldens
 at `data/evals/vanda/search-cases.json`.
 
+**Harvard Art Museums** (Cambridge, MA; D5b, and the second license-TTL
+source): public `/object` search API (api.harvardartmuseums.org, key
+required, free registration), capped at 2,500 calls/day and — per this
+adapter's plan — forbidding caching fetched content for more than 2 weeks,
+reusing the V&A's `ttlDays` mechanism unchanged (`license.ttlDays: 14`,
+`license.text: "harvard-nc-ttl14"`). The API key is read at call time from
+`HARVARD_API_KEY` (env override) or `~/.harvard_key` (never hardcoded,
+logged, or committed); the adapter throws a clear error only when neither is
+present, and only when a fetch actually runs — importing `sources/harvard.ts`
+via the registry's static `SOURCES` map never requires the key. On-view
+enumeration: `q=gallery.gallerynumber:*` (any record with a gallery
+assignment) — measured 2026-07-06: 1,817 on-view objects, 19 pages at
+size=100 (≈10 s at ≤2 req/s), nowhere near the daily cap. Gallery info is
+NOT in the API's default field set — it, and every other field this adapter
+reads, must be requested explicitly via `fields=`, or the API silently
+omits it (measured: the bare query returns records with no `gallery` key at
+all, not even null). Row shape comes entirely from search-page records (no
+per-object hydration): `id` → sourceId, `objectnumber` → accession (a
+handful are loan numbers like "TL42821.11", still valid identifiers),
+`people[]` (`role: "Artist"` preferred, first entry as fallback), `culture`,
+`period` (frequently null), `classification`, `medium` = `technique ||
+medium` (the more specific process field wins when present), and
+`gallery.{gallerynumber, floor, name}` → galleryNumber / galleries.json
+floor+title (`gallery.floor` is a STRING "0".."4" despite the docs' own
+sample showing an int — measured on every live record). Floors measured
+across the full on-view set: "0" (2 objects, Lower Level Lobby), "1" (512,
+Modern/Contemporary + the Calderwood Courtyard), "2" (603, European/American
+17th–19th c.), "3" (688, Ancient Mediterranean/Asian/Islamic), "4" (12,
+Hoffman reception area) — no floor "5" objects exist, so the registry
+`floorOrder` is `["0","1","2","3","4"]`, correcting the plan's guessed
+`["1","2","3","4","5"]`. Images are excluded entirely
+(`imageUrl`/`imageLicense` always `""`) — conservative under the
+non-commercial terms, even though the API exposes `primaryimageurl`.
+Goldens at `data/evals/harvard/search-cases.json` (10/10 measured); Met
+(50/50), AIC (23/25), Cleveland (13/15), NGA (14/14), SMK (13/14), and V&A
+(11/12) all unchanged on the merged 8-museum artifact. `coverage[harvard]`
+100% (1,817/1,817).
+
 ### Provenance & the license-TTL mechanism
+
+Harvard's 14-day cap coexists with the V&A's 28-day one — each museum's
+`ttlDays` is enforced independently (`data/src/ttl.test.ts` doctors a
+builtAt at the 13/14-day boundary for Harvard and a 20-day artifact that
+expires Harvard but not V&A, verifying the two TTLs don't interfere).
 
 Most fleet sources are CC0/open — rows stay valid until the next build
 replaces them. The V&A's terms instead cap how long fetched content may be
