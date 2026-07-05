@@ -75,8 +75,11 @@ const RESUME_FILE = join(REPO_DATA, "raw", "louvre", "objects-cache.ndjson");
 
 function client(maxAttempts: number) {
   return createPoliteClient({
-    reqsPerSec: 2,
-    concurrency: 2,
+    // Measured 2026-07-05: 2 req/s sustained triggered an HTML bot challenge
+    // ~12k requests into the full hydration. 1 req/s with the politeFetch
+    // non-JSON-200 backoff survives; full hydrations are overnight jobs.
+    reqsPerSec: 1,
+    concurrency: 1,
     maxAttempts,
     userAgent: UA,
     label: "louvre",
