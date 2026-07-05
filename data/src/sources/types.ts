@@ -24,6 +24,30 @@ export interface ObjectRow {
   isHighlight: boolean;
   imageUrl: string;
   metadataDate: string;
+  // ---- multi-museum fields (schema v2; optional in snapshots — build-db fills
+  // defaults from the registry entry). The Met snapshot predates these.
+  /** Museum-native record id (ark, "O9138", …). Default: String(objectID). */
+  sourceId?: string;
+  /** Sub-room location free text (V&A case "PL2", …). */
+  locationNote?: string;
+  /** Display-only English title when `title` is not English (Louvre). Also FTS-indexed. */
+  titleAlt?: string;
+  /** Per-record text license when it differs from the museum default. */
+  license?: string;
+  /** Per-record image-derivative license; "" = no derivatives allowed. */
+  imageLicense?: string;
+}
+
+/**
+ * Optional per-museum snapshot `galleries.json` for museums without geometry:
+ * room labels/floors for the galleries table (else rows are synthesized from
+ * distinct object galleryNumbers with NULL title/floor).
+ */
+export interface GalleryLabelRow {
+  galleryNumber: string;
+  site: string;
+  title?: string;
+  floor?: string;
 }
 
 export interface FullFetchOptions {

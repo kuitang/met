@@ -29,6 +29,34 @@ paths:
         default:
           $ref: "#/components/responses/Error"
 
+  /api/v1/museums:
+    get:
+      operationId: getMuseums
+      summary: Museums contained in the current artifact
+      description: >
+        The multi-museum manifest: registry identity, sites (buildings with
+        entrances + floor order), data fidelity/capabilities, licensing
+        attribution, per-museum freshness. Read from the artifact's meta —
+        the client sees identical facts offline from its downloaded copy.
+      responses:
+        "200":
+          description: Museum manifest
+          headers:
+            x-data-version:
+              $ref: "#/components/headers/XDataVersion"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MuseumManifest"
+        "503":
+          description: Artifact not yet available (data_unavailable)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        default:
+          $ref: "#/components/responses/Error"
+
   /api/v1/data/met.sqlite:
     get:
       operationId: getDatabase
@@ -262,6 +290,107 @@ components:
         builtAt:
           type: string
           format: date-time
+
+    SiteMeta:
+      type: object
+      required: [siteId, name, entrance, floorOrder]
+      properties:
+        siteId:
+          type: string
+          description: Globally unique site id ("fifthAve", "louvre:main", …)
+        name:
+          type: string
+        entrance:
+          type: object
+          required: [lat, lon]
+          properties:
+            lat:
+              type: number
+            lon:
+              type: number
+            floor:
+              type: string
+        floorOrder:
+          type: array
+          items:
+            type: string
+          description: Floor labels in display order (bottom → top)
+
+    MuseumEntry:
+      type: object
+      required: [id, name, shortName, city, country, sites, fidelity, license, capabilities]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        shortName:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        sites:
+          type: array
+          items:
+            $ref: "#/components/schemas/SiteMeta"
+        fidelity:
+          type: string
+          enum: [routed, room-labels, museum-only]
+        license:
+          type: object
+          required: [text, images, attribution, termsUrl]
+          properties:
+            text:
+              type: string
+            images:
+              type: string
+              description: Default image-derivative license; "" = none allowed
+            attribution:
+              type: string
+            termsUrl:
+              type: string
+        objectUrlTemplate:
+          type: string
+          description: Object deep-link template; "{sourceId}" replaced per record
+        capabilities:
+          type: object
+          required: [hasGeometry, hasGraph, granularity, languages]
+          properties:
+            hasGeometry:
+              type: boolean
+            hasGraph:
+              type: boolean
+            granularity:
+              type: string
+              enum: [room, gallery-label, museum]
+            languages:
+              type: array
+              items:
+                type: string
+        counts:
+          type: object
+          properties:
+            objects:
+              type: integer
+        fetchedAt:
+          type: string
+          nullable: true
+          description: When this museum's records were last confirmed from source
+
+    MuseumManifest:
+      type: object
+      required: [dataVersion, builtAt, museums]
+      properties:
+        dataVersion:
+          type: string
+        builtAt:
+          type: string
+          format: date-time
+        museums:
+          type: array
+          items:
+            $ref: "#/components/schemas/MuseumEntry"
 
     Health:
       type: object

@@ -13,6 +13,7 @@ import { healthRoutes } from './routes/health.js'
 import { imgRoutes } from './routes/img.js'
 import { interpretRoutes } from './routes/interpret.js'
 import { locateRoutes } from './routes/locate.js'
+import { museumsRoutes } from './routes/museums.js'
 
 const app = new Hono()
 
@@ -67,6 +68,7 @@ app.use('/api/v1/img/*', imgRateLimit)
 
 app.route('/api/v1/health', healthRoutes)
 app.route('/api/v1/data', dataRoutes)
+app.route('/api/v1/museums', museumsRoutes)
 app.route('/api/v1/img', imgRoutes)
 app.route('/api/v1/search/interpret', interpretRoutes)
 app.route('/api/v1/locate/photo', locateRoutes)

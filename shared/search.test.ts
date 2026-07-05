@@ -221,7 +221,7 @@ function fixtureDb(): { db: DbHandle; raw: InstanceType<typeof Database> } {
       imageUrl TEXT, metadataDate TEXT, synonyms TEXT);
     CREATE VIRTUAL TABLE objects_fts USING fts5(
       title, artist, culture, classification, medium, tags, synonyms,
-      content='objects', content_rowid='objectID',
+      content='',
       tokenize='porter unicode61', prefix='2 3 4');
     CREATE TABLE galleries(galleryNumber TEXT, site TEXT, floor TEXT,
       PRIMARY KEY(galleryNumber, site));
