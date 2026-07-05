@@ -403,6 +403,88 @@ screens are byte-identical to pre-C2 behavior.
   resolves every site the artifact knows about without touching its Met
   fallback.
 
+### Degraded fidelity, staleness, and attribution (C3)
+
+Every museum in the registry except the Met ships `capabilities.hasGeometry:
+false` and `hasGraph: false` today (AIC, Cleveland, NGA, SMK, Louvre — see
+`data/src/sources/registry.ts`): no gallery polygons, no routing graph. C3
+makes that degradation honest everywhere it surfaces, rather than a dead
+button or a blank map:
+
+- **Directions suppression is capability-gated, not cosmetic**, at every
+  `?nav=`/route entry point: the object page's "Navigate here"
+  (`objectMuseum?.capabilities.hasGraph`, unchanged since C2), the room
+  sheet's DIRECTIONS button (`HomeRoomSheet`'s new `hasGraph` prop — the
+  button never renders for a graphless room, not merely hidden), and the
+  nav-mode retarget path (`RoomRow`'s `navFrom` branch) — safe by
+  construction, since nav mode (and therefore retargeting) can only ever be
+  entered for a `hasGraph` site in the first place, and `search.tsx` already
+  scopes room rows to the active museum's sites. The legacy
+  `/route/[from]/[to]` redirect is untouched: `data.route()` already returns
+  undefined for a graphless pair, which the home screen already renders as
+  the honest "no route found" dead-end (pre-C3 behavior).
+- **WayfindingCard** (`apps/mobile/src/components/WayfindingCard.tsx`): fills
+  the slot a DIRECTIONS affordance would have occupied — a large room-code
+  glyph (RoomRow's `roomGlyph`) + room name + "Floor N · {museum shortName}"
+  (floor omitted when the source data doesn't know it — AIC/SMK ship gallery
+  rows with no authoritative floor mapping; see `floorLabel`'s NaN handling
+  below). Two call sites, one `compact` toggle: the object page's location
+  card (full-size, replacing "Navigate here") and `HomeRoomSheet`'s action
+  row (compact, replacing the hidden DIRECTIONS button — "I'm here" stays,
+  since anchoring at a room is honest without a graph; only routing there
+  is not).
+- **RoomListBrowse** (`apps/mobile/src/components/RoomListBrowse.tsx`): the
+  home screen's map area (`app/index.tsx`) renders this instead of
+  `FloorMap` whenever the active venue's museum has `hasGeometry: false` —
+  NEVER the stub schematic fallback (that would draw fake rooms for a real
+  museum). A scrollable list of the venue's gallery rooms, reusing `RoomRow`
+  verbatim (identical one-tap `focusRoom` grammar — tap opens the same room
+  sheet a map tap would have): floor-grouped with jump chips when the
+  museum's rows carry a real floor (Cleveland's room-code-range floors, the
+  Louvre's own floor JSON, both derived at ingest), or one flat ungrouped
+  list — chips hidden — when every room's floor is unknown (AIC, SMK).
+- **Unknown floors are NaN, not a silent 0/"G"**: `galleries.floor` is
+  nullable at the schema level (v2, museums without geometry) but
+  `SqliteDataProvider`'s old `floorNumber(null)` coerced through
+  `Number(null) === 0`, mislabeling every such room "Floor G". Fixed to
+  return `NaN`; `MapGeometry.ts:floorLabel(NaN)` returns `''` so every
+  display site (`HomeRoomSheet`, `RoomRow`'s floor chip, `LocateState.
+  anchorForRoom`'s anchor label, `WayfindingCard`, `RoomListBrowse`'s
+  grouping, the object page's location line) omits the floor rather than
+  printing "Floor NaN". Met floors (including `0`/`"G"` and `1.5`/`"1M"`)
+  are numeric, never null, so this is a no-op there.
+- **StalenessBadge** (`apps/mobile/src/components/StalenessBadge.tsx`):
+  "Verified N days ago" from `museumFreshness(museum, data)`
+  (`data/provider.ts`) — a museum's own `meta.museums[].fetchedAt`, falling
+  back to the whole artifact's `meta.builtAt` (`SqliteDataProvider.builtAt`,
+  read alongside `dataVersion`) when null. Purely a function of elapsed
+  time, not a non-Met special case: the Met shows the identical line once
+  its own record is old enough (the committed partial snapshot's Met
+  `fetchedAt` predates the AIC/Cleveland/NGA/SMK/Louvre ones, so the real
+  artifact routinely demonstrates this for Met objects too), and the stub's
+  `BUILTIN_MET_ENTRY` carries no date, so it always renders nothing — zero
+  visual change for the single-museum stub. Three tiers: <14 days (object
+  page: nothing; picker: plain text), 14–59 (plain secondary text), ≥60
+  (amber `colors.amber` + "may have moved" — the one non-red/black/grey
+  accent in the theme). Two surfaces: the object page's location card
+  (tier-gated) and the locate sheet's per-museum picker row (C2's grouped
+  picker — always renders, reassurance rather than only a warning).
+- **AttributionFooter** (`apps/mobile/src/components/AttributionFooter.tsx`):
+  the object page's footer — `museum.license.attribution` +
+  "View on {host} ↗" (`objectSourceUrl`; keeps the exact testID
+  `object-met-link` the old standalone link used) + a link to
+  `license.termsUrl`. Generalized identically for every museum (all are
+  required `MuseumEntry` fields), not degraded for non-Met — the Met's own
+  CC0 attribution/terms render through the identical component.
+- **e2e**: `e2e/checks/degraded-fidelity.spec.ts`, REAL_TARGET-gated (same
+  boot recipe as `dataprovider.spec.ts` — needs the real multi-museum
+  met.sqlite, `npm -w data run build-db`), asserts no `navigate-here` for an
+  AIC object, `WayfindingCard` visible in its place, the locate picker's
+  staleness line, correct AIC attribution/terms, and `RoomListBrowse`
+  (never `FloorMap`) at the AIC venue. The object-page staleness assertion
+  reads the artifact's actual `fetchedAt` at spec-load and asserts against
+  the threshold that value actually falls in — never a hardcoded day count.
+
 ## Photo localization
 
 `server/src/routes/locate.ts`: two concurrent server-side paths, one round

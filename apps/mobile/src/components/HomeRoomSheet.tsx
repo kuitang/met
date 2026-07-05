@@ -17,6 +17,7 @@ import DetentSheet, { HALF_VISIBLE, type SheetDetent } from '@/components/Detent
 import { floorLabel } from '@/components/MapGeometry';
 import { ObjectThumb } from '@/components/ObjectImage';
 import { roomGlyph } from '@/components/RoomRow';
+import WayfindingCard from '@/components/WayfindingCard';
 import { MetObject, Room } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
@@ -42,6 +43,16 @@ export interface HomeRoomSheetProps {
    * closes the sheet. Hidden when the room already is the origin.
    */
   onDirections?: () => void;
+  /**
+   * Whether the room's museum has a routing graph (C3). false (AIC today —
+   * no other museum has one either) suppresses DIRECTIONS outright — never
+   * offered even if the parent still passed onDirections — and shows a
+   * compact WayfindingCard in its place; museumShortName then supplies that
+   * card's context line. Defaults true (every pre-C3 caller, and the Met).
+   */
+  hasGraph?: boolean;
+  /** Owning museum's shortName — only read when hasGraph is false. */
+  museumShortName?: string;
   onClose: () => void;
   /** Detent reports (parent keeps the map's zoom rail above the sheet). */
   onDetentChange?: (d: SheetDetent) => void;
@@ -56,6 +67,8 @@ export default function HomeRoomSheet({
   originId,
   onImHere,
   onDirections,
+  hasGraph = true,
+  museumShortName = '',
   onClose,
   onDetentChange,
 }: HomeRoomSheetProps) {
@@ -86,13 +99,16 @@ export default function HomeRoomSheet({
           {room.name}
         </Text>
         <Text style={type.meta}>
-          {/* Label vocabulary (G / 1M / …), not the numeric floor. */}
-          Floor {floorLabel(room.floor)}
+          {/* Label vocabulary (G / 1M / …), not the numeric floor; omitted
+              entirely when unknown (C3: AIC/SMK ship galleries with no
+              authoritative floor mapping — floorLabel('') signals this). */}
+          {floorLabel(room.floor) ? `Floor ${floorLabel(room.floor)}` : ''}
           {/* Honest count: the list is capped, the total is not. */}
           {!isAmenity && totalCount > 0
-            ? objects.length < totalCount
-              ? ` · Showing ${fmt(objects.length)} of ${fmt(totalCount)} objects`
-              : ` · ${fmt(totalCount)} ${totalCount === 1 ? 'object' : 'objects'}`
+            ? (floorLabel(room.floor) ? ' · ' : '') +
+              (objects.length < totalCount
+                ? `Showing ${fmt(objects.length)} of ${fmt(totalCount)} objects`
+                : `${fmt(totalCount)} ${totalCount === 1 ? 'object' : 'objects'}`)
             : ''}
         </Text>
       </View>
@@ -122,15 +138,27 @@ export default function HomeRoomSheet({
             </View>
           ) : (
             <View style={styles.actionRow}>
-              {originId !== room.id && onDirections && (
-                <Pressable
-                  style={[styles.actionBtn, styles.directionsBtn]}
-                  onPress={onDirections}
-                  testID="room-directions"
-                >
-                  <Text style={styles.actionText}>Directions</Text>
-                </Pressable>
-              )}
+              {originId !== room.id &&
+                (hasGraph
+                  ? onDirections && (
+                      <Pressable
+                        style={[styles.actionBtn, styles.directionsBtn]}
+                        onPress={onDirections}
+                        testID="room-directions"
+                      >
+                        <Text style={styles.actionText}>Directions</Text>
+                      </Pressable>
+                    )
+                  : (
+                      // No routing graph (C3): DIRECTIONS is never offered —
+                      // this static card fills the slot instead.
+                      <WayfindingCard
+                        room={room}
+                        museumShortName={museumShortName}
+                        compact
+                        testID="room-sheet-wayfinding"
+                      />
+                    ))}
               <Pressable
                 style={[styles.actionBtn, styles.imHereBtn]}
                 onPress={onImHere}

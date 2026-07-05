@@ -107,7 +107,11 @@ export default function RoomRow({
           </Text>
         ) : null}
       </View>
-      <Text style={styles.floorChip}>F{floorLabel(room.floor)}</Text>
+      {/* Unknown floor (C3: AIC/SMK ship galleries with no authoritative
+          floor mapping) — omit the chip rather than print a bare "F". */}
+      {floorLabel(room.floor) ? (
+        <Text style={styles.floorChip}>F{floorLabel(room.floor)}</Text>
+      ) : null}
     </Pressable>
   );
 }

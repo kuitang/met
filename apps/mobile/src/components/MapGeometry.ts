@@ -54,6 +54,10 @@ export const FLOOR_ORDER = ['G', '1', '1M', '2', '3', '4', '5'] as const;
 
 export function floorLabel(floor: number | string): string {
   if (typeof floor === 'string') return floor;
+  // Unknown floor (C3: museums whose gallery rows ship without an
+  // authoritative floor mapping — AIC, SMK; see data/src/sources/{aic,smk}.ts)
+  // — '' so callers can omit the "Floor …" line rather than print "Floor NaN".
+  if (Number.isNaN(floor)) return '';
   if (floor === 0) return 'G';
   if (floor === 1.5) return '1M';
   return String(floor);

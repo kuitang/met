@@ -28,6 +28,11 @@ export const colors = {
   mapAmenity: '#e3e1de',
   mapCirculation: '#edeae6', // corridors/BOH — visible against the floor plate
   mapClosed: '#dfdcd8', // closed-hatch base — reads grey at thumbnail zoom
+  // Staleness warning (C3): a museum record not re-confirmed from source in
+  // ≥60 days — the one non-red/black/grey accent in the palette, reserved
+  // for StalenessBadge's "may have moved" tier. #8a5a00 on white ≈ 5.9:1
+  // contrast (WCAG AA for normal text).
+  amber: '#8a5a00',
 } as const;
 
 /** 4pt-based spacing scale; generous whitespace is part of the look. */

@@ -12,9 +12,13 @@ import {
   View,
 } from 'react-native';
 
-import ObjectImage from '@/components/ObjectImage';
+import AttributionFooter from '@/components/AttributionFooter';
 import { applyVenue, getAnchor, getVenue, useVenue } from '@/components/LocateState';
-import { museumForSite, objectSourceUrl, useData } from '@/data/provider';
+import { floorLabel } from '@/components/MapGeometry';
+import ObjectImage from '@/components/ObjectImage';
+import StalenessBadge from '@/components/StalenessBadge';
+import WayfindingCard from '@/components/WayfindingCard';
+import { BUILTIN_MET_ENTRY, museumForSite, museumFreshness, objectSourceUrl, useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
 export default function ObjectScreen() {
@@ -89,6 +93,14 @@ export default function ObjectScreen() {
     objectSourceUrl(object, museums) ??
     `https://www.metmuseum.org/art/collection/search/${object.objectID}`;
   const objectURLHost = new URL(objectURL).hostname.replace(/^www\./, '');
+  // The object's OWN museum for attribution/staleness (falls back to the
+  // Met so a pre-v2 artifact/stub — objectMuseum then undefined — still
+  // renders correct CC0 attribution rather than nothing).
+  const attributionMuseum = objectMuseum ?? BUILTIN_MET_ENTRY;
+  // "Last confirmed from source" (C3) — describes the RECORD, not the venue
+  // you're currently browsing, so this reads the same whether or not
+  // crossMuseum is showing "VIEW AT" instead of the location line.
+  const fetchedAt = museumFreshness(objectMuseum, data);
 
   // Share = copy the canonical deep link (web clipboard; native share sheet).
   // Always derived from the RUNTIME origin — window.location.origin on web,
@@ -161,7 +173,10 @@ export default function ObjectScreen() {
           <>
             {gallery && (
               <Text style={type.meta}>
-                On view · {gallery.name} · Floor {gallery.floor}
+                On view · {gallery.name}
+                {/* Unknown floor (C3: AIC/SMK ship galleries with no
+                    authoritative floor mapping) — omit rather than "Floor NaN". */}
+                {Number.isFinite(gallery.floor) ? ` · Floor ${gallery.floor}` : ''}
               </Text>
             )}
             {object.gallery && !gallery && (
@@ -170,6 +185,9 @@ export default function ObjectScreen() {
           </>
         )}
       </View>
+
+      {/* "Last confirmed from source" (C3) — nothing under 14 days old. */}
+      <StalenessBadge fetchedAt={fetchedAt} testID="object-staleness" />
 
       {crossMuseum && objectMuseum ? (
         <Pressable style={styles.navigateBtn} onPress={viewAtOtherMuseum} testID="view-at-museum">
@@ -180,9 +198,10 @@ export default function ObjectScreen() {
       ) : (
         // Directions only when this museum's site actually has a routing
         // graph (AIC today is room-labels-only, hasGraph: false) — unchanged
-        // for the Met, where hasGraph has always been true.
+        // for the Met, where hasGraph has always been true. Graphless: a
+        // static WayfindingCard fills the slot instead of just going empty.
         gallery &&
-        objectMuseum?.capabilities.hasGraph && (
+        (objectMuseum?.capabilities.hasGraph ? (
           <Pressable
             style={styles.navigateBtn}
             onPress={() =>
@@ -203,20 +222,29 @@ export default function ObjectScreen() {
           >
             <Text style={styles.navigateBtnText}>Navigate here</Text>
           </Pressable>
-        )
+        ) : (
+          objectMuseum && (
+            <View style={styles.wayfindingSlot}>
+              <WayfindingCard
+                room={gallery}
+                museumShortName={objectMuseum.shortName}
+                testID="wayfinding-card"
+              />
+            </View>
+          )
+        ))
       )}
 
       <Pressable style={styles.linkOut} onPress={onShare} testID="object-share">
         <Text style={styles.linkOutText}>{copied ? 'Link copied ✓' : 'Share'}</Text>
       </Pressable>
 
-      <Pressable
-        style={styles.linkOut}
-        onPress={() => Linking.openURL(objectURL)}
-        testID="object-met-link"
-      >
-        <Text style={styles.linkOutText}>View on {objectURLHost} ↗</Text>
-      </Pressable>
+      <AttributionFooter
+        museum={attributionMuseum}
+        objectURL={objectURL}
+        objectURLHost={objectURLHost}
+        testID="object-attribution"
+      />
     </ScrollView>
   );
 }
@@ -287,6 +315,10 @@ const styles = StyleSheet.create({
   navigateBtnText: {
     ...type.label,
     color: colors.white,
+  },
+  // Same slot the "Navigate here" button would occupy (graphless museums).
+  wayfindingSlot: {
+    marginTop: spacing.lg,
   },
   linkOut: {
     marginTop: spacing.sm,
