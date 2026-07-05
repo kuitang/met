@@ -18,7 +18,8 @@
  */
 import type { DataProvider, RoomKind } from '@/data/provider';
 
-export type Site = 'fifthAve' | 'cloisters';
+/** Globally-unique site id (schema v2 opens the set beyond the Met's two buildings). */
+export type Site = string;
 
 export interface GalleryFeatureProperties {
   geomId: number;
@@ -167,9 +168,18 @@ function rings(geometry: GalleryFeature['geometry']): number[][][] {
     : geometry.coordinates.flat();
 }
 
-/** Floor labels (FLOOR_ORDER order) whose features include ≥1 gallery. */
-export function availableFloors(geometry: GeometryFn, site: Site): string[] {
-  return FLOOR_ORDER.filter((label) =>
+/**
+ * Floor labels (in order) whose features include ≥1 gallery. `floorOrder`
+ * comes from the site's registry entry (artifact meta.museums[].sites) —
+ * the Met FLOOR_ORDER constant is the default so existing callers are
+ * unchanged; other museums (e.g. Louvre "-1/0/1/2") pass their own.
+ */
+export function availableFloors(
+  geometry: GeometryFn,
+  site: Site,
+  floorOrder: readonly string[] = FLOOR_ORDER,
+): string[] {
+  return floorOrder.filter((label) =>
     geometry(site, label).some((f) => shapeKind(f.properties.type, false) === 'gallery'),
   );
 }
@@ -178,9 +188,13 @@ export function availableFloors(geometry: GeometryFn, site: Site): string[] {
  * Project a site's features (all floors) into local meters and build the
  * per-floor SVG render model. Pure + deterministic → memoize per (data, site).
  */
-export function buildSiteGeometry(geometry: GeometryFn, site: Site): SiteGeometry {
+export function buildSiteGeometry(
+  geometry: GeometryFn,
+  site: Site,
+  floorOrder: readonly string[] = FLOOR_ORDER,
+): SiteGeometry {
   const byFloor = new Map<string, GalleryFeature[]>();
-  for (const label of FLOOR_ORDER) {
+  for (const label of floorOrder) {
     const features = geometry(site, label);
     if (features.length) byFloor.set(label, features);
   }

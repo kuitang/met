@@ -505,8 +505,8 @@ loads whatever shards exist.
 | `shared/openapi.yaml` → `shared/api-types.d.ts` | the only client↔server contract (`npm -w shared run gen`) |
 | `shared/search.ts:buildAutocompleteQuery` / `buildFullQuery` / `relaxQuery` / `amenityIntent` | FTS query construction, shared verbatim by client and server |
 | `shared/routing.ts:buildRouteGraph` / `route` | Dijkstra + room-grouped compass instructions |
-| `shared/positioning.ts:applyInput` / `applyFusedInput` / `resolveGpsArea` / `resolveGpsVenue` / `onRouteAnchor` | signal fusion, decay, venue coupling + GPS venue auto-detect, route advance/reroute |
-| `apps/mobile/src/data/provider.ts:DataProvider` / `StubDataProvider` / `useData` | UI-facing data interface |
+| `shared/positioning.ts:applyInput` / `applyFusedInput` / `resolveGpsArea` / `resolveGpsVenue` / `onRouteAnchor` | signal fusion, decay, venue coupling + GPS venue auto-detect, route advance/reroute. `Site` is an open string id; entrance data is injected (`SiteEntrance[]`, default `MET_ENTRANCES`) — multi-museum clients pass the registry's entrances, and any injected list must respect the inter-entrance-distance safety property documented at `MET_ENTRANCES` |
+| `apps/mobile/src/data/provider.ts:DataProvider` / `StubDataProvider` / `useData` | UI-facing data interface; v2 adds `museums()` (artifact meta.museums manifest; `BUILTIN_MET_ENTRY` fallback for pre-v2 artifacts/stub) |
 | `apps/mobile/src/data/SqliteDataProvider.ts:SqliteDataProvider` | real provider over the local DB |
 | `apps/mobile/src/data/DataGate.tsx:DataGate` | boot: local-first open, download, version poll, hot swap |
 | `apps/mobile/src/data/sqlite.ts` / `sqlite.web.ts` (`MetDb`) | per-platform SQLite backends behind one contract |
