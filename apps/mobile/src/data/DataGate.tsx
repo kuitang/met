@@ -21,6 +21,7 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { registerVenueNames } from '@/components/LocateState';
 import { colors, type } from '@/theme';
 
 import { DataContext, StubDataProvider, type DataProvider } from './provider';
@@ -30,8 +31,26 @@ import { SqliteDataProvider } from './SqliteDataProvider';
 const REAL = process.env.EXPO_PUBLIC_DATA === 'real';
 const stubProvider = REAL ? null : new StubDataProvider();
 
+/**
+ * Overlay site display names from the artifact's meta.museums (schema v2)
+ * onto LocateState's venueName() registry: a museum with one site is named
+ * by its shortName (AIC has no separate "site name" worth surfacing), a
+ * multi-site museum (the Met) names each site individually. Runs once per
+ * provider load/swap — cheap, and covers every site the artifact knows about
+ * without touching LocateState's built-in Met fallback.
+ */
+function registerNamesFrom(provider: DataProvider): void {
+  const names: Record<string, string> = {};
+  for (const m of provider.museums()) {
+    for (const s of m.sites) names[s.siteId] = m.sites.length === 1 ? m.shortName : s.name;
+  }
+  registerVenueNames(names);
+}
+
 async function openProvider(met: MetDb): Promise<DataProvider> {
-  return await SqliteDataProvider.create(met);
+  const provider = await SqliteDataProvider.create(met);
+  registerNamesFrom(provider);
+  return provider;
 }
 
 /** Fire-and-forget: poll the server version, hot-swap on change. */

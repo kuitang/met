@@ -26,7 +26,6 @@ import {
 import { floorLabel, floorNumber } from '@/components/MapGeometry';
 import {
   Anchor,
-  VENUE_NAMES,
   anchorForRoom,
   applyVenue,
   getAnchor,
@@ -98,6 +97,10 @@ function sharedAnchorOf(a: Anchor | undefined): SharedAnchor | undefined {
 export default function LocateScreen() {
   const data = useData();
   const venue = useVenue();
+  // Multi-museum venue picker (C2): with >1 museum, sites are grouped under
+  // their museum's shortName; with exactly 1 (every artifact today except the
+  // AIC-merged one), this is unused and the row renders exactly as before.
+  const museums = data.museums();
   const [gps, setGps] = useState<GpsState>({ phase: 'resolving' });
   const [input, setInput] = useState('');
   const [error, setError] = useState('');
@@ -309,21 +312,53 @@ export default function LocateScreen() {
           away from it (shared/positioning venue/anchor coupling rule 3). */}
       <View style={styles.venueRow} testID="venue-row">
         <Text style={styles.venueKicker}>Venue</Text>
-        {(['fifthAve', 'cloisters'] as const).map((s) => {
-          const active = venue.venue === s;
-          return (
-            <Pressable
-              key={s}
-              style={[styles.venueBtn, active && styles.venueBtnActive]}
-              onPress={() => applyVenue(s, 'manual')}
-              testID={`venue-${s}`}
-            >
-              <Text style={[styles.venueBtnText, active && styles.venueBtnTextActive]}>
-                {VENUE_NAMES[s]}
-              </Text>
-            </Pressable>
-          );
-        })}
+        {museums.length > 1
+          ? // Multi-museum picker (C2): sites grouped under each museum's
+            // shortName (Met's two sites + AIC's one, etc).
+            museums.map((m) => (
+              <View key={m.id} style={styles.venueGroup}>
+                <Text style={styles.venueGroupLabel}>{m.shortName}</Text>
+                <View style={styles.venueGroupBtns}>
+                  {m.sites.map((s) => {
+                    const active = venue.venue === s.siteId;
+                    return (
+                      <Pressable
+                        key={s.siteId}
+                        style={[
+                          styles.venueBtn,
+                          styles.venueBtnGrouped,
+                          active && styles.venueBtnActive,
+                        ]}
+                        onPress={() => applyVenue(s.siteId, 'manual')}
+                        testID={`venue-${s.siteId}`}
+                      >
+                        <Text
+                          style={[styles.venueBtnText, active && styles.venueBtnTextActive]}
+                          numberOfLines={1}
+                        >
+                          {s.name}
+                        </Text>
+                      </Pressable>
+                    );
+                  })}
+                </View>
+              </View>
+            ))
+          : museums[0].sites.map((s) => {
+              const active = venue.venue === s.siteId;
+              return (
+                <Pressable
+                  key={s.siteId}
+                  style={[styles.venueBtn, active && styles.venueBtnActive]}
+                  onPress={() => applyVenue(s.siteId, 'manual')}
+                  testID={`venue-${s.siteId}`}
+                >
+                  <Text style={[styles.venueBtnText, active && styles.venueBtnTextActive]}>
+                    {s.name}
+                  </Text>
+                </Pressable>
+              );
+            })}
       </View>
 
       <View style={styles.actionCard} testID="locate-action-card">
@@ -497,16 +532,44 @@ const styles = StyleSheet.create({
   gpsAnchor: {
     ...type.title,
   },
-  // Compact segmented venue row: label + two ≥44pt segments.
+  // Compact segmented venue row: label + two ≥44pt segments. `flexWrap` only
+  // engages once a multi-museum artifact adds more groups than fit one line
+  // (C2) — a no-op for the single-museum row, which always fits.
   venueRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    flexWrap: 'wrap',
     gap: spacing.sm,
   },
   venueKicker: {
     ...type.label,
     color: colors.inkSecondary,
     marginRight: spacing.xs,
+  },
+  // Multi-museum picker (C2): one group per museum, its shortName above its
+  // site buttons.
+  venueGroup: {
+    gap: spacing.xs,
+  },
+  venueGroupLabel: {
+    ...type.label,
+    fontSize: 10,
+    color: colors.inkFaint,
+  },
+  venueGroupBtns: {
+    flexDirection: 'row',
+    gap: spacing.xs,
+  },
+  // NOT `flex: 0` (or bare flexGrow/flexShrink without flexBasis) — RN-web's
+  // reset defaults an unset flexBasis to 0%, which collapses the button to
+  // zero width (its Text child then renders invisible: RN-web gives
+  // numberOfLines={1} text `white-space: nowrap; overflow: hidden` inside a
+  // 0px box). flexBasis: 'auto' sizes the button to its content instead.
+  venueBtnGrouped: {
+    flexGrow: 0,
+    flexShrink: 0,
+    flexBasis: 'auto',
+    paddingHorizontal: spacing.md,
   },
   venueBtn: {
     flex: 1,

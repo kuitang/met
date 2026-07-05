@@ -38,6 +38,42 @@ export interface MetObject {
    * (web) / direct Met CDN (native).
    */
   thumbKey?: string;
+  /**
+   * Museum registry id ("met" | "aic" | …; schema v2 meta.museums). undefined
+   * on the stub and on pre-v2 met.sqlite artifacts — always treat as 'met'
+   * (see objectMuseumId below), never compare directly.
+   */
+  museum?: string;
+  /** Globally-unique site id the object's gallery belongs to (schema v2). */
+  site?: string;
+}
+
+/** `object.museum` with the pre-v2/stub convention resolved: undefined = 'met'. */
+export function objectMuseumId(o: { museum?: string }): string {
+  return o.museum ?? BUILTIN_MET_ENTRY.id;
+}
+
+/** All site ids belonging to a museum entry, for room/object site membership checks. */
+export function museumSiteIds(museum: MuseumEntry): Set<string> {
+  return new Set(museum.sites.map((s) => s.siteId));
+}
+
+/** The MuseumEntry that owns a site id (undefined site defaults to 'fifthAve', the
+ *  long-standing convention for anchors/rooms predating multi-site data). */
+export function museumForSite(museums: MuseumEntry[], site: string | undefined): MuseumEntry | undefined {
+  const s = site ?? 'fifthAve';
+  return museums.find((m) => m.sites.some((x) => x.siteId === s));
+}
+
+/** Partition rows (search hits, etc.) by whether they belong to the active museum. */
+export function partitionByMuseum<T extends { museum?: string }>(
+  rows: readonly T[],
+  activeMuseumId: string,
+): { active: T[]; other: T[] } {
+  const active: T[] = [];
+  const other: T[] = [];
+  for (const r of rows) (objectMuseumId(r) === activeMuseumId ? active : other).push(r);
+  return { active, other };
 }
 
 /**
@@ -121,8 +157,13 @@ export interface DataProvider {
    * server to proxy through (mockup mode → direct CDN URLs).
    */
   readonly dataVersion: string;
-  /** Prefix/substring suggestions for the omnibar (objects + rooms). */
-  searchAutocomplete(query: string, limit?: number): MetObject[];
+  /**
+   * Prefix/substring suggestions for the omnibar (objects + rooms). Optional
+   * `museum` scopes to one museum registry id at the SQL level (ScopeChips
+   * "AT {museum}" selection, schema v2 multi-museum artifacts) — the stub and
+   * pre-v2 artifacts ignore it (single museum, nothing to scope).
+   */
+  searchAutocomplete(query: string, limit?: number, museum?: string): MetObject[];
   /**
    * Gallery rooms matching the query, for the omnibar's room rows: digit
    * queries match gallery numbers (exact first, then prefixes), queries with
@@ -132,8 +173,8 @@ export interface DataProvider {
   searchGalleries(query: string, limit?: number): Room[];
   /**
    * Full result list for the All Results screen. Optional SQL-level filters
-   * (site / floor / rotation / hasImage) — the stub ignores them; the UI's
-   * SearchFilterChips post-filter still applies either way.
+   * (museum / site / floor / rotation / hasImage) — the stub ignores them;
+   * the UI's SearchFilterChips post-filter still applies either way.
    */
   searchAll(query: string, filters?: SearchFilters): MetObject[];
   getObject(objectID: number): MetObject | undefined;
@@ -226,11 +267,13 @@ export class StubDataProvider implements DataProvider {
   private objects = new Map(data.objects.map((o) => [o.objectID, o]));
   private nodes = new Map(data.nodes.map((n) => [n.id, n]));
 
-  searchAutocomplete(query: string, limit = 8): MetObject[] {
+  // `museum`/`filters.museum` accepted for interface parity; the stub is
+  // always single-museum, so there is never anything to scope.
+  searchAutocomplete(query: string, limit = 8, _museum?: string): MetObject[] {
     return this.searchAll(query).slice(0, limit);
   }
 
-  searchAll(query: string): MetObject[] {
+  searchAll(query: string, _filters?: SearchFilters): MetObject[] {
     const q = norm(query.trim());
     if (!q) return [];
     const scored: { o: MetObject; score: number }[] = [];

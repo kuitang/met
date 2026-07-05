@@ -347,6 +347,62 @@ Gemini integration is one thin client, `server/src/gemini.ts:createGemini`
 minimal) — no provider abstraction (Gemini is user-locked). `LLM_MOCK=1`
 serves deterministic fixtures (`server/src/llm-mock.ts`) for tests.
 
+### Multi-museum search UI (C2): sectioned results + scope chips
+
+All three tiers above are museum-agnostic by construction (`objects.museum`
+is just another optional WHERE-clause column, `SearchFilters.museum`,
+identical shape to `site`) — this section is client presentation on top of
+them, and it is a no-op whenever the artifact carries exactly one museum
+(`data.museums().length === 1`, true of every artifact today except the
+AIC-merged one): no chips render, no section headers appear, search/results
+screens are byte-identical to pre-C2 behavior.
+
+- **ScopeChips** (`apps/mobile/src/components/ScopeChips.tsx`, reusing
+  SearchFilterChips' `Chip`): two chips under the search field on `/search`
+  and `/results` — the active museum's shortName ("AT {shortName}") or "All
+  museums" (default). Component-local state, not persisted. Selecting the
+  museum chip passes `museum` as a hard SQL scope into
+  `searchAutocomplete`/`searchAll` (and, from Ask-differently, into
+  `POST /api/v1/search/interpret`'s optional `museum` field — included in the
+  server's response cache key) and collapses the UI back to a single flat
+  list (no section headers — there is nothing to section once every result is
+  already the active museum).
+- **Sectioned rows**: with "All museums" selected, object rows returned by an
+  unscoped query are partitioned client-side (`provider.ts:partitionByMuseum`,
+  keyed on `objectMuseumId` — `object.museum ?? 'met'`, the same
+  undefined-means-Met convention as `thumbKey`) into an `AT {MUSEUM}` group
+  (the active museum — resolved via `museumForSite(museums, venue.venue)`)
+  and an `OTHER MUSEUMS` group below it. Room rows (galleries/amenities) are
+  always filtered to the active museum's sites (`museumSiteIds`), regardless
+  of the chip — a gallery/amenity row's one-tap grammar lands on the *current*
+  site's map, so a foreign museum's room has no honest tap target here.
+  Section headers reuse the existing all-caps `type.label` idiom. Other-museum
+  object rows keep the same row anatomy but swap the trailing floor/gallery
+  chip for a `MuseumBadge` (`apps/mobile/src/components/MuseumBadge.tsx`) —
+  the floor chip's typography (bordered, since it marks "elsewhere" rather
+  than a floor).
+- **Cross-museum object page** (`apps/mobile/src/app/object/[id].tsx`): when
+  an object's museum differs from the active venue's museum, the location
+  line reads `{museum.name} · {room}` and the primary action becomes
+  `VIEW AT {shortName}` (`applyVenue(objectSite, 'browse')` then
+  `router.dismissTo('/', { focus })` — the same `/?focus=` grammar RoomRow
+  taps use) instead of "Navigate here". This is a DIFFERENT venue-switch path
+  from the pre-existing Fifth Ave ⇄ Cloisters auto-switch-on-open (same
+  museum, different site): switching *museums* is always an explicit tap,
+  never automatic — the two sites of one museum are assumed nearby, two
+  different museums are not. "Navigate here" itself now also gates on
+  `museum.capabilities.hasGraph` (AIC today: `hasGraph: false`, room-labels
+  fidelity only) — for the Met this was already always true, so existing
+  behavior is unchanged.
+- **Locate sheet venue picker** (`apps/mobile/src/app/locate.tsx`): the VENUE
+  row is data-driven from `data.museums()` rather than a hardcoded
+  `['fifthAve','cloisters']` pair; with >1 museum, sites are grouped under
+  their museum's shortName label. `DataGate.tsx` calls
+  `registerVenueNames()` once per provider load (single-site museums keyed by
+  shortName, multi-site museums by each site's own name), so `venueName()`
+  resolves every site the artifact knows about without touching its Met
+  fallback.
+
 ## Photo localization
 
 `server/src/routes/locate.ts`: two concurrent server-side paths, one round

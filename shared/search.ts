@@ -48,6 +48,8 @@ export interface SearchRow {
 }
 
 export interface SearchFilters {
+  /** Museum registry id ("met" | "aic" | …; schema v2 meta.museums). */
+  museum?: string;
   /** Globally-unique site id ("fifthAve" | "cloisters" for the Met; schema v2 opens the set). */
   site?: string;
   floor?: string;
@@ -113,12 +115,23 @@ WHERE objects_fts MATCH ?`;
 
 /**
  * Autocomplete (every keystroke): every-token-prefixed AND match, weighted
- * bm25 + highlight boost, gallery floor joined inline, top 8.
+ * bm25 + highlight boost, gallery floor joined inline, top 8. `museum` scopes
+ * to one museum registry id (schema v2 multi-museum artifacts; the ScopeChips
+ * "AT {museum}" selection) — same WHERE-clause shape as the site filter in
+ * buildFullQuery. Callers must feature-detect the column first (see
+ * SqliteDataProvider) — this builder does not.
  */
-export function buildAutocompleteQuery(input: string): BuiltQuery | null {
+export function buildAutocompleteQuery(input: string, museum?: string): BuiltQuery | null {
   const match = toPrefixMatch(input);
   if (match === null) return null;
-  return { sql: `${SELECT_CORE}\nORDER BY score\nLIMIT 8`, params: [match] };
+  let sql = SELECT_CORE;
+  const params: Array<string | number> = [match];
+  if (museum) {
+    sql += `\n  AND o.museum = ?`;
+    params.push(museum);
+  }
+  sql += `\nORDER BY score\nLIMIT 8`;
+  return { sql, params };
 }
 
 // ------------------------------------------------------------ fuzzy correction
@@ -345,20 +358,23 @@ export function fuzzyPrefixMatch(run: RunSync, input: string): FuzzyMatches | nu
  * being flooded by a weaker sibling's shorter-title bm25 wins (osiride).
  * Top 8 either way. A met.sqlite predating the vocab tables degrades to the
  * old empty result (the fuzzy stage is try-caught) until the client
- * re-downloads the artifact.
+ * re-downloads the artifact. `museum` scopes both the exact and fuzzy passes
+ * (see buildAutocompleteQuery).
  */
-export function autocompleteFuzzy(run: RunSync, input: string): SearchRow[] {
-  const q = buildAutocompleteQuery(input);
+export function autocompleteFuzzy(run: RunSync, input: string, museum?: string): SearchRow[] {
+  const q = buildAutocompleteQuery(input, museum);
   if (q === null) return [];
   const rows = run(q.sql, q.params) as SearchRow[];
   if (rows.length > 0) return rows;
   try {
     const m = fuzzyPrefixMatch(run, input);
     if (m === null) return [];
-    const sql = `${SELECT_CORE}\nORDER BY score\nLIMIT 8`;
-    const primary = run(sql, [m.primary]) as SearchRow[];
+    let sql = SELECT_CORE;
+    if (museum) sql += `\n  AND o.museum = ?`;
+    sql += `\nORDER BY score\nLIMIT 8`;
+    const primary = run(sql, museum ? [m.primary, museum] : [m.primary]) as SearchRow[];
     if (primary.length > 0 || m.expanded === null) return primary;
-    return run(sql, [m.expanded]) as SearchRow[];
+    return run(sql, museum ? [m.expanded, museum] : [m.expanded]) as SearchRow[];
   } catch {
     return [];
   }
@@ -385,6 +401,10 @@ export function buildFullQuery(
   if (match === null) return null;
   let sql = SELECT_CORE;
   const params: Array<string | number> = [match];
+  if (filters.museum) {
+    sql += `\n  AND o.museum = ?`;
+    params.push(filters.museum);
+  }
   if (filters.site) {
     sql += `\n  AND o.site = ?`;
     params.push(filters.site);
@@ -530,21 +550,28 @@ export function matchGalleries<T extends GalleryHit>(
  * Tokens are joined with '%' so "21.131" (normalized "21 131") still matches
  * the dotted accession. Returns null when the query carries no digit.
  */
-export function buildAccessionSearchQuery(input: string, limit = 8): BuiltQuery | null {
+export function buildAccessionSearchQuery(
+  input: string,
+  limit = 8,
+  museum?: string,
+): BuiltQuery | null {
   const toks = tokens(input);
   if (toks.length === 0 || !toks.some((t) => /\d/.test(t))) return null;
   const esc = (t: string) => t.replace(/[\\%_]/g, (c) => `\\${c}`);
   const pattern = `%${toks.map(esc).join("%")}%`;
-  return {
-    sql: `SELECT o.objectID, o.title, o.artist, o.galleryNumber, o.site,
+  let sql = `SELECT o.objectID, o.title, o.artist, o.galleryNumber, o.site,
        g.floor AS floor, o.isHighlight, o.imageUrl, 0 AS score
 FROM objects o
 LEFT JOIN galleries g ON g.galleryNumber = o.galleryNumber AND g.site = o.site
-WHERE o.accession LIKE ? ESCAPE '\\'
-ORDER BY o.isHighlight DESC, o.objectID
-LIMIT ?`,
-    params: [pattern, limit],
-  };
+WHERE o.accession LIKE ? ESCAPE '\\'`;
+  const params: Array<string | number> = [pattern];
+  if (museum) {
+    sql += `\n  AND o.museum = ?`;
+    params.push(museum);
+  }
+  sql += `\nORDER BY o.isHighlight DESC, o.objectID\nLIMIT ?`;
+  params.push(limit);
+  return { sql, params };
 }
 
 export type AmenityType = "restroom" | "dining" | "elevator" | "water" | "info";

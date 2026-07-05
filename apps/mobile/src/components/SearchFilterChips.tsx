@@ -36,7 +36,8 @@ export function applyFilters(
   });
 }
 
-function Chip({
+/** Exported so other scoping chip rows (e.g. ScopeChips) share the same anatomy/styling. */
+export function Chip({
   label,
   active,
   onPress,

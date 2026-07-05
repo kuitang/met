@@ -216,6 +216,8 @@ export interface components {
             query: string;
             /** @default 10 */
             maxResults: number;
+            /** @description Optional museum registry id ("met", "aic", …) to scope interpretation and execution to one museum (schema v2 multi-museum artifacts; the client's ScopeChips "AT {museum}" selection). Omitted = search across every museum in the artifact. */
+            museum?: string;
         };
         InterpretedQuery: {
             /** @description The FTS5 query the server executed */

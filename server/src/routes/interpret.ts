@@ -37,6 +37,7 @@ type SearchResult = components['schemas']['SearchResult']
 export const interpretRequestSchema = z.object({
   query: z.string().min(1).max(500),
   maxResults: z.number().int().min(1).max(50).optional(),
+  museum: z.string().optional(),
 })
 
 // ---------------------------------------------------------------------------
@@ -90,12 +91,16 @@ const WEAK_TOP_SCORE = -11.5
  * Execute an interpreted query. Filter values (artist, classification, …)
  * are folded into the relaxed OR match rather than hard WHERE clauses: they
  * hit the weighted FTS columns, so bm25 ranks rows satisfying more of them
- * first without zeroing recall when the LLM over-constrains.
+ * first without zeroing recall when the LLM over-constrains. `museum` is a
+ * hard WHERE clause (schema v2 multi-museum artifacts; the client's
+ * ScopeChips "AT {museum}" selection) — unlike the fuzzy filters above, this
+ * one must actually exclude rows, not just rank them.
  */
 function searchRows(
   database: Database.Database,
   interpreted: InterpretedQuery,
   limit: number,
+  museum?: string,
 ): SearchRow[] {
   const input = [
     interpreted.ftsQuery,
@@ -106,7 +111,7 @@ function searchRows(
   ]
     .filter(Boolean)
     .join(' ')
-  const q = buildFullQuery(input, {}, { relaxed: true, limit })
+  const q = buildFullQuery(input, museum ? { museum } : {}, { relaxed: true, limit })
   if (q === null) return []
   return database.prepare(q.sql).all(...q.params) as SearchRow[]
 }
@@ -173,7 +178,7 @@ interpretRoutes.post('/', async (c) => {
       .join('; ')
     return c.json({ error: { code: 'invalid_request', message } }, 400)
   }
-  const { query, maxResults = 10 } = parsed.data
+  const { query, maxResults = 10, museum } = parsed.data
 
   const database = getDb()
   if (!database) {
@@ -188,7 +193,7 @@ interpretRoutes.post('/', async (c) => {
     )
   }
 
-  const cacheKey = `${normalizeQuery(query)}|${maxResults}`
+  const cacheKey = `${normalizeQuery(query)}|${maxResults}|${museum ?? ''}`
   const cached = cacheGet(cacheKey)
   if (cached) return c.json(cached)
 
@@ -197,7 +202,7 @@ interpretRoutes.post('/', async (c) => {
   try {
     // Tier 3a: structured rewrite, executed relaxed.
     const interpreted = await llm.interpretQuery(query, vocab)
-    const rows = searchRows(database, interpreted, maxResults)
+    const rows = searchRows(database, interpreted, maxResults, museum)
     if (rows.length >= 3 && rows[0].score <= WEAK_TOP_SCORE) {
       body = {
         results: rows.map(toResult),
@@ -217,7 +222,7 @@ interpretRoutes.post('/', async (c) => {
           )
           .all(...ids) as { objectID: number; classification: string }[]
       const executeTool = (toolQuery: InterpretedQuery): CatalogRow[] => {
-        const toolRows = searchRows(database, toolQuery, 10)
+        const toolRows = searchRows(database, toolQuery, 10, museum)
         for (const r of toolRows) seen.set(r.objectID, r)
         const classifications = new Map(
           toolRows.length

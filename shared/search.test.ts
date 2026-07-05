@@ -82,16 +82,25 @@ describe("buildAutocompleteQuery", () => {
   it("returns null for empty input", () => {
     expect(buildAutocompleteQuery("")).toBeNull();
   });
+  it("scopes to a museum registry id when given", () => {
+    const q = buildAutocompleteQuery("Monet", "met")!;
+    expect(q.params).toEqual(['"monet"*', "met"]);
+    expect(q.sql).toContain("AND o.museum = ?");
+  });
+  it("omits the museum clause when not given", () => {
+    expect(buildAutocompleteQuery("Monet")!.sql).not.toContain("o.museum");
+  });
 });
 
 describe("buildFullQuery", () => {
-  it("appends site/floor/rotation/hasImage filters in order, optional LIMIT", () => {
+  it("appends museum/site/floor/rotation/hasImage filters in order, optional LIMIT", () => {
     const q = buildFullQuery(
       "sword",
-      { site: "fifthAve", floor: "2", rotation: "permanent", hasImage: true },
+      { museum: "met", site: "fifthAve", floor: "2", rotation: "permanent", hasImage: true },
       { limit: 25 },
     )!;
-    expect(q.params).toEqual(['"sword"*', "fifthAve", "2", "permanent", 25]);
+    expect(q.params).toEqual(['"sword"*', "met", "fifthAve", "2", "permanent", 25]);
+    expect(q.sql).toContain("AND o.museum = ?");
     expect(q.sql).toContain("AND o.site = ?");
     expect(q.sql).toContain("AND g.floor = ?");
     expect(q.sql).toContain("AND o.rotation = ?");
@@ -698,6 +707,11 @@ describe("buildAccessionSearchQuery (pure)", () => {
     // pattern is built (the ESCAPE clause is belt-and-braces).
     const esc = buildAccessionSearchQuery("100%_legit")!;
     expect(esc.params[0]).toBe("%100%legit%");
+  });
+  it("scopes to a museum registry id when given", () => {
+    const q = buildAccessionSearchQuery("21.131", 8, "met")!;
+    expect(q.params).toEqual(["%21%131%", "met", 8]);
+    expect(q.sql).toContain("AND o.museum = ?");
   });
 });
 

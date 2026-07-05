@@ -2,9 +2,17 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
-import { useAnchor } from '@/components/LocateState';
+import { useAnchor, useVenue } from '@/components/LocateState';
+import MuseumBadge from '@/components/MuseumBadge';
 import RoomRow from '@/components/RoomRow';
-import { MetObject, useData } from '@/data/provider';
+import ScopeChips, { type MuseumScope } from '@/components/ScopeChips';
+import {
+  MetObject,
+  museumForSite,
+  museumSiteIds,
+  partitionByMuseum,
+  useData,
+} from '@/data/provider';
 import { matchAmenities, rankAmenities } from '@/data/roomSearch';
 import { colors, spacing, type } from '@/theme';
 
@@ -13,20 +21,50 @@ import { colors, spacing, type } from '@/theme';
 // object yet — restore once the real catalog lands.)
 const EXAMPLE_QUERIES = ['Monet', 'gold swords', 'sphinx', 'restroom'];
 
+/** One flat FlatList item: either an object row or a section header (C2
+ *  sectioned multi-museum results — see the module doc in ScopeChips.tsx). */
+type ListItem =
+  | { kind: 'object'; key: string; object: MetObject; other: boolean }
+  | { kind: 'header'; key: string; label: string };
+
 export default function SearchScreen() {
   const data = useData();
   const anchor = useAnchor();
+  const venue = useVenue();
   // Nav-mode retarget (opened from the nav sheet's destination title):
   // `retarget` carries the route origin — room rows swap the navigation
   // target in place instead of opening a browse sheet (see RoomRow).
   const { retarget, avoid } = useLocalSearchParams<{ retarget?: string; avoid?: string }>();
   const [query, setQuery] = useState('');
-  const suggestions = data.searchAutocomplete(query, 8);
-  const total = data.searchAll(query).length;
+  const [scope, setScope] = useState<MuseumScope>('all');
+
+  // Multi-museum sectioning (C2): only ever engages when the artifact
+  // actually carries >1 museum — a single-museum artifact (every artifact
+  // today except the AIC-merged one) renders byte-identical to before.
+  const museums = data.museums();
+  const isMultiMuseum = museums.length > 1;
+  const activeMuseum = museumForSite(museums, venue.venue) ?? museums[0];
+  const activeSiteIds = useMemo(() => museumSiteIds(activeMuseum), [activeMuseum]);
+  const scopedMuseum = isMultiMuseum && scope === 'here' ? activeMuseum.id : undefined;
+  // Only 'all' scope (and only with >1 museum) ever shows sections — 'here'
+  // scoping is already SQL-scoped to one museum, so there is nothing to
+  // section (same as the single-museum case: a plain flat list).
+  const showSections = isMultiMuseum && scope === 'all';
+
+  const suggestions = data.searchAutocomplete(query, 8, scopedMuseum);
+  const total = data.searchAll(query, scopedMuseum ? { museum: scopedMuseum } : undefined).length;
   // Room rows above object rows: galleries (exact number → number prefixes →
   // title matches, ranked in shared/search.ts) then amenities nearest-first.
-  const galleryRows = data.searchGalleries(query, 4);
-  const matchedAmenities = matchAmenities(data.amenities(), query);
+  // Room rows are always scoped to the active museum's sites (never show a
+  // gallery/amenity from a museum the visitor isn't currently browsing).
+  const galleryRowsRaw = data.searchGalleries(query, 4);
+  const galleryRows = isMultiMuseum
+    ? galleryRowsRaw.filter((r) => activeSiteIds.has(r.site ?? 'fifthAve'))
+    : galleryRowsRaw;
+  const matchedAmenitiesRaw = matchAmenities(data.amenities(), query);
+  const matchedAmenities = isMultiMuseum
+    ? matchedAmenitiesRaw.filter((r) => activeSiteIds.has(r.site ?? 'fifthAve'))
+    : matchedAmenitiesRaw;
   const originId = anchor?.roomId ?? 'great-hall';
   const amenities = useMemo(
     () => rankAmenities(data, matchedAmenities, originId),
@@ -43,6 +81,31 @@ export default function SearchScreen() {
     return floor !== undefined ? `Gallery ${o.gallery} · F${floor}` : `Gallery ${o.gallery}`;
   };
 
+  const listItems: ListItem[] = (() => {
+    const asItem = (o: MetObject, other: boolean): ListItem => ({
+      kind: 'object',
+      key: String(o.objectID),
+      object: o,
+      other,
+    });
+    if (!showSections) return suggestions.map((o) => asItem(o, false));
+    const { active, other } = partitionByMuseum(suggestions, activeMuseum.id);
+    const items: ListItem[] = [];
+    if (active.length > 0) {
+      items.push({
+        kind: 'header',
+        key: 'hdr-active',
+        label: `AT ${activeMuseum.shortName.toUpperCase()}`,
+      });
+      items.push(...active.map((o) => asItem(o, false)));
+    }
+    if (other.length > 0) {
+      items.push({ kind: 'header', key: 'hdr-other', label: 'OTHER MUSEUMS' });
+      items.push(...other.map((o) => asItem(o, true)));
+    }
+    return items;
+  })();
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -55,9 +118,12 @@ export default function SearchScreen() {
         autoCorrect={false}
         testID="search-input"
       />
+      {isMultiMuseum && (
+        <ScopeChips activeLabel={activeMuseum.shortName} scope={scope} onChange={setScope} />
+      )}
       <FlatList
-        data={suggestions}
-        keyExtractor={(o) => String(o.objectID)}
+        data={listItems}
+        keyExtractor={(item) => item.key}
         keyboardShouldPersistTaps="handled"
         ListHeaderComponent={
           hasRoomRows ? (
@@ -90,24 +156,35 @@ export default function SearchScreen() {
             </View>
           ) : null
         }
-        renderItem={({ item }) => (
-          <Pressable
-            style={styles.row}
-            onPress={() => router.push(`/object/${item.objectID}`)}
-            testID={`suggestion-${item.objectID}`}
-          >
-            <View style={styles.rowText}>
-              <Text style={styles.rowTitle} numberOfLines={1}>
-                {item.title}
-              </Text>
-              <Text style={type.meta} numberOfLines={1}>
-                {item.artist || item.dept}
-                {item.date ? ` · ${item.date}` : ''}
-              </Text>
-            </View>
-            <Text style={styles.galleryChip}>{galleryChip(item)}</Text>
-          </Pressable>
-        )}
+        renderItem={({ item }) =>
+          item.kind === 'header' ? (
+            <Text style={styles.sectionHeader}>{item.label}</Text>
+          ) : (
+            <Pressable
+              style={styles.row}
+              onPress={() => router.push(`/object/${item.object.objectID}`)}
+              testID={`suggestion-${item.object.objectID}`}
+            >
+              <View style={styles.rowText}>
+                <Text style={styles.rowTitle} numberOfLines={1}>
+                  {item.object.title}
+                </Text>
+                <Text style={type.meta} numberOfLines={1}>
+                  {item.object.artist || item.object.dept}
+                  {item.object.date ? ` · ${item.object.date}` : ''}
+                </Text>
+              </View>
+              {item.other ? (
+                <MuseumBadge
+                  shortName={museumForSite(museums, item.object.site)?.shortName ?? ''}
+                  testID={`museum-badge-${item.object.objectID}`}
+                />
+              ) : (
+                <Text style={styles.galleryChip}>{galleryChip(item.object)}</Text>
+              )}
+            </Pressable>
+          )
+        }
         ListFooterComponent={
           <View>
             {total > 0 && (
@@ -204,6 +281,15 @@ const styles = StyleSheet.create({
     ...type.label,
     color: colors.red,
     textAlign: 'right',
+  },
+  // Multi-museum section headers ("AT THE MET" / "OTHER MUSEUMS") — small
+  // caps, secondary color, matching the codebase's all-caps label idiom.
+  sectionHeader: {
+    ...type.label,
+    color: colors.inkSecondary,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.md,
+    paddingBottom: spacing.sm,
   },
   allResults: {
     paddingVertical: spacing.md,
