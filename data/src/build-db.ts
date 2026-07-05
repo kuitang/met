@@ -1,29 +1,42 @@
 /**
  * build-db: assemble data/met.sqlite — the single offline artifact every client
- * downloads — from the committed snapshots (no network):
+ * downloads — by MERGING every registry museum's snapshots (no network).
+ * (The filename "met.sqlite" is a frozen infra identifier, like the npm
+ * package name — the artifact has been multi-museum since schema v2.)
  *
- *   snapshots/objects.json.gz   → objects + objects_fts (FTS5 external-content,
- *                                 porter unicode61, prefix 2/3/4, sync triggers)
- *   snapshots/synonyms.json     → (optional) LLM-generated synonyms column on
- *                                 objects, FTS-indexed: vocab entries keyed by
- *                                 culture/period/classification value + title
- *                                 entries keyed by exact title (src/synonyms.ts)
- *   snapshots/galleries.geojson → galleries (centroids) + gzipped blob
- *   snapshots/amenities.geojson → amenities + gzipped blob
- *   snapshots/graph.json        → graph_nodes/graph_edges + per-floor rendering
- *                                 polylines blob (routes.geojson is 7 static
- *                                 showcase lines — unusable; polylines are
- *                                 derived from same-floor graph edges instead)
+ * Per museum (data/snapshots for the Met, data/museums/{id}/snapshots else):
+ *   objects.json.gz    → objects + objects_fts rows
+ *   synonyms.json      → (optional) LLM synonym expansion, FTS-indexed
+ *   galleries.geojson  → galleries (centroids) — museums WITH geometry
+ *   galleries.json     → gallery labels/floors — museums WITHOUT geometry
+ *                        (else galleries are synthesized from distinct
+ *                        object galleryNumbers with NULL title/floor)
+ *   amenities.geojson / graph.json → amenities, routing graph (optional)
+ *
+ * Schema v2 (multi-museum, backward-compatible for readers):
+ *   - objects gains museum, sourceId, locationNote, titleAlt, license,
+ *     imageLicense (TEXT NOT NULL, '' defaults; license from the registry).
+ *   - objects_fts is CONTENTLESS (content='') with explicit inserts: the
+ *     indexed title is "title titleAlt" so bilingual titles match at full
+ *     weight while `objects.title` stays the display form. Same 7 columns,
+ *     tokenizer, prefixes, and bm25 weight positions as v1 — shipped clients'
+ *     SQL is unchanged (they only read rowid + bm25 + objects.*).
+ *   - objectID: Met keeps native ids; other museums get a 48-bit
+ *     sha256("{museum}/{sourceId}") id (collision-asserted at build).
+ *   - galleries.floor/centroidLat/centroidLon are nullable (label-only museums).
+ *   - graph node ids are prefixed "{museum}:" for non-Met museums.
+ *   - meta.museums = registry entries + per-museum counts/fetchedAt;
+ *     meta.schemaVersion = 2.
  *
  * Writes met.sqlite atomically (tmp + rename) and data/VERSION with
- * dataVersion = ISO build date + sha256 short hash of the four inputs.
- * Then verifies inline: sizes, real FTS queries, bm25 weighting, and the
- * objects↔galleries coverage join (orphans both ways).
+ * dataVersion = ISO build date + sha256 short hash of all inputs. Then
+ * verifies inline: real FTS queries, bm25 weighting, per-museum coverage.
  *
  * Usage: tsx src/build-db.ts
- *   MET_DATA_DIR=<dir> overrides the data root (snapshots read from
- *   $MET_DATA_DIR/snapshots, met.sqlite + VERSION written to $MET_DATA_DIR) —
- *   used by the server's nightly self-refresh (server/src/refresh.ts).
+ *   MET_DATA_DIR=<dir> overrides the data root (Met snapshots at
+ *   $MET_DATA_DIR/snapshots, other museums at $MET_DATA_DIR/museums/{id}/
+ *   snapshots, met.sqlite + VERSION written to $MET_DATA_DIR) — used by the
+ *   nightly job's stage dir.
  */
 import Database from "better-sqlite3";
 import { createHash } from "node:crypto";
@@ -31,32 +44,18 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import zlib from "node:zlib";
+import { MUSEUMS, type MuseumInfo } from "./sources/registry.ts";
+import type { GalleryLabelRow, ObjectRow } from "./sources/types.ts";
 
 const DATA_DIR = process.env.MET_DATA_DIR
   ? path.resolve(process.env.MET_DATA_DIR)
   : path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const SNAP_DIR = path.join(DATA_DIR, "snapshots");
 const DB_PATH = path.join(DATA_DIR, "met.sqlite");
 const TMP_PATH = DB_PATH + ".tmp";
 const VERSION_PATH = path.join(DATA_DIR, "VERSION");
 
-interface ObjectRow {
-  objectID: number;
-  accession: string;
-  title: string;
-  artist: string;
-  culture: string;
-  period: string;
-  classification: string;
-  medium: string;
-  tags: string;
-  galleryNumber: string;
-  site: string;
-  rotation: string;
-  isHighlight: boolean;
-  imageUrl: string;
-  metadataDate: string;
-}
+const snapDir = (id: string): string =>
+  id === "met" ? path.join(DATA_DIR, "snapshots") : path.join(DATA_DIR, "museums", id, "snapshots");
 
 interface GraphNode {
   id: string;
@@ -83,6 +82,24 @@ type Ring = [number, number][];
 interface Feature {
   geometry: { type: string; coordinates: unknown };
   properties: Record<string, unknown>;
+}
+
+interface Synonyms {
+  vocab: Record<string, string>;
+  titles: Record<string, string>;
+}
+
+/** Everything loaded from one museum's snapshot dir. */
+interface MuseumInputs {
+  info: MuseumInfo;
+  objects: ObjectRow[];
+  synonyms: Synonyms;
+  galleriesGeo: { features: Feature[] } | null;
+  galleryLabels: GalleryLabelRow[] | null;
+  amenitiesGeo: { features: Feature[] } | null;
+  graph: { nodes: GraphNode[]; edges: GraphEdge[] } | null;
+  fetchedAt: string | null; // objects-meta.json fetchedAt — staleness UI
+  rawBuffers: Buffer[]; // dataVersion hash inputs
 }
 
 /**
@@ -125,40 +142,67 @@ function centroid(geometry: Feature["geometry"]): { lat: number; lon: number } {
   return { lon: ox + cx / (3 * a2), lat: oy + cy / (3 * a2) };
 }
 
-function main(): void {
-  // ---- load inputs ---------------------------------------------------------
-  const objectsGz = fs.readFileSync(path.join(SNAP_DIR, "objects.json.gz"));
-  const galleriesRaw = fs.readFileSync(path.join(SNAP_DIR, "galleries.geojson"));
-  const amenitiesRaw = fs.readFileSync(path.join(SNAP_DIR, "amenities.geojson"));
-  const graphRaw = fs.readFileSync(path.join(SNAP_DIR, "graph.json"));
-  const synonymsPath = path.join(SNAP_DIR, "synonyms.json");
-  const synonymsRaw = fs.existsSync(synonymsPath) ? fs.readFileSync(synonymsPath) : null;
+/** 48-bit objectID from museum-scoped sourceId (Met keeps native numeric ids). */
+export function hashObjectID(museum: string, sourceId: string): number {
+  const h = createHash("sha256").update(`${museum}/${sourceId}`).digest();
+  return h.readUIntBE(0, 6); // 48 bits — safe integer, collision-asserted at build
+}
 
-  const objects: ObjectRow[] = JSON.parse(zlib.gunzipSync(objectsGz).toString("utf8"));
-  // Optional index-time synonym expansion (src/synonyms.ts): vocab entries
-  // keyed by exact culture/period/classification value, title entries keyed by
-  // exact title. Missing file = empty synonyms column (build stays runnable).
-  const synonyms: { vocab: Record<string, string>; titles: Record<string, string> } =
-    synonymsRaw ? JSON.parse(synonymsRaw.toString("utf8")) : { vocab: {}, titles: {} };
-  const synFor = (o: ObjectRow): string =>
-    [
-      ...new Set(
-        [
-          synonyms.vocab[o.culture],
-          synonyms.vocab[o.period],
-          synonyms.vocab[o.classification],
-          synonyms.titles[o.title],
-        ].filter(Boolean),
-      ),
-    ].join(" ");
-  const galleriesGeo: { features: Feature[] } = JSON.parse(galleriesRaw.toString("utf8"));
-  const amenitiesGeo: { features: Feature[] } = JSON.parse(amenitiesRaw.toString("utf8"));
-  const graph: { nodes: GraphNode[]; edges: GraphEdge[] } = JSON.parse(graphRaw.toString("utf8"));
+function loadMuseum(info: MuseumInfo): MuseumInputs | null {
+  const dir = snapDir(info.id);
+  const objectsPath = path.join(dir, "objects.json.gz");
+  if (!fs.existsSync(objectsPath)) {
+    if (info.id === "met") throw new Error("Met snapshot missing: " + objectsPath);
+    console.warn(`build-db: no snapshot for ${info.id} (${objectsPath}) — skipping museum`);
+    return null;
+  }
+  const rawBuffers: Buffer[] = [];
+  const read = (name: string): Buffer | null => {
+    const p = path.join(dir, name);
+    if (!fs.existsSync(p)) return null;
+    const buf = fs.readFileSync(p);
+    rawBuffers.push(buf);
+    return buf;
+  };
+
+  const objectsGz = read("objects.json.gz")!;
+  const synonymsRaw = read("synonyms.json");
+  const galleriesGeoRaw = read("galleries.geojson");
+  const galleryLabelsRaw = read("galleries.json");
+  const amenitiesRaw = read("amenities.geojson");
+  const graphRaw = read("graph.json");
+  let fetchedAt: string | null = null;
+  try {
+    fetchedAt =
+      (JSON.parse(fs.readFileSync(path.join(dir, "objects-meta.json"), "utf8")) as {
+        fetchedAt?: string;
+      }).fetchedAt ?? null;
+  } catch {
+    /* objects-meta.json is informational */
+  }
+
+  return {
+    info,
+    objects: JSON.parse(zlib.gunzipSync(objectsGz).toString("utf8")),
+    synonyms: synonymsRaw
+      ? JSON.parse(synonymsRaw.toString("utf8"))
+      : { vocab: {}, titles: {} },
+    galleriesGeo: galleriesGeoRaw ? JSON.parse(galleriesGeoRaw.toString("utf8")) : null,
+    galleryLabels: galleryLabelsRaw ? JSON.parse(galleryLabelsRaw.toString("utf8")) : null,
+    amenitiesGeo: amenitiesRaw ? JSON.parse(amenitiesRaw.toString("utf8")) : null,
+    graph: graphRaw ? JSON.parse(graphRaw.toString("utf8")) : null,
+    fetchedAt,
+    rawBuffers,
+  };
+}
+
+function main(): void {
+  // ---- load every museum's inputs ------------------------------------------
+  const museums = MUSEUMS.map(loadMuseum).filter((m): m is MuseumInputs => m !== null);
 
   const builtAt = new Date().toISOString();
   const hash = createHash("sha256");
-  for (const buf of [objectsGz, galleriesRaw, amenitiesRaw, graphRaw]) hash.update(buf);
-  if (synonymsRaw) hash.update(synonymsRaw);
+  for (const m of museums) for (const buf of m.rawBuffers) hash.update(buf);
   const dataVersion = `${builtAt.slice(0, 10)}-${hash.digest("hex").slice(0, 8)}`;
 
   // ---- build ---------------------------------------------------------------
@@ -184,41 +228,42 @@ function main(): void {
       isHighlight    INTEGER NOT NULL,
       imageUrl       TEXT NOT NULL,
       metadataDate   TEXT NOT NULL,
-      synonyms       TEXT NOT NULL
+      synonyms       TEXT NOT NULL,
+      -- schema v2 (multi-museum)
+      museum         TEXT NOT NULL,             -- registry museum id
+      sourceId       TEXT NOT NULL,             -- museum-native record id
+      locationNote   TEXT NOT NULL DEFAULT '',  -- sub-room detail (V&A case …)
+      titleAlt       TEXT NOT NULL DEFAULT '',  -- English display title when title is not English
+      license        TEXT NOT NULL,             -- per-record text license
+      imageLicense   TEXT NOT NULL DEFAULT ''   -- '' = no image derivatives allowed
     );
     CREATE INDEX objects_gallery ON objects(galleryNumber);
+    CREATE INDEX objects_museum ON objects(museum);
+    CREATE UNIQUE INDEX objects_source ON objects(museum, sourceId);
 
+    -- CONTENTLESS FTS (schema v2): rows are inserted explicitly so the INDEXED
+    -- text can differ from the DISPLAY text (bilingual titles index
+    -- "title titleAlt" at full title weight). Same columns/tokenizer/prefixes
+    -- as v1; readers only use rowid + bm25() so their SQL is unchanged.
+    -- (v1 was external-content with sync triggers; builds are always
+    -- from-scratch so the triggers bought nothing.)
     CREATE VIRTUAL TABLE objects_fts USING fts5(
       title, artist, culture, classification, medium, tags, synonyms,
-      content=objects, content_rowid=objectID,
+      content='',
       tokenize='porter unicode61', prefix='2 3 4'
     );
-    CREATE TRIGGER objects_ai AFTER INSERT ON objects BEGIN
-      INSERT INTO objects_fts(rowid, title, artist, culture, classification, medium, tags, synonyms)
-      VALUES (new.objectID, new.title, new.artist, new.culture, new.classification, new.medium, new.tags, new.synonyms);
-    END;
-    CREATE TRIGGER objects_ad AFTER DELETE ON objects BEGIN
-      INSERT INTO objects_fts(objects_fts, rowid, title, artist, culture, classification, medium, tags, synonyms)
-      VALUES ('delete', old.objectID, old.title, old.artist, old.culture, old.classification, old.medium, old.tags, old.synonyms);
-    END;
-    CREATE TRIGGER objects_au AFTER UPDATE ON objects BEGIN
-      INSERT INTO objects_fts(objects_fts, rowid, title, artist, culture, classification, medium, tags, synonyms)
-      VALUES ('delete', old.objectID, old.title, old.artist, old.culture, old.classification, old.medium, old.tags, old.synonyms);
-      INSERT INTO objects_fts(rowid, title, artist, culture, classification, medium, tags, synonyms)
-      VALUES (new.objectID, new.title, new.artist, new.culture, new.classification, new.medium, new.tags, new.synonyms);
-    END;
 
     -- Schema below is the shared/search.ts contract: galleries PK is
     -- (galleryNumber, site); floor is the TEXT label clients display and
-    -- filter on ("G", "1", "1M", "2", ...); amenities.type uses the
-    -- search.ts amenity vocabulary ("info", not "information").
+    -- filter on ("G", "1", "1M", "2", ...) — NULL when the museum's data
+    -- doesn't say; centroids are NULL for museums without geometry.
     CREATE TABLE galleries (
       galleryNumber TEXT NOT NULL,
       title         TEXT,
-      floor         TEXT NOT NULL, -- label: "G", "1", "1M", "2", "3", "5"
+      floor         TEXT,
       site          TEXT NOT NULL,
-      centroidLat   REAL NOT NULL,
-      centroidLon   REAL NOT NULL,
+      centroidLat   REAL,
+      centroidLon   REAL,
       PRIMARY KEY (galleryNumber, site)
     );
 
@@ -256,12 +301,8 @@ function main(): void {
 
     -- Typo-tolerance vocabulary (shared/search.ts fuzzy autocomplete): every
     -- distinct searchable token (len >= 3, lowercased, diacritics folded)
-    -- across the FTS columns plus multi-word artist names, with document
-    -- frequency. The trigram FTS index generates correction candidates for
-    -- misspelled tokens ("harlw" -> "harlequin"); trigram is core FTS5 since
-    -- 3.34 and verified in all three shipped runtimes (better-sqlite3 3.53,
-    -- sqlite-wasm 3.53, expo-sqlite vendored 3.50.3 + SQLITE_ENABLE_FTS5).
-    -- detail=column: the OR-of-trigrams candidate query never reads positions.
+    -- across the FTS-INDEXED text (so bilingual titles contribute both
+    -- languages) plus multi-word artist names, with document frequency.
     CREATE TABLE vocab (
       id   INTEGER PRIMARY KEY,
       term TEXT NOT NULL UNIQUE,
@@ -278,53 +319,96 @@ function main(): void {
   const insObject = db.prepare(
     `INSERT INTO objects VALUES (@objectID, @accession, @title, @artist, @culture, @period,
      @classification, @medium, @tags, @galleryNumber, @site, @rotation, @isHighlight,
-     @imageUrl, @metadataDate, @synonyms)`,
+     @imageUrl, @metadataDate, @synonyms,
+     @museum, @sourceId, @locationNote, @titleAlt, @license, @imageLicense)`,
   );
-  // Recompute site from the geometry join: the snapshot's site column can be stale
-  // (early hydration-cache rows used a department heuristic that cannot distinguish
-  // the merged "Medieval Art and The Cloisters" department). galleryNumber → site
-  // from Living Map geometry is authoritative.
-  const siteByGallery = new Map<string, string>();
-  const galleryVocab = new Set<string>(); // exact galleries-table galleryNumber values
-  for (const f of galleriesGeo.features) {
-    const n = String(f.properties.galleryNumber ?? "").trim();
-    if (n) {
-      galleryVocab.add(n);
-      siteByGallery.set(n, String(f.properties.site));
-      siteByGallery.set(n.replace(/^0+/, ""), String(f.properties.site));
+  const insFts = db.prepare(
+    `INSERT INTO objects_fts (rowid, title, artist, culture, classification, medium, tags, synonyms)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+  );
+
+  // Indexed-text tuples per object — reused for the typo vocabulary so both
+  // stay in lockstep with what FTS actually matches.
+  const indexedTuples: Array<{ title: string; artist: string; texts: string[] }> = [];
+  const usedIds = new Map<number, string>(); // objectID → "museum/sourceId" (collision assert)
+  const perMuseumCounts: Record<string, number> = {};
+
+  for (const m of museums) {
+    const { info, objects, synonyms } = m;
+    const synFor = (o: ObjectRow): string =>
+      [
+        ...new Set(
+          [
+            synonyms.vocab[o.culture],
+            synonyms.vocab[o.period],
+            synonyms.vocab[o.classification],
+            synonyms.titles[o.title],
+          ].filter(Boolean),
+        ),
+      ].join(" ");
+
+    // Met-only: recompute site + canonicalize galleryNumber from the geometry
+    // join (the Met API zero-pads Cloisters numbers; see v1 history). Other
+    // museums' sources emit canonical room codes directly.
+    const siteByGallery = new Map<string, string>();
+    const galleryVocab = new Set<string>();
+    if (m.galleriesGeo) {
+      for (const f of m.galleriesGeo.features) {
+        const n = String(f.properties.galleryNumber ?? "").trim();
+        if (n) {
+          galleryVocab.add(n);
+          siteByGallery.set(n, String(f.properties.site));
+          siteByGallery.set(n.replace(/^0+/, ""), String(f.properties.site));
+        }
+      }
     }
+    const authoritativeSite = (g: string, fallback: string): string =>
+      siteByGallery.get(g) ?? siteByGallery.get(g.replace(/^0+/, "")) ?? fallback;
+    const canonicalGallery = (g: string): string => {
+      if (!/^0\d+$/.test(g)) return g;
+      const stripped = g.replace(/^0+/, "");
+      return galleryVocab.has(stripped) && !galleryVocab.has(g) ? stripped : g;
+    };
+
+    db.transaction(() => {
+      for (const o of objects) {
+        const sourceId = o.sourceId ?? String(o.objectID);
+        const objectID = info.id === "met" ? o.objectID : hashObjectID(info.id, sourceId);
+        const key = `${info.id}/${sourceId}`;
+        const clash = usedIds.get(objectID);
+        if (clash) throw new Error(`objectID collision: ${key} vs ${clash} → ${objectID}`);
+        usedIds.set(objectID, key);
+
+        const galleryNumber = m.galleriesGeo ? canonicalGallery(o.galleryNumber) : o.galleryNumber;
+        const site = m.galleriesGeo ? authoritativeSite(galleryNumber, o.site) : o.site;
+        const titleAlt = o.titleAlt ?? "";
+        const syn = synFor(o);
+        insObject.run({
+          ...o,
+          objectID,
+          galleryNumber,
+          site,
+          isHighlight: o.isHighlight ? 1 : 0,
+          synonyms: syn,
+          museum: info.id,
+          sourceId,
+          locationNote: o.locationNote ?? "",
+          titleAlt,
+          license: o.license ?? info.license.text,
+          imageLicense: o.imageLicense ?? info.license.images,
+        });
+        // Indexed title carries both languages at full weight.
+        const indexedTitle = titleAlt ? `${o.title} ${titleAlt}` : o.title;
+        insFts.run(objectID, indexedTitle, o.artist, o.culture, o.classification, o.medium, o.tags, syn);
+        indexedTuples.push({
+          title: indexedTitle,
+          artist: o.artist,
+          texts: [indexedTitle, o.artist, o.culture, o.classification, o.medium, o.tags, syn],
+        });
+      }
+    })();
+    perMuseumCounts[info.id] = objects.length;
   }
-  const authoritativeSite = (g: string, fallback: string): string =>
-    siteByGallery.get(g) ?? siteByGallery.get(g.replace(/^0+/, "")) ?? fallback;
-  // Canonicalize objects.galleryNumber to the galleries-table vocabulary: the
-  // Met API zero-pads Cloisters gallery numbers ("003", "010") while Living Map
-  // geometry uses unpadded ("3", "10"), so the objects↔galleries join missed
-  // every Cloisters object. Strip leading zeros ONLY when the stripped form is
-  // a real polygon galleryNumber and the padded form is not. Exhibition codes
-  // like "099" stay raw — their polygons are *named* "Exhibition Gallery 099"
-  // (neither "099" nor "99" is a galleryNumber), so the rotation flag the
-  // objects pipeline keys off the raw code is unaffected. Idempotent: canonical
-  // input is a no-op, so the snapshot may carry either form. This is the single
-  // canonicalization point; galleries/amenities/graph need no treatment
-  // (verified: galleries and graph_nodes.gallery are already unpadded, and
-  // amenities carry no gallery references).
-  const canonicalGallery = (g: string): string => {
-    if (!/^0\d+$/.test(g)) return g;
-    const stripped = g.replace(/^0+/, "");
-    return galleryVocab.has(stripped) && !galleryVocab.has(g) ? stripped : g;
-  };
-  db.transaction(() => {
-    for (const o of objects) {
-      const galleryNumber = canonicalGallery(o.galleryNumber);
-      insObject.run({
-        ...o,
-        galleryNumber,
-        site: authoritativeSite(galleryNumber, o.site),
-        isHighlight: o.isHighlight ? 1 : 0,
-        synonyms: synFor(o),
-      });
-    }
-  })();
   db.exec("INSERT INTO objects_fts(objects_fts) VALUES ('optimize')");
 
   // ---- typo-tolerance vocabulary (fuzzy autocomplete candidate source) ------
@@ -338,13 +422,9 @@ function main(): void {
   const vocabTokens = (s: string): string[] =>
     fold(s).split(/[^a-z0-9]+/).filter((t) => t.length >= 3);
   const termDf = new Map<string, number>();
-  const allObjects = db
-    .prepare("SELECT title, artist, culture, classification, medium, tags, synonyms FROM objects")
-    .all() as Array<Record<string, string>>;
-  for (const o of allObjects) {
+  for (const o of indexedTuples) {
     const seen = new Set<string>();
-    for (const field of [o.title, o.artist, o.culture, o.classification, o.medium, o.tags, o.synonyms])
-      for (const t of vocabTokens(field)) seen.add(t);
+    for (const field of o.texts) for (const t of vocabTokens(field)) seen.add(t);
     for (const name of o.artist.split(";")) {
       const phrase = vocabTokens(name).join(" ");
       if (phrase.includes(" ") && phrase.length <= 40) seen.add(phrase);
@@ -370,78 +450,143 @@ function main(): void {
   const amenityType = (kind: unknown): string =>
     kind === "information" ? "info" : String(kind ?? "");
 
-  const galleryFeatures = galleriesGeo.features.filter((f) => f.properties.galleryNumber);
+  // ---- galleries: geometry → labels file → synthesized from objects --------
   const insGallery = db.prepare("INSERT INTO galleries VALUES (?, ?, ?, ?, ?, ?)");
-  db.transaction(() => {
-    for (const f of galleryFeatures) {
-      const c = centroid(f.geometry);
-      insGallery.run(
-        f.properties.galleryNumber,
-        f.properties.title ?? null,
-        floorLabel(f.properties.floorName),
-        f.properties.site,
-        c.lat,
-        c.lon,
-      );
-    }
-  })();
+  let galleryCount = 0;
+  for (const m of museums) {
+    db.transaction(() => {
+      if (m.galleriesGeo) {
+        for (const f of m.galleriesGeo.features) {
+          if (!f.properties.galleryNumber) continue;
+          const c = centroid(f.geometry);
+          insGallery.run(
+            f.properties.galleryNumber,
+            f.properties.title ?? null,
+            floorLabel(f.properties.floorName),
+            f.properties.site,
+            c.lat,
+            c.lon,
+          );
+          galleryCount++;
+        }
+        return;
+      }
+      // No geometry: label rows from galleries.json, else synthesize from the
+      // museum's distinct (galleryNumber, site) pairs so gallery search, room
+      // browse, and "n of N" work at room-label fidelity.
+      const labels = new Map<string, GalleryLabelRow>();
+      for (const g of m.galleryLabels ?? []) labels.set(`${g.galleryNumber} ${g.site}`, g);
+      const pairs = db
+        .prepare(
+          "SELECT DISTINCT galleryNumber, site FROM objects WHERE museum = ? AND galleryNumber != ''",
+        )
+        .all(m.info.id) as Array<{ galleryNumber: string; site: string }>;
+      for (const p of pairs) {
+        const label = labels.get(`${p.galleryNumber} ${p.site}`);
+        insGallery.run(p.galleryNumber, label?.title ?? null, label?.floor ?? null, p.site, null, null);
+        galleryCount++;
+      }
+    })();
+  }
 
   const insAmenity = db.prepare("INSERT INTO amenities VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+  let amenityCount = 0;
   db.transaction(() => {
-    amenitiesGeo.features.forEach((f, i) => {
-      const p = f.properties;
-      insAmenity.run(i + 1, amenityType(p.kind), p.name ?? null, floorLabel(p.floorName), p.site, p.lat, p.lon, p.closed ? 1 : 0);
-    });
+    for (const m of museums) {
+      for (const f of m.amenitiesGeo?.features ?? []) {
+        const p = f.properties;
+        amenityCount++;
+        insAmenity.run(amenityCount, amenityType(p.kind), p.name ?? null, floorLabel(p.floorName), p.site, p.lat, p.lon, p.closed ? 1 : 0);
+      }
+    }
   })();
 
+  // Graph node ids are museum-unique by prefixing non-Met ids (Met ids stay
+  // stable for shipped-client route deep links).
   const insNode = db.prepare("INSERT INTO graph_nodes VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
   const insEdge = db.prepare("INSERT INTO graph_edges VALUES (?, ?, ?, ?, ?, ?)");
+  let nodeCount = 0;
+  let edgeCount = 0;
+  const allPolylineFeatures: unknown[] = [];
   db.transaction(() => {
-    for (const n of graph.nodes) {
-      insNode.run(n.id, n.lat, n.lon, n.floor, n.site, n.gallery ?? null, n.kind ?? null, n.name ?? null);
-    }
-    for (const e of graph.edges) {
-      insEdge.run(e.a, e.b, e.len, e.kind, e.bearing ?? null, e.room ?? null);
-    }
-  })();
-
-  // Per-floor walking polylines for map rendering, derived from same-floor
-  // graph edges (door/walk); clients filter by feature.properties.floor/site.
-  const nodeById = new Map(graph.nodes.map((n) => [n.id, n]));
-  const polylines = {
-    type: "FeatureCollection",
-    features: graph.edges.flatMap((e) => {
-      if (e.kind !== "walk" && e.kind !== "door") return [];
-      const a = nodeById.get(e.a);
-      const b = nodeById.get(e.b);
-      if (!a || !b || a.floor !== b.floor) return [];
-      return [
-        {
+    for (const m of museums) {
+      if (!m.graph) continue;
+      const prefix = m.info.id === "met" ? "" : `${m.info.id}:`;
+      for (const n of m.graph.nodes) {
+        insNode.run(prefix + n.id, n.lat, n.lon, n.floor, n.site, n.gallery ?? null, n.kind ?? null, n.name ?? null);
+        nodeCount++;
+      }
+      for (const e of m.graph.edges) {
+        insEdge.run(prefix + e.a, prefix + e.b, e.len, e.kind, e.bearing ?? null, e.room ?? null);
+        edgeCount++;
+      }
+      // Per-floor walking polylines for map rendering, derived from same-floor
+      // graph edges (door/walk); clients filter by feature.properties.floor/site.
+      const nodeById = new Map(m.graph.nodes.map((n) => [n.id, n]));
+      for (const e of m.graph.edges) {
+        if (e.kind !== "walk" && e.kind !== "door") continue;
+        const a = nodeById.get(e.a);
+        const b = nodeById.get(e.b);
+        if (!a || !b || a.floor !== b.floor) continue;
+        allPolylineFeatures.push({
           type: "Feature",
           geometry: { type: "LineString", coordinates: [[a.lon, a.lat], [b.lon, b.lat]] },
           properties: { floor: a.floor, site: a.site, kind: e.kind },
-        },
-      ];
-    }),
-  };
+        });
+      }
+    }
+  })();
 
+  // ---- blobs: merged FeatureCollections across museums ----------------------
+  const mergeFeatures = (colls: Array<{ features: Feature[] } | null>): string =>
+    JSON.stringify({
+      type: "FeatureCollection",
+      features: colls.flatMap((c) => c?.features ?? []),
+    });
   const insBlob = db.prepare("INSERT INTO blobs VALUES (?, ?)");
-  insBlob.run("galleries.geojson", zlib.gzipSync(galleriesRaw, { level: 9 }));
-  insBlob.run("amenities.geojson", zlib.gzipSync(amenitiesRaw, { level: 9 }));
-  insBlob.run("routes.geojson", zlib.gzipSync(JSON.stringify(polylines), { level: 9 }));
+  insBlob.run(
+    "galleries.geojson",
+    zlib.gzipSync(mergeFeatures(museums.map((m) => m.galleriesGeo)), { level: 9 }),
+  );
+  insBlob.run(
+    "amenities.geojson",
+    zlib.gzipSync(mergeFeatures(museums.map((m) => m.amenitiesGeo)), { level: 9 }),
+  );
+  insBlob.run(
+    "routes.geojson",
+    zlib.gzipSync(
+      JSON.stringify({ type: "FeatureCollection", features: allPolylineFeatures }),
+      { level: 9 },
+    ),
+  );
 
   const counts = {
-    objects: objects.length,
+    objects: indexedTuples.length,
     vocab: termDf.size,
-    galleries: galleryFeatures.length,
-    amenities: amenitiesGeo.features.length,
-    graphNodes: graph.nodes.length,
-    graphEdges: graph.edges.length,
+    galleries: galleryCount,
+    amenities: amenityCount,
+    graphNodes: nodeCount,
+    graphEdges: edgeCount,
   };
+  // meta.museums: the registry entry + per-museum liveness — the client and
+  // the server manifest endpoint read the same facts offline.
+  const museumsMeta = museums.map((m) => ({
+    ...m.info,
+    counts: { objects: perMuseumCounts[m.info.id] },
+    capabilities: {
+      hasGeometry: !!m.galleriesGeo,
+      hasGraph: !!m.graph,
+      granularity: m.info.fidelity === "museum-only" ? "museum" : "room",
+      languages: m.objects.some((o) => o.titleAlt) ? ["en", "fr"] : ["en"],
+    },
+    fetchedAt: m.fetchedAt,
+  }));
   const insMeta = db.prepare("INSERT INTO meta VALUES (?, ?)");
   insMeta.run("dataVersion", dataVersion);
   insMeta.run("builtAt", builtAt);
   insMeta.run("counts", JSON.stringify(counts));
+  insMeta.run("schemaVersion", "2");
+  insMeta.run("museums", JSON.stringify(museumsMeta));
 
   db.pragma("journal_mode = DELETE"); // ship without a -journal side file
   db.exec("VACUUM");
@@ -452,14 +597,14 @@ function main(): void {
 
   // ---- verify --------------------------------------------------------------
   console.log(`dataVersion ${dataVersion}`);
-  console.log(`counts ${JSON.stringify(counts)}`);
+  console.log(`counts ${JSON.stringify(counts)} (per museum: ${JSON.stringify(perMuseumCounts)})`);
   const bytes = fs.statSync(DB_PATH).size;
   const gzBytes = zlib.gzipSync(fs.readFileSync(DB_PATH), { level: 6 }).length;
   console.log(`met.sqlite ${(bytes / 1e6).toFixed(1)} MB raw, ${(gzBytes / 1e6).toFixed(1)} MB gzip`);
 
   const v = new Database(DB_PATH, { readonly: true });
   const search = v.prepare(`
-    SELECT o.objectID, o.title, o.artist, o.galleryNumber, g.floor,
+    SELECT o.objectID, o.title, o.artist, o.galleryNumber, o.museum, g.floor,
            round(bm25(objects_fts, 10, 8, 3, 5, 2, 4, 1), 2) AS score
     FROM objects_fts
     JOIN objects o ON o.objectID = objects_fts.rowid
@@ -475,7 +620,7 @@ function main(): void {
     console.log(`\nFTS '${q}' → ${n} hits`);
     for (const r of search.all(q) as Record<string, unknown>[]) {
       console.log(
-        `  [${r.score}] #${r.objectID} "${r.title}" — ${r.artist || "(no artist)"} | gallery ${r.galleryNumber} floor ${r.floor ?? "?"}`,
+        `  [${r.score}] #${r.objectID} (${r.museum}) "${r.title}" — ${r.artist || "(no artist)"} | gallery ${r.galleryNumber} floor ${r.floor ?? "?"}`,
       );
     }
   }
@@ -490,37 +635,35 @@ function main(): void {
     .map((r) => (r as { term: string }).term);
   console.log(`\nvocab trigram 'harlw' candidates → ${trig.join(", ") || "(none)"}`);
 
-  const cov = v
-    .prepare(`
-      SELECT count(*) AS total,
-             sum(EXISTS (SELECT 1 FROM galleries g
-                         WHERE g.galleryNumber = o.galleryNumber AND g.site = o.site)) AS matched
-      FROM objects o
-    `)
-    .get() as { total: number; matched: number };
+  // Per-museum coverage: every object row joins a galleries row (synthesized
+  // rows make this structural for label-only museums — a miss is a bug).
+  for (const m of museums) {
+    const cov = v
+      .prepare(`
+        SELECT count(*) AS total,
+               sum(EXISTS (SELECT 1 FROM galleries g
+                           WHERE g.galleryNumber = o.galleryNumber AND g.site = o.site)) AS matched
+        FROM objects o WHERE o.museum = ?
+      `)
+      .get(m.info.id) as { total: number; matched: number };
+    console.log(
+      `coverage[${m.info.id}]: ${cov.matched}/${cov.total} objects (${((100 * cov.matched) / cov.total).toFixed(1)}%) have a galleries row`,
+    );
+  }
   const orphanObjGalleries = v
     .prepare(`
-      SELECT DISTINCT galleryNumber FROM objects
-      WHERE galleryNumber NOT IN (SELECT galleryNumber FROM galleries) ORDER BY galleryNumber
-    `)
-    .all()
-    .map((r) => (r as { galleryNumber: string }).galleryNumber);
-  const orphanGalleries = v
-    .prepare(`
-      SELECT galleryNumber FROM galleries
-      WHERE galleryNumber NOT IN (SELECT DISTINCT galleryNumber FROM objects) ORDER BY galleryNumber
+      SELECT DISTINCT galleryNumber FROM objects o
+      WHERE NOT EXISTS (SELECT 1 FROM galleries g
+                        WHERE g.galleryNumber = o.galleryNumber AND g.site = o.site)
+      ORDER BY galleryNumber
     `)
     .all()
     .map((r) => (r as { galleryNumber: string }).galleryNumber);
   console.log(
-    `\ncoverage: ${cov.matched}/${cov.total} objects (${((100 * cov.matched) / cov.total).toFixed(1)}%) have a galleries row`,
-  );
-  console.log(
-    `orphan gallery numbers on objects (no polygon): ${orphanObjGalleries.length}${
+    `orphan gallery numbers on objects (no galleries row): ${orphanObjGalleries.length}${
       orphanObjGalleries.length ? " → " + orphanObjGalleries.slice(0, 20).join(", ") : ""
     }${orphanObjGalleries.length > 20 ? ", …" : ""}`,
   );
-  console.log(`galleries with zero objects: ${orphanGalleries.length}`);
   v.close();
 }
 

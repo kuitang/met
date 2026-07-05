@@ -49,13 +49,27 @@ queries and validate photo matches.
 
 Tables (built by `data/src/build-db.ts`):
 
-- `objects` — on-view rows (45.5k at full hydration): objectID, accession,
-  title, artist, culture, period, classification, medium, tags, synonyms,
-  galleryNumber, site (`fifthAve|cloisters`), rotation
-  (`permanent|exhibition`), isHighlight, imageUrl, metadataDate.
-- `objects_fts` — FTS5 external-content index, `porter unicode61`,
-  `prefix='2 3 4'`, over (title, artist, culture, classification, medium, tags,
-  synonyms) with query-time weights `bm25(objects_fts,10,8,3,5,2,4,1)`.
+- `objects` — on-view rows (45.5k Met at full hydration; schema v2 merges every
+  registry museum): objectID, accession, title, artist, culture, period,
+  classification, medium, tags, synonyms, galleryNumber, site (globally-unique
+  site id: `fifthAve|cloisters` for the Met), rotation (`permanent|exhibition`),
+  isHighlight, imageUrl, metadataDate, **plus v2 multi-museum columns**:
+  `museum` (registry id), `sourceId` (museum-native record id; objectID for
+  non-Met museums is a 48-bit sha256 of `{museum}/{sourceId}`, collision-
+  asserted at build — Met keeps native ids), `locationNote` (sub-room detail,
+  e.g. V&A case), `titleAlt` (English display title when `title` isn't
+  English), `license` / `imageLicense` (per-record; `imageLicense=''` = no
+  derivatives allowed — thumbnails/embeddings gate on it).
+- `objects_fts` — FTS5 **contentless** index (schema v2; was external-content
+  with sync triggers — builds are always from scratch so the triggers bought
+  nothing), `porter unicode61`, `prefix='2 3 4'`, over (title, artist, culture,
+  classification, medium, tags, synonyms) with query-time weights
+  `bm25(objects_fts,10,8,3,5,2,4,1)`. Contentless decouples INDEXED text from
+  DISPLAY text: the indexed title is `"title titleAlt"` so bilingual titles
+  (Louvre) match at full title weight while `objects.title` stays the
+  authoritative display form. Measured on the v1→v2 cut-over: bm25 top-1
+  scores on all 13 llm-tier goldens are bit-identical (0.00% drift), goldens
+  50/50. Readers only use rowid + bm25() — shipped clients' SQL is unchanged.
   The `synonyms` column is index-time LLM vocabulary expansion
   (`data/src/synonyms.ts`, one-time ≈$0.30): "katana"→"samurai sword",
   culture translations, antiquities nicknames — recall fixed before any
@@ -66,12 +80,21 @@ Tables (built by `data/src/build-db.ts`):
   (`detail=column`). Feeds the fuzzy autocomplete fallback in
   `shared/search.ts` (+1.7 MB raw / +0.9 MB gzip; see docs/SEARCH.md).
 - `galleries(galleryNumber, site, …)` / `amenities` — centroids, floors,
-  titles for 463 gallery polygons + 125 amenities.
+  titles for 463 gallery polygons + 125 amenities. v2: floor/centroids are
+  nullable — museums without geometry get gallery rows synthesized from their
+  objects' distinct room codes (labels/floors from an optional per-museum
+  `galleries.json` snapshot), so gallery search/browse works at room-label
+  fidelity everywhere.
 - `graph_nodes` / `graph_edges` — the routing graph (2,125 nodes / 8,096 edges:
   door, walk, stairs, elevator) derived from Living Map walking linestrings.
+  v2: node ids of non-Met museums are prefixed `{museum}:`; sites never share
+  edges, so routing stays site-local by construction.
 - `blobs` — gzipped `galleries.geojson` (room polygons), `amenities.geojson`,
-  `routes.geojson`; the map renders entirely from these.
-- `meta` — dataVersion etc.
+  `routes.geojson` — merged FeatureCollections across museums (features carry
+  `site`); the map renders entirely from these.
+- `meta` — dataVersion, builtAt, counts, **v2:** `schemaVersion=2` and
+  `museums` (the registry entry per museum + capabilities/counts/fetchedAt —
+  served verbatim by `GET /api/v1/museums` and read offline by the client).
 
 Size: ~32 MB raw / ~10 MB gzip at full 45.5k scale (measured on the interim
 full-scale build); the committed snapshot is partial until the in-flight
@@ -500,6 +523,7 @@ loads whatever shards exist.
 | `server/src/routes/interpret.ts:interpretRoutes` | tier-3 search: rewrite → score-aware agentic escalation |
 | `server/src/routes/locate.ts:locateRoutes` | photo localization (OCR ∥ embedding retrieval) |
 | `server/src/routes/data.ts:dataRoutes` | versioned ETag delivery of met.sqlite |
+| `server/src/routes/museums.ts:museumsRoutes` | `GET /api/v1/museums` — multi-museum manifest straight from artifact meta (mtime-cached) |
 | `server/src/routes/img.ts:imgRoutes` | Met-CDN image proxy + disk LRU |
 | `server/src/embeddings.ts:searchByEmbedding` | in-RAM cosine over the sharded vector index |
 | `server/src/vocab.ts:getVocabulary` | DB-derived vocabulary for the interpret prompt |

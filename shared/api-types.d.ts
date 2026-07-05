@@ -21,6 +21,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/museums": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Museums contained in the current artifact
+         * @description The multi-museum manifest: registry identity, sites (buildings with entrances + floor order), data fidelity/capabilities, licensing attribution, per-museum freshness. Read from the artifact's meta — the client sees identical facts offline from its downloaded copy.
+         */
+        get: operations["getMuseums"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/data/met.sqlite": {
         parameters: {
             query?: never;
@@ -137,6 +157,55 @@ export interface components {
             /** Format: date-time */
             builtAt: string;
         };
+        SiteMeta: {
+            /** @description Globally unique site id ("fifthAve", "louvre:main", …) */
+            siteId: string;
+            name: string;
+            entrance: {
+                lat: number;
+                lon: number;
+                floor?: string;
+            };
+            /** @description Floor labels in display order (bottom → top) */
+            floorOrder: string[];
+        };
+        MuseumEntry: {
+            id: string;
+            name: string;
+            shortName: string;
+            city: string;
+            country: string;
+            sites: components["schemas"]["SiteMeta"][];
+            /** @enum {string} */
+            fidelity: "routed" | "room-labels" | "museum-only";
+            license: {
+                text: string;
+                /** @description Default image-derivative license; "" = none allowed */
+                images: string;
+                attribution: string;
+                termsUrl: string;
+            };
+            /** @description Object deep-link template; "{sourceId}" replaced per record */
+            objectUrlTemplate?: string;
+            capabilities: {
+                hasGeometry: boolean;
+                hasGraph: boolean;
+                /** @enum {string} */
+                granularity: "room" | "gallery-label" | "museum";
+                languages: string[];
+            };
+            counts?: {
+                objects?: number;
+            };
+            /** @description When this museum's records were last confirmed from source */
+            fetchedAt?: string | null;
+        };
+        MuseumManifest: {
+            dataVersion: string;
+            /** Format: date-time */
+            builtAt: string;
+            museums: components["schemas"]["MuseumEntry"][];
+        };
         Health: {
             ok: boolean;
             dataVersion: string;
@@ -250,6 +319,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DataVersion"];
+                };
+            };
+            default: components["responses"]["Error"];
+        };
+    };
+    getMuseums: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Museum manifest */
+            200: {
+                headers: {
+                    "x-data-version": components["headers"]["XDataVersion"];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MuseumManifest"];
+                };
+            };
+            /** @description Artifact not yet available (data_unavailable) */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorEnvelope"];
                 };
             };
             default: components["responses"]["Error"];
