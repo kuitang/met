@@ -489,7 +489,12 @@ effective, hence hours-long hydrations with resume); Living Map endpoints
 behind maps.metmuseum.org (unofficial — ETL'd once, raw tiles committed in
 `data/raw/` so geometry never depends on them again; if they vanish, the app
 runs on the frozen snapshot). metmuseum.org itself is never scraped
-(bot-blocked, and out of etiquette).
+(bot-blocked, and out of etiquette). **Art Institute of Chicago** (schema v2's
+first second museum): public API, explicit machine-readable CC0 per response,
+enumerated per gallery (the search API 403s past result 1,000 — ES window
+cap), ~190 requests nightly; per-record `imageLicense` gates derivatives on
+`is_public_domain`; per-museum goldens at `data/evals/aic/search-cases.json`
+(23/25 measured, 2 known synonyms-pending cases; Met set unaffected at 50/50).
 
 **Known state**: the committed `data/met.sqlite` is a partial snapshot (120
 objects) while the full 45.5k hydration runs; a watcher rebuilds the DB and
