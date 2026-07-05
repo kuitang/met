@@ -47,114 +47,12 @@ import {
   verifyManifestDir,
   type Manifest,
 } from "./artifacts.ts";
+import { sourceFor } from "./sources/registry.ts";
+import type { ObjectRow } from "./sources/types.ts";
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const GIT_SNAP = path.join(REPO_ROOT, "data", "snapshots");
 const WORK = process.env.NIGHTLY_WORK_DIR ?? path.join(REPO_ROOT, "data", ".nightly");
-
-// --- Met API client (same WAF etiquette as objects.ts: measured cap ~10 req/s,
-// Imperva 403s are transient, session cookie keeps us one visitor) -----------
-const API = "https://collectionapi.metmuseum.org/public/collection/v1";
-const REQS_PER_SEC = 10;
-const CONCURRENCY = 4;
-const MAX_ATTEMPTS = 8;
-const UA =
-  "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36";
-const EXHIBITION_GALLERIES = new Set(["099", "199", "899", "964", "965", "999"]);
-
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-let cookie = "";
-async function fetchJson(url: string): Promise<unknown> {
-  let delay = 2000;
-  for (let attempt = 1; ; attempt++) {
-    let res: Response;
-    try {
-      res = await fetch(url, {
-        signal: AbortSignal.timeout(30_000),
-        headers: { "user-agent": UA, ...(cookie ? { cookie } : {}) },
-      });
-    } catch (err) {
-      if (attempt >= MAX_ATTEMPTS) throw err;
-      await sleep(delay);
-      delay = Math.min(delay * 2, 60_000);
-      continue;
-    }
-    const setCookies = res.headers.getSetCookie();
-    if (setCookies.length) cookie = setCookies.map((c) => c.split(";")[0]).join("; ");
-    if (res.ok) return res.json();
-    if (res.status === 404) return null;
-    if ((res.status === 403 || res.status === 429 || res.status >= 500) && attempt < MAX_ATTEMPTS) {
-      await sleep(res.status === 403 ? Math.max(delay, 60_000) : delay);
-      delay = Math.min(delay * 2, 120_000);
-      continue;
-    }
-    throw new Error(`${res.status} ${res.statusText} for ${url}`);
-  }
-}
-
-// Row shape contract with data/src/objects.ts + build-db.ts.
-interface ObjectRow {
-  objectID: number;
-  accession: string;
-  title: string;
-  artist: string;
-  culture: string;
-  period: string;
-  classification: string;
-  medium: string;
-  tags: string;
-  galleryNumber: string;
-  site: "fifthAve" | "cloisters";
-  rotation: "permanent" | "exhibition";
-  isHighlight: boolean;
-  imageUrl: string;
-  metadataDate: string;
-}
-
-// galleryNumber → site from the committed geometry (same source as objects.ts).
-let gallerySiteMap: Map<string, "fifthAve" | "cloisters"> | null = null;
-function siteForGallery(snapDir: string, gallery: string): "fifthAve" | "cloisters" {
-  if (!gallerySiteMap) {
-    gallerySiteMap = new Map();
-    const gj = JSON.parse(
-      fs.readFileSync(path.join(snapDir, "galleries.geojson"), "utf8"),
-    ) as { features: Array<{ properties: Record<string, unknown> }> };
-    for (const f of gj.features) {
-      const n = String(f.properties.galleryNumber ?? "").trim();
-      const site = f.properties.site;
-      if (n && (site === "fifthAve" || site === "cloisters")) {
-        gallerySiteMap.set(n, site);
-        gallerySiteMap.set(n.replace(/^0+/, ""), site);
-      }
-    }
-  }
-  return (
-    gallerySiteMap.get(gallery) ?? gallerySiteMap.get(gallery.replace(/^0+/, "")) ?? "fifthAve"
-  );
-}
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-function toRow(snapDir: string, obj: any): ObjectRow {
-  const gallery = String(obj.GalleryNumber ?? "").trim();
-  return {
-    objectID: obj.objectID,
-    accession: obj.accessionNumber ?? "",
-    title: obj.title ?? "",
-    artist: obj.artistDisplayName ?? "",
-    culture: obj.culture ?? "",
-    period: obj.period ?? "",
-    classification: obj.classification ?? "",
-    medium: obj.medium ?? "",
-    tags: Array.isArray(obj.tags) ? obj.tags.map((t: any) => t.term).join("|") : "",
-    galleryNumber: gallery,
-    site: siteForGallery(snapDir, gallery),
-    rotation: EXHIBITION_GALLERIES.has(gallery) ? "exhibition" : "permanent",
-    isHighlight: Boolean(obj.isHighlight),
-    imageUrl: obj.primaryImageSmall ?? "",
-    metadataDate: obj.metadataDate ?? "",
-  };
-}
 
 /**
  * Reconstruct snapshots/objects.json.gz from last night's met.sqlite — the
@@ -176,75 +74,6 @@ export function exportObjectsFromDb(dbPath: string): ObjectRow[] {
   } finally {
     db.close();
   }
-}
-
-/** Met API delta against the known rows; mirrors the retired server refresh. */
-async function deltaObjects(snapDir: string, since: string): Promise<number> {
-  const snapPath = path.join(snapDir, "objects.json.gz");
-  const known = new Map<number, ObjectRow>(
-    (
-      JSON.parse(zlib.gunzipSync(fs.readFileSync(snapPath)).toString("utf8")) as ObjectRow[]
-    ).map((r) => [r.objectID, r]),
-  );
-
-  const onView = (await fetchJson(`${API}/search?isOnView=true&q=*`)) as {
-    total: number;
-    objectIDs: number[] | null;
-  };
-  const onViewIds = new Set(onView.objectIDs ?? []);
-  const changed = (await fetchJson(`${API}/objects?metadataDate=${since}`)) as {
-    objectIDs: number[] | null;
-  } | null;
-
-  // Hydrate: anything on view we don't know yet, plus known-or-on-view objects
-  // whose metadata changed since the last build.
-  const todo = new Set<number>();
-  for (const id of onViewIds) if (!known.has(id)) todo.add(id);
-  for (const id of changed?.objectIDs ?? []) {
-    if (onViewIds.has(id) || known.has(id)) todo.add(id);
-  }
-  console.log(
-    `delta: ${onViewIds.size} on view, ${known.size} known, ${todo.size} to hydrate (since ${since})`,
-  );
-
-  const ids = [...todo];
-  const interval = 1000 / REQS_PER_SEC;
-  let nextStart = Date.now();
-  let i = 0;
-  async function worker(): Promise<void> {
-    while (i < ids.length) {
-      const id = ids[i++];
-      const wait = nextStart - Date.now();
-      nextStart = Math.max(nextStart, Date.now()) + interval;
-      if (wait > 0) await sleep(wait);
-      const obj = await fetchJson(`${API}/objects/${id}`);
-      if (obj === null || !String((obj as any).GalleryNumber ?? "").trim()) known.delete(id);
-      else known.set(id, toRow(snapDir, obj));
-    }
-  }
-  await Promise.all(Array.from({ length: Math.min(CONCURRENCY, ids.length) }, worker));
-
-  // Tombstone rows that fell off view entirely.
-  for (const id of [...known.keys()]) if (!onViewIds.has(id)) known.delete(id);
-
-  const rows = [...known.values()].sort((a, b) => a.objectID - b.objectID);
-  fs.writeFileSync(snapPath + ".tmp", zlib.gzipSync(JSON.stringify(rows)));
-  fs.renameSync(snapPath + ".tmp", snapPath);
-  fs.writeFileSync(
-    path.join(snapDir, "objects-meta.json"),
-    JSON.stringify(
-      {
-        fetchedAt: new Date().toISOString(),
-        refreshedBy: "data/src/nightly.ts",
-        searchTotalOnView: onView.total,
-        hydrated: ids.length,
-        rows: rows.length,
-      },
-      null,
-      2,
-    ),
-  );
-  return ids.length;
 }
 
 /** Child tsx runner for the sibling pipeline scripts. */
@@ -311,9 +140,9 @@ async function main(): Promise<void> {
   fs.writeFileSync(path.join(snapDir, "objects.json.gz"), zlib.gzipSync(JSON.stringify(rows)));
   console.log(`exported ${rows.length} object rows from ${prev.version}/met.sqlite`);
 
-  // ---- 2. Met API delta ----------------------------------------------------
+  // ---- 2. Met API delta (via the source adapter) ---------------------------
   const since = prev.builtAt.slice(0, 10);
-  const hydrated = await deltaObjects(snapDir, since);
+  const hydrated = await sourceFor("met").delta(snapDir, since);
 
   // ---- 3. synonyms top-up (incremental, catalog-new vocab only) ------------
   try {

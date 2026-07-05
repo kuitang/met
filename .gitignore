@@ -48,6 +48,9 @@ test-results/
 data/raw/met-images/
 data/raw/met-objects/
 
+# Per-museum hydration resume caches (data/src/sources/*; re-fetchable)
+data/raw/*/objects-cache.ndjson
+
 # Image-proxy disk cache (server/src/routes/img.ts; ephemeral in prod — it
 # refills from the Met CDN after each deploy)
 data/img-cache/
