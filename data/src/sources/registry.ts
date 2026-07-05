@@ -16,6 +16,7 @@ import { clevelandSource } from "./cleveland.ts";
 import { ngaSource } from "./nga.ts";
 import { smkSource } from "./smk.ts";
 import { louvreSource } from "./louvre.ts";
+import { vandaSource } from "./vanda.ts";
 
 const DATA_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 
@@ -44,6 +45,16 @@ export interface MuseumInfo {
     images: string;
     attribution: string;
     termsUrl: string;
+    /**
+     * Non-commercial-use TTL in days for sources whose terms cap how long
+     * fetched content may be cached/served (V&A: 4 weeks). When set, the
+     * license-TTL mechanism (shared/search.ts SearchFilters.expiredMuseums +
+     * SqliteDataProvider) hides this museum's rows once the shipped
+     * artifact's builtAt is older than ttlDays - 1 (see ARCHITECTURE.md
+     * "Provenance & the license-TTL mechanism"). license.text conventionally
+     * carries a matching "-ttlNN" suffix so the two stay in lockstep.
+     */
+    ttlDays?: number;
   };
   /** Object deep-link template; "{sourceId}" is replaced per record. */
   objectUrlTemplate: string;
@@ -220,6 +231,35 @@ export const MUSEUMS: MuseumInfo[] = [
     objectUrlTemplate: "https://collections.louvre.fr/en/ark:/53355/{sourceId}",
     translateFrom: "fr",
   },
+  {
+    id: "vanda",
+    name: "Victoria and Albert Museum",
+    shortName: "V&A",
+    city: "London",
+    country: "GB",
+    sites: [
+      {
+        siteId: "vanda",
+        name: "Victoria and Albert Museum",
+        // Cromwell Road (main entrance).
+        entrance: { lat: 51.4966, lon: -0.1722 },
+        // No authoritative gallery->floor mapping is published at the
+        // search tier (see sources/vanda.ts) — floors stay null per gallery,
+        // same non-guessing convention as AIC/SMK.
+        floorOrder: [],
+      },
+    ],
+    fidelity: "room-labels",
+    license: {
+      text: "vanda-nc-ttl28",
+      images: "", // V&A images are not redistributable — no derivatives shipped
+      attribution:
+        "Victoria and Albert Museum collections API (non-commercial terms; data expires after 28 days)",
+      termsUrl: "https://developers.vam.ac.uk/guide/v2/quick-start.html",
+      ttlDays: 28,
+    },
+    objectUrlTemplate: "https://collections.vam.ac.uk/item/{sourceId}",
+  },
 ];
 
 export function museumInfo(id: string): MuseumInfo {
@@ -242,6 +282,7 @@ const SOURCES: Record<string, MuseumSource> = {
   nga: ngaSource,
   smk: smkSource,
   louvre: louvreSource,
+  vanda: vandaSource,
 };
 
 export function sourceFor(id: string): MuseumSource {

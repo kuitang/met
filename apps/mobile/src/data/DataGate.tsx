@@ -65,6 +65,24 @@ function checkForUpdate(current: MetDb, swap: (p: DataProvider) => void): void {
   })().catch((e) => console.log('[met-data] background update skipped:', String(e)));
 }
 
+/**
+ * License-TTL mechanism (see SqliteDataProvider, ARCHITECTURE.md "Provenance
+ * & the license-TTL mechanism"): the WHERE clauses already hide an expired
+ * museum's rows from every search/browse path, so correctness never depends
+ * on this — but a session that opened on a copy with an expired museum
+ * should not just sit there; log it and kick the version check right away
+ * (still fire-and-forget: it never blocks first render) instead of waiting
+ * for whatever poll cadence would otherwise apply.
+ */
+function logExpiredMuseums(provider: DataProvider): void {
+  const expired = provider.expiredMuseums();
+  if (expired.length) {
+    console.log(
+      `[met-data] license-TTL expired for: ${expired.join(', ')} — forcing an immediate version check`,
+    );
+  }
+}
+
 export function DataGate({ children }: { children: ReactNode }) {
   const [provider, setProvider] = useState<DataProvider | null>(stubProvider);
   const [error, setError] = useState<string | null>(null);
@@ -80,14 +98,19 @@ export function DataGate({ children }: { children: ReactNode }) {
       setError(null);
       const local = await tryOpenLocal();
       if (local) {
-        swap(await openProvider(local));
-        checkForUpdate(local, swap); // never blocks the session
+        const p = await openProvider(local);
+        swap(p);
+        logExpiredMuseums(p);
+        checkForUpdate(local, swap); // never blocks the session (already immediate, not just fire-and-forget)
         return;
       }
       const met = await downloadDb();
       if (!met) throw new Error('unexpected 304 on first download');
-      swap(await openProvider(met));
+      const p = await openProvider(met);
+      swap(p);
       met.persist().catch((e) => console.log('[met-data] persist failed:', String(e)));
+      logExpiredMuseums(p);
+      if (p.expiredMuseums().length) checkForUpdate(met, swap);
     })().catch((e) => {
       if (!cancelled) setError(String(e));
     });

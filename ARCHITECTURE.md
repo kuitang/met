@@ -777,6 +777,83 @@ Gemini-powered interpret tier).
 Met and AIC goldens are unaffected by the D4 museums (50/50 and 23/25
 respectively, re-measured against the 5-museum merged artifact).
 
+**Victoria and Albert Museum** (London; D5, and the first NON-CC0 text
+source in the fleet): public Collections API v2 (api.vam.ac.uk, no key), but
+its terms are non-commercial only, cap usage at 3,000 calls/day at ≤1 req/s,
+and forbid caching fetched content for more than 4 weeks — the license-TTL
+mechanism below exists because of this museum. On-view enumeration
+(measured 2026-07-05): `on_display_at=southken` → 58,102 records → 58,092
+rows after dropping a handful of onDisplay-but-"In store" glitch records
+(South Kensington only — `all` also matches Young V&A and V&A East,
+buildings the registry doesn't model). The search API hard-caps the result
+window at 10,000 (page 101 of size 100 is a 500; `page_offset` is silently
+ignored), so enumeration two-level-partitions: one query per gallery from
+`/v2/objects/clusters/gallery/search` (101 terms), the two >10k galleries
+(Ceramics Rooms 139/137) sub-partitioned by `kw_object_type`
+(`id_object_type` is silently ignored — measured), and negation filters
+(`id_gallery=-X`, AND-combining) sweep the long tail past each cluster page
+— 968 requests ≈16 min at the mandated 1 req/s; delta = full re-pull
+nightly (well under the daily call budget). Search-page records carry
+enough for whole rows (NO per-object hydration): `systemNumber` → sourceId,
+`_primaryTitle` (empty on ~97% of records → objectType fallback, the V&A's
+own display convention), `_primaryMaker.name`, `_primaryDate`,
+`_primaryPlace`, `objectType`, and `_currentLocation` {displayName → room
+code + gallery label, detail {case/shelf/box} → locationNote}; medium/tags/
+metadataDate have no search-tier source and stay empty. 164 gallery labels
+(regex survives "Rooms 91 to 93  mezzanine", "Room 118; The Wolfson
+Gallery", "Room 5 (La Tournerie)" — see sources/vanda.ts roomCode). V&A
+images are NOT openly licensed — `imageUrl`/`imageLicense` are `''` on
+every row (NGA treatment). Per-record text license is `vanda-nc-ttl28`.
+
+The objectType-as-title convention surfaced a cross-museum ranking hazard:
+title === classification double-indexed the type term (weights 10 + 5) and
+sparse V&A rows win bm25's row-length normalization, letting 8 identical
+"Powder flask" rows sweep the unscoped top-8 over every true-titled Met/
+Cleveland flask. Two fixes, both measured: (1) build-db indexes a
+type-title row's FTS `title` as '' — the term stays indexed once, as the
+classification it semantically is, so true titles outrank type matches
+(display/facets keep both values); (2) the synonyms pipeline gained
+`--museum` (+ a pure-date value filter — V&A `period` is a display date)
+and ran for vanda (7,798 vocab values + 17 titles, 196 flash-lite calls,
+~$0.40), normalizing row lengths the same way Met's 48/50→50/50 history
+did. Result: Met goldens **50/50** on the 7-museum artifact, V&A goldens
+11/12 (92%; 1 documented relaxed-FTS miss of the same class as AIC's two),
+AIC 23/25 / Cleveland 13/15 / NGA 14/14 / SMK 13/14 all unchanged. Goldens
+at `data/evals/vanda/search-cases.json`.
+
+### Provenance & the license-TTL mechanism
+
+Most fleet sources are CC0/open — rows stay valid until the next build
+replaces them. The V&A's terms instead cap how long fetched content may be
+cached/served (4 weeks), so the registry entry declares
+`license.ttlDays: 28` (schema: optional `ttlDays` on `MuseumEntry.license`
+in `shared/openapi.yaml`; the museum's `license.text` carries a matching
+`-ttl28` suffix by convention so the two stay in lockstep). Enforcement is
+client-side WHERE clauses, not deletion:
+
+- `shared/search.ts:computeExpiredMuseums(museums, builtAt)` — pure date
+  arithmetic: a museum expires once the artifact's `meta.builtAt` is older
+  than `ttlDays - 1` days (one-day margin so a delayed nightly can never
+  overshoot the true deadline).
+- `SearchFilters.expiredMuseums` — every query builder
+  (`buildAutocompleteQuery` / `buildFullQuery` / `buildAccessionSearchQuery`
+  / the fuzzy retry path) appends `AND o.museum NOT IN (...)` when the list
+  is non-empty. The WHERE clause IS the compliance mechanism: an expired
+  museum's rows are unreachable through every search path.
+- `SqliteDataProvider.create()` computes the list once per open and threads
+  it into every search/browse call; `objectsInGallery`/`getObject` exclude
+  expired museums' rows, and `galleries()`/`getGallery`/`searchGalleries`
+  hide their gallery rooms (via the museum's site ids). `DataGate` reads
+  `provider.expiredMuseums()` at boot and, when non-empty, logs and kicks
+  the server version check immediately — a fresh nightly artifact
+  un-expires the museum by construction (new `builtAt`).
+
+A pre-v2 artifact (no `meta.builtAt`, no `museum` column) expires nothing —
+the mechanism degrades to the old behavior rather than guessing. Tests:
+`shared/search.test.ts` (clause + date arithmetic) and
+`data/src/ttl.test.ts` (doctored-`builtAt` integration against a real
+sqlite DB).
+
 **Known state**: the committed `data/met.sqlite` is a partial snapshot (120
 objects) while the full 45.5k hydration runs; a watcher rebuilds the DB and
 re-runs evals + goldens when it lands. The schema, code paths, and all suites
@@ -815,7 +892,8 @@ loads whatever shards exist.
 | `server/src/vocab.ts:getVocabulary` | DB-derived vocabulary for the interpret prompt |
 | `data/src/objects.ts` / `geometry.ts` / `graph.ts` / `synonyms.ts` / `build-db.ts` / `embed-images.ts` | pipelines (scripts; embed-images also does `--compact` tombstone/dedupe) |
 | `data/src/geometry-osm.ts` / `lib/louvre-plan.ts` | Louvre geometry + routing graph from the committed OSM Overpass extract (D7): salle-code matching, door-node adapter, explicit-level vertical shafts (`npm -w data run geometry:louvre`) |
-| `data/src/sources/types.ts:MuseumSource` / `sources/registry.ts` / `sources/met.ts` / `aic.ts` / `cleveland.ts` / `nga.ts` / `smk.ts` / `louvre.ts` | per-museum source-adapter seam: the ONE copy of each museum's row mapper + hydration/delta logic (objects.ts is a thin driver; nightly.ts prefers `sourceFor(id).delta` whenever the museum's rows survived from last night's artifact — critical for the Louvre, whose fullFetch is a ~26.6k-request hydration) |
+| `data/src/sources/types.ts:MuseumSource` / `sources/registry.ts` / `sources/met.ts` / `aic.ts` / `cleveland.ts` / `nga.ts` / `smk.ts` / `louvre.ts` / `vanda.ts` | per-museum source-adapter seam: the ONE copy of each museum's row mapper + hydration/delta logic (objects.ts is a thin driver; nightly.ts prefers `sourceFor(id).delta` whenever the museum's rows survived from last night's artifact — critical for the Louvre, whose fullFetch is a ~26.6k-request hydration) |
+| `shared/search.ts:computeExpiredMuseums` + `SearchFilters.expiredMuseums` | license-TTL mechanism (V&A 28-day cap): expiry date arithmetic + the `NOT IN` exclusion every query builder appends — see "Provenance & the license-TTL mechanism" |
 | `data/src/lib/politeFetch.ts:createPoliteClient` | shared WAF-aware paced fetch (cookie reuse, 403≥60s wait, 429/5xx backoff) — per-source etiquette via options |
 | `data/src/lib/csv.ts:parseCsv` | minimal RFC4180 CSV parser (quoted/embedded-newline fields) — only NGA's CSV-based source needs one, no dependency existed |
 | `data/src/translate.ts` | FR→EN translation post-processor (Louvre): fills titleAlt + Englishifies facets, French originals kept in tags; cached translations.json = reruns $0. DeepSeek V4 Flash via OpenRouter — the ONE Kui-approved pipeline exception to Gemini-only (measured bake-off, data/evals/reports/llm-bakeoff.md); baseline prompt, T=0, reasoning off, id-keyed batches. Never touches the product server |

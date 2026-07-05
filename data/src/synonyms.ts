@@ -17,6 +17,7 @@
  *
  * Usage (Node 24, GEMINI_API_KEY set):
  *   npx tsx data/src/synonyms.ts                 # values+titles from snapshots/objects.json.gz
+ *   npx tsx data/src/synonyms.ts --museum vanda  # another museum's snapshot dir (registry snapDirFor)
  *   npx tsx data/src/synonyms.ts --db x.sqlite   # harvest from a met.sqlite instead/in addition
  *   MET_DATA_DIR=/data ...                       # same root override as build-db.ts
  */
@@ -27,11 +28,20 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import zlib from "node:zlib";
 import { z } from "zod";
+import { museumInfo } from "./sources/registry.ts";
 
 const DATA_DIR = process.env.MET_DATA_DIR
   ? path.resolve(process.env.MET_DATA_DIR)
   : path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const SNAP_DIR = path.join(DATA_DIR, "snapshots");
+const museumIdx = process.argv.indexOf("--museum");
+const MUSEUM_ID = museumIdx >= 0 ? process.argv[museumIdx + 1] : "met";
+const MUSEUM_NAME = museumInfo(MUSEUM_ID).name;
+// Same per-museum layout as registry.snapDirFor, anchored on DATA_DIR so
+// MET_DATA_DIR keeps working for the nightly stage dir.
+const SNAP_DIR =
+  MUSEUM_ID === "met"
+    ? path.join(DATA_DIR, "snapshots")
+    : path.join(DATA_DIR, "museums", MUSEUM_ID, "snapshots");
 const OUT_PATH = path.join(SNAP_DIR, "synonyms.json");
 
 const MODEL = "gemini-3.1-flash-lite";
@@ -60,11 +70,16 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 // ---------------------------------------------------------------------------
 // harvest distinct values + failing-category titles
 // ---------------------------------------------------------------------------
+/** Pure date/date-range strings ("ca. 1770", "1848 - 1854") — some sources'
+ * `period` is a display date, not a period name; synonym-querying them is
+ * pure waste (measured on the V&A: 6,651 of 14,449 distinct values). */
+const DATE_ONLY_RE = /^(ca?\.?\s*)?\d{3,4}(\s*[-–]\s*(ca?\.?\s*)?\d{2,4})?\s*$/i;
+
 function harvest(): { values: Set<string>; titles: Set<string> } {
   const values = new Set<string>();
   const titles = new Set<string>();
   const add = (culture: string, period: string, classification: string, title: string) => {
-    for (const v of [culture, period, classification]) if (v) values.add(v);
+    for (const v of [culture, period, classification]) if (v && !DATE_ONLY_RE.test(v)) values.add(v);
     if (FAILING_CLASSIFICATION_RE.test(classification) && title) titles.add(title);
   };
 
@@ -137,13 +152,13 @@ async function generateBatch(prompt: string, terms: string[]): Promise<Map<strin
 }
 
 const VOCAB_PROMPT = [
-  "Each term below is a culture, period, or classification label from the Metropolitan Museum of Art collection database.",
+  `Each term below is a culture, period, or classification label from the ${MUSEUM_NAME} collection database.`,
   "For each, list 2-8 short alternative search words a museum visitor might type instead: plain-English names, translations, broader or adjacent terms, ancient region names, modern country names — and be generous with loose geographic terms visitors commonly conflate, including the conflated term itself (e.g. visitors type 'Mesopotamia' for Assyrian, Babylonian, Sumerian, AND ancient Iranian/Anatolian/Near Eastern material, so include 'Mesopotamia' for all of those; 'samurai sword' for Edo-period blades).",
   "Return every input term exactly as given with its synonyms (empty list if none are useful). Synonyms are single words or short phrases, no explanations.",
 ].join("\n");
 
 const TITLE_PROMPT = [
-  "Each line below is an artwork title from the Metropolitan Museum of Art catalog (Greek, Roman, and Ancient Near Eastern antiquities).",
+  `Each line below is an artwork title from the ${MUSEUM_NAME} catalog (Greek, Roman, and Ancient Near Eastern antiquities).`,
   "For each, list 0-6 plain-language search words a visitor who does NOT know the specialist or iconographic vocabulary might type to find it (e.g. 'Bronze statuette of a Lar' -> household god, guardian spirit, roman god figurine; 'Terracotta kylix' -> drinking cup, wine cup).",
   "Only add words NOT already in the title. Return every input title exactly as given; empty list when the title is already plain English.",
 ].join("\n");
