@@ -1,12 +1,12 @@
 {
-  "totalUsd": 0.30204614679999975,
-  "calls": 835,
+  "totalUsd": 0.4740819394000001,
+  "calls": 1158,
   "byModel": {
     "google/gemini-3.1-flash-lite": {
-      "usd": 0.04694649999999999,
-      "calls": 42,
-      "promptTokens": 50074,
-      "completionTokens": 22952
+      "usd": 0.13361674999999998,
+      "calls": 102,
+      "promptTokens": 119159,
+      "completionTokens": 69218
     },
     "google/gemini-2.5-flash-lite": {
       "usd": 0.014565400000000001,
@@ -15,10 +15,10 @@
       "completionTokens": 24639
     },
     "deepseek/deepseek-v4-flash": {
-      "usd": 0.011230282799999996,
-      "calls": 44,
-      "promptTokens": 54908,
-      "completionTokens": 22887
+      "usd": 0.029120612399999996,
+      "calls": 104,
+      "promptTokens": 116668,
+      "completionTokens": 62222
     },
     "qwen/qwen3.6-flash": {
       "usd": 0.04939181249999997,
@@ -39,10 +39,10 @@
       "completionTokens": 23151
     },
     "deepseek/deepseek-v4-pro": {
-      "usd": 0.1664422919999999,
-      "calls": 579,
-      "promptTokens": 164948,
-      "completionTokens": 3980
+      "usd": 0.2339175049999993,
+      "calls": 782,
+      "promptTokens": 229989,
+      "completionTokens": 5366
     }
   }
 }

@@ -65,8 +65,9 @@ const hash = (o) => crypto.createHash("sha256").update(JSON.stringify(o)).digest
  * the originally measured latency/usage so reruns reproduce the report.
  * Schema compliance is measured on the FIRST attempt's content (schemaOkFirst).
  */
-export async function orJson({ model, messages, schemaName, schema, maxTokens = 4000, reasoning = true }) {
-  const key = hash({ model, messages, schemaName, schema, v: 1 });
+export async function orJson({ model, messages, schemaName, schema, maxTokens = 4000, reasoning = true, temperature = 0 }) {
+  // temperature enters the cache key only when non-default so pre-existing cache entries stay valid
+  const key = hash({ model, messages, schemaName, schema, v: 1, ...(temperature !== 0 ? { temperature } : {}) });
   const cacheFile = path.join(CACHE_DIR, `${key}.json`);
   if (fs.existsSync(cacheFile)) return { ...JSON.parse(fs.readFileSync(cacheFile, "utf8")), cached: true };
 
@@ -74,7 +75,7 @@ export async function orJson({ model, messages, schemaName, schema, maxTokens = 
     model,
     messages,
     max_tokens: maxTokens,
-    temperature: 0,
+    temperature,
     response_format: { type: "json_schema", json_schema: { name: schemaName, strict: true, schema } },
   };
   // Reasoning suppression ladder: these are trivial batch tasks; never pay for CoT.

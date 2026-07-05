@@ -1,18 +1,18 @@
 {
- "generatedAt": "2026-07-05T19:28:38.063Z",
+ "generatedAt": "2026-07-05T19:46:16.804Z",
  "louvreRecordsCached": 201,
  "summary": {
   "deepseek/deepseek-v4-flash": {
-   "calls": 42,
-   "usd": 0.010822,
-   "promptTokens": 50170,
-   "completionTokens": 22087
+   "calls": 102,
+   "usd": 0.028713,
+   "promptTokens": 111930,
+   "completionTokens": 61422
   },
   "deepseek/deepseek-v4-pro": {
-   "calls": 579,
-   "usd": 0.166442,
-   "promptTokens": 164948,
-   "completionTokens": 3980
+   "calls": 782,
+   "usd": 0.23392,
+   "promptTokens": 229989,
+   "completionTokens": 5366
   },
   "google/gemini-2.5-flash-lite": {
    "calls": 42,
@@ -21,10 +21,10 @@
    "completionTokens": 24639
   },
   "google/gemini-3.1-flash-lite": {
-   "calls": 42,
-   "usd": 0.046949,
-   "promptTokens": 50074,
-   "completionTokens": 22952
+   "calls": 102,
+   "usd": 0.133619,
+   "promptTokens": 119159,
+   "completionTokens": 69218
   },
   "mistralai/mistral-small-3.2-24b-instruct": {
    "calls": 42,
@@ -47,6 +47,26 @@
  },
  "entries": [
   {
+   "requestHash": "0433b6f75eea0a1dfcd4e753b1670e7d958caa8c",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1020,
+   "completionTokens": 617,
+   "usd": 0.00022157,
+   "latencyMs": 6182,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "05732c74f07c73dcd31dc7a9ffe866ac40db2568",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1033,
+   "completionTokens": 617,
+   "usd": 0.00029946,
+   "latencyMs": 11082,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "07d38003926918308f85c7e72a14d3b9429f1674",
    "model": "deepseek/deepseek-v4-flash",
    "promptTokens": 782,
@@ -57,12 +77,62 @@
    "variant": 0
   },
   {
+   "requestHash": "0c6199ebe30329377a67bebc51c3b988141dfa1b",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 845,
+   "completionTokens": 527,
+   "usd": 0.00026586,
+   "latencyMs": 8880,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "0e201d0af332fa7f8071f59103710f184c354de7",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 934,
+   "completionTokens": 612,
+   "usd": 0.00029996,
+   "latencyMs": 27102,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "0e5312b536d878cd504cfd895df852695c1b95c2",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 907,
+   "completionTokens": 642,
+   "usd": 0.00028882,
+   "latencyMs": 9036,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "1283bc28e3d7e5505a1ccbb2b6012f2609d7d94e",
    "model": "deepseek/deepseek-v4-flash",
    "promptTokens": 478,
    "completionTokens": 774,
    "usd": 0.00019916,
    "latencyMs": 6756,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "17115acb3e1ec360b6cae660a3b3c103b7413e52",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 882,
+   "completionTokens": 453,
+   "usd": 0.00025032,
+   "latencyMs": 8536,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "1c305b855fefcb4f9f16716ab1cabe615d0bde41",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1380,
+   "completionTokens": 889,
+   "usd": 0.0004242,
+   "latencyMs": 17093,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -107,6 +177,56 @@
    "variant": 0
   },
   {
+   "requestHash": "3241ccfaacf2b3f3e7ec22194ebb32fb63aec684",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 891,
+   "completionTokens": 704,
+   "usd": 0.00030394,
+   "latencyMs": 9768,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "3250a68e1b987c3ee81dc0ecc5f80a0c692f06d0",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 743,
+   "completionTokens": 659,
+   "usd": 0.00026546,
+   "latencyMs": 13350,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "33b35d49a1fecf8cdc5486b752129f29735b7626",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 929,
+   "completionTokens": 619,
+   "usd": 0.00028546,
+   "latencyMs": 16657,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "3b37012a708a10e7949a024360f5e419d49ec70c",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 723,
+   "completionTokens": 628,
+   "usd": 0.00022165,
+   "latencyMs": 17773,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "48bed3232271767c0368730b4d35800e0997b125",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 916,
+   "completionTokens": 572,
+   "usd": 0.0002025,
+   "latencyMs": 5161,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "4b0b2c48adeeae0790ca10caf62a6697dfaeaa20",
    "model": "deepseek/deepseek-v4-flash",
    "promptTokens": 2376,
@@ -127,6 +247,16 @@
    "variant": 0
   },
   {
+   "requestHash": "4f6615f11db7556e616a2f3aa473c999dec14cbc",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 825,
+   "completionTokens": 496,
+   "usd": 0.00023403,
+   "latencyMs": 10393,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "57b36359a54496cddc29d76b022f401ca6edc8bc",
    "model": "deepseek/deepseek-v4-flash",
    "promptTokens": 2368,
@@ -143,6 +273,16 @@
    "completionTokens": 24,
    "usd": 0.00032508,
    "latencyMs": 1829,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "5bbceebdc22125da6879a0c784a06f5475de7d03",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1290,
+   "completionTokens": 706,
+   "usd": 0.00036036,
+   "latencyMs": 14632,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -177,12 +317,32 @@
    "variant": 0
   },
   {
+   "requestHash": "625533b349c58473ec64e071de693760eb8fbb7d",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 692,
+   "completionTokens": 602,
+   "usd": 0.00026544,
+   "latencyMs": 5274,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "628d8f02587f0f275a7a95fcb6a75d3f6dfc9ff4",
    "model": "deepseek/deepseek-v4-flash",
    "promptTokens": 739,
    "completionTokens": 704,
    "usd": 0.0002877,
    "latencyMs": 5216,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "6379bef6c2b1bceeee6b4eeca009ea84052c7b7b",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 2050,
+   "completionTokens": 1350,
+   "usd": 0.00064708,
+   "latencyMs": 25072,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -217,6 +377,26 @@
    "variant": 0
   },
   {
+   "requestHash": "6e3ceee56df36b0e10f9638b19323012e0823027",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 994,
+   "completionTokens": 633,
+   "usd": 0.00022216,
+   "latencyMs": 6741,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "6ecf26ad026a2f91e6b9ab83f463dc3b6247a614",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 919,
+   "completionTokens": 674,
+   "usd": 0.0002539,
+   "latencyMs": 28212,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "70a403c8b546cb26f45e1c2e12f367bc48d8d92a",
    "model": "deepseek/deepseek-v4-flash",
    "promptTokens": 2372,
@@ -243,6 +423,16 @@
    "completionTokens": 643,
    "usd": 0.00020859,
    "latencyMs": 5777,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "739bf8740ea43bcd61e6b3dd1b5f342091d96f66",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 907,
+   "completionTokens": 642,
+   "usd": 0.00028882,
+   "latencyMs": 13534,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -287,12 +477,42 @@
    "variant": 0
   },
   {
+   "requestHash": "7be9b2fe066dfb2d9c12eaf0115fda9f312dbe4c",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 2050,
+   "completionTokens": 591,
+   "usd": 0.00043456,
+   "latencyMs": 14654,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "7ff770a4e3ebbe17d38a9fd86989e1ac6575d8e8",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1132,
+   "completionTokens": 632,
+   "usd": 0.00023553,
+   "latencyMs": 6066,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "8142f5c786080f128e272e01dfafc237c4d63156",
    "model": "deepseek/deepseek-v4-flash",
    "promptTokens": 2004,
    "completionTokens": 1347,
    "usd": 0.00046181,
    "latencyMs": 11161,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "83cfb3512b1650c1c5610f65ffba4c047c5314fa",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1031,
+   "completionTokens": 625,
+   "usd": 0.00031934,
+   "latencyMs": 19854,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -313,6 +533,16 @@
    "completionTokens": 638,
    "usd": 0.00025313,
    "latencyMs": 4395,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "8f4180f58930976e5edc3a16a08300f698f83590",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1021,
+   "completionTokens": 489,
+   "usd": 0.00026194,
+   "latencyMs": 11928,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -347,12 +577,62 @@
    "variant": 0
   },
   {
+   "requestHash": "96bedc9857672c683845301381770feb5fa0ee05",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 924,
+   "completionTokens": 613,
+   "usd": 0.00028308,
+   "latencyMs": 12569,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "979935c87ff5153216cd4af8918611c1d2a59c97",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1078,
+   "completionTokens": 682,
+   "usd": 0.00032396,
+   "latencyMs": 14878,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "99dc0ee718c95f2dcac2b659f4b7649e87c1e4c3",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1033,
+   "completionTokens": 618,
+   "usd": 0.00029974,
+   "latencyMs": 13756,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "9a147cbcd95c0117e8f85320938740e7d19b8040",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 849,
+   "completionTokens": 604,
+   "usd": 0.00028798,
+   "latencyMs": 29671,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "9f0a1e67c47efb217c17ea7609c51b9ef8d0b30d",
    "model": "deepseek/deepseek-v4-flash",
    "promptTokens": 222,
    "completionTokens": 389,
    "usd": 0.0001288,
    "latencyMs": 7883,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "9f585e156438d7158c1e63ab2d2baf757070274e",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1133,
+   "completionTokens": 794,
+   "usd": 0.00036461,
+   "latencyMs": 6221,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -367,12 +647,152 @@
    "variant": 0
   },
   {
+   "requestHash": "a4ac80ae99e4f5c6145832258f96fd7e2d8a5a50",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1380,
+   "completionTokens": 774,
+   "usd": 0.000392,
+   "latencyMs": 18323,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "a894e6677afc690246751610e7e44cf6d34b44e1",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1147,
+   "completionTokens": 698,
+   "usd": 0.0003381,
+   "latencyMs": 13808,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "a9051142283ede05686ec3726f1e3ce693b83dd0",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 845,
+   "completionTokens": 596,
+   "usd": 0.00028518,
+   "latencyMs": 9335,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "a963ff1e44b225178587b863112521c533fced35",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1122,
+   "completionTokens": 627,
+   "usd": 0.00023356,
+   "latencyMs": 5639,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "aa49b48feaa598463007a5090de2ac2ad0afd26c",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 876,
+   "completionTokens": 674,
+   "usd": 0.00031136,
+   "latencyMs": 5768,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "aac2a8a4a226cc72dfbd70ad62441a7364047f6d",
    "model": "deepseek/deepseek-v4-flash",
    "promptTokens": 339,
    "completionTokens": 400,
    "usd": 0.00015832,
    "latencyMs": 17421,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "b2839217d75d2dc386011f19e148e57ba4fa2b1b",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1033,
+   "completionTokens": 549,
+   "usd": 0.00029834,
+   "latencyMs": 5108,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "b72e7eb2e6e938ebf9bb68ea31f4e5e46bffb92e",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 849,
+   "completionTokens": 534,
+   "usd": 0.00025046,
+   "latencyMs": 7205,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "b84cb5a3c5859feadfe86f5060825e7095c5c7c6",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 732,
+   "completionTokens": 630,
+   "usd": 0.0002231,
+   "latencyMs": 25501,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "c03f823cffd8570aeba8cb341358ee0f90320516",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 951,
+   "completionTokens": 606,
+   "usd": 0.00021262,
+   "latencyMs": 5950,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "c54dff0b2fd645f41cc3a90212b008c173dfc374",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1891,
+   "completionTokens": 1026,
+   "usd": 0.00044162,
+   "latencyMs": 59832,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "c79cd69a73409ccd0d4cde89b6f56645792bd6d4",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 903,
+   "completionTokens": 631,
+   "usd": 0.00028518,
+   "latencyMs": 14972,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "cb806fa1f4360b31245e4bfee59298121f849678",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1153,
+   "completionTokens": 633,
+   "usd": 0.00023779,
+   "latencyMs": 5769,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "cd88617e646416733933a2566b1cbb14fcf2bbfc",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 860,
+   "completionTokens": 680,
+   "usd": 0.00029288,
+   "latencyMs": 17268,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "d02f904bc25826dab7758bde2bbfb93e4c57e3ba",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1471,
+   "completionTokens": 889,
+   "usd": 0.00031938,
+   "latencyMs": 7746,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -407,6 +827,46 @@
    "variant": 0
   },
   {
+   "requestHash": "d38aa64b8bc6d07ffd2c9b30b87e295e88f059d1",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 748,
+   "completionTokens": 717,
+   "usd": 0.00030548,
+   "latencyMs": 19007,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "d5d33cbd1daf8cd0afceb9ead1b80c2868d453f4",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1093,
+   "completionTokens": 614,
+   "usd": 0.00032262,
+   "latencyMs": 37605,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "d8a1589fc281eec7c406097e3475d4898e717b7e",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 902,
+   "completionTokens": 595,
+   "usd": 0.00027496,
+   "latencyMs": 9504,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "dc44cfb612d4131e6a0298fdd98b2e00b33a0c94",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 876,
+   "completionTokens": 691,
+   "usd": 0.00030257,
+   "latencyMs": 4445,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "dd45eeb22cfba84ca3c6f82c885de335a9f3742c",
    "model": "deepseek/deepseek-v4-flash",
    "promptTokens": 698,
@@ -427,6 +887,46 @@
    "variant": 0
   },
   {
+   "requestHash": "de9b7959b99a3b5453220ba73871f3920b69b627",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1033,
+   "completionTokens": 596,
+   "usd": 0.0003115,
+   "latencyMs": 10766,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "e4192657d187d56ceada1c6ddf27f4602a6cba08",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 902,
+   "completionTokens": 584,
+   "usd": 0.00027188,
+   "latencyMs": 12629,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "e5e3da2fbba423921cb070d04d475c1555b0ea95",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 990,
+   "completionTokens": 780,
+   "usd": 0.0003417,
+   "latencyMs": 5483,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "e76a352938d2f655d128aae98abad7379639874a",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1271,
+   "completionTokens": 643,
+   "usd": 0.00025135,
+   "latencyMs": 7127,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "e8f918089ff650c28d8ad29f44128a84486c26f5",
    "model": "deepseek/deepseek-v4-flash",
    "promptTokens": 851,
@@ -437,12 +937,102 @@
    "variant": 0
   },
   {
+   "requestHash": "e91e228aea9f3a24d94fc69b76095c74677fa09d",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1033,
+   "completionTokens": 678,
+   "usd": 0.00033446,
+   "latencyMs": 18712,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "e97e94d883ca67dd8dd357a31d0c19e8a177b9bf",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1078,
+   "completionTokens": 669,
+   "usd": 0.00033824,
+   "latencyMs": 15908,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "ea97b4987f3d646f0e2efd429d080fe899908c64",
    "model": "deepseek/deepseek-v4-flash",
    "promptTokens": 609,
    "completionTokens": 630,
    "usd": 0.00026166,
    "latencyMs": 6256,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "ebbf34840f2eb2c871d1aae44ccae581eb6fb577",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 686,
+   "completionTokens": 527,
+   "usd": 0.00022411,
+   "latencyMs": 11586,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "ec03c8166bedb87f688bf4c79f5a1f4b2a3b4309",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 860,
+   "completionTokens": 603,
+   "usd": 0.00027132,
+   "latencyMs": 10389,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "ec72cfd142e5275bd3ffe6d3ce8feae5207f0f28",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 862,
+   "completionTokens": 644,
+   "usd": 0.000301,
+   "latencyMs": 29853,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "eca50d080551d32b14d54c9b07bd3f64d85edb6d",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1147,
+   "completionTokens": 778,
+   "usd": 0.0003605,
+   "latencyMs": 16224,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "eeb846645bea8dfe2f559545ba927c29ac2785e8",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 825,
+   "completionTokens": 495,
+   "usd": 0.00023618,
+   "latencyMs": 10109,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "f3894cea2c8529b8097c5766bb078bca6d444d48",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 1290,
+   "completionTokens": 703,
+   "usd": 0.00035952,
+   "latencyMs": 13483,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "f3fde3ff9ca441b37aa64decb28280d6a29dae08",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 891,
+   "completionTokens": 564,
+   "usd": 0.00026474,
+   "latencyMs": 11268,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -467,12 +1057,32 @@
    "variant": 0
   },
   {
+   "requestHash": "ff6360822d9ab8b70ecb7205954922644e6a0eab",
+   "model": "deepseek/deepseek-v4-flash",
+   "promptTokens": 929,
+   "completionTokens": 617,
+   "usd": 0.0002849,
+   "latencyMs": 13323,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "002fc36cf1cdd7f60c200aba55cd027bb8478120",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 473,
    "completionTokens": 7,
    "usd": 0.0001918,
    "latencyMs": 911,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "003ba2c435f08f3429115be91b878b8601eafeeb",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 207,
+   "completionTokens": 7,
+   "usd": 0.0002873,
+   "latencyMs": 863,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -527,6 +1137,16 @@
    "variant": 0
   },
   {
+   "requestHash": "015049c084e34be0f618c17380d644ab096302ef",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 262,
+   "completionTokens": 10,
+   "usd": 0.00049068,
+   "latencyMs": 1097,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "017e5af861477e8c21985c2a6c442a577b759644",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 384,
@@ -553,6 +1173,16 @@
    "completionTokens": 6,
    "usd": 0.00011499,
    "latencyMs": 906,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "028ed973c3c8213bb3265be4129c1fc8297a6dda",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 416,
+   "completionTokens": 6,
+   "usd": 0.00032549,
+   "latencyMs": 691,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -667,6 +1297,26 @@
    "variant": 0
   },
   {
+   "requestHash": "05fa468abf2985aa0462a6de39445bbe05e53529",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 379,
+   "completionTokens": 7,
+   "usd": 0.00012032,
+   "latencyMs": 731,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "061ad7c7edc1511d4d291798d1d5bcd3aec7c34e",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 386,
+   "completionTokens": 8,
+   "usd": 0.00012716,
+   "latencyMs": 718,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "067d83311b56ab500e4ab73f7051e21ae1a05aeb",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 306,
@@ -697,6 +1347,16 @@
    "variant": 0
   },
   {
+   "requestHash": "06eb6be1486dbb525456ca9a4d8c5c7df8c98c78",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 317,
+   "completionTokens": 6,
+   "usd": 0.00057246,
+   "latencyMs": 850,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "06ff93b6566829fe92da566224da4f2cff595749",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 411,
@@ -713,6 +1373,26 @@
    "completionTokens": 6,
    "usd": 0.00010739,
    "latencyMs": 917,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "07b3df80e213a4476005b723cb2c02a05f653858",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 415,
+   "completionTokens": 6,
+   "usd": 0.00032473,
+   "latencyMs": 750,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "07d194482dfe9afee3117e1c00d7abda8f44960d",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 329,
+   "completionTokens": 6,
+   "usd": 0.00059334,
+   "latencyMs": 727,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -787,6 +1467,16 @@
    "variant": 0
   },
   {
+   "requestHash": "0b9a0cdda6446edb20884b26f01272c795b29c26",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 393,
+   "completionTokens": 7,
+   "usd": 0.00013096,
+   "latencyMs": 781,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "0bb6c190b049256d5a88a195991d28806eb272f5",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 252,
@@ -803,6 +1493,16 @@
    "completionTokens": 7,
    "usd": 0.00032851,
    "latencyMs": 981,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "0c65eb90329b4f7b9ebb94c20ca46a041ecfabef",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 228,
+   "completionTokens": 7,
+   "usd": 0.00038914,
+   "latencyMs": 1526,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -827,12 +1527,32 @@
    "variant": 0
   },
   {
+   "requestHash": "0d55281eb10b3b9e4ae70d6473a1642ea9fd5e54",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 517,
+   "completionTokens": 7,
+   "usd": 0.00022527,
+   "latencyMs": 1505,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "0d79eab6dab002244cf69a617ec7cf8af932033c",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 212,
    "completionTokens": 7,
    "usd": 0.00039324,
    "latencyMs": 710,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "0d7f16c7e45c005a6caef051dbbf6d490f0d5909",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 214,
+   "completionTokens": 5,
+   "usd": 0.00036019,
+   "latencyMs": 1876,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -877,12 +1597,62 @@
    "variant": 0
   },
   {
+   "requestHash": "0ed7200c71ca2e62c1856a0540e1a85224fa2d77",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 434,
+   "completionTokens": 7,
+   "usd": 0.00062362,
+   "latencyMs": 882,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "0f99a19b17f4d10d0de8cb25b5309e0a836360a8",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 262,
+   "completionTokens": 10,
+   "usd": 0.00049068,
+   "latencyMs": 790,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "0fb95b1f122abded404a4dc6d569f66e0348a57c",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 207,
+   "completionTokens": 7,
+   "usd": 0.00038454,
+   "latencyMs": 762,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "0fdd5e864bc18e1bab528a27dcb9c973b9082011",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 179,
    "completionTokens": 7,
    "usd": 0.00032438,
    "latencyMs": 3252,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "1000bd151cf27d18e866cd455720955821581d2b",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 449,
+   "completionTokens": 6,
+   "usd": 0.00035059,
+   "latencyMs": 883,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "1000c95f8c94fff9cb65ba44a835a45d46359f9d",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 383,
+   "completionTokens": 6,
+   "usd": 0.0003004,
+   "latencyMs": 796,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -917,12 +1687,32 @@
    "variant": 0
   },
   {
+   "requestHash": "10fee58271a0c5f69d91767bec5f8943e472c6ca",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 607,
+   "completionTokens": 6,
+   "usd": 0.00047075,
+   "latencyMs": 752,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "11557a69b5eaa9dae712a37501680d3247c2f583",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 373,
    "completionTokens": 6,
    "usd": 0.00011423,
    "latencyMs": 781,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "11594d9204a816006b83a5059508c07074e795b7",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 261,
+   "completionTokens": 7,
+   "usd": 0.0004785,
+   "latencyMs": 1033,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -1017,6 +1807,16 @@
    "variant": 0
   },
   {
+   "requestHash": "1630907bd649e0973dd67423173a189f1645d34f",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 496,
+   "completionTokens": 7,
+   "usd": 0.00038785,
+   "latencyMs": 747,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "16e04ed33429e1ee2f12b6ae31f4b7735977e743",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 407,
@@ -1067,6 +1867,16 @@
    "variant": 0
   },
   {
+   "requestHash": "1790f311222e902436c6ae464b5a6a91a384c040",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 408,
+   "completionTokens": 7,
+   "usd": 0.00032093,
+   "latencyMs": 844,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "17a2a28d67312939a3497a094fdc4e63c2307802",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 176,
@@ -1083,6 +1893,16 @@
    "completionTokens": 10,
    "usd": 0.000435,
    "latencyMs": 697,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "17c61d8a8556286c59248918569ad553ea79ce16",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 173,
+   "completionTokens": 7,
+   "usd": 0.0002431,
+   "latencyMs": 604,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -1137,12 +1957,42 @@
    "variant": 0
   },
   {
+   "requestHash": "1ac6787799c9467976225182aca692f8ff92e09a",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 218,
+   "completionTokens": 10,
+   "usd": 0.00041412,
+   "latencyMs": 1178,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "1ad35dd978a8e161b9214921eac39cc7a5482d88",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 317,
+   "completionTokens": 7,
+   "usd": 0.00057594,
+   "latencyMs": 2276,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "1c3decd38aa96ca8a401ed5db56e02d42febbd11",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 198,
    "completionTokens": 7,
    "usd": 0.00036888,
    "latencyMs": 856,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "1c5d6c0c2a1fd7f8874ee655bf10f526dcdbe231",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 262,
+   "completionTokens": 7,
+   "usd": 0.0003588,
+   "latencyMs": 672,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -1347,6 +2197,16 @@
    "variant": 0
   },
   {
+   "requestHash": "23610d0eae65268ea54df6883c60309b9f705322",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 415,
+   "completionTokens": 10,
+   "usd": 0.0007569,
+   "latencyMs": 819,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "2381cec03f90cd759d733a711e59697330241c2e",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 181,
@@ -1417,6 +2277,16 @@
    "variant": 0
   },
   {
+   "requestHash": "24be7f82aa13ac489fc781402b3913c617ba4b45",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 218,
+   "completionTokens": 7,
+   "usd": 0.00040368,
+   "latencyMs": 942,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "250dddc1592e5489f5c8857976008f45bddefe3e",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 394,
@@ -1427,12 +2297,72 @@
    "variant": 0
   },
   {
+   "requestHash": "25b68f1bc265e51a1b8baea5a7d94c6291c3c3d5",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 228,
+   "completionTokens": 6,
+   "usd": 0.00039601,
+   "latencyMs": 2197,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "261ef3f86f833778f3ae4fddbaea5f51b07bcf09",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 433,
+   "completionTokens": 7,
+   "usd": 0.00077778,
+   "latencyMs": 767,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "2664731850ed464413bf6abc5fffda6a6c8ce4f3",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 330,
    "completionTokens": 10,
    "usd": 0.000609,
    "latencyMs": 901,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "26c27c2dfd2f1c2bfbec4539fe3fbdde8c5b932d",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 192,
+   "completionTokens": 6,
+   "usd": 0.00035496,
+   "latencyMs": 927,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "27632d76e2e62505c8f2c439d896524a67d8bde7",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 223,
+   "completionTokens": 7,
+   "usd": 0.00041238,
+   "latencyMs": 729,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "279376ea1411e661489781c224fd200d9531837f",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 203,
+   "completionTokens": 7,
+   "usd": 0.0003647,
+   "latencyMs": 4785,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "27c3f0eb12c59f57023bc5e05ec8bd48ecd5bd72",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 444,
+   "completionTokens": 7,
+   "usd": 0.00016975,
+   "latencyMs": 785,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -1453,6 +2383,26 @@
    "completionTokens": 5,
    "usd": 0.00031517,
    "latencyMs": 1033,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "289ab8bbb9fb4658a08c2962f7fe30700438f8cf",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 411,
+   "completionTokens": 7,
+   "usd": 0.00032321,
+   "latencyMs": 932,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "28bf4e861296d265a6e0939385dad7329eb66ce2",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 208,
+   "completionTokens": 7,
+   "usd": 0.00035698,
+   "latencyMs": 2189,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -1627,12 +2577,52 @@
    "variant": 0
   },
   {
+   "requestHash": "2fbdb0d44cbba5092eff2c8b4ffd84335ac01bcd",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 517,
+   "completionTokens": 6,
+   "usd": 0.0004023,
+   "latencyMs": 1360,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "2fd86b4177a01e8276f59b3a626da87aa85c6824",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 406,
    "completionTokens": 6,
    "usd": 0.00013933,
    "latencyMs": 936,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "300092e5472206d80e9be6b1c835d544b05fc78a",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 218,
+   "completionTokens": 7,
+   "usd": 0.00032294,
+   "latencyMs": 564,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "300cc24cf5fd93a0c021da27fae92a387296289c",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 223,
+   "completionTokens": 6,
+   "usd": 0.00038776,
+   "latencyMs": 2266,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "306dc194bfef476aa185ffd7a7138c370d67bf42",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 175,
+   "completionTokens": 6,
+   "usd": 0.0003007,
+   "latencyMs": 1151,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -1797,6 +2787,16 @@
    "variant": 0
   },
   {
+   "requestHash": "36b5b54f88e6841aab5228eca98b730d3172a731",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 495,
+   "completionTokens": 7,
+   "usd": 0.00020853,
+   "latencyMs": 687,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "3743b60f18be4dc7c36df8e074ecbb2142e7f0c5",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 157,
@@ -1827,6 +2827,16 @@
    "variant": 0
   },
   {
+   "requestHash": "38e334b52b990756c6fb2f8244d4b50e92260a83",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 203,
+   "completionTokens": 6,
+   "usd": 0.00035476,
+   "latencyMs": 2571,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "38fc1e8aa4ea47d0e1e3a8a8bbe15686f241d4c4",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 208,
@@ -1853,6 +2863,16 @@
    "completionTokens": 7,
    "usd": 0.00039662,
    "latencyMs": 3039,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "394c8199867bcf7aca958e37bac7d55b81d23e7f",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 223,
+   "completionTokens": 8,
+   "usd": 0.00040168,
+   "latencyMs": 4967,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -1897,6 +2917,16 @@
    "variant": 0
   },
   {
+   "requestHash": "3a25cf312e73b816667fe4b49165abac8f68c97c",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 185,
+   "completionTokens": 7,
+   "usd": 0.00034626,
+   "latencyMs": 1482,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "3a6e3b3454898e3de7482a5dfa4a579a6af2cffe",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 377,
@@ -1907,12 +2937,42 @@
    "variant": 0
   },
   {
+   "requestHash": "3a9cc051ef5f6a0b2fdcf6462b9c88ab5e3d1ba0",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 192,
+   "completionTokens": 5,
+   "usd": 0.00032482,
+   "latencyMs": 1174,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "3ab1440af4412600367c49ea240aa5692e133b00",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 188,
+   "completionTokens": 6,
+   "usd": 0.0002784,
+   "latencyMs": 656,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "3ab3ab81b19314d1471d5d4d887ee9ceb936da0a",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 215,
    "completionTokens": 6,
    "usd": 0.00036502,
    "latencyMs": 974,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "3af44bc327916a18bef00fabcfe04a14e83d3fe8",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 361,
+   "completionTokens": 6,
+   "usd": 0.00028367,
+   "latencyMs": 806,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -1933,6 +2993,16 @@
    "completionTokens": 7,
    "usd": 0.00013248,
    "latencyMs": 964,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "3b88f8015829489b115e5d83f0dd84a1ffcf6bbe",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 185,
+   "completionTokens": 6,
+   "usd": 0.00034278,
+   "latencyMs": 1598,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -1967,6 +3037,16 @@
    "variant": 0
   },
   {
+   "requestHash": "3c61b82fc4328b771b3e3cdfe0ee7ec7d0f352f3",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 219,
+   "completionTokens": 7,
+   "usd": 0.00040542,
+   "latencyMs": 968,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "3c76057d7989857f4f6654842eec787ba9890c1c",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 224,
@@ -1977,12 +3057,42 @@
    "variant": 0
   },
   {
+   "requestHash": "3c8930efe467cc629f61353aaab9ce5ba2c2f370",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 433,
+   "completionTokens": 7,
+   "usd": 0.00077778,
+   "latencyMs": 1189,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "3cae7c37804d865726c6efb5ca2fda39eeae1aa6",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 386,
+   "completionTokens": 7,
+   "usd": 0.00012564,
+   "latencyMs": 811,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "3cb65f45e6e788cb1cd1f27dc679f9006a247070",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 411,
    "completionTokens": 8,
    "usd": 0.00014617,
    "latencyMs": 754,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "3cb99d00789476cc569c6e7c4a008fa6de3ca3c4",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 308,
+   "completionTokens": 7,
+   "usd": 0.0004186,
+   "latencyMs": 675,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -2017,6 +3127,16 @@
    "variant": 0
   },
   {
+   "requestHash": "3da8ec68462ccdea81a26e08f86855fc9a49b9ae",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 318,
+   "completionTokens": 7,
+   "usd": 0.0005579,
+   "latencyMs": 4315,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "3df3acf91426bd4047e0f72de3a24fff3d6e81fd",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 203,
@@ -2033,6 +3153,16 @@
    "completionTokens": 7,
    "usd": 0.00047328,
    "latencyMs": 675,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "3e0e358f255ba9aa91105cd000864c1d682b927b",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 177,
+   "completionTokens": 5,
+   "usd": 0.0003007,
+   "latencyMs": 2156,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -2057,6 +3187,16 @@
    "variant": 0
   },
   {
+   "requestHash": "3e8e0ae9f7c770ac8ea83d79bc8299912b528876",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 188,
+   "completionTokens": 6,
+   "usd": 0.000348,
+   "latencyMs": 778,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "3ea07d3b889a64aa5dc0993619480d9969e70d9a",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 430,
@@ -2073,6 +3213,26 @@
    "completionTokens": 10,
    "usd": 0.0003003,
    "latencyMs": 610,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "3efb8b9802662bfed9de378ff1275357d4ec8640",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 373,
+   "completionTokens": 6,
+   "usd": 0.00029279,
+   "latencyMs": 774,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "3f43a426f50a547fa32afd57ec4316dec2d64d7e",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 393,
+   "completionTokens": 7,
+   "usd": 0.00013096,
+   "latencyMs": 1246,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -2207,6 +3367,16 @@
    "variant": 0
   },
   {
+   "requestHash": "4356c21e29f58a70a3823b884ec489557d405ddc",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 218,
+   "completionTokens": 8,
+   "usd": 0.0003042,
+   "latencyMs": 966,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "4393b48c77c932e3ace4d7699e57fa624801bfa5",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 427,
@@ -2257,6 +3427,16 @@
    "variant": 0
   },
   {
+   "requestHash": "455fd6336fc22eb01f2f806e7e7e1fc14bb6e3d9",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 239,
+   "completionTokens": 7,
+   "usd": 0.00044022,
+   "latencyMs": 738,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "4581fde0e2348ea8dc44e57b119d974900583da5",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 198,
@@ -2287,6 +3467,16 @@
    "variant": 0
   },
   {
+   "requestHash": "45d365aeff2243d6ee7aaec3f534f53139c8ae9f",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 204,
+   "completionTokens": 10,
+   "usd": 0.00038976,
+   "latencyMs": 762,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "45f178642c0c36a34285f4011f1e2b66dabc042b",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 376,
@@ -2297,12 +3487,32 @@
    "variant": 0
   },
   {
+   "requestHash": "472d5da565ca4ccac1904ef5e55abdd04bc91fda",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 203,
+   "completionTokens": 7,
+   "usd": 0.00037758,
+   "latencyMs": 1050,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "477ade3955ff25d08183a195f1b9a7a93d74e02f",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 410,
    "completionTokens": 6,
    "usd": 0.00014237,
    "latencyMs": 1006,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "479a9cea1933ff9b10d81ba99019660d370ad1b8",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 416,
+   "completionTokens": 6,
+   "usd": 0.00032549,
+   "latencyMs": 1231,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -2377,6 +3587,16 @@
    "variant": 0
   },
   {
+   "requestHash": "496b5460a212eb7ecb6b9eec651ec049ffbe4c27",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 213,
+   "completionTokens": 8,
+   "usd": 0.00039846,
+   "latencyMs": 1207,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "4a25950ad2f14a12bafdb46cf4baeab32dca0c98",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 372,
@@ -2407,6 +3627,16 @@
    "variant": 0
   },
   {
+   "requestHash": "4ae3d1bf83f3717e217ca4316c56e1e86084b9aa",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 393,
+   "completionTokens": 7,
+   "usd": 0.00013096,
+   "latencyMs": 912,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "4b754958112ef140d4448bc5049e502d6a0c8c79",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 243,
@@ -2423,6 +3653,16 @@
    "completionTokens": 7,
    "usd": 0.0003042,
    "latencyMs": 849,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "4c0f5c5f72ba238a95985748cfccaace057a480a",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 221,
+   "completionTokens": 7,
+   "usd": 0.0003055,
+   "latencyMs": 1207,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -2447,12 +3687,32 @@
    "variant": 0
   },
   {
+   "requestHash": "4c5553be2ce280a5013070444a1448c04e191558",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 223,
+   "completionTokens": 8,
+   "usd": 0.00041586,
+   "latencyMs": 804,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "4c5677a1e03164be84e70051bc796a855df4fafc",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 176,
    "completionTokens": 6,
    "usd": 0.00032712,
    "latencyMs": 4122,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "4cebf954f59a4ca3ede6ebb59d815eda20120d61",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 205,
+   "completionTokens": 7,
+   "usd": 0.0002847,
+   "latencyMs": 678,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -2467,6 +3727,16 @@
    "variant": 0
   },
   {
+   "requestHash": "4d3f81aa9d67c474e0f3989cb280424062bc0414",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 506,
+   "completionTokens": 6,
+   "usd": 0.00039394,
+   "latencyMs": 782,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "4dbfa157dabbed217e00c5c18e76d24a71826f1e",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 193,
@@ -2477,12 +3747,32 @@
    "variant": 0
   },
   {
+   "requestHash": "4df301005c5d9c500f0f2cdc3bd01d4dd5edcb48",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 395,
+   "completionTokens": 7,
+   "usd": 0.00013248,
+   "latencyMs": 705,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "4ebcd8713b29a43ff38d5875e9d441ab46b8f60e",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 357,
    "completionTokens": 6,
    "usd": 0.00010206,
    "latencyMs": 1046,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "4f5fe86dcb1c1ee34221c03c9d52fa8c65bf9d95",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 469,
+   "completionTokens": 7,
+   "usd": 0.00018876,
+   "latencyMs": 742,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -2577,6 +3867,16 @@
    "variant": 0
   },
   {
+   "requestHash": "532a6f83d45c9d59ee3c97709f891db9e8f88004",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 251,
+   "completionTokens": 10,
+   "usd": 0.00037723,
+   "latencyMs": 4647,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "539926cecfcb20933e49625af85aad5f119733d7",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 382,
@@ -2593,6 +3893,16 @@
    "completionTokens": 7,
    "usd": 0.00012108,
    "latencyMs": 857,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "54ddef58108539bb41c6af5630bff3aeb630e378",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 607,
+   "completionTokens": 6,
+   "usd": 0.00029219,
+   "latencyMs": 718,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -2627,6 +3937,16 @@
    "variant": 0
   },
   {
+   "requestHash": "55ea407f7e13c61e057c20064a10c4ca68035d10",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 189,
+   "completionTokens": 6,
+   "usd": 0.0002613,
+   "latencyMs": 596,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "56dcbb32dea3508a8052dc0d91c1ee853bc233c3",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 186,
@@ -2643,6 +3963,16 @@
    "completionTokens": 7,
    "usd": 0.00041238,
    "latencyMs": 672,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "5738470e47aeb6c05daa925b2a4e332fe53d3555",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 281,
+   "completionTokens": 7,
+   "usd": 0.00049574,
+   "latencyMs": 3401,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -2717,6 +4047,26 @@
    "variant": 0
   },
   {
+   "requestHash": "5a1a4d60cf1e2af4320613fb6a4422693a1dd761",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 395,
+   "completionTokens": 7,
+   "usd": 0.00013248,
+   "latencyMs": 733,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "5a46ee572ffaf86e8b9a69161a9aae0cbada259d",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 405,
+   "completionTokens": 6,
+   "usd": 0.00031713,
+   "latencyMs": 693,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "5a90782a5515d9218130fcf167b7266467ffbc77",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 198,
@@ -2767,6 +4117,16 @@
    "variant": 0
   },
   {
+   "requestHash": "5dd4a4a4cbcb2e2433c06568cc689f3fa60dfc52",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 452,
+   "completionTokens": 7,
+   "usd": 0.00017583,
+   "latencyMs": 884,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "5df5f20e3062c2bc5fbde1c0a4003b398336f3e7",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 174,
@@ -2797,6 +4157,16 @@
    "variant": 0
   },
   {
+   "requestHash": "5e9cafe3a95fda85a1a2e2277801b1c4016d5724",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 205,
+   "completionTokens": 7,
+   "usd": 0.00036806,
+   "latencyMs": 3104,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "5eb9d2dc8950eb8d3896e97ee40ebf6745426289",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 393,
@@ -2823,6 +4193,26 @@
    "completionTokens": 6,
    "usd": 0.00011195,
    "latencyMs": 709,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "60003aedc35fed90d271f1c95af0722eed243bd1",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 177,
+   "completionTokens": 8,
+   "usd": 0.00026866,
+   "latencyMs": 1860,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "60dccf54bfc7d391f70de6fd922a6f3c949efd48",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 389,
+   "completionTokens": 6,
+   "usd": 0.00030496,
+   "latencyMs": 800,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -2887,6 +4277,16 @@
    "variant": 0
   },
   {
+   "requestHash": "6214cd7f1cfc2b753d88dcdf76ed85acb8414d63",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 406,
+   "completionTokens": 7,
+   "usd": 0.00014085,
+   "latencyMs": 749,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "6251986730d5836bcb18720f7fc37da1fbc4a0d8",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 437,
@@ -2903,6 +4303,16 @@
    "completionTokens": 7,
    "usd": 0.0001553,
    "latencyMs": 751,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "627c421c8f7cf26f9d64c839cf704aac9c096b39",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 204,
+   "completionTokens": 7,
+   "usd": 0.00037932,
+   "latencyMs": 928,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -2947,12 +4357,42 @@
    "variant": 0
   },
   {
+   "requestHash": "648631749615aed460dabf397ab9fdd12714fbb0",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 205,
+   "completionTokens": 7,
+   "usd": 0.00030485,
+   "latencyMs": 614,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "64b62a8a9eaecb8a272f482f968ad327d5b583ee",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 149,
    "completionTokens": 6,
    "usd": 0.00022411,
    "latencyMs": 502,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "64da650da48d82ab1b55233b5954a7d69bde122a",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 239,
+   "completionTokens": 8,
+   "usd": 0.00035496,
+   "latencyMs": 950,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "64fbd0eb4a141763da650b8656f4bdadc7215d80",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 427,
+   "completionTokens": 7,
+   "usd": 0.00015682,
+   "latencyMs": 827,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -2977,12 +4417,32 @@
    "variant": 0
   },
   {
+   "requestHash": "668faf92151333d69699aa9727080b61017fd771",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 444,
+   "completionTokens": 6,
+   "usd": 0.00016823,
+   "latencyMs": 1169,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "66baf9817d65629dc13fa3ef2da3ad7aa93d8d39",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 394,
    "completionTokens": 7,
    "usd": 0.00013172,
    "latencyMs": 994,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "677a1661fbfc259105b3739d35fc3aa02ec2423d",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 251,
+   "completionTokens": 7,
+   "usd": 0.0003445,
+   "latencyMs": 695,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -3013,6 +4473,36 @@
    "completionTokens": 6,
    "usd": 0.00011956,
    "latencyMs": 810,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "67c25a6103aad009ff5c397d0d7755ba22a593d2",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 372,
+   "completionTokens": 7,
+   "usd": 0.00011499,
+   "latencyMs": 752,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "68b03d57b37d7d4f152bc259e9d70a7ee1b0ebf8",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 262,
+   "completionTokens": 10,
+   "usd": 0.00049068,
+   "latencyMs": 628,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "68ecefbf0f02a01963619c19a07c54391ced608a",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 186,
+   "completionTokens": 6,
+   "usd": 0.00027562,
+   "latencyMs": 547,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -3077,6 +4567,16 @@
    "variant": 0
   },
   {
+   "requestHash": "6b614ad9033a7e05ba8a69a77bc35fc4191d765a",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 194,
+   "completionTokens": 7,
+   "usd": 0.00036192,
+   "latencyMs": 895,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "6c11bf351a336d5e0e6156341d8e67a9f758afa4",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 201,
@@ -3117,12 +4617,42 @@
    "variant": 0
   },
   {
+   "requestHash": "6cf4d79bee9933f0267345887f10b4027ff56be1",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 402,
+   "completionTokens": 7,
+   "usd": 0.00013781,
+   "latencyMs": 858,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "6d0b71a00d475cd53a6870bb6fd18fa3a180f3fc",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 200,
    "completionTokens": 10,
    "usd": 0.0003828,
    "latencyMs": 1011,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "6d75a60e2800f0ff18978781401c460cf8aa989b",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 185,
+   "completionTokens": 8,
+   "usd": 0.00027979,
+   "latencyMs": 842,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "6da29e943819ba99b9cf30697cf20cdff70a8c8f",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 620,
+   "completionTokens": 6,
+   "usd": 0.00048064,
+   "latencyMs": 784,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -3147,6 +4677,36 @@
    "variant": 0
   },
   {
+   "requestHash": "6e0e0d7f1c00331cbdf1dc15c4b9108e6dd6faad",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 361,
+   "completionTokens": 6,
+   "usd": 0.00010511,
+   "latencyMs": 1213,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "6eaf2c2d4b890b8bcc9212fc763a9ce9b25c8954",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 406,
+   "completionTokens": 6,
+   "usd": 0.00031789,
+   "latencyMs": 908,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "6f3c1d09cb98f5a51e76dc8833895a28d6306749",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 395,
+   "completionTokens": 7,
+   "usd": 0.00013248,
+   "latencyMs": 1163,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "6fa1a4fc94b50c9fb402d3210040c9894d609575",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 365,
@@ -3157,12 +4717,32 @@
    "variant": 0
   },
   {
+   "requestHash": "6fb5f61eac63845073f3355f9e571eab5a3c17fd",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 496,
+   "completionTokens": 7,
+   "usd": 0.00038785,
+   "latencyMs": 823,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "6fbe09fbd645b34d57fb0ff3749faaad93e775da",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 185,
    "completionTokens": 6,
    "usd": 0.00031678,
    "latencyMs": 1118,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "6fd70b7a8c61853655b4ddaf04c58614254099c6",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 442,
+   "completionTokens": 6,
+   "usd": 0.00016671,
+   "latencyMs": 995,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -3217,6 +4797,16 @@
    "variant": 0
   },
   {
+   "requestHash": "7244607df83d7da54a8eb0d1c59ba9871670ef2e",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 410,
+   "completionTokens": 6,
+   "usd": 0.00032093,
+   "latencyMs": 945,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "739146f9b64c852798530cc72b936e91f4957ffb",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 256,
@@ -3237,12 +4827,32 @@
    "variant": 0
   },
   {
+   "requestHash": "73ea8c240b3cdeafa9724ad4f8c0919ef08c2c78",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 375,
+   "completionTokens": 7,
+   "usd": 0.00011727,
+   "latencyMs": 739,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "747ce56b3924063ce20b3b459bc01328ac20db8f",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 380,
    "completionTokens": 6,
    "usd": 0.00011956,
    "latencyMs": 858,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "748d7ec3ebe6d39dd3faa9b27533bd3f4f78b219",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 198,
+   "completionTokens": 7,
+   "usd": 0.0002951,
+   "latencyMs": 512,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -3287,12 +4897,32 @@
    "variant": 0
   },
   {
+   "requestHash": "76d98ec04d1f7c37f293165956e6dc12c5789d0d",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 216,
+   "completionTokens": 8,
+   "usd": 0.0003016,
+   "latencyMs": 1855,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "76f222a42cbc1f731ac0723d000b63a137336dcc",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 235,
    "completionTokens": 7,
    "usd": 0.0003237,
    "latencyMs": 1865,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "771e950cddc354f08c74be74f3343b5c716450a1",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 393,
+   "completionTokens": 6,
+   "usd": 0.000308,
+   "latencyMs": 1586,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -3357,6 +4987,16 @@
    "variant": 0
   },
   {
+   "requestHash": "780ce67f890417473794182169f5620c0fdde1cf",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 372,
+   "completionTokens": 6,
+   "usd": 0.00029203,
+   "latencyMs": 1178,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "78da4925418ced45109df5cd0639d33acbf8d60f",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 218,
@@ -3397,12 +5037,32 @@
    "variant": 0
   },
   {
+   "requestHash": "79f4f6da64188cdebb8c4657b08677b2b3d56421",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 504,
+   "completionTokens": 7,
+   "usd": 0.00021538,
+   "latencyMs": 832,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "7a1e1bc3470be5838db2c6d458be6deb17c38f6c",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 207,
    "completionTokens": 7,
    "usd": 0.00038454,
    "latencyMs": 2333,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "7a2da5df6e2b53b95460548b622fe43125633942",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 386,
+   "completionTokens": 6,
+   "usd": 0.00030268,
+   "latencyMs": 763,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -3423,6 +5083,16 @@
    "completionTokens": 7,
    "usd": 0.00030624,
    "latencyMs": 1237,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "7aa07f5a50b5d1b2d883accdf2a57485b0775a40",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 377,
+   "completionTokens": 6,
+   "usd": 0.00011727,
+   "latencyMs": 836,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -3457,6 +5127,16 @@
    "variant": 0
   },
   {
+   "requestHash": "7c3f490a2e0195bd143c55dd27a7d5234b7d11af",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 395,
+   "completionTokens": 6,
+   "usd": 0.00030952,
+   "latencyMs": 938,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "7d5d82e86c5b1af0adaefcb423f2e0c5f520e769",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 228,
@@ -3473,6 +5153,16 @@
    "completionTokens": 7,
    "usd": 0.00013172,
    "latencyMs": 695,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "7fb6bf95fb08ccba944b9f90c03392282f26b87d",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 262,
+   "completionTokens": 7,
+   "usd": 0.0003588,
+   "latencyMs": 859,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -3523,6 +5213,26 @@
    "completionTokens": 8,
    "usd": 0.00013477,
    "latencyMs": 2021,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "81a7e5596db8f73a8c788f65301e1192bb6e20b4",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 190,
+   "completionTokens": 6,
+   "usd": 0.00028118,
+   "latencyMs": 701,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "81b0b3393bef036a4cf898ade29b1b5006826bb1",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 184,
+   "completionTokens": 6,
+   "usd": 0.00027283,
+   "latencyMs": 538,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -3607,6 +5317,16 @@
    "variant": 0
   },
   {
+   "requestHash": "840039a33c129b20cce7ea92976d3bf5dba10fd2",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 186,
+   "completionTokens": 6,
+   "usd": 0.00034452,
+   "latencyMs": 663,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "84647231a513e9cab50874860bdb157be019d7b9",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 382,
@@ -3657,6 +5377,26 @@
    "variant": 0
   },
   {
+   "requestHash": "86a45cc7eebab0d1c74ef0c1de4b4892f5c13b61",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 207,
+   "completionTokens": 10,
+   "usd": 0.00039498,
+   "latencyMs": 601,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "86b341c3d54d290717610eaf9be9e3f56a81e44c",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 376,
+   "completionTokens": 6,
+   "usd": 0.00011651,
+   "latencyMs": 1013,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "86c684fa68e9c2241c940e7804975bfb5acd10db",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 179,
@@ -3673,6 +5413,26 @@
    "completionTokens": 7,
    "usd": 0.0001226,
    "latencyMs": 726,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "8776662e76836df458cb67e36d9fa62d4d8bf8b7",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 496,
+   "completionTokens": 7,
+   "usd": 0.00038785,
+   "latencyMs": 755,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "87d58ffa7d70124837038fb9c2e39df3eb5ea06b",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 395,
+   "completionTokens": 7,
+   "usd": 0.00013248,
+   "latencyMs": 677,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -3703,6 +5463,16 @@
    "completionTokens": 7,
    "usd": 0.00016595,
    "latencyMs": 816,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "8a0cbb5f102b7261f11668c0efa8584b11ac569e",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 405,
+   "completionTokens": 7,
+   "usd": 0.00031865,
+   "latencyMs": 789,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -3777,12 +5547,32 @@
    "variant": 0
   },
   {
+   "requestHash": "8c79e52715b7376b94ed92d734d02de94448a86c",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 427,
+   "completionTokens": 6,
+   "usd": 0.00033386,
+   "latencyMs": 803,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "8d248ccd622ee735c19dca8e50ff3b450bb29057",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 191,
    "completionTokens": 5,
    "usd": 0.00032321,
    "latencyMs": 4132,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "8d4162d84fc420d4a142cf246731abdf0119f554",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 381,
+   "completionTokens": 7,
+   "usd": 0.0003004,
+   "latencyMs": 740,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -3867,6 +5657,16 @@
    "variant": 0
   },
   {
+   "requestHash": "8fb7bec61b9286777259a43328452d48ef5ced6d",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 196,
+   "completionTokens": 7,
+   "usd": 0.00033768,
+   "latencyMs": 1586,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "8fbfb0285382d7dd6b29a6564c6e96d49732741c",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 252,
@@ -3893,6 +5693,16 @@
    "completionTokens": 8,
    "usd": 0.000247,
    "latencyMs": 663,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "90e6bf8f0f14ff27f55194f5b1b0cb99829a3d8b",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 228,
+   "completionTokens": 8,
+   "usd": 0.00041008,
+   "latencyMs": 3419,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -3937,12 +5747,42 @@
    "variant": 0
   },
   {
+   "requestHash": "924ff9db434bc9b215d88fba6e3dd5f7e0b572d6",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 380,
+   "completionTokens": 6,
+   "usd": 0.00011956,
+   "latencyMs": 841,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "938d8f87b434d3fdc027b739f4fb29a75bc91696",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 329,
+   "completionTokens": 7,
+   "usd": 0.0004459,
+   "latencyMs": 2007,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "93bf53b37a72b54912da0468fc822651edfa05bc",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 396,
    "completionTokens": 7,
    "usd": 0.00013324,
    "latencyMs": 859,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "94e017257140745100cb1513bfba2967644414e6",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 450,
+   "completionTokens": 6,
+   "usd": 0.00017279,
+   "latencyMs": 681,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -4007,6 +5847,16 @@
    "variant": 0
   },
   {
+   "requestHash": "973dd4040262207f281e22bfa1fa49b283967f21",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 446,
+   "completionTokens": 7,
+   "usd": 0.00034983,
+   "latencyMs": 950,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "975d08933cf155df820936b396181d50a6fb1571",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 222,
@@ -4027,6 +5877,16 @@
    "variant": 0
   },
   {
+   "requestHash": "9797422415300e1e64a6b4d739b4ca66a44f4bf2",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 316,
+   "completionTokens": 7,
+   "usd": 0.0005742,
+   "latencyMs": 714,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "97c00bb6b4f421caeb9e2b5ed24205f118f9c60e",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 384,
@@ -4043,6 +5903,26 @@
    "completionTokens": 8,
    "usd": 0.00011651,
    "latencyMs": 801,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "97f8143e4b2548502b152798f8f996527c3daa6b",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 218,
+   "completionTokens": 6,
+   "usd": 0.0004002,
+   "latencyMs": 616,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "98032053664dda8409f2d37719ee264a0972e3a2",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 307,
+   "completionTokens": 7,
+   "usd": 0.0004173,
+   "latencyMs": 1484,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -4083,6 +5963,16 @@
    "completionTokens": 7,
    "usd": 0.00032434,
    "latencyMs": 639,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "9a6048bda6f93c22fcca3a8c635a4b1949c534e6",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 195,
+   "completionTokens": 6,
+   "usd": 0.00034788,
+   "latencyMs": 4958,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -4147,6 +6037,26 @@
    "variant": 0
   },
   {
+   "requestHash": "9d6df77d3eebe27020ebf435b40ed02b6c66946d",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 400,
+   "completionTokens": 7,
+   "usd": 0.00013629,
+   "latencyMs": 844,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "9daf59d3304b00f9b107999f5982878fa3029ed3",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 281,
+   "completionTokens": 8,
+   "usd": 0.00041342,
+   "latencyMs": 2040,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "9dd42e7d6d2fc80d9ef200d6a4c8ed49078d2234",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 389,
@@ -4177,6 +6087,16 @@
    "variant": 0
   },
   {
+   "requestHash": "9e797605c2c64a0e77b23b4ae17d2ac7355a1d41",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 221,
+   "completionTokens": 7,
+   "usd": 0.0004089,
+   "latencyMs": 1118,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "9e999fb673d8163182bc133adcc844a7845a3994",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 180,
@@ -4193,6 +6113,16 @@
    "completionTokens": 6,
    "usd": 0.00010663,
    "latencyMs": 1042,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "a01d470b8289713fd398853b7e9f6ebe4962e13b",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 310,
+   "completionTokens": 6,
+   "usd": 0.00051778,
+   "latencyMs": 1190,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -4237,6 +6167,16 @@
    "variant": 0
   },
   {
+   "requestHash": "a32192486ebb73d23685e0e1c4e77f6630c9c31b",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 516,
+   "completionTokens": 8,
+   "usd": 0.00022603,
+   "latencyMs": 937,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "a35a79d5c625337c0e526a3fec6dc2a0d89894ac",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 413,
@@ -4277,6 +6217,16 @@
    "variant": 0
   },
   {
+   "requestHash": "a440dd622d93d520124e733eadd238de83120d46",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 611,
+   "completionTokens": 6,
+   "usd": 0.00047379,
+   "latencyMs": 719,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "a455a457bc4417564e7a4d6f0fc76b69a3e190cc",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 239,
@@ -4293,6 +6243,36 @@
    "completionTokens": 8,
    "usd": 0.00011956,
    "latencyMs": 744,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "a47ca2995856b561d4043b85bf533cdf7c315701",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 434,
+   "completionTokens": 7,
+   "usd": 0.00077952,
+   "latencyMs": 720,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "a4a29415723bfe753cf4b4e353b4974c46312e22",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 392,
+   "completionTokens": 7,
+   "usd": 0.00030876,
+   "latencyMs": 1155,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "a4b7e3a3e1475d1cdd6a37097a2a17b902acc88e",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 405,
+   "completionTokens": 6,
+   "usd": 0.00031713,
+   "latencyMs": 734,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -4323,6 +6303,16 @@
    "completionTokens": 7,
    "usd": 0.00013248,
    "latencyMs": 839,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "a580e4af4378a877b06f0a396501102cad0d12e0",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 239,
+   "completionTokens": 7,
+   "usd": 0.00044022,
+   "latencyMs": 820,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -4373,6 +6363,26 @@
    "completionTokens": 6,
    "usd": 0.00038753,
    "latencyMs": 1530,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "a6bd5f24896069050f373a15710e3dea5d3b3785",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 392,
+   "completionTokens": 7,
+   "usd": 0.00030876,
+   "latencyMs": 790,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "a6d8c78c86f77e5cee9800d07b8080f0bc20a270",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 195,
+   "completionTokens": 7,
+   "usd": 0.00036366,
+   "latencyMs": 1016,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -4437,12 +6447,42 @@
    "variant": 0
   },
   {
+   "requestHash": "a9c065df07668247dcc27de20f561fccef5e1aa5",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 399,
+   "completionTokens": 6,
+   "usd": 0.00031257,
+   "latencyMs": 814,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "ab077a93e880f99a36053c0006a85d8fee3d455f",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 208,
    "completionTokens": 7,
    "usd": 0.00038628,
    "latencyMs": 1165,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "ab1388db1a6be90d0bb064707a854992df70d8a3",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 218,
+   "completionTokens": 7,
+   "usd": 0.00040368,
+   "latencyMs": 844,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "ab26239dc5faa22eac04fed9d4d6daa2ef277f34",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 281,
+   "completionTokens": 7,
+   "usd": 0.00041064,
+   "latencyMs": 1376,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -4547,6 +6587,16 @@
    "variant": 0
   },
   {
+   "requestHash": "ae7dedeb024709d8da66f3707c489a036b300346",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 225,
+   "completionTokens": 8,
+   "usd": 0.00041934,
+   "latencyMs": 795,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "aede2086704469a65bb8b2d6d33ca6433dd384e4",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 191,
@@ -4567,6 +6617,16 @@
    "variant": 0
   },
   {
+   "requestHash": "af9ed8fb0cc5f7884a37f0107e9c18160f331df2",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 391,
+   "completionTokens": 6,
+   "usd": 0.00030648,
+   "latencyMs": 1281,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "b09b39a516cedcdfb4b8fa272579afb13fc1b2e8",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 219,
@@ -4583,6 +6643,16 @@
    "completionTokens": 7,
    "usd": 0.00014085,
    "latencyMs": 765,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "b11650132e9f1b8f4918ed0488527813f2ad0d79",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 450,
+   "completionTokens": 7,
+   "usd": 0.00017431,
+   "latencyMs": 859,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -4657,6 +6727,26 @@
    "variant": 0
   },
   {
+   "requestHash": "b36129bde3da95a6ae8862d4e25992f2f464e97e",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 399,
+   "completionTokens": 7,
+   "usd": 0.00013553,
+   "latencyMs": 673,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "b3beee3128e4ce20787247de5bbc3c661e92ab33",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 379,
+   "completionTokens": 7,
+   "usd": 0.00029888,
+   "latencyMs": 1052,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "b3fb3646d59b87bcd081ee69c63ef6890219746b",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 348,
@@ -4697,6 +6787,16 @@
    "variant": 0
   },
   {
+   "requestHash": "b507b1439add6e41bcf9deeac2b20e003591e928",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 207,
+   "completionTokens": 6,
+   "usd": 0.00035215,
+   "latencyMs": 927,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "b568d9f543b78743ee8704b0f4903121d2a54a51",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 241,
@@ -4707,12 +6807,32 @@
    "variant": 0
   },
   {
+   "requestHash": "b5a11e7fbce0c9d1e8fa9f54b1c5882181110d9e",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 201,
+   "completionTokens": 7,
+   "usd": 0.0002795,
+   "latencyMs": 1003,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "b5a19357d6eca8f6267bc092ec306762d958888d",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 207,
    "completionTokens": 7,
    "usd": 0.00038454,
    "latencyMs": 864,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "b5ba65be18aeae4c0eef73aaef0346d1af2e3387",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 406,
+   "completionTokens": 7,
+   "usd": 0.00014085,
+   "latencyMs": 3771,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -4797,6 +6917,16 @@
    "variant": 0
   },
   {
+   "requestHash": "b8c351f3d9767d680f03c28374a3337de02f802d",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 408,
+   "completionTokens": 7,
+   "usd": 0.00014237,
+   "latencyMs": 1639,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "b959c2e3b42de0bbe3ac6cf161ea71fc76fa0c8e",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 169,
@@ -4827,12 +6957,32 @@
    "variant": 0
   },
   {
+   "requestHash": "ba6f4960bcb17aba442b6ac823c29bc828461c3a",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 220,
+   "completionTokens": 7,
+   "usd": 0.00040716,
+   "latencyMs": 4813,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "ba739f01c7ebd0c3d18620f8d6cf7476921b3f2e",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 406,
    "completionTokens": 7,
    "usd": 0.00014085,
    "latencyMs": 792,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "bb18ad86743c3963d64dab5f53944c48cdf38418",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 217,
+   "completionTokens": 6,
+   "usd": 0.00039846,
+   "latencyMs": 1481,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -4883,6 +7033,16 @@
    "completionTokens": 7,
    "usd": 0.00035844,
    "latencyMs": 685,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "bdbb4ff42b8ae7b1a5f27b2724bad7ed0979b37d",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 407,
+   "completionTokens": 6,
+   "usd": 0.00031865,
+   "latencyMs": 1111,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -5067,6 +7227,16 @@
    "variant": 0
   },
   {
+   "requestHash": "c473f8ca203995a9bd9a9c3d1ed83c20dec5f8f5",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 450,
+   "completionTokens": 7,
+   "usd": 0.00017431,
+   "latencyMs": 873,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "c4e04110c109f7f78332fec9f4af289aa102caa0",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 186,
@@ -5093,6 +7263,16 @@
    "completionTokens": 6,
    "usd": 0.00010587,
    "latencyMs": 1147,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "c57b65eb1f91be3102695365097d3c1005b40096",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 205,
+   "completionTokens": 7,
+   "usd": 0.00038106,
+   "latencyMs": 4378,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -5137,6 +7317,16 @@
    "variant": 0
   },
   {
+   "requestHash": "c6f94f4e38891b5371c36f379efea204fac71272",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 256,
+   "completionTokens": 6,
+   "usd": 0.00043094,
+   "latencyMs": 1079,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "c74803d1878d3036a5871ce5340a9ead0b007a25",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 283,
@@ -5163,6 +7353,16 @@
    "completionTokens": 7,
    "usd": 0.00026,
    "latencyMs": 622,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "c83bfb8f389ee162bbcf89d0733b004e1a97928b",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 228,
+   "completionTokens": 8,
+   "usd": 0.00042456,
+   "latencyMs": 2954,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -5267,6 +7467,16 @@
    "variant": 0
   },
   {
+   "requestHash": "cc2d9acfac273720b8439d1b431fc18d8c71344c",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 194,
+   "completionTokens": 6,
+   "usd": 0.00035844,
+   "latencyMs": 1244,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "cc344b5aafac496ea61d12a30c9dd2290828b9bd",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 415,
@@ -5327,6 +7537,16 @@
    "variant": 0
   },
   {
+   "requestHash": "ceea5d52e73521cf23c7f5a53013ec04dc170dae",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 391,
+   "completionTokens": 7,
+   "usd": 0.00012944,
+   "latencyMs": 1033,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "cf345d8c814dab6648f344ed77e70184fe3e3428",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 249,
@@ -5357,6 +7577,16 @@
    "variant": 0
   },
   {
+   "requestHash": "cfdf0691fe0ba35ba7a09b89d7860dcfba7a85ef",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 209,
+   "completionTokens": 6,
+   "usd": 0.00036466,
+   "latencyMs": 2213,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "d05c0df36db2bd21b2699fd24356bf8572181f93",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 394,
@@ -5373,6 +7603,16 @@
    "completionTokens": 9,
    "usd": 0.00037466,
    "latencyMs": 1055,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "d0b43b644310b8ae801e4bae8aad3286fdfd9355",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 224,
+   "completionTokens": 6,
+   "usd": 0.00037949,
+   "latencyMs": 1759,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -5417,6 +7657,16 @@
    "variant": 0
   },
   {
+   "requestHash": "d33186655f3d45d52d738ee88d2387b404e7d159",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 220,
+   "completionTokens": 7,
+   "usd": 0.00040716,
+   "latencyMs": 757,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "d337567577e0a21eb0944a3586329afe7f6ad432",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 188,
@@ -5443,6 +7693,26 @@
    "completionTokens": 7,
    "usd": 0.00038976,
    "latencyMs": 879,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "d4736712e69c6182045eec389ae2ba02a17819c4",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 393,
+   "completionTokens": 6,
+   "usd": 0.000308,
+   "latencyMs": 930,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "d4eab0241c9997717d0312e1e3331b25e41cc091",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 432,
+   "completionTokens": 7,
+   "usd": 0.00062083,
+   "latencyMs": 594,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -5537,12 +7807,32 @@
    "variant": 0
   },
   {
+   "requestHash": "d75f635f87830c09210c06972cfe49d9e8d533fb",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 386,
+   "completionTokens": 7,
+   "usd": 0.00012564,
+   "latencyMs": 1060,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "d7a1776ff79fa6116ee99750bf2299feb94d987d",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 594,
    "completionTokens": 6,
    "usd": 0.0002823,
    "latencyMs": 998,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "d7f1259100b99d5710776f44997a9db0efc9a922",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 401,
+   "completionTokens": 7,
+   "usd": 0.00031561,
+   "latencyMs": 1340,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -5647,6 +7937,46 @@
    "variant": 0
   },
   {
+   "requestHash": "dd05bb78c9599163426422d3a5db4bd04b937d59",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 204,
+   "completionTokens": 10,
+   "usd": 0.00038976,
+   "latencyMs": 692,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "dd0e94fd4da5fd22f4a89512dfbfdc5dda455977",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 362,
+   "completionTokens": 7,
+   "usd": 0.00010739,
+   "latencyMs": 857,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "dda7f2005ae4c4c346801182d7f79a12ceae0bdd",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 203,
+   "completionTokens": 7,
+   "usd": 0.00034894,
+   "latencyMs": 4379,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "ddc35783ad1b72bf65d6cb4098d533e9f53f8a58",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 308,
+   "completionTokens": 7,
+   "usd": 0.0005411,
+   "latencyMs": 3282,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "ddd4b4e467631689ec4f19d014d228a05be71c4b",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 354,
@@ -5687,12 +8017,42 @@
    "variant": 0
   },
   {
+   "requestHash": "dfbc236b7a9188bfc2c75bc90ff49389e0617e04",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 184,
+   "completionTokens": 6,
+   "usd": 0.00034104,
+   "latencyMs": 857,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "dfefd509733b389744a4585f723f1f8781bd1a2b",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 372,
    "completionTokens": 6,
    "usd": 0.00011347,
    "latencyMs": 749,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "e00236962810b2ecb5a58063395844b967979bdf",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 496,
+   "completionTokens": 6,
+   "usd": 0.00020777,
+   "latencyMs": 842,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "e0211d39708a6976bbeb72a94829ce1849d7e34e",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 221,
+   "completionTokens": 6,
+   "usd": 0.00039156,
+   "latencyMs": 3833,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -5787,6 +8147,26 @@
    "variant": 0
   },
   {
+   "requestHash": "e2e80ad160a80f97c6864b26c53f3c47655796ad",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 252,
+   "completionTokens": 10,
+   "usd": 0.00037862,
+   "latencyMs": 3961,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "e524a6eb5e03e038c5af32af2b6fcfa6a1cb1e30",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 218,
+   "completionTokens": 6,
+   "usd": 0.0004002,
+   "latencyMs": 765,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "e5aa4f60c6491434c1aad26a75d851ea4c6f9723",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 285,
@@ -5807,6 +8187,16 @@
    "variant": 0
   },
   {
+   "requestHash": "e6a0f3e8051a4e8dfe40181687409c55b805c95c",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 405,
+   "completionTokens": 7,
+   "usd": 0.00031865,
+   "latencyMs": 797,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "e6b42293663f0b477d72d9e894777368770dd4f1",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 229,
@@ -5817,12 +8207,32 @@
    "variant": 0
   },
   {
+   "requestHash": "e6cd7892723ca1b5bdc0d07b084771605ef5ff57",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 380,
+   "completionTokens": 6,
+   "usd": 0.00029812,
+   "latencyMs": 991,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "e7908d92e21f408d9e768dbae720a5b3497b87ed",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 396,
    "completionTokens": 7,
    "usd": 0.00013324,
    "latencyMs": 804,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "e8216abae4e79181ec5829ce4200575fa2ee43bd",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 187,
+   "completionTokens": 6,
+   "usd": 0.00031999,
+   "latencyMs": 1392,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -5847,12 +8257,52 @@
    "variant": 0
   },
   {
+   "requestHash": "e878290faf1382b98afb6b058abd2cc09e659cc7",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 440,
+   "completionTokens": 6,
+   "usd": 0.00016519,
+   "latencyMs": 1678,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "e89b4312bc861e75ae772075d822f89b2f02b6f5",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 194,
+   "completionTokens": 5,
+   "usd": 0.00032803,
+   "latencyMs": 2141,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "e8f0c97a1334afc158214c172a6679ec916c35ec",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 516,
+   "completionTokens": 7,
+   "usd": 0.00040306,
+   "latencyMs": 787,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "e9e71c50e7a16b19eec758373fb8766501fc27c3",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 218,
    "completionTokens": 7,
    "usd": 0.00040368,
    "latencyMs": 674,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "ea59b97cccf4898c55f03ec82dfeb88e600abf40",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 405,
+   "completionTokens": 6,
+   "usd": 0.00031713,
+   "latencyMs": 713,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -5877,12 +8327,32 @@
    "variant": 0
   },
   {
+   "requestHash": "ec0caa0a4f3725edcfd55bed30784cf9541cb425",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 204,
+   "completionTokens": 7,
+   "usd": 0.00036638,
+   "latencyMs": 3163,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "ec414ae5731ce401397f456eaf666e95d0b9eb9a",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 377,
    "completionTokens": 6,
    "usd": 0.00011727,
    "latencyMs": 773,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "ecf0947b856ec72ee50f6903ac38757518c36fda",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 207,
+   "completionTokens": 6,
+   "usd": 0.00035215,
+   "latencyMs": 1130,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -5897,12 +8367,42 @@
    "variant": 0
   },
   {
+   "requestHash": "ed84a217209dd7928209868fc665312801dab139",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 415,
+   "completionTokens": 6,
+   "usd": 0.00032473,
+   "latencyMs": 1001,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "edbbefb956ffc5d2d898a21d48420b5ec99b426e",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 206,
    "completionTokens": 8,
    "usd": 0.0002886,
    "latencyMs": 1057,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "edbef3523beb4af9d8823ba019cf523e07417a2d",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 373,
+   "completionTokens": 7,
+   "usd": 0.00029431,
+   "latencyMs": 737,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "ee0c7e44ed3a222eb8c3b0b424ad735a68c23060",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 209,
+   "completionTokens": 8,
+   "usd": 0.0003915,
+   "latencyMs": 1049,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -5967,12 +8467,42 @@
    "variant": 0
   },
   {
+   "requestHash": "f07af339e400374214a004ba9fa886e053af39b6",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 603,
+   "completionTokens": 6,
+   "usd": 0.00046771,
+   "latencyMs": 1032,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "f0a18163ef11b819b37ef141f187cf4dbfea5ac7",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 188,
    "completionTokens": 6,
    "usd": 0.00026,
    "latencyMs": 749,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "f0a4a1bb22b08893d5d16db9fccf1740cb070b80",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 198,
+   "completionTokens": 7,
+   "usd": 0.0002756,
+   "latencyMs": 1090,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "f1e4d8aafd8fb0cb9f3d1157d0e9cf94d8e80951",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 285,
+   "completionTokens": 7,
+   "usd": 0.00048079,
+   "latencyMs": 1971,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -6017,12 +8547,32 @@
    "variant": 0
   },
   {
+   "requestHash": "f42d3841c3c0d73337328bb8613593138c706292",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 393,
+   "completionTokens": 7,
+   "usd": 0.00013096,
+   "latencyMs": 1022,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "f44db7f838db194df705c4d8a3235824fa4ea3bc",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 427,
    "completionTokens": 7,
    "usd": 0.00015682,
    "latencyMs": 688,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "f4b65504bd0ccfce391fcccdbcb311169c018e9b",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 209,
+   "completionTokens": 9,
+   "usd": 0.00036502,
+   "latencyMs": 1086,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -6037,12 +8587,32 @@
    "variant": 0
   },
   {
+   "requestHash": "f4f7011b99ca4c8fc4b948fde2ff87f59eba39cd",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 220,
+   "completionTokens": 5,
+   "usd": 0.00036984,
+   "latencyMs": 2942,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "f508e21bcf929cd619061e869433a0f56063ce7a",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 200,
    "completionTokens": 6,
    "usd": 0.00035628,
    "latencyMs": 4263,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "f57072c06d6d87ecded00c0e1801614e5b4dd606",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 209,
+   "completionTokens": 8,
+   "usd": 0.0003915,
+   "latencyMs": 828,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -6067,6 +8637,16 @@
    "variant": 0
   },
   {
+   "requestHash": "f6789198daba9bb0bd10a900e3a1ba994799a124",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 195,
+   "completionTokens": 6,
+   "usd": 0.00036018,
+   "latencyMs": 715,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "f689ea597338fe9af2c75626962ecb8b723699eb",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 384,
@@ -6083,6 +8663,16 @@
    "completionTokens": 7,
    "usd": 0.00047502,
    "latencyMs": 1592,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "f6adf3dab6b816ce9810a330cad6af6560d15a65",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 363,
+   "completionTokens": 6,
+   "usd": 0.00028519,
+   "latencyMs": 893,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -6107,12 +8697,32 @@
    "variant": 0
   },
   {
+   "requestHash": "f84a1bc8075b924bf76cff15b34c2edd8e1c902a",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 611,
+   "completionTokens": 6,
+   "usd": 0.00029523,
+   "latencyMs": 803,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "f84cb395ceab19f96ed7e77d32a742fc24b6cb9b",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 409,
    "completionTokens": 7,
    "usd": 0.00014313,
    "latencyMs": 706,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "f85682480819e04e640ea992ff51ffe2a76a2479",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 375,
+   "completionTokens": 6,
+   "usd": 0.00029431,
+   "latencyMs": 689,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -6137,6 +8747,16 @@
    "variant": 0
   },
   {
+   "requestHash": "f9dd9024d23852cd4a122858e2edc5c7bd184c4c",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 188,
+   "completionTokens": 6,
+   "usd": 0.00026,
+   "latencyMs": 980,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "fa0199dfb62ebdca0ab9a54828c2285f24d44d36",
    "model": "deepseek/deepseek-v4-pro",
    "promptTokens": 441,
@@ -6153,6 +8773,16 @@
    "completionTokens": 6,
    "usd": 0.00033108,
    "latencyMs": 3048,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "fb67ce191d74534d327c9349d3adbbf6595d3c71",
+   "model": "deepseek/deepseek-v4-pro",
+   "promptTokens": 188,
+   "completionTokens": 8,
+   "usd": 0.00034288,
+   "latencyMs": 3022,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -6677,6 +9307,16 @@
    "variant": 0
   },
   {
+   "requestHash": "01c66dbb56ca0aa856916c80d6dfd953c55f4b54",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 957,
+   "completionTokens": 682,
+   "usd": 0.00126225,
+   "latencyMs": 2394,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "0ba9106bf8bcdda257000e857f53ca6bf1e8b2ab",
    "model": "google/gemini-3.1-flash-lite",
    "promptTokens": 635,
@@ -6687,12 +9327,32 @@
    "variant": 0
   },
   {
+   "requestHash": "10fc3c0b0a223d25b2a5a84f4169260365e77793",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 804,
+   "completionTokens": 677,
+   "usd": 0.0012165,
+   "latencyMs": 2149,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "1103df77a8c788ef36283f3fed975eac75703f30",
    "model": "google/gemini-3.1-flash-lite",
    "promptTokens": 2382,
    "completionTokens": 51,
    "usd": 0.000672,
    "latencyMs": 1231,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "11e46c98700d5ad6e6758e9f101df8122a658389",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1445,
+   "completionTokens": 768,
+   "usd": 0.00151325,
+   "latencyMs": 2501,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -6713,6 +9373,26 @@
    "completionTokens": 832,
    "usd": 0.00148775,
    "latencyMs": 2738,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "1b56835c3e37f7e124425706e2f0adf4fa806b7d",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1135,
+   "completionTokens": 764,
+   "usd": 0.00142975,
+   "latencyMs": 2660,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "1b8c280750b57f36acd673ba5c402aaa85c770f5",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1228,
+   "completionTokens": 785,
+   "usd": 0.0014845,
+   "latencyMs": 4460,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -6757,6 +9437,16 @@
    "variant": 0
   },
   {
+   "requestHash": "2b20fc29d14d881a60e32332ff5af1b1ad5b3542",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1417,
+   "completionTokens": 981,
+   "usd": 0.00182575,
+   "latencyMs": 3243,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "2d5bc6dcfda5a9fcddb58e8882451e0917ef6c12",
    "model": "google/gemini-3.1-flash-lite",
    "promptTokens": 847,
@@ -6777,12 +9467,32 @@
    "variant": 0
   },
   {
+   "requestHash": "302534b6f3c25757fbd6e9fdfc70dfa8e17818da",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1103,
+   "completionTokens": 735,
+   "usd": 0.00137825,
+   "latencyMs": 2084,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "31ec8aa82370f789f34889a19bcbf4903daa462e",
    "model": "google/gemini-3.1-flash-lite",
    "promptTokens": 844,
    "completionTokens": 771,
    "usd": 0.0013675,
    "latencyMs": 2887,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "35a680d41dfb7086beafad4cdeea78f3eedbaab4",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 955,
+   "completionTokens": 761,
+   "usd": 0.00138025,
+   "latencyMs": 4813,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -6797,6 +9507,16 @@
    "variant": 0
   },
   {
+   "requestHash": "3841393d28fdfc1e50b736da2b69c668bd731c3f",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1024,
+   "completionTokens": 633,
+   "usd": 0.0012055,
+   "latencyMs": 2127,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "3b64c11d3aef3f18ab50404026dadd7e437be9d7",
    "model": "google/gemini-3.1-flash-lite",
    "promptTokens": 597,
@@ -6807,12 +9527,172 @@
    "variant": 0
   },
   {
+   "requestHash": "3cd7c7ad1cadfc834159753dda734339301a4634",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 981,
+   "completionTokens": 771,
+   "usd": 0.00140175,
+   "latencyMs": 2736,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "3d89f8d41d45afbf7198e52b20993f880e854b0e",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 746,
+   "completionTokens": 653,
+   "usd": 0.001166,
+   "latencyMs": 2257,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "44766ea514bffd27dab48b6f4bd838ddb95adbc5",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1101,
+   "completionTokens": 741,
+   "usd": 0.00138675,
+   "latencyMs": 2493,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "45dd610ae3b8e3ff9f70c02cc3cdec47e19c80d0",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1798,
+   "completionTokens": 1335,
+   "usd": 0.002452,
+   "latencyMs": 3981,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "46b130f92d840fa364bdf00e7a8f253d7ad5a7f6",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 903,
+   "completionTokens": 651,
+   "usd": 0.00120225,
+   "latencyMs": 2169,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "477009474b90929542464400cf21b4a1aaae59e6",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1553,
+   "completionTokens": 696,
+   "usd": 0.00143225,
+   "latencyMs": 2200,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "4ec3fd90d8f2a6aea46e2049ae5255f249bbd2c2",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1138,
+   "completionTokens": 764,
+   "usd": 0.0014305,
+   "latencyMs": 2490,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "528c032e7455fd6e789617cf5b729a1dfa089bc2",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1387,
+   "completionTokens": 758,
+   "usd": 0.00148375,
+   "latencyMs": 2764,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "5488e1f286360535db881664ee1e82924d47c69d",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 802,
+   "completionTokens": 741,
+   "usd": 0.001312,
+   "latencyMs": 2285,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "54af6d5476a8ef95f022758117282a87db15ca32",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1066,
+   "completionTokens": 689,
+   "usd": 0.0013,
+   "latencyMs": 2099,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "56ec0aedd77a0ba560c08fa61d27c86ac94d4a40",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1273,
+   "completionTokens": 770,
+   "usd": 0.00147325,
+   "latencyMs": 2940,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "586c31bd72cf25533197f5f648f85890358302e9",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1059,
+   "completionTokens": 690,
+   "usd": 0.00129975,
+   "latencyMs": 2397,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "59ce503514484a952d3fd20e7ba352449ec9ca54",
    "model": "google/gemini-3.1-flash-lite",
    "promptTokens": 2244,
    "completionTokens": 36,
    "usd": 0.000615,
    "latencyMs": 724,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "5a8e9916766bdb204e159cdb0d7a45f117465149",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1074,
+   "completionTokens": 723,
+   "usd": 0.001353,
+   "latencyMs": 2572,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "5b2e47f61e3a982f848ec4b5f40661384511e59a",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 2122,
+   "completionTokens": 1448,
+   "usd": 0.0027025,
+   "latencyMs": 4544,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "5b423f22192cb804661cc78178004cf98605f914",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 968,
+   "completionTokens": 776,
+   "usd": 0.001406,
+   "latencyMs": 2563,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "5e1256a050c4f5f153fc3dff6730a45ff2bcc80f",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1283,
+   "completionTokens": 764,
+   "usd": 0.00146675,
+   "latencyMs": 2632,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -6847,6 +9727,26 @@
    "variant": 0
   },
   {
+   "requestHash": "6ecc110d1eedb74ce60f3ad4a230b581ab5c616b",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 944,
+   "completionTokens": 743,
+   "usd": 0.0013505,
+   "latencyMs": 2550,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "6ed14248eb83fe04714dceec69162178833773e7",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1107,
+   "completionTokens": 734,
+   "usd": 0.00137775,
+   "latencyMs": 2187,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "6ee148d0fd5dbfeeca9bf8229ec26f6411d2413e",
    "model": "google/gemini-3.1-flash-lite",
    "promptTokens": 2383,
@@ -6857,12 +9757,112 @@
    "variant": 0
   },
   {
+   "requestHash": "6f1957c3094f77756176225eeeb6e83194de149e",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1218,
+   "completionTokens": 714,
+   "usd": 0.0013755,
+   "latencyMs": 2246,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "7933320d2b682cff33ded88feb04531514c90528",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 719,
+   "completionTokens": 634,
+   "usd": 0.00113075,
+   "latencyMs": 1993,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "797d72ed8c455acfc0c34d19d0cca14b3283daad",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1070,
+   "completionTokens": 715,
+   "usd": 0.00134,
+   "latencyMs": 2320,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "85e885c3abc14b6532cbe7db36bb820f7b901575",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1223,
+   "completionTokens": 793,
+   "usd": 0.00149525,
+   "latencyMs": 2392,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "863fe1c0c4cc73f3736bad4f4f5b6aec26d42d91",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 959,
+   "completionTokens": 763,
+   "usd": 0.00138425,
+   "latencyMs": 2320,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "865b215cdf1ffcaeef0233e77dfffd00ffc2032a",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1207,
+   "completionTokens": 712,
+   "usd": 0.00136975,
+   "latencyMs": 2125,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "873e5e2f4b4a89bfa59622340092b390df08640d",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1239,
+   "completionTokens": 757,
+   "usd": 0.00144525,
+   "latencyMs": 2600,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "89be272454d11a018cb5e60d6fdf34e31bb4d774",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1259,
+   "completionTokens": 749,
+   "usd": 0.00143825,
+   "latencyMs": 2425,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "8bccd7fb5806698ee7abd9784fbb865ea52f9acc",
    "model": "google/gemini-3.1-flash-lite",
    "promptTokens": 344,
    "completionTokens": 487,
    "usd": 0.0008165,
    "latencyMs": 3039,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "8cc1cc20a262a6baff306863bd58ad7a0c437986",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1345,
+   "completionTokens": 806,
+   "usd": 0.00154525,
+   "latencyMs": 2532,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "8ceaa249e1ad3f7818e85fd7f303fa96a452d78c",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 981,
+   "completionTokens": 745,
+   "usd": 0.00136275,
+   "latencyMs": 4848,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -6887,12 +9887,122 @@
    "variant": 0
   },
   {
+   "requestHash": "90a0c822355b891e94de73f7c45d21885c5a9138",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1260,
+   "completionTokens": 764,
+   "usd": 0.001461,
+   "latencyMs": 2473,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "91ae91058bb4da0c8ec343a2eb553a5a14276a9f",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1234,
+   "completionTokens": 723,
+   "usd": 0.001393,
+   "latencyMs": 2512,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "9295c2897a248c9926842e6585caa759391badfa",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1082,
+   "completionTokens": 785,
+   "usd": 0.001448,
+   "latencyMs": 3520,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "93485ba9903d74f9fc9ea927580cc2448fd72a0f",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1405,
+   "completionTokens": 917,
+   "usd": 0.00172675,
+   "latencyMs": 2849,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "9977bbee8f311b2f7492c350b40fc1163f601545",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1197,
+   "completionTokens": 738,
+   "usd": 0.00140625,
+   "latencyMs": 2694,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "9a82b370cb73214f11fe41b30d5e2f4712048436",
    "model": "google/gemini-3.1-flash-lite",
    "promptTokens": 841,
    "completionTokens": 772,
    "usd": 0.00136825,
    "latencyMs": 3813,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "9fb4f7f202ab4323c32a828b867dbf9a3d4732d9",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1141,
+   "completionTokens": 732,
+   "usd": 0.00138325,
+   "latencyMs": 2394,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "a018bcf98d6c19b903a045a14140e16f1c8af1f9",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1297,
+   "completionTokens": 789,
+   "usd": 0.00150775,
+   "latencyMs": 2684,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "a2eb329e2120ba5411d96d68ffdaafbf42459809",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 2103,
+   "completionTokens": 813,
+   "usd": 0.00174525,
+   "latencyMs": 2633,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "a43b28a27a3f49a2fd1b0aa68a396ed5096d05e8",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 954,
+   "completionTokens": 782,
+   "usd": 0.0014115,
+   "latencyMs": 3266,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "a54f4efdc98d64ac26eab188cbda0050e832ddcb",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1311,
+   "completionTokens": 960,
+   "usd": 0.00176775,
+   "latencyMs": 3219,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "a59b2c20c09524a78ad88602ddb701e4011ce261",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 929,
+   "completionTokens": 712,
+   "usd": 0.00130025,
+   "latencyMs": 2129,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -6917,6 +10027,16 @@
    "variant": 0
   },
   {
+   "requestHash": "ac8b88e23dcf4767929f3188821ce2d9d03289b3",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1111,
+   "completionTokens": 753,
+   "usd": 0.00140725,
+   "latencyMs": 2447,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "aebf6de1ba2c0b1ef741702984a4a094b95e1e8e",
    "model": "google/gemini-3.1-flash-lite",
    "promptTokens": 252,
@@ -6933,6 +10053,16 @@
    "completionTokens": 48,
    "usd": 0.00063125,
    "latencyMs": 1283,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "b1902aac6d84cd5ecdc22d0f02bdc799e814f7ea",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 795,
+   "completionTokens": 719,
+   "usd": 0.00127725,
+   "latencyMs": 2700,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -6957,6 +10087,26 @@
    "variant": 0
   },
   {
+   "requestHash": "b780798d3f254a19e396f5738b0abbf67314fa71",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1075,
+   "completionTokens": 773,
+   "usd": 0.00142825,
+   "latencyMs": 2411,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "ba7586b6b834bd80b393f71a58c8cc9c7c481124",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1105,
+   "completionTokens": 715,
+   "usd": 0.00134875,
+   "latencyMs": 2203,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "ba8e20703379f04f14a1eac3882678b9fa0e4429",
    "model": "google/gemini-3.1-flash-lite",
    "promptTokens": 2240,
@@ -6973,6 +10123,16 @@
    "completionTokens": 907,
    "usd": 0.00161125,
    "latencyMs": 2733,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "bd0a30faf38792e2338cd6f393aba045101e290f",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1289,
+   "completionTokens": 701,
+   "usd": 0.00137375,
+   "latencyMs": 5052,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -7007,12 +10167,32 @@
    "variant": 0
   },
   {
+   "requestHash": "ca4df24c56fdf5ac5b8ab2d6a00ec357c89ead4a",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1071,
+   "completionTokens": 789,
+   "usd": 0.00145125,
+   "latencyMs": 3176,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "d16c8352d1b976722e8efe353f3b123a23555619",
    "model": "google/gemini-3.1-flash-lite",
    "promptTokens": 765,
    "completionTokens": 689,
    "usd": 0.00122475,
    "latencyMs": 2697,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "d3f17b68017679f5e126e12393a702229dec916d",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 734,
+   "completionTokens": 694,
+   "usd": 0.0012245,
+   "latencyMs": 2150,
    "schemaOkFirst": true,
    "variant": 0
   },
@@ -7057,6 +10237,16 @@
    "variant": 0
   },
   {
+   "requestHash": "d8abc8f7a32ed3ab98f08808f801c61b0f90449b",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1125,
+   "completionTokens": 770,
+   "usd": 0.00143625,
+   "latencyMs": 2912,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
    "requestHash": "df31bdf37e785201c94bc5c2c824b34a0c598dd6",
    "model": "google/gemini-3.1-flash-lite",
    "promptTokens": 2237,
@@ -7083,6 +10273,46 @@
    "completionTokens": 776,
    "usd": 0.00137175,
    "latencyMs": 4143,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "e47919a0659412f717d7bbfeb23dd4dcaad882bc",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 918,
+   "completionTokens": 779,
+   "usd": 0.001398,
+   "latencyMs": 2399,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "e4cd63979f509e514e47f2180f8f79b706ed807d",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1221,
+   "completionTokens": 801,
+   "usd": 0.00150675,
+   "latencyMs": 4718,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "ebb29058bac10ab370e4abff3854116cddf30b4c",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 913,
+   "completionTokens": 714,
+   "usd": 0.00129925,
+   "latencyMs": 2327,
+   "schemaOkFirst": true,
+   "variant": 0
+  },
+  {
+   "requestHash": "f4ae585fa99fd4fe4996c8a64e1ab45ebe6559d9",
+   "model": "google/gemini-3.1-flash-lite",
+   "promptTokens": 1222,
+   "completionTokens": 722,
+   "usd": 0.0013885,
+   "latencyMs": 4119,
    "schemaOkFirst": true,
    "variant": 0
   },
