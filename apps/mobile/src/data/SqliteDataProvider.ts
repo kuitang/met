@@ -54,7 +54,7 @@ import {
 } from '@met/shared/search';
 
 import type { DataProvider, MetObject, MuseumEntry, Room, RoomKind, Route } from './provider';
-import { BUILTIN_MET_ENTRY } from './provider';
+import { BUILTIN_MET_ENTRY, MET_SITE_IDS, parseRoomId, scopedRoomId } from './provider';
 import type { MetDb } from './sqlite';
 
 const SEARCH_ALL_LIMIT = 200; // All Results page cap
@@ -94,7 +94,11 @@ function toMetObject(r: ObjectRow): MetObject {
     date: r.period,
     medium: r.medium,
     accession: r.accession,
-    gallery: r.galleryNumber,
+    // Site-scoped ROOM ID (bare for Met) — every consumer (getGallery,
+    // objectsInGallery, the /?focus= grammar) treats `gallery` as a room key,
+    // and bare codes are ambiguous across museums. Display code comes from
+    // room lookups, never from this field.
+    gallery: r.galleryNumber ? scopedRoomId(r.site, r.galleryNumber) : r.galleryNumber,
     dept: r.classification,
     credit: '',
     isHighlight: r.isHighlight === 1,
@@ -299,9 +303,12 @@ export class SqliteDataProvider implements DataProvider {
       viewBoxBySite.set(site, sg.viewBox);
       for (const shapes of sg.shapesByFloor.values()) {
         for (const s of shapes) {
+          // Keyed per site: room codes collide across museums with geometry
+          // (Met "711" vs Louvre "711").
           if (s.kind === 'gallery') {
-            if (!bboxByGallery.has(s.id)) bboxByGallery.set(s.id, s.bbox);
-            if (s.closed) closedGalleries.add(s.id);
+            const key = `${site}|${s.id}`;
+            if (!bboxByGallery.has(key)) bboxByGallery.set(key, s.bbox);
+            if (s.closed) closedGalleries.add(key);
           } else if (s.kind === 'amenity') {
             placeShapes.set(s.id, { site, shape: s });
           }
@@ -318,16 +325,19 @@ export class SqliteDataProvider implements DataProvider {
     const galleryRooms: Room[] = [];
     for (const g of galleryRows) {
       const [cx, cy] = project(g.site, g.centroidLat, g.centroidLon);
+      const siteKey = `${g.site}|${g.galleryNumber}`;
       const room: Room = {
-        id: g.galleryNumber,
+        // Site-scoped id ("{site}:{code}") for non-Met sites; bare Met codes
+        // keep deep links/route URLs/e2e stable — see provider.scopedRoomId.
+        id: scopedRoomId(g.site, g.galleryNumber),
         name: g.title ?? `Gallery ${g.galleryNumber}`,
         floor: floorNumber(g.floor),
         kind: 'gallery',
-        rect: bboxByGallery.get(g.galleryNumber) ?? [cx - 6, cy - 5, 12, 10],
+        rect: bboxByGallery.get(siteKey) ?? [cx - 6, cy - 5, 12, 10],
         site: g.site as Room['site'],
         // Living Map closed flag (nightly snapshot): the sheet shows the
         // room but offers no DIRECTIONS / I'M HERE for inaccessible rooms.
-        ...(closedGalleries.has(g.galleryNumber) ? { closed: true } : null),
+        ...(closedGalleries.has(siteKey) ? { closed: true } : null),
       };
       rooms.set(room.id, room);
       galleryRooms.push(room);
@@ -499,9 +509,14 @@ export class SqliteDataProvider implements DataProvider {
   }
 
   searchGalleries(query: string, limit = 4): Room[] {
-    // galleryRooms carry id = galleryNumber and name = gallery title.
+    // Match on the BARE room code (digit queries type "241", never "aic:241");
+    // room ids stay site-scoped for everything downstream.
     return matchGalleries(
-      this.galleryRooms.map((room) => ({ galleryNumber: room.id, title: room.name, room })),
+      this.galleryRooms.map((room) => ({
+        galleryNumber: parseRoomId(room.id).galleryNumber,
+        title: room.name,
+        room,
+      })),
       query,
       limit,
     ).map((hit) => hit.room);
@@ -517,30 +532,49 @@ export class SqliteDataProvider implements DataProvider {
 
   /** Capped display list in GALLERY_ORDER — counts/positions come from the
    *  full-ordering primitives below, never from this list's length/indices. */
+  /**
+   * Room-id → SQL scope. Scoped ids ("aic:241") pin the site; BARE Met ids
+   * still need a site pin on multi-museum artifacts ("241" is also an AIC
+   * code) — Met codes are unique across its two sites, so `site IN (met
+   * sites)` is exact. Pre-v2 single-museum artifacts skip the clause.
+   */
+  private galleryScope(galleryId: string): { where: string; params: Array<string> } {
+    const { site, galleryNumber } = parseRoomId(galleryId);
+    if (site) return { where: 'galleryNumber = ? AND site = ?', params: [galleryNumber, site] };
+    if (!this.hasMuseumColumn) return { where: 'galleryNumber = ?', params: [galleryNumber] };
+    const metSites = [...MET_SITE_IDS];
+    return {
+      where: `galleryNumber = ? AND site IN (${metSites.map(() => '?').join(',')})`,
+      params: [galleryNumber, ...metSites],
+    };
+  }
+
   objectsInGallery(galleryId: string): MetObject[] {
+    const s = this.galleryScope(galleryId);
     return this.met
       .allSync<ObjectRow>(
-        `SELECT ${this.objectCols} FROM objects WHERE galleryNumber = ?
+        `SELECT ${this.objectCols} FROM objects WHERE ${s.where}
          ORDER BY ${GALLERY_ORDER} LIMIT ?`,
-        [galleryId, GALLERY_OBJECTS_LIMIT],
+        [...s.params, GALLERY_OBJECTS_LIMIT],
       )
       .map(toMetObject);
   }
 
   galleryObjectCount(galleryId: string): number {
+    const s = this.galleryScope(galleryId);
     return this.met.allSync<{ c: number }>(
-      'SELECT COUNT(*) AS c FROM objects WHERE galleryNumber = ?',
-      [galleryId],
+      `SELECT COUNT(*) AS c FROM objects WHERE ${s.where}`,
+      s.params,
     )[0].c;
   }
 
   objectGalleryPosition(objectID: number): { position: number; total: number } | undefined {
-    const q = buildGalleryPositionQuery(objectID);
+    const q = buildGalleryPositionQuery(objectID, { scopeByMuseum: this.hasMuseumColumn });
     return this.met.allSync<{ position: number; total: number }>(q.sql, q.params)[0];
   }
 
   galleryNeighbors(objectID: number): { prevObjectID: number; nextObjectID: number } | undefined {
-    const q = buildGalleryNeighborsQuery(objectID);
+    const q = buildGalleryNeighborsQuery(objectID, { scopeByMuseum: this.hasMuseumColumn });
     return this.met.allSync<{ prevObjectID: number; nextObjectID: number }>(q.sql, q.params)[0];
   }
 
@@ -569,9 +603,16 @@ export class SqliteDataProvider implements DataProvider {
 
   // --- routing -------------------------------------------------------------------
 
-  /** Room id → shared/routing endpoint ref (gallery number or node id). */
+  /** Room id → shared/routing endpoint ref (site-scoped gallery key or node id). */
   private endpointRef(id: string): string | null {
-    if (this.graph.byGallery.has(id)) return id;
+    // Gallery rooms resolve through the SITE-SCOPED byGallery key — bare
+    // codes are ambiguous once two museums have graphs (Met/Louvre "711").
+    const room = this.rooms.get(id);
+    if (room?.site) {
+      const scoped = `${room.site}|${parseRoomId(id).galleryNumber}`;
+      if (this.graph.byGallery.has(scoped)) return scoped;
+    }
+    if (this.graph.byGallery.has(id)) return id; // legacy bare fallback
     const viaAmenity = this.amenityNode.get(id);
     if (viaAmenity) return viaAmenity;
     if (this.graph.nodeById.has(id)) return id;
@@ -586,7 +627,8 @@ export class SqliteDataProvider implements DataProvider {
 
   private stepRoom(s: SharedRouteStep): Room {
     if (s.gallery) {
-      const room = this.rooms.get(s.gallery);
+      const nodeSite = this.graph.nodeById.get(s.nodeId)?.site;
+      const room = this.rooms.get(scopedRoomId(nodeSite, s.gallery));
       if (room) return room;
     }
     const site = this.graph.nodeById.get(s.nodeId)?.site ?? 'fifthAve';

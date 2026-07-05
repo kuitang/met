@@ -67,6 +67,28 @@ export function objectMuseumId(o: { museum?: string }): string {
   return o.museum ?? BUILTIN_MET_ENTRY.id;
 }
 
+// --- room identity ----------------------------------------------------------
+// Room codes COLLIDE across museums (102 codes as of the 6-museum artifact:
+// "241" is a Met gallery and an AIC gallery; "711" is Met and Louvre). Room
+// ids are therefore site-scoped — "{site}:{code}" — for every non-Met site.
+// Met sites keep BARE codes: they predate multi-museum and live in deep links
+// (/?focus=131), route URLs (/?nav=131:822) and the e2e suites; within the
+// Met the pair (fifthAve, cloisters) never shares a code (canonicalized at
+// build). Registry site ids never contain ":".
+
+// Literal (not derived from BUILTIN_MET_ENTRY, which is declared later in
+// this module) — the pair is frozen; a unit test asserts they stay in sync.
+export const MET_SITE_IDS: ReadonlySet<string> = new Set(['fifthAve', 'cloisters']);
+
+export function scopedRoomId(site: string | undefined, galleryNumber: string): string {
+  return !site || MET_SITE_IDS.has(site) ? galleryNumber : `${site}:${galleryNumber}`;
+}
+
+export function parseRoomId(id: string): { site?: string; galleryNumber: string } {
+  const i = id.indexOf(':');
+  return i === -1 ? { galleryNumber: id } : { site: id.slice(0, i), galleryNumber: id.slice(i + 1) };
+}
+
 /** All site ids belonging to a museum entry, for room/object site membership checks. */
 export function museumSiteIds(museum: MuseumEntry): Set<string> {
   return new Set(museum.sites.map((s) => s.siteId));

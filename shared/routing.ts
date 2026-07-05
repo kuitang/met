@@ -114,9 +114,16 @@ export function buildRouteGraph(
   const byGallery = new Map<string, string[]>();
   for (const n of nodes) {
     if (!n.gallery) continue;
-    let list = byGallery.get(n.gallery);
-    if (!list) byGallery.set(n.gallery, (list = []));
-    list.push(n.id);
+    // Two keys per node: the site-scoped "{site}|{gallery}" (exact — room
+    // codes collide across museums once two of them have graphs) and the
+    // legacy bare code (kept for existing callers/tests; benign even when
+    // ambiguous — museums are disconnected components, so multi-source
+    // Dijkstra only ever completes within the endpoint's own building).
+    for (const key of [`${n.site}|${n.gallery}`, n.gallery]) {
+      let list = byGallery.get(key);
+      if (!list) byGallery.set(key, (list = []));
+      list.push(n.id);
+    }
   }
   return { nodeById, adjacency, doorBearing, galleryTitle, byGallery };
 }
