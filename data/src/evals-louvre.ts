@@ -67,14 +67,18 @@ function main(): void {
     fs.readFileSync(path.join(SNAP, "graph.json"), "utf8"),
   );
   const meta = JSON.parse(fs.readFileSync(path.join(SNAP, "geometry-meta.json"), "utf8"));
-  // shared/routing.ts rows carry nullable fields; snapshot omits them
+  // shared/routing.ts rows carry nullable fields; the snapshot omits them.
   const nodes: GraphNode[] = graph.nodes.map((n) => ({
-    gallery: null,
-    kind: null,
-    name: null,
     ...n,
+    gallery: n.gallery ?? null,
+    kind: n.kind ?? null,
+    name: n.name ?? null,
   }));
-  const edges: GraphEdge[] = graph.edges.map((e) => ({ bearing: null, room: null, ...e }));
+  const edges: GraphEdge[] = graph.edges.map((e) => ({
+    ...e,
+    bearing: e.bearing ?? null,
+    room: e.room ?? null,
+  }));
 
   const body: string[] = [];
   let status: Status = "PASS";
