@@ -62,9 +62,21 @@ async function dragHandle(page: Page, dy: number) {
     // drag's velocity, an input property; it does not wait on app state)
     await page.waitForTimeout(16);
   }
-  // e2e-discipline: allow(150ms hold before release — zeroes the velocity
-  // tracker so the snap is decided by position; a hold IS a duration)
-  await page.waitForTimeout(150);
+  // Zero the velocity tracker in EVENT-space, not just wall-clock space: the
+  // gesture handler derives release velocity from recent pointermove events,
+  // and under CI CPU contention a silent 150ms hold still left the fast drag
+  // moves as the newest samples — the release then projected past the target
+  // detent (reproduced locally 2/6: FULL→HALF drags snapped through to
+  // HEADER). Sub-pixel micro-moves are real events with ~0 px/ms velocity,
+  // so the tracker's window reads "held still" regardless of timer skew.
+  // (Identical coordinates are deduped by the browser, hence the ±0.4px
+  // alternation.)
+  for (let j = 0; j < 4; j++) {
+    await page.mouse.move(cx + (j % 2 ? 0.4 : 0), cy + dy);
+    // e2e-discipline: allow(40ms micro-move pacing — shapes the release
+    // velocity, an input property; it does not wait on app state)
+    await page.waitForTimeout(40);
+  }
   await page.mouse.up();
 }
 
