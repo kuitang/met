@@ -48,6 +48,8 @@ export interface GalleryLabelRow {
   site: string;
   title?: string;
   floor?: string;
+  /** Room currently inaccessible per the museum's own feed (AIC is_closed). */
+  closed?: boolean;
 }
 
 export interface FullFetchOptions {

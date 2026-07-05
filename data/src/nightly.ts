@@ -47,29 +47,42 @@ import {
   verifyManifestDir,
   type Manifest,
 } from "./artifacts.ts";
-import { sourceFor } from "./sources/registry.ts";
+import { MUSEUMS, sourceFor } from "./sources/registry.ts";
 import type { ObjectRow } from "./sources/types.ts";
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const GIT_SNAP = path.join(REPO_ROOT, "data", "snapshots");
 const WORK = process.env.NIGHTLY_WORK_DIR ?? path.join(REPO_ROOT, "data", ".nightly");
 
+const V1_COLS = `objectID, accession, title, artist, culture, period, classification,
+                medium, tags, galleryNumber, site, rotation, isHighlight, imageUrl,
+                metadataDate`;
+const V2_COLS = `${V1_COLS}, museum, sourceId, locationNote, titleAlt, license, imageLicense`;
+
 /**
- * Reconstruct snapshots/objects.json.gz from last night's met.sqlite — the
- * bucket artifact IS the durable objects state (the git copy is just the
- * bootstrap snapshot). Exported for the unit tests.
+ * Reconstruct a museum's snapshots/objects.json.gz rows from last night's
+ * artifact — the bucket artifact IS the durable objects state (the git copy
+ * is just the bootstrap snapshot). Schema-v2-aware: the multi-museum columns
+ * round-trip when present (losing sourceId/license across a nightly would
+ * corrupt non-Met rows); a pre-v2 artifact yields v1 rows, all Met.
+ * Exported for the unit tests.
  */
-export function exportObjectsFromDb(dbPath: string): ObjectRow[] {
+export function exportObjectsFromDb(dbPath: string, museum = "met"): ObjectRow[] {
   const db = new Database(dbPath, { readonly: true, fileMustExist: true });
   try {
-    const rows = db
-      .prepare(
-        `SELECT objectID, accession, title, artist, culture, period, classification,
-                medium, tags, galleryNumber, site, rotation, isHighlight, imageUrl,
-                metadataDate
-         FROM objects ORDER BY objectID`,
-      )
-      .all() as Array<Omit<ObjectRow, "isHighlight"> & { isHighlight: number }>;
+    const isV2 =
+      (
+        db
+          .prepare(`SELECT count(*) AS n FROM pragma_table_info('objects') WHERE name = 'museum'`)
+          .get() as { n: number }
+      ).n > 0;
+    const rows = (
+      isV2
+        ? db.prepare(`SELECT ${V2_COLS} FROM objects WHERE museum = ? ORDER BY objectID`).all(museum)
+        : museum === "met"
+          ? db.prepare(`SELECT ${V1_COLS} FROM objects ORDER BY objectID`).all()
+          : []
+    ) as Array<Omit<ObjectRow, "isHighlight"> & { isHighlight: number }>;
     return rows.map((r) => ({ ...r, isHighlight: Boolean(r.isHighlight) }));
   } finally {
     db.close();
@@ -136,13 +149,61 @@ async function main(): Promise<void> {
   fs.cpSync(path.join(pulled, "image-embeddings"), path.join(snapDir, "image-embeddings"), {
     recursive: true,
   });
-  const rows = exportObjectsFromDb(path.join(pulled, "met.sqlite"));
+  const rows = exportObjectsFromDb(path.join(pulled, "met.sqlite"), "met");
   fs.writeFileSync(path.join(snapDir, "objects.json.gz"), zlib.gzipSync(JSON.stringify(rows)));
-  console.log(`exported ${rows.length} object rows from ${prev.version}/met.sqlite`);
+  console.log(`exported ${rows.length} met rows from ${prev.version}/met.sqlite`);
 
-  // ---- 2. Met API delta (via the source adapter) ---------------------------
+  // ---- 2. per-museum source refresh ----------------------------------------
+  // Each museum's snapshots refresh independently with failure isolation: a
+  // failing source keeps that museum's rows reconstructed from last night's
+  // artifact (stale by one day, logged) and the build proceeds. Met refreshes
+  // via metadataDate delta into stage/snapshots; every other museum lives at
+  // stage/museums/{id}/snapshots (the build-db MET_DATA_DIR-relative layout).
   const since = prev.builtAt.slice(0, 10);
-  const hydrated = await sourceFor("met").delta(snapDir, since);
+  let hydrated = 0;
+  const museumFailures: string[] = [];
+  try {
+    hydrated = await sourceFor("met").delta(snapDir, since);
+  } catch (err) {
+    museumFailures.push("met");
+    console.error("met delta FAILED (met rows go one day stale):", err);
+  }
+  for (const m of MUSEUMS) {
+    if (m.id === "met") continue;
+    const mSnap = path.join(stage, "museums", m.id, "snapshots");
+    fs.mkdirSync(mSnap, { recursive: true });
+    try {
+      await sourceFor(m.id).fullFetch({ snapDir: mSnap });
+    } catch (err) {
+      museumFailures.push(m.id);
+      console.error(`${m.id} refresh FAILED — reusing last night's rows:`, err);
+      const prevRows = exportObjectsFromDb(path.join(pulled, "met.sqlite"), m.id);
+      if (prevRows.length === 0) {
+        console.warn(`${m.id}: no previous rows in the artifact either — museum ships empty tonight`);
+        continue;
+      }
+      fs.writeFileSync(
+        path.join(mSnap, "objects.json.gz"),
+        zlib.gzipSync(JSON.stringify(prevRows)),
+      );
+      // Gallery labels from the previous artifact's galleries rows.
+      const db = new Database(path.join(pulled, "met.sqlite"), { readonly: true });
+      try {
+        const sites = new Set(m.sites.map((s) => s.siteId));
+        const gals = (
+          db.prepare(`SELECT galleryNumber, title, floor, site FROM galleries`).all() as Array<{
+            galleryNumber: string;
+            title: string | null;
+            floor: string | null;
+            site: string;
+          }>
+        ).filter((g) => sites.has(g.site));
+        fs.writeFileSync(path.join(mSnap, "galleries.json"), JSON.stringify(gals, null, 2));
+      } finally {
+        db.close();
+      }
+    }
+  }
 
   // ---- 3. synonyms top-up (incremental, catalog-new vocab only) ------------
   try {
@@ -209,7 +270,8 @@ async function main(): Promise<void> {
 
   console.log(
     `nightly done in ${Math.round((Date.now() - t0) / 1000)}s — ` +
-      `${hydrated} objects hydrated, dataVersion ${dataVersion}`,
+      `${hydrated} met objects hydrated, dataVersion ${dataVersion}` +
+      (museumFailures.length ? ` — STALE (source refresh failed): ${museumFailures.join(", ")}` : ""),
   );
 }
 

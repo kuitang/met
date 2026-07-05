@@ -7,11 +7,7 @@
  * Resumable: each source keeps a resume cache under data/raw/{museum}/ so an
  * interrupted run (WAF block, crash) restarts where it left off.
  */
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
-import { sourceFor } from "./sources/registry.ts";
-
-const SNAPSHOT_DIR = join(dirname(fileURLToPath(import.meta.url)), "..", "snapshots");
+import { snapDirFor, sourceFor } from "./sources/registry.ts";
 
 async function main(): Promise<void> {
   const argv = process.argv;
@@ -21,7 +17,7 @@ async function main(): Promise<void> {
   const limit = limitIdx >= 0 ? Number(argv[limitIdx + 1]) : undefined;
 
   const source = sourceFor(museum);
-  await source.fullFetch({ snapDir: SNAPSHOT_DIR, limit });
+  await source.fullFetch({ snapDir: snapDirFor(museum), limit });
 }
 
 main();
