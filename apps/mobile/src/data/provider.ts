@@ -79,6 +79,17 @@ export function museumForSite(museums: MuseumEntry[], site: string | undefined):
   return museums.find((m) => m.sites.some((x) => x.siteId === s));
 }
 
+/**
+ * Best available "last confirmed from source" date for a museum (C3
+ * staleness UI): the museum's own `fetchedAt`, falling back to the whole
+ * artifact's `builtAt` (every museum in a merged artifact was re-verified at
+ * least as of that build) — undefined only for the stub (StubDataProvider
+ * has neither), meaning there is nothing honest to show.
+ */
+export function museumFreshness(museum: MuseumEntry | undefined, data: DataProvider): string | undefined {
+  return museum?.fetchedAt ?? data.builtAt;
+}
+
 /** Partition rows (search hits, etc.) by whether they belong to the active museum. */
 export function partitionByMuseum<T extends { museum?: string }>(
   rows: readonly T[],
@@ -171,6 +182,13 @@ export interface DataProvider {
    * server to proxy through (mockup mode → direct CDN URLs).
    */
   readonly dataVersion: string;
+  /**
+   * When the current met.sqlite artifact was built (meta.builtAt, schema v2)
+   * — the staleness-UI fallback for a museum whose own `fetchedAt` is null
+   * (see museumFreshness above). undefined for the stub and pre-v2 artifacts
+   * (nothing to fall back to; StalenessBadge then renders nothing).
+   */
+  readonly builtAt?: string;
   /**
    * Prefix/substring suggestions for the omnibar (objects + rooms). Optional
    * `museum` scopes to one museum registry id at the SQL level (ScopeChips

@@ -48,12 +48,23 @@ import {
   useVenueToast,
 } from '@/components/LocateState';
 import NavSheet from '@/components/NavSheet';
+import RoomListBrowse from '@/components/RoomListBrowse';
 import RoutePolyline, { routeBoundsOnFloor } from '@/components/RoutePolyline';
-import { Room, useData } from '@/data/provider';
+import { museumForSite, Room, useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
 /** Map height kept clear above the nav sheet at the HEADER-ONLY detent. */
 const NAV_HEADER_INSET = 110;
+/**
+ * RoomListBrowse's top clearance (C3): the SAME wordmark + search bar overlay
+ * that floats over FloorMap floats over this full-bleed list too, but a
+ * plain scrollable list — unlike a pannable map — needs real padding so its
+ * first rows aren't hidden underneath. Measured against topOverlay's actual
+ * stack (paddingTop + wordmark line + gap + search bar), rounded up.
+ */
+const ROOM_LIST_TOP_INSET = 140;
+/** Clears the locate chip + unofficial-note bottom overlay (same reasoning as ROOM_LIST_TOP_INSET, opposite edge). */
+const ROOM_LIST_BOTTOM_INSET = 120;
 
 function center(room: Room): [number, number] {
   const [x, y, w, h] = room.rect;
@@ -83,6 +94,10 @@ export default function HomeScreen() {
   const anchor = useAnchor();
   const venue = useVenue();
   const venueToast = useVenueToast();
+  // Museum registry (C3): only read for capability gating (hasGeometry /
+  // hasGraph) — [BUILTIN_MET_ENTRY] for the stub and pre-v2 artifacts, so
+  // every check below is a no-op there (Met capabilities are all true).
+  const museums = data.museums();
   // Deep-link support: `/?room=131` anchors directly (also kept for e2e).
   const {
     room: roomParam,
@@ -266,6 +281,22 @@ export default function HomeScreen() {
   // is the route's venue; browse mode follows the venue state.
   const mapSite = navRoute ? (navRoute.from.site ?? venue.venue) : venue.venue;
 
+  // Museum owning the visible site (C3). Nav mode only ever exists for a
+  // hasGraph museum (the Met today) — hasGeometry defaults true so pre-v2
+  // artifacts and the stub are unaffected.
+  const mapMuseum = museumForSite(museums, mapSite);
+  const hasGeometry = mapMuseum?.capabilities.hasGeometry ?? true;
+  // RoomListBrowse's input: only rendered when !hasGeometry, but cheap
+  // either way and keeps the hook order stable.
+  const browseRooms = useMemo(
+    () => data.galleries().filter((r) => (r.site ?? 'fifthAve') === mapSite),
+    [data, mapSite],
+  );
+  const browseFloorOrder = mapMuseum?.sites.find((s) => s.siteId === mapSite)?.floorOrder;
+  // The room sheet's own museum (may differ from mapMuseum in nav mode, if a
+  // future museum ever mixed hasGraph sites — today always the same site).
+  const selectedMuseum = selected ? museumForSite(museums, selected.site) : undefined;
+
   // HOME glyph marker: the visitor's anchor room when it's at the visible
   // venue (it advances with "I'm here" checkpoints); in nav mode fall back to
   // the active step room so the current position always reads.
@@ -311,21 +342,33 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <View style={styles.mapFill}>
-        <FloorMap
-          floor={floor}
-          onFloorChange={setFloor}
-          highlightId={highlightId}
-          onRoomPress={setSelected}
-          site={mapSite}
-          homeRoom={homeRoom}
-          targetRoom={navRoute?.to}
-          routeRoomIds={navRoute?.steps.map((s) => s.room.id)}
-          overlay={
-            navRoute ? <RoutePolyline route={navRoute} floor={floor} activeStep={step} /> : undefined
-          }
-          fitBounds={fitBounds}
-          controlsBottomInset={controlsBottomInset}
-        />
+        {hasGeometry ? (
+          <FloorMap
+            floor={floor}
+            onFloorChange={setFloor}
+            highlightId={highlightId}
+            onRoomPress={setSelected}
+            site={mapSite}
+            homeRoom={homeRoom}
+            targetRoom={navRoute?.to}
+            routeRoomIds={navRoute?.steps.map((s) => s.room.id)}
+            overlay={
+              navRoute ? <RoutePolyline route={navRoute} floor={floor} activeStep={step} /> : undefined
+            }
+            fitBounds={fitBounds}
+            controlsBottomInset={controlsBottomInset}
+          />
+        ) : (
+          // No gallery geometry (C3: every non-Met museum today) — no map to
+          // draw, honestly: a floor-grouped/ungrouped room list, NOT the stub
+          // schematic (that would draw fake rooms for a real museum).
+          <RoomListBrowse
+            rooms={browseRooms}
+            floorOrder={browseFloorOrder}
+            topInset={ROOM_LIST_TOP_INSET}
+            bottomInset={ROOM_LIST_BOTTOM_INSET}
+          />
+        )}
       </View>
 
       {/* MODAL nav semantics (variant D): entering navigation hides the top
@@ -477,6 +520,8 @@ export default function HomeScreen() {
           objects={data.objectsInGallery(selected.id)}
           totalCount={data.galleryObjectCount(selected.id)}
           originId={anchor?.roomId ?? 'great-hall'}
+          hasGraph={selectedMuseum?.capabilities.hasGraph ?? true}
+          museumShortName={selectedMuseum?.shortName ?? ''}
           onImHere={() => {
             setAnchor(anchorForRoom(selected, 'gallery'));
             setSelected(undefined);

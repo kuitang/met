@@ -122,7 +122,14 @@ interface DbGalleryRow extends GalleryRow {
   centroidLon: number;
 }
 
-function floorNumber(label: string): number {
+/**
+ * NULL/'' (C3: museums whose gallery rows ship with no authoritative floor
+ * mapping — AIC, SMK; see data/src/sources/{aic,smk}.ts) → NaN, "unknown",
+ * not 0/"G" — Number(null) coerces to 0, which used to mislabel every such
+ * room "Floor G". Callers use floorLabel(NaN) === '' to detect this.
+ */
+function floorNumber(label: string | null | undefined): number {
+  if (label == null || label === '') return NaN;
   if (label === 'G') return 0;
   if (label === '1M') return 1.5;
   return Number(label);
@@ -178,6 +185,7 @@ function projectorFromFeatures(features: GalleryFeature[]): Projector | null {
 
 export class SqliteDataProvider implements DataProvider {
   readonly dataVersion: string;
+  readonly builtAt?: string;
 
   /**
    * Object SELECT list. Older met.sqlite artifacts (downloaded/cached before
@@ -207,33 +215,39 @@ export class SqliteDataProvider implements DataProvider {
     private museumEntries: MuseumEntry[],
     /** objects.museum exists (schema v2) — gates whether museum-scoped search is safe to run. */
     private hasMuseumColumn: boolean,
+    builtAt: string | undefined,
   ) {
     this.dataVersion = met.dataVersion;
+    this.builtAt = builtAt;
   }
 
   static async create(met: MetDb): Promise<SqliteDataProvider> {
-    const [thumbCol, museumCol, galleryRows, amenityRows, nodes, edges, blob, museumsMeta] = await Promise.all([
-      met.allAsync<{ name: string }>(
-        `SELECT name FROM pragma_table_info('objects') WHERE name = 'thumbKey'`,
-      ),
-      met.allAsync<{ name: string }>(
-        `SELECT name FROM pragma_table_info('objects') WHERE name = 'museum'`,
-      ),
-      met.allAsync<DbGalleryRow>(
-        'SELECT galleryNumber, title, floor, site, centroidLat, centroidLon FROM galleries',
-      ),
-      met.allAsync<AmenityRow>(
-        'SELECT id, type, name, floor, site, lat, lon FROM amenities WHERE closed = 0',
-      ),
-      met.allAsync<GraphNode>(
-        'SELECT id, lat, lon, floor, site, gallery, kind, name FROM graph_nodes',
-      ),
-      met.allAsync<GraphEdge>('SELECT a, b, len, kind, bearing, room FROM graph_edges'),
-      met.allAsync<{ value: Uint8Array }>(
-        `SELECT value FROM blobs WHERE key = 'galleries.geojson'`,
-      ),
-      met.allAsync<{ value: string }>(`SELECT value FROM meta WHERE key = 'museums'`),
-    ]);
+    const [thumbCol, museumCol, galleryRows, amenityRows, nodes, edges, blob, museumsMeta, builtAtMeta] =
+      await Promise.all([
+        met.allAsync<{ name: string }>(
+          `SELECT name FROM pragma_table_info('objects') WHERE name = 'thumbKey'`,
+        ),
+        met.allAsync<{ name: string }>(
+          `SELECT name FROM pragma_table_info('objects') WHERE name = 'museum'`,
+        ),
+        met.allAsync<DbGalleryRow>(
+          'SELECT galleryNumber, title, floor, site, centroidLat, centroidLon FROM galleries',
+        ),
+        met.allAsync<AmenityRow>(
+          'SELECT id, type, name, floor, site, lat, lon FROM amenities WHERE closed = 0',
+        ),
+        met.allAsync<GraphNode>(
+          'SELECT id, lat, lon, floor, site, gallery, kind, name FROM graph_nodes',
+        ),
+        met.allAsync<GraphEdge>('SELECT a, b, len, kind, bearing, room FROM graph_edges'),
+        met.allAsync<{ value: Uint8Array }>(
+          `SELECT value FROM blobs WHERE key = 'galleries.geojson'`,
+        ),
+        met.allAsync<{ value: string }>(`SELECT value FROM meta WHERE key = 'museums'`),
+        // Artifact build date (C3 staleness fallback) — pre-v2 artifacts have
+        // no row, hence the array-length check below rather than assuming one.
+        met.allAsync<{ value: string }>(`SELECT value FROM meta WHERE key = 'builtAt'`),
+      ]);
 
     // Schema v2 multi-museum manifest; pre-v2 artifacts have no key → Met.
     let museumEntries: MuseumEntry[] = [BUILTIN_MET_ENTRY];
@@ -244,6 +258,7 @@ export class SqliteDataProvider implements DataProvider {
         /* keep the built-in fallback */
       }
     }
+    const builtAt = builtAtMeta.length ? builtAtMeta[0].value : undefined;
 
     // --- geometry blob → features per site|floorLabel (S2 map contract) -----
     const features: GalleryFeature[] = blob.length
@@ -408,6 +423,7 @@ export class SqliteDataProvider implements DataProvider {
       entranceNodeId,
       museumEntries,
       museumCol.length > 0,
+      builtAt,
     );
     provider.objectCols = [
       OBJECT_COLS,

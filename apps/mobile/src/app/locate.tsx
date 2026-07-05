@@ -33,8 +33,9 @@ import {
   setAnchor,
   useVenue,
 } from '@/components/LocateState';
+import StalenessBadge from '@/components/StalenessBadge';
 import { apiBase } from '@/data/apiBase';
-import { MetObject, useData } from '@/data/provider';
+import { MetObject, museumFreshness, useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
 type LocatePhotoResponse = components['schemas']['LocatePhotoResponse'];
@@ -317,7 +318,17 @@ export default function LocateScreen() {
             // shortName (Met's two sites + AIC's one, etc).
             museums.map((m) => (
               <View key={m.id} style={styles.venueGroup}>
-                <Text style={styles.venueGroupLabel}>{m.shortName}</Text>
+                <View style={styles.venueGroupHeader}>
+                  <Text style={styles.venueGroupLabel}>{m.shortName}</Text>
+                  {/* Picker variant (C3): always renders, even under 14 days
+                      — reassurance about data freshness before picking a
+                      venue, not just a staleness warning. */}
+                  <StalenessBadge
+                    fetchedAt={museumFreshness(m, data)}
+                    variant="picker"
+                    testID={`venue-staleness-${m.id}`}
+                  />
+                </View>
                 <View style={styles.venueGroupBtns}>
                   {m.sites.map((s) => {
                     const active = venue.venue === s.siteId;
@@ -550,6 +561,12 @@ const styles = StyleSheet.create({
   // site buttons.
   venueGroup: {
     gap: spacing.xs,
+  },
+  // C3: shortName + the museum's StalenessBadge on one line.
+  venueGroupHeader: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: spacing.sm,
   },
   venueGroupLabel: {
     ...type.label,

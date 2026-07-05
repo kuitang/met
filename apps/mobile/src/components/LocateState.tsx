@@ -150,12 +150,17 @@ export function useVenueToast(): string | undefined {
   return useSyncExternalStore(subscribe, getVenueToast, getVenueToast);
 }
 
-/** Standard anchor for a known stub room, e.g. "Gallery 822 · Floor 2". */
+/**
+ * Standard anchor for a known room, e.g. "Gallery 822 · Floor 2" — or just
+ * "Gallery 241" when the floor is unknown (C3: AIC/SMK ship galleries with no
+ * authoritative floor mapping; floorLabel('') signals this).
+ */
 export function anchorForRoom(room: Room, source: AnchorSource): Anchor {
   const name = room.kind === 'gallery' ? `Gallery ${room.id}` : room.name;
+  const floorTxt = floorLabel(room.floor);
   return {
     roomId: room.id,
-    label: `${name} · Floor ${floorLabel(room.floor)}`,
+    label: floorTxt ? `${name} · Floor ${floorTxt}` : name,
     floor: room.floor,
     site: room.site,
     source,
