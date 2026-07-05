@@ -44,8 +44,9 @@ test-results/
 # Planning-session browser screenshots (competitive-study scratch, not deliverables)
 /met-explorer-*.png
 
-# Large local caches (re-fetchable; see data/src/embed-images.ts)
-data/raw/met-images/
+# Large local caches (re-fetchable; see data/src/embed-images.ts,
+# data/src/thumbnails.ts — museum-keyed, one dir per registry museum)
+data/raw/*-images/
 data/raw/met-objects/
 
 # Per-museum hydration resume caches (data/src/sources/*; re-fetchable)
@@ -60,8 +61,10 @@ data/img-cache/
 
 # Image-embedding vector index (~100 MB at full scale, rebuilt incrementally by
 # data/src/embed-images.ts; server loads it from DATA_DIR — lives in the
-# Tigris artifact bucket in prod, never in git)
+# Tigris artifact bucket in prod, never in git). Museum-keyed: the Met's is at
+# data/snapshots/, other museums' at data/museums/{id}/snapshots/.
 data/snapshots/image-embeddings/
+data/museums/*/snapshots/image-embeddings/
 
 # Built data artifacts: the Tigris bucket (s3://met-artifacts) is the artifact
 # registry — met.sqlite + VERSION are pulled from latest/ (CI, Docker bake; see

@@ -48,10 +48,23 @@ const MODEL = "gemini-3.1-flash-lite";
 const BATCH = 40;
 const CONCURRENCY = 6;
 
-/** Classifications whose golden-eval failures motivated title-level synonyms:
- * Greek/Roman + Ancient Near East antiquities, where catalog titles use
- * specialist vocabulary (Lar, kylix, situla...) visitors don't type. */
+/** Classifications whose golden-eval failures motivated title-level synonyms.
+ * Met: Greek/Roman + Ancient Near East antiquities, where catalog titles use
+ * specialist vocabulary (Lar, kylix, situla...) visitors don't type.
+ * AIC: golden misses were plain-English *descriptions* of famous paintings
+ * ("lonely diner at night" -> Nighthawks, "farmer and woman with a
+ * pitchfork" -> American Gothic) — AIC's classification vocabulary is
+ * per-object free text (not the Met's controlled department taxonomy), so
+ * the override matches on substring, not `^`-anchor. Measured against
+ * data/museums/aic/snapshots/objects.json.gz: 347 distinct titles (of 3,510
+ * objects) — American Gothic ("oil paintings (visual works)") and Nighthawks
+ * ("modern and contemporary art") both included, at title-batch scale
+ * unchanged from the Met run. */
+const FAILING_CLASSIFICATION_RE_BY_MUSEUM: Record<string, RegExp> = {
+  aic: /paint|modern and contemporary art/i,
+};
 const FAILING_CLASSIFICATION_RE =
+  FAILING_CLASSIFICATION_RE_BY_MUSEUM[MUSEUM_ID] ??
   /^(bronzes|vases|terracottas|gold and silver|stone[ -]sculpture|gems|glass)/i;
 
 interface SynonymsFile {

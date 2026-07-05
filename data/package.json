@@ -13,6 +13,7 @@
     "evals": "tsx src/evals.ts && tsx src/evals-louvre.ts",
     "evals:louvre": "tsx src/evals-louvre.ts",
     "embed-images": "tsx src/embed-images.ts",
+    "thumbnails": "tsx src/thumbnails.ts",
     "nightly": "tsx src/nightly.ts",
     "fetch-artifacts": "tsx src/fetch-artifacts.ts",
     "test": "vitest run"
@@ -23,6 +24,7 @@
     "better-sqlite3": "^12.10.0",
     "pbf": "^5.1.0",
     "polygon-clipping": "^0.15.7",
+    "sharp": "^0.34.5",
     "zod": "^4.4.3"
   },
   "devDependencies": {
