@@ -53,7 +53,8 @@ import {
   type SearchFilters,
 } from '@met/shared/search';
 
-import type { DataProvider, MetObject, Room, RoomKind, Route } from './provider';
+import type { DataProvider, MetObject, MuseumEntry, Room, RoomKind, Route } from './provider';
+import { BUILTIN_MET_ENTRY } from './provider';
 import type { MetDb } from './sqlite';
 
 const SEARCH_ALL_LIMIT = 200; // All Results page cap
@@ -188,12 +189,14 @@ export class SqliteDataProvider implements DataProvider {
     private viewBoxBySite: Map<string, SiteGeometry['viewBox']>,
     /** Stub-era 'great-hall' route anchor → a node near the main entrance. */
     private entranceNodeId: string | null,
+    /** meta.museums (schema v2); [BUILTIN_MET_ENTRY] for pre-v2 artifacts. */
+    private museumEntries: MuseumEntry[],
   ) {
     this.dataVersion = met.dataVersion;
   }
 
   static async create(met: MetDb): Promise<SqliteDataProvider> {
-    const [thumbCol, galleryRows, amenityRows, nodes, edges, blob] = await Promise.all([
+    const [thumbCol, galleryRows, amenityRows, nodes, edges, blob, museumsMeta] = await Promise.all([
       met.allAsync<{ name: string }>(
         `SELECT name FROM pragma_table_info('objects') WHERE name = 'thumbKey'`,
       ),
@@ -210,7 +213,18 @@ export class SqliteDataProvider implements DataProvider {
       met.allAsync<{ value: Uint8Array }>(
         `SELECT value FROM blobs WHERE key = 'galleries.geojson'`,
       ),
+      met.allAsync<{ value: string }>(`SELECT value FROM meta WHERE key = 'museums'`),
     ]);
+
+    // Schema v2 multi-museum manifest; pre-v2 artifacts have no key → Met.
+    let museumEntries: MuseumEntry[] = [BUILTIN_MET_ENTRY];
+    if (museumsMeta.length) {
+      try {
+        museumEntries = JSON.parse(museumsMeta[0].value) as MuseumEntry[];
+      } catch {
+        /* keep the built-in fallback */
+      }
+    }
 
     // --- geometry blob → features per site|floorLabel (S2 map contract) -----
     const features: GalleryFeature[] = blob.length
@@ -373,6 +387,7 @@ export class SqliteDataProvider implements DataProvider {
       projectors,
       viewBoxBySite,
       entranceNodeId,
+      museumEntries,
     );
     if (thumbCol.length > 0) provider.objectCols = `${OBJECT_COLS}, thumbKey`;
     return provider;
@@ -483,6 +498,10 @@ export class SqliteDataProvider implements DataProvider {
 
   galleries(): Room[] {
     return this.galleryRooms;
+  }
+
+  museums(): MuseumEntry[] {
+    return this.museumEntries;
   }
 
   amenities(): Room[] {

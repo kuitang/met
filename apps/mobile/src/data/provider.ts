@@ -14,6 +14,7 @@
 import { createContext, useContext } from 'react';
 
 import { matchGalleries, type SearchFilters } from '@met/shared/search';
+import type { components } from '@met/shared';
 
 import stub from './stub.json';
 
@@ -73,10 +74,11 @@ export interface Room {
   /** [x, y, w, h] in the stub's local schematic coordinate system. */
   rect: [number, number, number, number];
   /**
-   * Venue the room belongs to. The stub dataset omits it (all stub rooms are
-   * Fifth Avenue); consumers treat undefined as 'fifthAve'.
+   * Venue (globally-unique site id) the room belongs to. The stub dataset
+   * omits it (all stub rooms are Fifth Avenue); consumers treat undefined as
+   * 'fifthAve'. Schema v2 opens the set beyond the Met's two buildings.
    */
-  site?: 'fifthAve' | 'cloisters';
+  site?: string;
   /**
    * Currently inaccessible per the Met's own live map feed (the Living Map
    * `closed` flag, refreshed nightly). Binary current-state only — the Met
@@ -162,7 +164,47 @@ export interface DataProvider {
   galleries(): Room[];
   /** Restrooms, elevators, stairs. */
   amenities(): Room[];
+  /**
+   * Museums contained in the artifact (schema v2 meta.museums: identity,
+   * sites with entrances + floorOrder, fidelity/capabilities, licensing
+   * attribution, freshness). Same shape as GET /api/v1/museums entries.
+   * Pre-v2 artifacts and the stub return the built-in Met entry.
+   */
+  museums(): MuseumEntry[];
 }
+
+export type MuseumEntry = components['schemas']['MuseumEntry'];
+
+/** Met manifest entry used when the artifact predates schema v2 (and by the stub). */
+export const BUILTIN_MET_ENTRY: MuseumEntry = {
+  id: 'met',
+  name: 'The Metropolitan Museum of Art',
+  shortName: 'The Met',
+  city: 'New York',
+  country: 'US',
+  sites: [
+    {
+      siteId: 'fifthAve',
+      name: 'Fifth Avenue',
+      entrance: { lat: 40.7794, lon: -73.9632, floor: '1' },
+      floorOrder: ['G', '1', '1M', '2', '3', '4', '5'],
+    },
+    {
+      siteId: 'cloisters',
+      name: 'The Cloisters',
+      entrance: { lat: 40.8649, lon: -73.9317 },
+      floorOrder: ['G', '1'],
+    },
+  ],
+  fidelity: 'routed',
+  license: {
+    text: 'CC0-1.0',
+    images: 'CC0-1.0',
+    attribution: 'The Metropolitan Museum of Art Open Access (CC0)',
+    termsUrl: 'https://www.metmuseum.org/policies/open-access',
+  },
+  capabilities: { hasGeometry: true, hasGraph: true, granularity: 'room', languages: ['en'] },
+};
 
 interface StubShape {
   floors: number[];
@@ -265,6 +307,10 @@ export class StubDataProvider implements DataProvider {
     return data.rooms.filter(
       (r) => r.kind === 'restroom' || r.kind === 'elevator' || r.kind === 'stairs',
     );
+  }
+
+  museums(): MuseumEntry[] {
+    return [BUILTIN_MET_ENTRY];
   }
 
   route(from: string, to: string, opts?: { avoidStairs?: boolean }): Route | undefined {

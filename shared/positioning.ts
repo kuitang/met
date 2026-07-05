@@ -62,7 +62,12 @@
  *      wrong venue (property-tested in positioning.sim.test.ts).
  */
 
-export type Site = "fifthAve" | "cloisters";
+/**
+ * Globally-unique site (building) id. Historically the closed Met union
+ * "fifthAve" | "cloisters"; schema v2 opens it — sites are registry data
+ * (artifact meta.museums[].sites) and other museums are just more sites.
+ */
+export type Site = string;
 
 /** Anchor sources that may claim a specific room. 'gps' is not assignable. */
 export type RoomSource = "manual" | "artifact" | "photo";
@@ -139,14 +144,25 @@ export const GPS_MAX_DISTANCE_M = 350;
  */
 export const ROOM_ANCHOR_DECAY_MS = 4 * 60_000;
 
-const SITE_ENTRANCES: ReadonlyArray<{
+export interface SiteEntrance {
   site: Site;
   place: string;
   /** Floor of the entrance itself, when one is meaningful to display. */
   entranceFloor?: string;
   lat: number;
   lon: number;
-}> = [
+}
+
+/**
+ * The Met's entrances — the default `entrances` argument everywhere, so
+ * existing callers/tests are byte-identical. Multi-museum clients pass the
+ * full entrance list derived from the artifact's meta.museums registry.
+ * NOTE the safety property the defaults satisfy (and any injected list must
+ * be re-checked against, per-pair): inter-entrance distance must comfortably
+ * exceed GPS_MAX_DISTANCE_M + VENUE_MAX_ACCURACY_M (≤1.35 km) or a usable fix
+ * could resolve to the wrong site — the Met pair is ~9.8 km apart.
+ */
+export const MET_ENTRANCES: ReadonlyArray<SiteEntrance> = [
   // Fifth Avenue main entrance == the Great Hall (J1 coordinates).
   { site: "fifthAve", place: "Near Great Hall", entranceFloor: "1", lat: 40.7794, lon: -73.9632 },
   { site: "cloisters", place: "Near the Cloisters entrance", lat: 40.8649, lon: -73.9317 },
@@ -169,11 +185,15 @@ function haversineM(lat1: number, lon1: number, lat2: number, lon2: number): num
  * GPS_MAX_DISTANCE_M from every site entrance — e.g. the Central Park
  * outlier case in data/evals/reports/gps.md).
  */
-export function resolveGpsArea(fix: GpsFix, at: number): AreaAnchor | null {
+export function resolveGpsArea(
+  fix: GpsFix,
+  at: number,
+  entrances: ReadonlyArray<SiteEntrance> = MET_ENTRANCES,
+): AreaAnchor | null {
   if (fix.accuracyM > GPS_MAX_ACCURACY_M) return null;
-  let best: (typeof SITE_ENTRANCES)[number] | null = null;
+  let best: SiteEntrance | null = null;
   let bestD = Infinity;
-  for (const e of SITE_ENTRANCES) {
+  for (const e of entrances) {
     const d = haversineM(fix.lat, fix.lon, e.lat, e.lon);
     if (d < bestD) {
       bestD = d;
@@ -235,6 +255,7 @@ export function effectiveConfidence(anchor: Anchor, now: number): number {
 export function applyInput(
   current: Anchor | undefined,
   input: PositionInput,
+  entrances: ReadonlyArray<SiteEntrance> = MET_ENTRANCES,
 ): Anchor | undefined {
   if (input.type === "room") {
     return {
@@ -247,7 +268,7 @@ export function applyInput(
       timestamp: input.at,
     };
   }
-  const area = resolveGpsArea(input.fix, input.at);
+  const area = resolveGpsArea(input.fix, input.at, entrances);
   if (!area) return current; // unusable fix changes nothing
   if (current?.kind === "room") {
     // A fresh explicit room claim beats a wing-level fix; a stale one doesn't.
@@ -293,11 +314,14 @@ export const VENUE_MAX_ACCURACY_M = 1000;
  * (≤ 1.35 km) is well under half the inter-venue distance, so a usable fix
  * can never resolve to the wrong venue.
  */
-export function resolveGpsVenue(fix: GpsFix): Site | null {
+export function resolveGpsVenue(
+  fix: GpsFix,
+  entrances: ReadonlyArray<SiteEntrance> = MET_ENTRANCES,
+): Site | null {
   if (fix.accuracyM > VENUE_MAX_ACCURACY_M) return null;
   let best: Site | null = null;
   let bestD = Infinity;
-  for (const e of SITE_ENTRANCES) {
+  for (const e of entrances) {
     const d = haversineM(fix.lat, fix.lon, e.lat, e.lon);
     if (d < bestD) {
       bestD = d;
@@ -341,6 +365,7 @@ export interface VenueSwitchEvent {
 export function applyFusedInput(
   state: PositionState,
   input: FusedInput,
+  entrances: ReadonlyArray<SiteEntrance> = MET_ENTRANCES,
 ): { state: PositionState; events: VenueSwitchEvent[] } {
   const { anchor, venue } = state;
 
@@ -380,7 +405,7 @@ export function applyFusedInput(
   }
 
   // GPS: venue detection first (loose gate), then ordinary anchor fusion.
-  const gpsVenue = resolveGpsVenue(input.fix);
+  const gpsVenue = resolveGpsVenue(input.fix, entrances);
   if (gpsVenue !== null && gpsVenue !== venue.venue) {
     // Coupling rule 3a: a manual venue pin beats GPS for the session visit.
     if (venue.source === "manual") return { state, events: [] };
@@ -392,13 +417,13 @@ export function applyFusedInput(
       state: {
         // Old-venue anchor is dropped; the fix's own area anchor (if precise
         // enough for one) takes over. No floor crosses the venue boundary.
-        anchor: resolveGpsArea(input.fix, input.at) ?? undefined,
+        anchor: resolveGpsArea(input.fix, input.at, entrances) ?? undefined,
         venue: { venue: gpsVenue, source: "gps", timestamp: input.at },
       },
       events: [{ type: "venue-switch", venue: gpsVenue, cause: "gps" }],
     };
   }
-  const next = applyInput(anchor, input);
+  const next = applyInput(anchor, input, entrances);
   return {
     state: next === anchor ? state : { anchor: next, venue },
     events: [],

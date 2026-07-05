@@ -44,10 +44,28 @@ export interface Anchor {
   assumedFloor?: string;
 }
 
-export const VENUE_NAMES: Record<Site, string> = {
+/**
+ * Site display names. The Met pair is baked (the stub provider has no meta);
+ * `registerVenueNames` overlays names from the artifact's meta.museums so
+ * future sites resolve without touching this module. `venueName()` falls back
+ * to the raw site id for anything unregistered.
+ */
+const BUILTIN_VENUE_NAMES: Record<Site, string> = {
   fifthAve: 'Fifth Avenue',
   cloisters: 'The Cloisters',
 };
+let registeredVenueNames: Record<Site, string> = {};
+
+export function registerVenueNames(names: Record<Site, string>): void {
+  registeredVenueNames = { ...registeredVenueNames, ...names };
+}
+
+export function venueName(site: Site): string {
+  return registeredVenueNames[site] ?? BUILTIN_VENUE_NAMES[site] ?? site;
+}
+
+/** @deprecated import venueName() — kept for existing call sites. */
+export const VENUE_NAMES: Record<Site, string> = BUILTIN_VENUE_NAMES;
 
 let anchor: Anchor | undefined;
 let venue: VenueState = { venue: 'fifthAve', source: 'default', timestamp: 0 };
@@ -103,8 +121,8 @@ export function applyVenue(next: Site, cause: Exclude<VenueSource, 'default'>): 
   }
   if (anchor && (anchor.site ?? 'fifthAve') !== next) anchor = undefined;
   venue = { venue: next, source: cause, timestamp: Date.now() };
-  if (cause === 'gps') venueToast = `You're at ${VENUE_NAMES[next]} — switched`;
-  else if (cause === 'browse') venueToast = `Showing ${VENUE_NAMES[next]} — switched`;
+  if (cause === 'gps') venueToast = `You're at ${venueName(next)} — switched`;
+  else if (cause === 'browse') venueToast = `Showing ${venueName(next)} — switched`;
   emit();
 }
 

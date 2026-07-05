@@ -48,7 +48,8 @@ export interface SearchRow {
 }
 
 export interface SearchFilters {
-  site?: "fifthAve" | "cloisters";
+  /** Globally-unique site id ("fifthAve" | "cloisters" for the Met; schema v2 opens the set). */
+  site?: string;
   floor?: string;
   rotation?: "permanent" | "exhibition";
   hasImage?: boolean;
