@@ -1,0 +1,902 @@
+[
+  {
+    "galleryNumber": "272",
+    "site": "aic",
+    "title": "Gallery 272"
+  },
+  {
+    "galleryNumber": "234",
+    "site": "aic",
+    "title": "Gallery 234"
+  },
+  {
+    "galleryNumber": "124B",
+    "site": "aic",
+    "title": "Gallery 124B"
+  },
+  {
+    "galleryNumber": "124A",
+    "site": "aic",
+    "title": "Gallery 124A"
+  },
+  {
+    "galleryNumber": "127A",
+    "site": "aic",
+    "title": "Gallery 127A"
+  },
+  {
+    "galleryNumber": "126",
+    "site": "aic",
+    "title": "Gallery 126"
+  },
+  {
+    "galleryNumber": "125",
+    "site": "aic",
+    "title": "Gallery 125"
+  },
+  {
+    "galleryNumber": "127B",
+    "site": "aic",
+    "title": "Gallery 127B"
+  },
+  {
+    "galleryNumber": "188",
+    "site": "aic",
+    "title": "Gallery 188"
+  },
+  {
+    "galleryNumber": "283",
+    "site": "aic",
+    "title": "Gallery 283"
+  },
+  {
+    "galleryNumber": "Regenstein Hall",
+    "site": "aic",
+    "title": "Regenstein Hall"
+  },
+  {
+    "galleryNumber": "161",
+    "site": "aic",
+    "title": "Gallery 161"
+  },
+  {
+    "galleryNumber": "273",
+    "site": "aic",
+    "title": "Gallery 273"
+  },
+  {
+    "galleryNumber": "221",
+    "site": "aic",
+    "title": "Gallery 221"
+  },
+  {
+    "galleryNumber": "222",
+    "site": "aic",
+    "title": "Gallery 222"
+  },
+  {
+    "galleryNumber": "109",
+    "site": "aic",
+    "title": "Gallery 109"
+  },
+  {
+    "galleryNumber": "Bluhm Family Terrace",
+    "site": "aic",
+    "title": "Bluhm Family Terrace"
+  },
+  {
+    "galleryNumber": "57",
+    "site": "aic",
+    "title": "Gallery 57"
+  },
+  {
+    "galleryNumber": "58",
+    "site": "aic",
+    "title": "Gallery 58"
+  },
+  {
+    "galleryNumber": "59",
+    "site": "aic",
+    "title": "Gallery 59"
+  },
+  {
+    "galleryNumber": "50",
+    "site": "aic",
+    "title": "Gallery 50"
+  },
+  {
+    "galleryNumber": "154",
+    "site": "aic",
+    "title": "Gallery 154"
+  },
+  {
+    "galleryNumber": "153",
+    "site": "aic",
+    "title": "Gallery 153"
+  },
+  {
+    "galleryNumber": "285",
+    "site": "aic",
+    "title": "Gallery 285"
+  },
+  {
+    "galleryNumber": "212",
+    "site": "aic",
+    "title": "Gallery 212"
+  },
+  {
+    "galleryNumber": "213",
+    "site": "aic",
+    "title": "Gallery 213"
+  },
+  {
+    "galleryNumber": "211",
+    "site": "aic",
+    "title": "Gallery 211"
+  },
+  {
+    "galleryNumber": "397",
+    "site": "aic",
+    "title": "Gallery 397"
+  },
+  {
+    "galleryNumber": "184",
+    "site": "aic",
+    "title": "Gallery 184"
+  },
+  {
+    "galleryNumber": "183",
+    "site": "aic",
+    "title": "Gallery 183"
+  },
+  {
+    "galleryNumber": "182",
+    "site": "aic",
+    "title": "Gallery 182"
+  },
+  {
+    "galleryNumber": "271",
+    "site": "aic",
+    "title": "Gallery 271",
+    "closed": true
+  },
+  {
+    "galleryNumber": "265",
+    "site": "aic",
+    "title": "Gallery 265",
+    "closed": true
+  },
+  {
+    "galleryNumber": "167",
+    "site": "aic",
+    "title": "Gallery 167",
+    "closed": true
+  },
+  {
+    "galleryNumber": "168",
+    "site": "aic",
+    "title": "Gallery 168",
+    "closed": true
+  },
+  {
+    "galleryNumber": "169",
+    "site": "aic",
+    "title": "Gallery 169",
+    "closed": true
+  },
+  {
+    "galleryNumber": "174",
+    "site": "aic",
+    "title": "Gallery 174",
+    "closed": true
+  },
+  {
+    "galleryNumber": "175",
+    "site": "aic",
+    "title": "Gallery 175",
+    "closed": true
+  },
+  {
+    "galleryNumber": "176",
+    "site": "aic",
+    "title": "Gallery 176",
+    "closed": true
+  },
+  {
+    "galleryNumber": "178",
+    "site": "aic",
+    "title": "Gallery 178",
+    "closed": true
+  },
+  {
+    "galleryNumber": "165",
+    "site": "aic",
+    "title": "Gallery 165",
+    "closed": true
+  },
+  {
+    "galleryNumber": "166",
+    "site": "aic",
+    "title": "Gallery 166",
+    "closed": true
+  },
+  {
+    "galleryNumber": "179",
+    "site": "aic",
+    "title": "Gallery 179",
+    "closed": true
+  },
+  {
+    "galleryNumber": "177",
+    "site": "aic",
+    "title": "Gallery 177",
+    "closed": true
+  },
+  {
+    "galleryNumber": "170",
+    "site": "aic",
+    "title": "Gallery 170",
+    "closed": true
+  },
+  {
+    "galleryNumber": "173",
+    "site": "aic",
+    "title": "Gallery 173",
+    "closed": true
+  },
+  {
+    "galleryNumber": "172",
+    "site": "aic",
+    "title": "Gallery 172",
+    "closed": true
+  },
+  {
+    "galleryNumber": "171",
+    "site": "aic",
+    "title": "Gallery 171",
+    "closed": true
+  },
+  {
+    "galleryNumber": "1",
+    "site": "aic",
+    "title": "Gallery 1"
+  },
+  {
+    "galleryNumber": "2",
+    "site": "aic",
+    "title": "Gallery 2"
+  },
+  {
+    "galleryNumber": "3",
+    "site": "aic",
+    "title": "Gallery 3"
+  },
+  {
+    "galleryNumber": "4",
+    "site": "aic",
+    "title": "Gallery 4"
+  },
+  {
+    "galleryNumber": "289",
+    "site": "aic",
+    "title": "Gallery 289"
+  },
+  {
+    "galleryNumber": "Galleries 231-233",
+    "site": "aic",
+    "title": "Galleries 231-233"
+  },
+  {
+    "galleryNumber": "237",
+    "site": "aic",
+    "title": "Gallery 237"
+  },
+  {
+    "galleryNumber": "270",
+    "site": "aic",
+    "title": "Gallery 270",
+    "closed": true
+  },
+  {
+    "galleryNumber": "204",
+    "site": "aic",
+    "title": "Gallery 204"
+  },
+  {
+    "galleryNumber": "203",
+    "site": "aic",
+    "title": "Gallery 203",
+    "closed": true
+  },
+  {
+    "galleryNumber": "136",
+    "site": "aic",
+    "title": "Gallery 136"
+  },
+  {
+    "galleryNumber": "137",
+    "site": "aic",
+    "title": "Gallery 137"
+  },
+  {
+    "galleryNumber": "162",
+    "site": "aic",
+    "title": "Gallery 162",
+    "closed": true
+  },
+  {
+    "galleryNumber": "108",
+    "site": "aic",
+    "title": "Gallery 108"
+  },
+  {
+    "galleryNumber": "238",
+    "site": "aic",
+    "title": "Gallery 238"
+  },
+  {
+    "galleryNumber": "239",
+    "site": "aic",
+    "title": "Gallery 239"
+  },
+  {
+    "galleryNumber": "100",
+    "site": "aic",
+    "title": "Gallery 100"
+  },
+  {
+    "galleryNumber": "143",
+    "site": "aic",
+    "title": "Gallery 143"
+  },
+  {
+    "galleryNumber": "Terzo Piano Restaurant",
+    "site": "aic",
+    "title": "Terzo Piano Restaurant"
+  },
+  {
+    "galleryNumber": "Balcony Café",
+    "site": "aic",
+    "title": "Balcony Café"
+  },
+  {
+    "galleryNumber": "191 (Ryan Learning Center)",
+    "site": "aic",
+    "title": "Gallery 191 (Ryan Learning Center)"
+  },
+  {
+    "galleryNumber": "199 (Touch Gallery)",
+    "site": "aic",
+    "title": "Gallery 199 (Touch Gallery)"
+  },
+  {
+    "galleryNumber": "144",
+    "site": "aic",
+    "title": "Gallery 144"
+  },
+  {
+    "galleryNumber": "151",
+    "site": "aic",
+    "title": "Gallery 151"
+  },
+  {
+    "galleryNumber": "288",
+    "site": "aic",
+    "title": "Gallery 288"
+  },
+  {
+    "galleryNumber": "290 (Vestibule)",
+    "site": "aic",
+    "title": "Gallery 290 (Vestibule)"
+  },
+  {
+    "galleryNumber": "24",
+    "site": "aic",
+    "title": "Gallery 24"
+  },
+  {
+    "galleryNumber": "15",
+    "site": "aic",
+    "title": "Gallery 15",
+    "closed": true
+  },
+  {
+    "galleryNumber": "141",
+    "site": "aic",
+    "title": "Gallery 141"
+  },
+  {
+    "galleryNumber": "140",
+    "site": "aic",
+    "title": "Gallery 140"
+  },
+  {
+    "galleryNumber": "392",
+    "site": "aic",
+    "title": "Gallery 392"
+  },
+  {
+    "galleryNumber": "Stock Exchange Trading Room",
+    "site": "aic",
+    "title": "Stock Exchange Trading Room"
+  },
+  {
+    "galleryNumber": "398",
+    "site": "aic",
+    "title": "Gallery 398"
+  },
+  {
+    "galleryNumber": "396",
+    "site": "aic",
+    "title": "Gallery 396"
+  },
+  {
+    "galleryNumber": "393",
+    "site": "aic",
+    "title": "Gallery 393"
+  },
+  {
+    "galleryNumber": "395",
+    "site": "aic",
+    "title": "Gallery 395"
+  },
+  {
+    "galleryNumber": "391",
+    "site": "aic",
+    "title": "Gallery 391"
+  },
+  {
+    "galleryNumber": "399",
+    "site": "aic",
+    "title": "Gallery 399"
+  },
+  {
+    "galleryNumber": "389 (corridor)",
+    "site": "aic",
+    "title": "Gallery 389 (corridor)"
+  },
+  {
+    "galleryNumber": "297",
+    "site": "aic",
+    "title": "Gallery 297"
+  },
+  {
+    "galleryNumber": "296",
+    "site": "aic",
+    "title": "Gallery 296"
+  },
+  {
+    "galleryNumber": "293",
+    "site": "aic",
+    "title": "Gallery 293"
+  },
+  {
+    "galleryNumber": "292",
+    "site": "aic",
+    "title": "Gallery 292"
+  },
+  {
+    "galleryNumber": "291",
+    "site": "aic",
+    "title": "Gallery 291"
+  },
+  {
+    "galleryNumber": "264",
+    "site": "aic",
+    "title": "Gallery 264"
+  },
+  {
+    "galleryNumber": "10",
+    "site": "aic",
+    "title": "Gallery 10"
+  },
+  {
+    "galleryNumber": "268",
+    "site": "aic",
+    "title": "Gallery 268",
+    "closed": true
+  },
+  {
+    "galleryNumber": "295",
+    "site": "aic",
+    "title": "Gallery 295"
+  },
+  {
+    "galleryNumber": "394",
+    "site": "aic",
+    "title": "Gallery 394"
+  },
+  {
+    "galleryNumber": "299",
+    "site": "aic",
+    "title": "Gallery 299"
+  },
+  {
+    "galleryNumber": "286",
+    "site": "aic",
+    "title": "Gallery 286"
+  },
+  {
+    "galleryNumber": "164",
+    "site": "aic",
+    "title": "Gallery 164",
+    "closed": true
+  },
+  {
+    "galleryNumber": "163",
+    "site": "aic",
+    "title": "Gallery 163",
+    "closed": true
+  },
+  {
+    "galleryNumber": "135",
+    "site": "aic",
+    "title": "Gallery 135"
+  },
+  {
+    "galleryNumber": "267",
+    "site": "aic",
+    "title": "Gallery 267",
+    "closed": true
+  },
+  {
+    "galleryNumber": "294",
+    "site": "aic",
+    "title": "Gallery 294"
+  },
+  {
+    "galleryNumber": "284",
+    "site": "aic",
+    "title": "Gallery 284"
+  },
+  {
+    "galleryNumber": "152",
+    "site": "aic",
+    "title": "Gallery 152"
+  },
+  {
+    "galleryNumber": "Michigan Avenue entrance/steps",
+    "site": "aic",
+    "title": "Michigan Avenue entrance/steps"
+  },
+  {
+    "galleryNumber": "20",
+    "site": "aic",
+    "title": "Gallery 20"
+  },
+  {
+    "galleryNumber": "South Stanley McCormick Memorial Garden",
+    "site": "aic",
+    "title": "South Stanley McCormick Memorial Garden"
+  },
+  {
+    "galleryNumber": "Pritzker Garden",
+    "site": "aic",
+    "title": "Pritzker Garden"
+  },
+  {
+    "galleryNumber": "390",
+    "site": "aic",
+    "title": "Gallery 390"
+  },
+  {
+    "galleryNumber": "East Garden at Columbus Drive",
+    "site": "aic",
+    "title": "East Garden at Columbus Drive"
+  },
+  {
+    "galleryNumber": "Research Center Franke Reading Room",
+    "site": "aic",
+    "title": "Research Center Franke Reading Room"
+  },
+  {
+    "galleryNumber": "131",
+    "site": "aic",
+    "title": "Gallery 131"
+  },
+  {
+    "galleryNumber": "187",
+    "site": "aic",
+    "title": "Gallery 187"
+  },
+  {
+    "galleryNumber": "288 (Corridor South)",
+    "site": "aic",
+    "title": "Gallery 288 (Corridor South)"
+  },
+  {
+    "galleryNumber": "150",
+    "site": "aic",
+    "title": "Gallery 150"
+  },
+  {
+    "galleryNumber": "186",
+    "site": "aic",
+    "title": "Gallery 186"
+  },
+  {
+    "galleryNumber": "189 (Corridor)",
+    "site": "aic",
+    "title": "Gallery 189 (Corridor)"
+  },
+  {
+    "galleryNumber": "185 (Griffin Court)",
+    "site": "aic",
+    "title": "Gallery 185 (Griffin Court)"
+  },
+  {
+    "galleryNumber": "160",
+    "site": "aic",
+    "title": "Gallery 160"
+  },
+  {
+    "galleryNumber": "142",
+    "site": "aic",
+    "title": "Gallery 142"
+  },
+  {
+    "galleryNumber": "216",
+    "site": "aic",
+    "title": "Gallery 216"
+  },
+  {
+    "galleryNumber": "217",
+    "site": "aic",
+    "title": "Gallery 217"
+  },
+  {
+    "galleryNumber": "207",
+    "site": "aic",
+    "title": "Gallery 207"
+  },
+  {
+    "galleryNumber": "206",
+    "site": "aic",
+    "title": "Gallery 206"
+  },
+  {
+    "galleryNumber": "245",
+    "site": "aic",
+    "title": "Gallery 245"
+  },
+  {
+    "galleryNumber": "202",
+    "site": "aic",
+    "title": "Gallery 202"
+  },
+  {
+    "galleryNumber": "205",
+    "site": "aic",
+    "title": "Gallery 205"
+  },
+  {
+    "galleryNumber": "218",
+    "site": "aic",
+    "title": "Gallery 218"
+  },
+  {
+    "galleryNumber": "227",
+    "site": "aic",
+    "title": "Gallery 227"
+  },
+  {
+    "galleryNumber": "262",
+    "site": "aic",
+    "title": "Gallery 262"
+  },
+  {
+    "galleryNumber": "263",
+    "site": "aic",
+    "title": "Gallery 263"
+  },
+  {
+    "galleryNumber": "208",
+    "site": "aic",
+    "title": "Gallery 208"
+  },
+  {
+    "galleryNumber": "236",
+    "site": "aic",
+    "title": "Gallery 236"
+  },
+  {
+    "galleryNumber": "223",
+    "site": "aic",
+    "title": "Gallery 223"
+  },
+  {
+    "galleryNumber": "224",
+    "site": "aic",
+    "title": "Gallery 224"
+  },
+  {
+    "galleryNumber": "225",
+    "site": "aic",
+    "title": "Gallery 225"
+  },
+  {
+    "galleryNumber": "226",
+    "site": "aic",
+    "title": "Gallery 226"
+  },
+  {
+    "galleryNumber": "201",
+    "site": "aic",
+    "title": "Gallery 201"
+  },
+  {
+    "galleryNumber": "11",
+    "site": "aic",
+    "title": "Gallery 11"
+  },
+  {
+    "galleryNumber": "246",
+    "site": "aic",
+    "title": "Gallery 246"
+  },
+  {
+    "galleryNumber": "North Garden",
+    "site": "aic",
+    "title": "North Garden"
+  },
+  {
+    "galleryNumber": "219",
+    "site": "aic",
+    "title": "Gallery 219"
+  },
+  {
+    "galleryNumber": "101A",
+    "site": "aic",
+    "title": "Gallery 101A"
+  },
+  {
+    "galleryNumber": "134",
+    "site": "aic",
+    "title": "Gallery 134"
+  },
+  {
+    "galleryNumber": "248",
+    "site": "aic",
+    "title": "Gallery 248"
+  },
+  {
+    "galleryNumber": "Fullerton Hall Lobby",
+    "site": "aic",
+    "title": "Fullerton Hall Lobby"
+  },
+  {
+    "galleryNumber": "60",
+    "site": "aic",
+    "title": "Gallery 60"
+  },
+  {
+    "galleryNumber": "230",
+    "site": "aic",
+    "title": "Gallery 230"
+  },
+  {
+    "galleryNumber": "Rubloff Auditorium",
+    "site": "aic",
+    "title": "Rubloff Auditorium"
+  },
+  {
+    "galleryNumber": "241",
+    "site": "aic",
+    "title": "Gallery 241"
+  },
+  {
+    "galleryNumber": "200",
+    "site": "aic",
+    "title": "Gallery 200"
+  },
+  {
+    "galleryNumber": "244",
+    "site": "aic",
+    "title": "Gallery 244"
+  },
+  {
+    "galleryNumber": "247",
+    "site": "aic",
+    "title": "Gallery 247"
+  },
+  {
+    "galleryNumber": "101",
+    "site": "aic",
+    "title": "Gallery 101"
+  },
+  {
+    "galleryNumber": "105",
+    "site": "aic",
+    "title": "Gallery 105"
+  },
+  {
+    "galleryNumber": "106",
+    "site": "aic",
+    "title": "Gallery 106"
+  },
+  {
+    "galleryNumber": "130",
+    "site": "aic",
+    "title": "Gallery 130"
+  },
+  {
+    "galleryNumber": "132",
+    "site": "aic",
+    "title": "Gallery 132"
+  },
+  {
+    "galleryNumber": "133",
+    "site": "aic",
+    "title": "Gallery 133"
+  },
+  {
+    "galleryNumber": "235",
+    "site": "aic",
+    "title": "Gallery 235"
+  },
+  {
+    "galleryNumber": "261",
+    "site": "aic",
+    "title": "Gallery 261"
+  },
+  {
+    "galleryNumber": "107",
+    "site": "aic",
+    "title": "Gallery 107"
+  },
+  {
+    "galleryNumber": "243",
+    "site": "aic",
+    "title": "Gallery 243"
+  },
+  {
+    "galleryNumber": "209",
+    "site": "aic",
+    "title": "Gallery 209"
+  },
+  {
+    "galleryNumber": "215",
+    "site": "aic",
+    "title": "Gallery 215"
+  },
+  {
+    "galleryNumber": "214",
+    "site": "aic",
+    "title": "Gallery 214"
+  },
+  {
+    "galleryNumber": "242",
+    "site": "aic",
+    "title": "Gallery 242"
+  },
+  {
+    "galleryNumber": "240",
+    "site": "aic",
+    "title": "Gallery 240"
+  },
+  {
+    "galleryNumber": "220",
+    "site": "aic",
+    "title": "Gallery 220"
+  },
+  {
+    "galleryNumber": "249",
+    "site": "aic",
+    "title": "Gallery 249"
+  },
+  {
+    "galleryNumber": "102",
+    "site": "aic",
+    "title": "Gallery 102"
+  },
+  {
+    "galleryNumber": "103",
+    "site": "aic",
+    "title": "Gallery 103"
+  },
+  {
+    "galleryNumber": "104",
+    "site": "aic",
+    "title": "Gallery 104"
+  }
+]

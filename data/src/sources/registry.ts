@@ -11,6 +11,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { MuseumSource } from "./types.ts";
 import { metSource } from "./met.ts";
+import { aicSource } from "./aic.ts";
 
 const DATA_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 
@@ -74,6 +75,32 @@ export const MUSEUMS: MuseumInfo[] = [
     },
     objectUrlTemplate: "https://www.metmuseum.org/art/collection/search/{sourceId}",
   },
+  {
+    id: "aic",
+    name: "Art Institute of Chicago",
+    shortName: "Art Institute",
+    city: "Chicago",
+    country: "US",
+    sites: [
+      {
+        siteId: "aic",
+        name: "Art Institute of Chicago",
+        // Michigan Avenue entrance (the lions).
+        entrance: { lat: 41.8796, lon: -87.6237, floor: "1" },
+        // AIC labels floors LL/1/2/3; gallery rows ship without floors until
+        // an authoritative gallery→floor mapping is sourced (see sources/aic.ts).
+        floorOrder: ["LL", "1", "2", "3"],
+      },
+    ],
+    fidelity: "room-labels",
+    license: {
+      text: "CC0-1.0",
+      images: "CC0-1.0", // per-record: rows without is_public_domain get imageLicense=''
+      attribution: "Art Institute of Chicago public API (CC0)",
+      termsUrl: "https://www.artic.edu/terms",
+    },
+    objectUrlTemplate: "https://www.artic.edu/artworks/{sourceId}",
+  },
 ];
 
 export function museumInfo(id: string): MuseumInfo {
@@ -91,6 +118,7 @@ export function snapDirFor(id: string): string {
 
 const SOURCES: Record<string, MuseumSource> = {
   met: metSource,
+  aic: aicSource,
 };
 
 export function sourceFor(id: string): MuseumSource {
