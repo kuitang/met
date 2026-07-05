@@ -1,0 +1,20 @@
+{
+  "description": "Cleveland Museum of Art golden search cases (15): the per-museum accuracy north-star for the CMA rows in the merged artifact. Authored 2026-07-05 against the 6,899-row on-view set (currently_on_view=1 filter). Tiers mirror the Met/AIC sets: autocomplete = local FTS top-8; full = all-results; llm = relaxed-FTS stand-in for the interpret tier.",
+  "cases": [
+    { "query": "water lilies agapanthus", "tier": "autocomplete", "expectTitleContains": "Water Lilies", "note": "CMA icon; Monet late series" },
+    { "query": "crucifixion saint andrew", "tier": "autocomplete", "expectTitleContains": "Crucifixion of Saint Andrew", "note": "CMA icon; Caravaggio" },
+    { "query": "nathaniel hurd", "tier": "autocomplete", "expectArtistContains": "Copley", "note": "Copley portrait; title is the sitter's name, not the artist" },
+    { "query": "red kerchief", "tier": "autocomplete", "expectArtistContains": "Monet", "note": "distinctive title token" },
+    { "query": "la vie picasso", "tier": "autocomplete", "expectTitleContains": "La Vie", "note": "Picasso Blue Period icon" },
+    { "query": "pilgrim lentoid", "tier": "autocomplete", "expectTitleContains": "Lentoid Flask", "note": "Egyptian glass vessel; random-sample draft case" },
+    { "query": "bakenmut coffin", "tier": "autocomplete", "expectTitleContains": "Bakenmut", "note": "Egyptian coffin; random-sample draft case" },
+    { "query": "frieze dancers degas", "tier": "full", "expectTitleContains": "Frieze of Dancers", "note": "word-order + artist mix" },
+    { "query": "goya don juan antonio cuervo", "tier": "full", "expectTitleContains": "Cuervo", "note": "Spanish sitter name" },
+    { "query": "turner burning houses of parliament", "tier": "full", "expectTitleContains": "Burning of the Houses", "note": "popular name vs. catalog title (\"Lords and Commons\")" },
+    { "query": "el greco holy family magdalen", "tier": "full", "expectTitleContains": "Holy Family with Mary Magdalen", "note": "artist + title mix" },
+    { "query": "rodin the thinker", "tier": "full", "expectTitleContains": "The Thinker", "note": "CMA icon; also matches other museums' Thinker casts — title weight must win" },
+    { "query": "the rodin sculpture of a man sitting and thinking", "tier": "llm", "expectTitleContains": "Thinker", "note": "descriptive phrasing for the icon" },
+    { "query": "caravaggio's dramatic painting of an apostle being crucified", "tier": "llm", "expectTitleContains": "Crucifixion of Saint Andrew", "note": "scene + artist phrasing, no title token present" },
+    { "query": "monet's late garden painting with water lilies and blue flowers", "tier": "llm", "expectTitleContains": "Water Lilies", "note": "scene phrasing for the icon" }
+  ]
+}

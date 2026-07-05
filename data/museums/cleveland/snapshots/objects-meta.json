@@ -1,0 +1,10 @@
+{
+  "fetchedAt": "2026-07-05T19:10:59.269Z",
+  "onViewTotal": 6903,
+  "rows": 6899,
+  "skipped": {
+    "noLocation": 0
+  },
+  "distinctGalleryNumbers": 104,
+  "runtimeSeconds": 5
+}

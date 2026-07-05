@@ -1,0 +1,15 @@
+{
+  "fetchedAt": "2026-07-05T19:11:16.975Z",
+  "totalObjectRows": 145565,
+  "publicLocations": 1189,
+  "rows": 2808,
+  "skipped": {
+    "noLocation": 142757
+  },
+  "bySite": {
+    "nga-west": 2342,
+    "nga-east": 466
+  },
+  "distinctGalleryNumbers": 207,
+  "runtimeSeconds": 11
+}

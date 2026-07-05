@@ -1,0 +1,19 @@
+{
+  "description": "National Gallery of Art (Washington DC) golden search cases (14): the per-museum accuracy north-star for the NGA rows in the merged artifact. Authored 2026-07-05 against the 2,808-row on-view set (objects.csv rows with a resolvable locationid — West + East Buildings). Tiers mirror the Met/AIC/Cleveland sets: autocomplete = local FTS top-8; full = all-results; llm = relaxed-FTS stand-in for the interpret tier.",
+  "cases": [
+    { "query": "ginevra de benci", "tier": "autocomplete", "expectTitleContains": "Ginevra de", "note": "NGA icon; only Leonardo painting in the Americas" },
+    { "query": "girl with the red hat", "tier": "autocomplete", "expectTitleContains": "Girl with the Red Hat", "note": "NGA icon; Vermeer" },
+    { "query": "vermeer balance", "tier": "autocomplete", "expectTitleContains": "Woman Holding a Balance", "note": "artist + distinctive title token" },
+    { "query": "rembrandt self portrait", "tier": "autocomplete", "expectTitleContains": "Self-Portrait", "expectArtistContains": "Rembrandt", "note": "artist + common title disambiguated by artist token" },
+    { "query": "chateau noir cezanne", "tier": "autocomplete", "expectTitleContains": "Ch", "note": "accented title (unicode61 diacritic folding)" },
+    { "query": "houses of parliament sunset", "tier": "autocomplete", "expectTitleContains": "Houses of Parliament", "note": "Monet London series" },
+    { "query": "washington family savage", "tier": "full", "expectTitleContains": "Washington Family", "note": "artist + title mix" },
+    { "query": "gilbert stuart vaughan sinclair", "tier": "full", "expectTitleContains": "Vaughan-Sinclair", "note": "Stuart Washington portrait variant" },
+    { "query": "la mousme van gogh", "tier": "full", "expectTitleContains": "Mousm", "note": "accented title + artist" },
+    { "query": "fra angelico madonna humility", "tier": "full", "expectTitleContains": "Madonna of Humility", "note": "artist + title mix" },
+    { "query": "the only leonardo da vinci painting in america", "tier": "llm", "expectTitleContains": "Ginevra", "note": "descriptive phrasing for the icon, no title token" },
+    { "query": "vermeer's painting of a girl in a yellow hat", "tier": "llm", "expectTitleContains": "Girl with the Red Hat", "note": "popular color-mix phrasing (the hat reads yellow-red under old varnish)" },
+    { "query": "rembrandt painting of an old woman reading a book", "tier": "llm", "expectTitleContains": "Old Lady with a Book", "note": "descriptive phrasing" },
+    { "query": "monet paintings of rouen cathedral facade", "tier": "llm", "expectTitleContains": "Rouen Cathedral", "note": "series phrasing" }
+  ]
+}
