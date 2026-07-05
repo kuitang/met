@@ -1,0 +1,48 @@
+{
+  "totalUsd": 0.30204614679999975,
+  "calls": 835,
+  "byModel": {
+    "google/gemini-3.1-flash-lite": {
+      "usd": 0.04694649999999999,
+      "calls": 42,
+      "promptTokens": 50074,
+      "completionTokens": 22952
+    },
+    "google/gemini-2.5-flash-lite": {
+      "usd": 0.014565400000000001,
+      "calls": 42,
+      "promptTokens": 47098,
+      "completionTokens": 24639
+    },
+    "deepseek/deepseek-v4-flash": {
+      "usd": 0.011230282799999996,
+      "calls": 44,
+      "promptTokens": 54908,
+      "completionTokens": 22887
+    },
+    "qwen/qwen3.6-flash": {
+      "usd": 0.04939181249999997,
+      "calls": 44,
+      "promptTokens": 50297,
+      "completionTokens": 35521
+    },
+    "mistralai/mistral-small-3.2-24b-instruct": {
+      "usd": 0.0081377925,
+      "calls": 42,
+      "promptTokens": 49689,
+      "completionTokens": 22809
+    },
+    "openai/gpt-oss-20b": {
+      "usd": 0.005332067,
+      "calls": 42,
+      "promptTokens": 49168,
+      "completionTokens": 23151
+    },
+    "deepseek/deepseek-v4-pro": {
+      "usd": 0.1664422919999999,
+      "calls": 579,
+      "promptTokens": 164948,
+      "completionTokens": 3980
+    }
+  }
+}
