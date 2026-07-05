@@ -12,6 +12,7 @@ import {
   buildFuzzyCandidatesQuery,
   buildGalleryNeighborsQuery,
   buildGalleryPositionQuery,
+  computeExpiredMuseums,
   GALLERY_ORDER,
   amenityIntent,
   autocomplete,
@@ -90,6 +91,21 @@ describe("buildAutocompleteQuery", () => {
   it("omits the museum clause when not given", () => {
     expect(buildAutocompleteQuery("Monet")!.sql).not.toContain("o.museum");
   });
+  it("excludes expired (license-TTL-lapsed) museums via NOT IN", () => {
+    const q = buildAutocompleteQuery("Monet", undefined, ["vanda"])!;
+    expect(q.params).toEqual(['"monet"*', "vanda"]);
+    expect(q.sql).toContain("AND o.museum NOT IN (?)");
+  });
+  it("combines museum scope + expired-museum exclusion, params in order", () => {
+    const q = buildAutocompleteQuery("Monet", "met", ["vanda", "louvre"])!;
+    expect(q.params).toEqual(['"monet"*', "met", "vanda", "louvre"]);
+    expect(q.sql).toContain("AND o.museum = ?");
+    expect(q.sql).toContain("AND o.museum NOT IN (?, ?)");
+  });
+  it("omits the NOT IN clause when expiredMuseums is empty/undefined", () => {
+    expect(buildAutocompleteQuery("Monet", undefined, [])!.sql).not.toContain("NOT IN");
+    expect(buildAutocompleteQuery("Monet")!.sql).not.toContain("NOT IN");
+  });
 });
 
 describe("buildFullQuery", () => {
@@ -113,6 +129,17 @@ describe("buildFullQuery", () => {
   it("relaxed mode uses OR semantics", () => {
     const q = buildFullQuery("washington crossing delaware", {}, { relaxed: true })!;
     expect(q.params[0]).toBe('"washington" OR "crossing" OR "delaware"');
+  });
+  it("excludes expired museums via NOT IN, after the other filters", () => {
+    const q = buildFullQuery("sword", { museum: "met", expiredMuseums: ["vanda"] })!;
+    expect(q.params).toEqual(['"sword"*', "met", "vanda"]);
+    expect(q.sql).toContain("AND o.museum = ?");
+    expect(q.sql).toContain("AND o.museum NOT IN (?)");
+    expect(q.sql.indexOf("o.museum = ?")).toBeLessThan(q.sql.indexOf("NOT IN"));
+  });
+  it("omits the NOT IN clause when expiredMuseums is empty/undefined", () => {
+    expect(buildFullQuery("sword", { expiredMuseums: [] })!.sql).not.toContain("NOT IN");
+    expect(buildFullQuery("sword")!.sql).not.toContain("NOT IN");
   });
 });
 
@@ -712,6 +739,51 @@ describe("buildAccessionSearchQuery (pure)", () => {
     const q = buildAccessionSearchQuery("21.131", 8, "met")!;
     expect(q.params).toEqual(["%21%131%", "met", 8]);
     expect(q.sql).toContain("AND o.museum = ?");
+  });
+  it("excludes expired museums via NOT IN", () => {
+    const q = buildAccessionSearchQuery("21.131", 8, undefined, ["vanda"])!;
+    expect(q.params).toEqual(["%21%131%", "vanda", 8]);
+    expect(q.sql).toContain("AND o.museum NOT IN (?)");
+  });
+  it("omits the NOT IN clause when expiredMuseums is empty/undefined", () => {
+    expect(buildAccessionSearchQuery("21.131", 8, undefined, [])!.sql).not.toContain("NOT IN");
+    expect(buildAccessionSearchQuery("21.131")!.sql).not.toContain("NOT IN");
+  });
+});
+
+describe("computeExpiredMuseums (pure; the license-TTL mechanism's date arithmetic)", () => {
+  const DAY = 86_400_000;
+  const now = Date.parse("2026-07-05T00:00:00Z");
+
+  it("expires a museum once the artifact is older than ttlDays - 1 days", () => {
+    // ttlDays=28: expires strictly after 27 days old.
+    const museums = [{ id: "vanda", license: { ttlDays: 28 } }];
+    const builtAt27d = new Date(now - 27 * DAY).toISOString();
+    const builtAt28d = new Date(now - 28 * DAY).toISOString();
+    expect(computeExpiredMuseums(museums, builtAt27d, now)).toEqual([]);
+    expect(computeExpiredMuseums(museums, builtAt28d, now)).toEqual(["vanda"]);
+  });
+
+  it("never expires a museum with no ttlDays (CC0/open-license museums)", () => {
+    const museums = [{ id: "met", license: { ttlDays: null } }, { id: "aic", license: {} }];
+    const veryOld = new Date(now - 365 * DAY).toISOString();
+    expect(computeExpiredMuseums(museums, veryOld, now)).toEqual([]);
+  });
+
+  it("only the expired museum is returned, others stay visible", () => {
+    const museums = [
+      { id: "vanda", license: { ttlDays: 28 } },
+      { id: "met", license: {} },
+    ];
+    const builtAt40d = new Date(now - 40 * DAY).toISOString();
+    expect(computeExpiredMuseums(museums, builtAt40d, now)).toEqual(["vanda"]);
+  });
+
+  it("expires nothing when builtAt is missing/unparseable (pre-v2 artifact) — never guesses", () => {
+    const museums = [{ id: "vanda", license: { ttlDays: 28 } }];
+    expect(computeExpiredMuseums(museums, null, now)).toEqual([]);
+    expect(computeExpiredMuseums(museums, undefined, now)).toEqual([]);
+    expect(computeExpiredMuseums(museums, "not-a-date", now)).toEqual([]);
   });
 });
 

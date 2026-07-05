@@ -48,6 +48,7 @@ import {
   buildFullQuery,
   buildGalleryNeighborsQuery,
   buildGalleryPositionQuery,
+  computeExpiredMuseums,
   GALLERY_ORDER,
   matchGalleries,
   type SearchFilters,
@@ -201,6 +202,9 @@ export class SqliteDataProvider implements DataProvider {
    */
   private objectCols = `${OBJECT_COLS}, '' AS thumbKey, '' AS museum, '' AS sourceId`;
 
+  /** Site ids belonging to an expired museum (derived from expiredMuseums + museumEntries). */
+  private expiredSiteIds: Set<string>;
+
   private constructor(
     private met: MetDb,
     private rooms: Map<string, Room>,
@@ -220,9 +224,21 @@ export class SqliteDataProvider implements DataProvider {
     /** objects.museum exists (schema v2) — gates whether museum-scoped search is safe to run. */
     private hasMuseumColumn: boolean,
     builtAt: string | undefined,
+    /**
+     * Museum registry ids whose license TTL has lapsed (registry
+     * license.ttlDays vs meta.builtAt age, computed once in create() — see
+     * ARCHITECTURE.md "Provenance & the license-TTL mechanism"). Threaded
+     * into every search/browse query as `AND o.museum NOT IN (...)` — the
+     * WHERE clause IS the compliance mechanism.
+     */
+    private expiredMuseumIds: string[],
   ) {
     this.dataVersion = met.dataVersion;
     this.builtAt = builtAt;
+    const expiredIds = new Set(expiredMuseumIds);
+    this.expiredSiteIds = new Set(
+      museumEntries.filter((m) => expiredIds.has(m.id)).flatMap((m) => m.sites.map((s) => s.siteId)),
+    );
   }
 
   static async create(met: MetDb): Promise<SqliteDataProvider> {
@@ -248,8 +264,9 @@ export class SqliteDataProvider implements DataProvider {
           `SELECT value FROM blobs WHERE key = 'galleries.geojson'`,
         ),
         met.allAsync<{ value: string }>(`SELECT value FROM meta WHERE key = 'museums'`),
-        // Artifact build date (C3 staleness fallback) — pre-v2 artifacts have
-        // no row, hence the array-length check below rather than assuming one.
+        // Artifact build date (C3 staleness fallback + the license-TTL age
+        // check) — pre-v2 artifacts have no row, hence the array-length check
+        // below rather than assuming one.
         met.allAsync<{ value: string }>(`SELECT value FROM meta WHERE key = 'builtAt'`),
       ]);
 
@@ -263,6 +280,13 @@ export class SqliteDataProvider implements DataProvider {
       }
     }
     const builtAt = builtAtMeta.length ? builtAtMeta[0].value : undefined;
+
+    // License-TTL mechanism (V&A non-commercial 28-day cap, …): a museum
+    // whose license.ttlDays is set expires once the shipped artifact is
+    // older than ttlDays - 1 days — its rows are excluded from every search/
+    // browse query from here on (see ARCHITECTURE.md "Provenance & the
+    // license-TTL mechanism"). No builtAt (pre-v2 artifact) → nothing expires.
+    const expiredMuseums = computeExpiredMuseums(museumEntries, builtAt ?? null);
 
     // --- geometry blob → features per site|floorLabel (S2 map contract) -----
     const features: GalleryFeature[] = blob.length
@@ -434,6 +458,7 @@ export class SqliteDataProvider implements DataProvider {
       museumEntries,
       museumCol.length > 0,
       builtAt,
+      expiredMuseums,
     );
     provider.objectCols = [
       OBJECT_COLS,
@@ -464,9 +489,15 @@ export class SqliteDataProvider implements DataProvider {
    * digit queries surface almost nothing. FTS hits (bm25-ranked title/artist
    * relevance) come first; accession-containment hits are appended, deduped.
    */
-  private withAccessionMatches(query: string, ids: number[], limit: number, museum?: string): number[] {
+  private withAccessionMatches(
+    query: string,
+    ids: number[],
+    limit: number,
+    museum?: string,
+    expiredMuseums?: string[],
+  ): number[] {
     if (ids.length >= limit) return ids.slice(0, limit);
-    const aq = buildAccessionSearchQuery(query, limit, museum);
+    const aq = buildAccessionSearchQuery(query, limit, museum, expiredMuseums);
     if (aq === null) return ids.slice(0, limit);
     const seen = new Set(ids);
     const merged = [...ids];
@@ -482,29 +513,61 @@ export class SqliteDataProvider implements DataProvider {
     return this.hasMuseumColumn ? museum : undefined;
   }
 
+  /** Same no-op-unless-the-column-exists guard as scopedMuseum, for the TTL exclusion list. */
+  private scopedExpiredMuseums(): string[] {
+    return this.hasMuseumColumn ? this.expiredMuseumIds : [];
+  }
+
+  /** Museum registry ids currently hidden by the license-TTL mechanism (see the constructor). */
+  expiredMuseums(): string[] {
+    return this.expiredMuseumIds;
+  }
+
+  /** Gallery rooms with any license-TTL-expired museum's rooms excluded. */
+  private visibleGalleryRooms(): Room[] {
+    if (this.expiredSiteIds.size === 0) return this.galleryRooms;
+    return this.galleryRooms.filter((r) => !r.site || !this.expiredSiteIds.has(r.site));
+  }
+
   searchAutocomplete(query: string, limit = 8, museum?: string): MetObject[] {
     // exact prefix path first; on zero rows, trigram+edit-distance correction
     // over the vocab tables ("harlw" -> harlequin). Caps at top 8.
     const scoped = this.scopedMuseum(museum);
-    const rows = autocompleteFuzzy((sql, params) => this.met.allSync(sql, params), query, scoped);
+    const expired = this.scopedExpiredMuseums();
+    const rows = autocompleteFuzzy(
+      (sql, params) => this.met.allSync(sql, params),
+      query,
+      scoped,
+      expired,
+    );
     const ids = this.withAccessionMatches(
       query,
       rows.slice(0, limit).map((r) => r.objectID),
       limit,
       scoped,
+      expired,
     );
     return this.hydrate(ids);
   }
 
   searchAll(query: string, filters: SearchFilters = {}): MetObject[] {
-    const scopedFilters = this.hasMuseumColumn ? filters : { ...filters, museum: undefined };
+    const scopedFilters: SearchFilters = {
+      ...(this.hasMuseumColumn ? filters : { ...filters, museum: undefined }),
+      expiredMuseums: this.scopedExpiredMuseums(),
+    };
     const q = buildFullQuery(query, scopedFilters, { limit: SEARCH_ALL_LIMIT });
     const rows = q === null ? [] : this.met.allSync<{ objectID: number }>(q.sql, q.params);
     // Accession matches join the pool only for unfiltered searches — the
     // accession scan doesn't apply the SQL-level filters.
     const ids = Object.keys(filters).length
       ? rows.map((r) => r.objectID)
-      : this.withAccessionMatches(query, rows.map((r) => r.objectID), SEARCH_ALL_LIMIT);
+      : this.withAccessionMatches(
+          query,
+          rows.map((r) => r.objectID),
+          SEARCH_ALL_LIMIT,
+          undefined,
+          this.scopedExpiredMuseums(),
+        );
     return this.hydrate(ids);
   }
 
@@ -512,7 +575,7 @@ export class SqliteDataProvider implements DataProvider {
     // Match on the BARE room code (digit queries type "241", never "aic:241");
     // room ids stay site-scoped for everything downstream.
     return matchGalleries(
-      this.galleryRooms.map((room) => ({
+      this.visibleGalleryRooms().map((room) => ({
         galleryNumber: parseRoomId(room.id).galleryNumber,
         title: room.name,
         room,
@@ -523,10 +586,14 @@ export class SqliteDataProvider implements DataProvider {
   }
 
   getObject(objectID: number): MetObject | undefined {
-    const rows = this.met.allSync<ObjectRow>(
-      `SELECT ${this.objectCols} FROM objects WHERE objectID = ?`,
-      [objectID],
-    );
+    const expired = this.scopedExpiredMuseums();
+    let sql = `SELECT ${this.objectCols} FROM objects WHERE objectID = ?`;
+    const params: Array<string | number> = [objectID];
+    if (expired.length) {
+      sql += ` AND museum NOT IN (${expired.map(() => '?').join(',')})`;
+      params.push(...expired);
+    }
+    const rows = this.met.allSync<ObjectRow>(sql, params);
     return rows.length ? toMetObject(rows[0]) : undefined;
   }
 
@@ -551,13 +618,16 @@ export class SqliteDataProvider implements DataProvider {
 
   objectsInGallery(galleryId: string): MetObject[] {
     const s = this.galleryScope(galleryId);
-    return this.met
-      .allSync<ObjectRow>(
-        `SELECT ${this.objectCols} FROM objects WHERE ${s.where}
-         ORDER BY ${GALLERY_ORDER} LIMIT ?`,
-        [...s.params, GALLERY_OBJECTS_LIMIT],
-      )
-      .map(toMetObject);
+    const expired = this.scopedExpiredMuseums();
+    let sql = `SELECT ${this.objectCols} FROM objects WHERE ${s.where}`;
+    const params: Array<string | number> = [...s.params];
+    if (expired.length) {
+      sql += ` AND museum NOT IN (${expired.map(() => '?').join(',')})`;
+      params.push(...expired);
+    }
+    sql += ` ORDER BY ${GALLERY_ORDER} LIMIT ?`;
+    params.push(GALLERY_OBJECTS_LIMIT);
+    return this.met.allSync<ObjectRow>(sql, params).map(toMetObject);
   }
 
   galleryObjectCount(galleryId: string): number {
@@ -581,11 +651,13 @@ export class SqliteDataProvider implements DataProvider {
   // --- rooms / map -------------------------------------------------------------
 
   getGallery(id: string): Room | undefined {
-    return this.rooms.get(id);
+    const room = this.rooms.get(id);
+    if (room?.site && this.expiredSiteIds.has(room.site)) return undefined;
+    return room;
   }
 
   galleries(): Room[] {
-    return this.galleryRooms;
+    return this.visibleGalleryRooms();
   }
 
   museums(): MuseumEntry[] {

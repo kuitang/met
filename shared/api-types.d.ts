@@ -184,6 +184,8 @@ export interface components {
                 images: string;
                 attribution: string;
                 termsUrl: string;
+                /** @description Non-commercial-use TTL in days for sources whose terms cap how long fetched content may be cached/served (e.g. V&A: 4 weeks). When set, the license-TTL mechanism hides this museum's rows once the shipped artifact is older than ttlDays - 1 (see ARCHITECTURE.md "Provenance & the license-TTL mechanism"). */
+                ttlDays?: number;
             };
             /** @description Object deep-link template; "{sourceId}" replaced per record */
             objectUrlTemplate?: string;

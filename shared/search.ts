@@ -55,6 +55,16 @@ export interface SearchFilters {
   floor?: string;
   rotation?: "permanent" | "exhibition";
   hasImage?: boolean;
+  /**
+   * Museum registry ids whose license TTL has lapsed (see registry
+   * MuseumInfo.license.ttlDays, e.g. V&A's non-commercial 28-day cap) —
+   * excluded from every result via `AND o.museum NOT IN (...)`. The WHERE
+   * clause IS the compliance mechanism: SqliteDataProvider computes this
+   * list once at create() from meta.builtAt vs each museum's ttlDays and
+   * threads it into every search call (see ARCHITECTURE.md "Provenance &
+   * the license-TTL mechanism"). Empty/undefined = no museum is expired.
+   */
+  expiredMuseums?: string[];
 }
 
 export interface BuiltQuery {
@@ -114,14 +124,62 @@ LEFT JOIN galleries g ON g.galleryNumber = o.galleryNumber AND g.site = o.site
 WHERE objects_fts MATCH ?`;
 
 /**
+ * `AND o.museum NOT IN (...)` clause + its bind params for a list of expired
+ * (license-TTL-lapsed) museum ids — "" when the list is empty/undefined, the
+ * one WHERE fragment shared by every query builder below (see SearchFilters
+ * .expiredMuseums). This IS the compliance mechanism: once added, the museum's
+ * rows are unreachable through any search path.
+ */
+function expiredMuseumsClause(expiredMuseums?: string[]): { sql: string; params: string[] } {
+  if (!expiredMuseums || expiredMuseums.length === 0) return { sql: "", params: [] };
+  const placeholders = expiredMuseums.map(() => "?").join(", ");
+  return { sql: `\n  AND o.museum NOT IN (${placeholders})`, params: [...expiredMuseums] };
+}
+
+export interface MuseumTtlInfo {
+  id: string;
+  /** Registry MuseumInfo.license.ttlDays — undefined/null = never expires. */
+  license?: { ttlDays?: number | null };
+}
+
+/**
+ * The license-TTL mechanism's date arithmetic: which museum registry ids
+ * have outlived their non-commercial-use terms (e.g. V&A's 4-week cap) as of
+ * `now`, given the shipped artifact's `builtAt` (meta.builtAt). A museum with
+ * `ttlDays = N` expires once the artifact is older than `N - 1` days (a
+ * one-day safety margin so a nightly-refresh delay never lands the artifact
+ * past the true deadline). Pure/synchronous — SqliteDataProvider.create() is
+ * the production caller (see ARCHITECTURE.md "Provenance & the license-TTL
+ * mechanism"); a missing/unparseable builtAt (pre-v2 artifact) expires
+ * nothing rather than guessing.
+ */
+export function computeExpiredMuseums(
+  museums: readonly MuseumTtlInfo[],
+  builtAt: string | null | undefined,
+  now: number = Date.now(),
+): string[] {
+  const builtAtMs = builtAt ? Date.parse(builtAt) : NaN;
+  if (!Number.isFinite(builtAtMs)) return [];
+  const ageDays = (now - builtAtMs) / 86_400_000;
+  return museums
+    .filter((m) => m.license?.ttlDays != null && ageDays > m.license.ttlDays - 1)
+    .map((m) => m.id);
+}
+
+/**
  * Autocomplete (every keystroke): every-token-prefixed AND match, weighted
  * bm25 + highlight boost, gallery floor joined inline, top 8. `museum` scopes
  * to one museum registry id (schema v2 multi-museum artifacts; the ScopeChips
  * "AT {museum}" selection) — same WHERE-clause shape as the site filter in
- * buildFullQuery. Callers must feature-detect the column first (see
- * SqliteDataProvider) — this builder does not.
+ * buildFullQuery. `expiredMuseums` excludes license-TTL-lapsed museums (see
+ * SearchFilters.expiredMuseums). Callers must feature-detect the column
+ * first (see SqliteDataProvider) — this builder does not.
  */
-export function buildAutocompleteQuery(input: string, museum?: string): BuiltQuery | null {
+export function buildAutocompleteQuery(
+  input: string,
+  museum?: string,
+  expiredMuseums?: string[],
+): BuiltQuery | null {
   const match = toPrefixMatch(input);
   if (match === null) return null;
   let sql = SELECT_CORE;
@@ -130,6 +188,9 @@ export function buildAutocompleteQuery(input: string, museum?: string): BuiltQue
     sql += `\n  AND o.museum = ?`;
     params.push(museum);
   }
+  const expired = expiredMuseumsClause(expiredMuseums);
+  sql += expired.sql;
+  params.push(...expired.params);
   sql += `\nORDER BY score\nLIMIT 8`;
   return { sql, params };
 }
@@ -361,8 +422,13 @@ export function fuzzyPrefixMatch(run: RunSync, input: string): FuzzyMatches | nu
  * re-downloads the artifact. `museum` scopes both the exact and fuzzy passes
  * (see buildAutocompleteQuery).
  */
-export function autocompleteFuzzy(run: RunSync, input: string, museum?: string): SearchRow[] {
-  const q = buildAutocompleteQuery(input, museum);
+export function autocompleteFuzzy(
+  run: RunSync,
+  input: string,
+  museum?: string,
+  expiredMuseums?: string[],
+): SearchRow[] {
+  const q = buildAutocompleteQuery(input, museum, expiredMuseums);
   if (q === null) return [];
   const rows = run(q.sql, q.params) as SearchRow[];
   if (rows.length > 0) return rows;
@@ -371,10 +437,13 @@ export function autocompleteFuzzy(run: RunSync, input: string, museum?: string):
     if (m === null) return [];
     let sql = SELECT_CORE;
     if (museum) sql += `\n  AND o.museum = ?`;
+    const expired = expiredMuseumsClause(expiredMuseums);
+    sql += expired.sql;
     sql += `\nORDER BY score\nLIMIT 8`;
-    const primary = run(sql, museum ? [m.primary, museum] : [m.primary]) as SearchRow[];
+    const museumParams = museum ? [museum] : [];
+    const primary = run(sql, [m.primary, ...museumParams, ...expired.params]) as SearchRow[];
     if (primary.length > 0 || m.expanded === null) return primary;
-    return run(sql, museum ? [m.expanded, museum] : [m.expanded]) as SearchRow[];
+    return run(sql, [m.expanded, ...museumParams, ...expired.params]) as SearchRow[];
   } catch {
     return [];
   }
@@ -420,6 +489,9 @@ export function buildFullQuery(
   if (filters.hasImage) {
     sql += `\n  AND o.imageUrl <> ''`;
   }
+  const expired = expiredMuseumsClause(filters.expiredMuseums);
+  sql += expired.sql;
+  params.push(...expired.params);
   sql += `\nORDER BY score`;
   if (opts.limit !== undefined) {
     sql += `\nLIMIT ?`;
@@ -568,6 +640,7 @@ export function buildAccessionSearchQuery(
   input: string,
   limit = 8,
   museum?: string,
+  expiredMuseums?: string[],
 ): BuiltQuery | null {
   const toks = tokens(input);
   if (toks.length === 0 || !toks.some((t) => /\d/.test(t))) return null;
@@ -583,6 +656,9 @@ WHERE o.accession LIKE ? ESCAPE '\\'`;
     sql += `\n  AND o.museum = ?`;
     params.push(museum);
   }
+  const expired = expiredMuseumsClause(expiredMuseums);
+  sql += expired.sql;
+  params.push(...expired.params);
   sql += `\nORDER BY o.isHighlight DESC, o.objectID\nLIMIT ?`;
   params.push(limit);
   return { sql, params };

@@ -397,8 +397,22 @@ function main(): void {
           license: o.license ?? info.license.text,
           imageLicense: o.imageLicense ?? info.license.images,
         });
+        // Untitled-object convention (V&A: ~97% of rows display objectType as
+        // the title) makes title === classification. Indexing that copy at
+        // title weight both double-counts the term (10 + 5) and — because
+        // sparse rows win bm25's length normalization — lets a museum of
+        // type-titled rows sweep generic-noun autocomplete across the fleet
+        // (measured: 8 V&A "Powder flask" rows filling the whole top-8 over
+        // every true-titled Met/Cleveland flask). Semantically the fallback
+        // IS a type, so index it ONLY as classification (weight 5): rows
+        // with real titles outrank type matches, which is exactly what the
+        // column weights mean. The DISPLAY title keeps the fallback value.
+        const isTypeTitle =
+          o.classification.trim().toLowerCase() === o.title.trim().toLowerCase() &&
+          o.title.trim() !== "";
         // Indexed title carries both languages at full weight.
-        const indexedTitle = titleAlt ? `${o.title} ${titleAlt}` : o.title;
+        const titleForIndex = isTypeTitle ? "" : o.title;
+        const indexedTitle = titleAlt ? `${titleForIndex} ${titleAlt}`.trim() : titleForIndex;
         insFts.run(objectID, indexedTitle, o.artist, o.culture, o.classification, o.medium, o.tags, syn);
         indexedTuples.push({
           title: indexedTitle,

@@ -1,0 +1,17 @@
+{
+  "description": "V&A golden search cases (12): the per-museum accuracy north-star for the Victoria and Albert Museum rows in the merged artifact. Authored 2026-07-05 against the on_display_at=southken on-view set (~58k records at measurement time), all verified live via the V&A Collections API v2 search endpoint before being written down (systemNumber, title, artist, gallery all confirmed on-display). Tiers mirror the Met set: autocomplete = local FTS top-8; full = all-results; llm = relaxed-FTS stand-in for the interpret tier.",
+  "cases": [
+    { "query": "great bed of ware", "tier": "autocomplete", "expectTitleContains": "Great Bed of Ware", "note": "V&A icon; O9138, British Galleries Room 57" },
+    { "query": "ardabil carpet", "tier": "autocomplete", "expectTitleContains": "Ardabil Carpet", "note": "largest historic carpet on public display; Room 42, The Jameel Gallery" },
+    { "query": "hereford screen", "tier": "autocomplete", "expectTitleContains": "Hereford Screen", "note": "Skidmore ironwork choir screen; Room 114c" },
+    { "query": "trajan column", "tier": "autocomplete", "expectTitleContains": "Trajan's Column", "note": "Cast Courts plaster cast; apostrophe-free query must match (normalizeQuery strips punctuation)" },
+    { "query": "chihuly chandelier", "tier": "autocomplete", "expectArtistContains": "Chihuly", "note": "Dale Chihuly glass sculpture at the Cromwell Road entrance" },
+    { "query": "rossetti chair", "tier": "autocomplete", "expectTitleContains": "Rossetti chair", "note": "Dante Gabriel Rossetti design; artist token disambiguates the common noun" },
+    { "query": "raphael tapestry cartoon", "tier": "full", "expectArtistContains": "Raphael", "note": "the Raphael Cartoons, Room 48a; artist + classification tokens land on different columns of the same row" },
+    { "query": "three graces marble sculpture", "tier": "full", "expectTitleContains": "Three Graces", "note": "two on-view works share this title (Nollekens sculptor, Room 22; Jüchtzer modeller, Room 1) — either satisfies the case" },
+    { "query": "james ii coronation cup", "tier": "full", "expectTitleContains": "Coronation Cup", "note": "Silver, Room 65. NOT '... cup silver': V&A search-tier rows carry no medium text, so a 'silver' token has no searchable source and zeroes the strict-AND tier" },
+    { "query": "an ornate four poster bed too big for its own bedroom", "tier": "llm", "expectTitleContains": "Great Bed of Ware", "note": "descriptive phrasing for the icon; 'bed' is the surviving anchor token after stopword relaxation" },
+    { "query": "an ironwork choir screen door at the entrance to a chapel", "tier": "llm", "expectTitleContains": "Hereford Screen", "note": "medium + classification phrasing ('Choir screen' is objectType, not in the title itself)" },
+    { "query": "a giant ancient roman stone column with a carved spiral relief", "tier": "llm", "expectTitleContains": "Trajan's Column", "note": "descriptive phrasing for the Cast Courts cast; 'column' is the anchor token" }
+  ]
+}

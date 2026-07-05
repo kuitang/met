@@ -266,6 +266,17 @@ export interface DataProvider {
    * Pre-v2 artifacts and the stub return the built-in Met entry.
    */
   museums(): MuseumEntry[];
+  /**
+   * Museum registry ids currently hidden by the license-TTL mechanism (a
+   * museum whose registry license.ttlDays has lapsed against the shipped
+   * artifact's age — see SqliteDataProvider's constructor and
+   * ARCHITECTURE.md "Provenance & the license-TTL mechanism"). Every search/
+   * browse method already excludes these museums' rows; DataGate reads this
+   * to force an immediate version check rather than serving a session that
+   * may go on hiding a museum indefinitely. The stub and pre-v2 artifacts
+   * return [] (nothing ever expires).
+   */
+  expiredMuseums(): string[];
 }
 
 export type MuseumEntry = components['schemas']['MuseumEntry'];
@@ -408,6 +419,10 @@ export class StubDataProvider implements DataProvider {
 
   museums(): MuseumEntry[] {
     return [BUILTIN_MET_ENTRY];
+  }
+
+  expiredMuseums(): string[] {
+    return [];
   }
 
   route(from: string, to: string, opts?: { avoidStairs?: boolean }): Route | undefined {
