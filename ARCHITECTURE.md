@@ -192,6 +192,23 @@ sheet's segmented VENUE row. Measured: 204 polygons on
 Fifth Ave floor 1, cold paint→first room 431 ms, floor switch 75 ms — no
 polygon simplification needed (measured before optimizing).
 
+## Room identity across museums
+
+Room codes COLLIDE across museums (102 codes on the 6-museum artifact — "241"
+is a Met gallery and an AIC gallery; "711" is Met and Louvre). Room ids are
+therefore **site-scoped** — `{site}:{code}` — for every non-Met site, while
+Met sites keep bare codes (frozen in deep links `/?focus=131`, route URLs, and
+the e2e suites; the Met's two sites never share a code). `provider.ts:
+scopedRoomId/parseRoomId/MET_SITE_IDS` define the rule; `MetObject.gallery` is
+the scoped room id (display codes come from room lookups, never that field);
+`objectsInGallery`/`galleryObjectCount` pin site (bare ids pin the Met);
+`buildGalleryPositionQuery`/`buildGalleryNeighborsQuery` take `scopeByMuseum`
+(feature-detected) so the J15 browse ring never crosses museums; routing's
+`byGallery` carries site-scoped keys (`{site}|{code}`) beside legacy bare ones.
+Verified by `apps/mobile/scripts/check-room-scoping.mts` against the real
+artifact (museum isolation on "241", browse-ring closure, Met route 131→822
+byte-stable at 24 steps / 309 m).
+
 ## Positioning: ranked signals, fused in one state machine
 
 `shared/positioning.ts`. The signal ranking (strongest wins):

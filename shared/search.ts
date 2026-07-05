@@ -452,12 +452,20 @@ const precedes = (before: string, current: string) =>
  * true gallery count — or no rows when the object is unknown or not on view.
  * Index range scans on objects(galleryNumber); no row materialization.
  */
-export function buildGalleryPositionQuery(objectID: number): BuiltQuery {
+export function buildGalleryPositionQuery(
+  objectID: number,
+  opts: { scopeByMuseum?: boolean } = {},
+): BuiltQuery {
+  // Room codes collide across museums ("241" is a Met gallery AND an AIC
+  // gallery), so on schema-v2 artifacts every correlated subquery must stay
+  // within the anchor object's museum. Callers pass scopeByMuseum after
+  // feature-detecting the museum column (pre-v2 artifacts lack it).
+  const scope = opts.scopeByMuseum ? (a: string) => ` AND ${a}.museum = o.museum` : () => "";
   return {
     sql: `SELECT
   (SELECT COUNT(*) FROM objects p
-    WHERE p.galleryNumber = o.galleryNumber AND ${precedes("p", "o")}) + 1 AS position,
-  (SELECT COUNT(*) FROM objects t WHERE t.galleryNumber = o.galleryNumber) AS total
+    WHERE p.galleryNumber = o.galleryNumber${scope("p")} AND ${precedes("p", "o")}) + 1 AS position,
+  (SELECT COUNT(*) FROM objects t WHERE t.galleryNumber = o.galleryNumber${scope("t")}) AS total
 FROM objects o
 WHERE o.objectID = ? AND o.galleryNumber <> ''`,
     params: [objectID],
@@ -472,21 +480,27 @@ WHERE o.objectID = ? AND o.galleryNumber <> ''`,
  * gallery), or no rows when the object is unknown or not on view.
  * Keyed comparisons + LIMIT 1 — no row materialization.
  */
-export function buildGalleryNeighborsQuery(objectID: number): BuiltQuery {
+export function buildGalleryNeighborsQuery(
+  objectID: number,
+  opts: { scopeByMuseum?: boolean } = {},
+): BuiltQuery {
+  // Same museum-scoping rule as buildGalleryPositionQuery (room codes collide
+  // across museums; the J15 browse loop must never step into another museum).
+  const scope = opts.scopeByMuseum ? (a: string) => ` AND ${a}.museum = o.museum` : () => "";
   return {
     sql: `SELECT
   COALESCE(
     (SELECT p.objectID FROM objects p
-      WHERE p.galleryNumber = o.galleryNumber AND ${precedes("p", "o")}
+      WHERE p.galleryNumber = o.galleryNumber${scope("p")} AND ${precedes("p", "o")}
       ORDER BY p.isHighlight ASC, p.objectID DESC LIMIT 1),
-    (SELECT l.objectID FROM objects l WHERE l.galleryNumber = o.galleryNumber
+    (SELECT l.objectID FROM objects l WHERE l.galleryNumber = o.galleryNumber${scope("l")}
       ORDER BY l.isHighlight ASC, l.objectID DESC LIMIT 1)
   ) AS prevObjectID,
   COALESCE(
     (SELECT n.objectID FROM objects n
-      WHERE n.galleryNumber = o.galleryNumber AND ${precedes("o", "n")}
+      WHERE n.galleryNumber = o.galleryNumber${scope("n")} AND ${precedes("o", "n")}
       ORDER BY n.isHighlight DESC, n.objectID ASC LIMIT 1),
-    (SELECT f.objectID FROM objects f WHERE f.galleryNumber = o.galleryNumber
+    (SELECT f.objectID FROM objects f WHERE f.galleryNumber = o.galleryNumber${scope("f")}
       ORDER BY f.isHighlight DESC, f.objectID ASC LIMIT 1)
   ) AS nextObjectID
 FROM objects o
