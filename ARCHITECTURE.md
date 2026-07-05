@@ -17,6 +17,8 @@ This file is updated in the same commit as any structural change.
    data/src/objects.ts ──► objects.json.gz   data/src/geometry.ts ─► galleries/amenities/routes.geojson
    (driver CLI over data/src/sources/{id}.ts — per-museum source adapters)
    data/src/synonyms.ts ─► synonyms.json     data/src/graph.ts ────► graph.json (nodes/edges/doors)
+                                             data/src/geometry-osm.ts ─► the same three for the Louvre,
+                                              from a committed OSM Overpass extract (ODbL, D7)
                        └────────────┬─────────────────────┘
                                     ▼
                        data/src/build-db.ts ──► data/met.sqlite  (objects + FTS5 + galleries +
@@ -85,8 +87,9 @@ Tables (built by `data/src/build-db.ts`):
   objects' distinct room codes (labels/floors from an optional per-museum
   `galleries.json` snapshot), so gallery search/browse works at room-label
   fidelity everywhere.
-- `graph_nodes` / `graph_edges` — the routing graph (2,125 nodes / 8,096 edges:
-  door, walk, stairs, elevator) derived from Living Map walking linestrings.
+- `graph_nodes` / `graph_edges` — the routing graph (door, walk, stairs,
+  elevator), derived per museum: Met from Living Map structure (`graph.ts`),
+  Louvre from OSM indoor mapping (`geometry-osm.ts`, D7).
   v2: node ids of non-Met museums are prefixed `{museum}:`; sites never share
   edges, so routing stays site-local by construction.
 - `blobs` — gzipped `galleries.geojson` (room polygons), `amenities.geojson`,
@@ -637,6 +640,7 @@ Full detail in `docs/DATA.md`; reports regenerate via `npm run evals` into
 | coverage.md | WARN | 100% of objects resolve to a polygon — on the partial snapshot (caveat below) |
 | search-eval.md | PASS | offline goldens **50/50 (100%)** after Phase 2 upgrades (synonyms column + score-aware escalation); live LLM tier 13/13 with 0 escalations, interpret p50 ≈610 ms; autocomplete p50 0.3 ms |
 | visual.md | PASS | 9 per-floor SVG renders (polygons + graph + stairs/elevators) in `data/evals/reports/floors/` for human review |
+| louvre.md | PASS | 259/389 plan salles matched to OSM polygons (63.8% of on-view arks); 500/500 random salle pairs routable, 1 gallery-bearing component; Joconde→Vénus de Milo 263 m / 18 steps (avoid-stairs 305 m); routed-fidelity GATE PASS |
 | llm-bench.md | — | model bake-off that locked flash-lite + embedding retrieval; real-guest-photo retrieval 90% top-1 / 95% top-5 |
 
 Sources: Met Open Access API (official, CC0 — but WAF-throttled to ~1.3 req/s
@@ -663,6 +667,63 @@ hydration paced at ≤2 req/s with a custom research User-Agent — the full
 ~26.6k-ark hydration runs hours in the background; `data/museums/louvre/
 snapshots/` ships a 500-record partial snapshot (`objects-meta.json.partial
 = true`) until the full run lands in a follow-up commit.
+
+**Louvre geometry + routing (D7)**: OpenStreetMap's survey-grade indoor
+mapping of the palais (© OpenStreetMap contributors, **ODbL** — the decoded
+geometry ships openly inside met.sqlite with this attribution). One-time ETL,
+Living-Map discipline: a single Overpass extract (2026-07-05, ~6.5k elements:
+815 room/corridor/area polygons, 766 door nodes, 141 stairs + 46 elevator
+units) is committed at `data/raw/louvre/osm/overpass-indoor.json`;
+`data/src/geometry-osm.ts` decodes it offline into `galleries.geojson`,
+`amenities.geojson`, `graph.json` (the exact shapes `graph.ts` emits for the
+Met, so build-db and the client are unchanged). Design notes:
+- **Salle matching** (never invent codes): explicit "Salle N"/ref codes where
+  OSM has them (the survey largely predates the Louvre's 2019-21 renumbering,
+  so codes concentrate in Denon's 7xx-9xx wings) + tiered normalized-name
+  equality against the plan-tool titles (full-title matches outrank title
+  segments; ambiguous names like "Grande Galerie" ↔ plan 710/712/716 are
+  dropped) + a small hand-verified alias table. Measured: 259/389 plan salles
+  (63.8% of on-view arks); unmatched salles keep label-only gallery rows
+  (build-db supplements geometry with `galleries.json` labels).
+- **Door adapter**: Living Map encodes doors as barrier LINES; OSM encodes
+  them as NODES that are shared vertices of the room ways they join. The
+  adapter takes the wall direction from the containing way's adjacent
+  segments and reuses graph.ts's perpendicular probe (same offsets/cluster
+  tunables) — 726/766 doors resolve to two-sided doorways. graph.ts itself is
+  untouched (its tile decoding, barrier lines, and overlap union-find would
+  be deleted, not parameterized, by OSM input — a standalone script is the
+  smaller honest change, and the Met graph stays byte-identical).
+- **Vertical circulation**: OSM units carry explicit level lists
+  (`level="-1;-0.5;0"`), so shafts are given rather than inferred: one node
+  per plan niveau per unit, stairs/elevator edges between consecutive
+  niveaux, plus a bridge from every doorless unit landing to its touching
+  room (OSM elevator shafts often have no door node).
+- **Level flattening**: OSM maps the palace's real half-levels (entresol
+  −0.5, Assyrie mezzanines 0.25/0.5, 2.25 attic galleries…); the plan tool
+  flattens to niveaux −1/0/1/2. Matched rooms take the PLAN's floor; window
+  thresholds (<−0.3 → "−1", <0.7 → "0", <1.7 → "1", else "2") validate
+  matches and place backdrop. Louvre geojson floors are STRING labels so the
+  Met's numeric 0→"G" client convention never fires for them.
+- **Enfilade repair**: OSM's floor-2 paintings wings are door-sparse, so the
+  Met's touching-boundary repair rule runs to fixpoint there (a stray room
+  only ever bridges to an already-connected neighbor ≤1.25 m away; stray
+  blocks never merge with each other) — 172 repair edges vs 1,379 door-derived
+  walk edges.
+- **Gate** (`data/src/evals-louvre.ts`, runs inside `npm run evals`): 500/500
+  seeded random salle pairs routable via `shared/routing.ts`, exactly 1
+  gallery-bearing component, every on-view salle routable or listed →
+  registry fidelity flipped to **"routed"**. Landmark: Salle 711 (Joconde) →
+  Salle 345 (Vénus de Milo) = 263 m / 18 steps ≈ 3.3 min via the Daru
+  stairs + Galerie des Mosaïques + Cour du Sphinx (avoid-stairs: 305 m via
+  elevators).
+- **Client follow-ups before Louvre map/nav UI ships** (data is ready; these
+  are client gaps): `buildSiteGeometry`/`availableFloors` default to the
+  Met's `FLOOR_ORDER` and must take the museum's registry `floorOrder`;
+  `shared/routing.ts:floorLabelOf(0)` renders "G" (Met convention) where the
+  Louvre chip says "0"; and gallery numbers collide across museums in
+  `RouteGraph.byGallery` / `SqliteDataProvider.rooms` (Met and Louvre both
+  have a "711") — route endpoints and room lookups need museum/site scoping
+  now that a second museum has a graph.
 
 **Cleveland Museum of Art** (D4): public Open Access API, no key, explicit
 per-record `share_license_status` (CC0 vs Copyrighted — CMA's own vocabulary,
@@ -753,6 +814,7 @@ loads whatever shards exist.
 | `server/src/embeddings.ts:searchByEmbedding` | in-RAM cosine over the sharded vector index |
 | `server/src/vocab.ts:getVocabulary` | DB-derived vocabulary for the interpret prompt |
 | `data/src/objects.ts` / `geometry.ts` / `graph.ts` / `synonyms.ts` / `build-db.ts` / `embed-images.ts` | pipelines (scripts; embed-images also does `--compact` tombstone/dedupe) |
+| `data/src/geometry-osm.ts` / `lib/louvre-plan.ts` | Louvre geometry + routing graph from the committed OSM Overpass extract (D7): salle-code matching, door-node adapter, explicit-level vertical shafts (`npm -w data run geometry:louvre`) |
 | `data/src/sources/types.ts:MuseumSource` / `sources/registry.ts` / `sources/met.ts` / `aic.ts` / `cleveland.ts` / `nga.ts` / `smk.ts` / `louvre.ts` | per-museum source-adapter seam: the ONE copy of each museum's row mapper + hydration/delta logic (objects.ts is a thin driver; nightly.ts prefers `sourceFor(id).delta` whenever the museum's rows survived from last night's artifact — critical for the Louvre, whose fullFetch is a ~26.6k-request hydration) |
 | `data/src/lib/politeFetch.ts:createPoliteClient` | shared WAF-aware paced fetch (cookie reuse, 403≥60s wait, 429/5xx backoff) — per-source etiquette via options |
 | `data/src/lib/csv.ts:parseCsv` | minimal RFC4180 CSV parser (quoted/embedded-newline fields) — only NGA's CSV-based source needs one, no dependency existed |
@@ -760,7 +822,8 @@ loads whatever shards exist.
 | `data/src/nightly.ts` | nightly delta → embed delta → build → Tigris upload + verified pointer commit + GC |
 | `data/src/artifacts.ts` / `fetch-artifacts.ts` | Tigris manifest helpers · sha256-verified artifact pull (Docker bake, CI) |
 | `Dockerfile` / `fly.toml` / `.github/workflows/` | image bake + Fly config + CI/deploy/preview/nightly automation |
-| `data/src/evals.ts` | regenerates all eval reports (`npm run evals`) |
+| `data/src/evals.ts` | regenerates all eval reports (`npm run evals`, which also runs the Louvre gate) |
+| `data/src/evals-louvre.ts` | Louvre geometry/routing gate: match rates, routability, on-view salle accounting, per-floor SVGs → `data/evals/reports/louvre.md` |
 | `e2e/checks/` · `e2e/journeys/` | fast assertion gate (incl. HIG sweep) · J1–J15 user-journey videos |
 
 ## Testing

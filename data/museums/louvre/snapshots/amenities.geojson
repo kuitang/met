@@ -1,0 +1,2285 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3344432,
+     48.8604756
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8604756,
+    "lon": 2.3344432,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3344432,
+     48.8604756
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8604756,
+    "lon": 2.3344432,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3344432,
+     48.8604756
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "1",
+    "floorName": "1",
+    "lat": 48.8604756,
+    "lon": 2.3344432,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3362176,
+     48.8615608
+    ]
+   },
+   "properties": {
+    "kind": "dining",
+    "name": "Café Richelieu",
+    "floor": "1",
+    "floorName": "1",
+    "lat": 48.8615608,
+    "lon": 2.3362176,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.336113,
+     48.8621757
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8621757,
+    "lon": 2.336113,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.336113,
+     48.8621757
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8621757,
+    "lon": 2.336113,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.336113,
+     48.8621757
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "1",
+    "floorName": "1",
+    "lat": 48.8621757,
+    "lon": 2.336113,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.336113,
+     48.8621757
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8621757,
+    "lon": 2.336113,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3359154,
+     48.862159
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.862159,
+    "lon": 2.3359154,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3360073,
+     48.8617235
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8617235,
+    "lon": 2.3360073,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3363993,
+     48.8616222
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8616222,
+    "lon": 2.3363993,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3363993,
+     48.8616222
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8616222,
+    "lon": 2.3363993,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3363993,
+     48.8616222
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "1",
+    "floorName": "1",
+    "lat": 48.8616222,
+    "lon": 2.3363993,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3363993,
+     48.8616222
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8616222,
+    "lon": 2.3363993,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3369098,
+     48.8618566
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8618566,
+    "lon": 2.3369098,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3360257,
+     48.8616318
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "1",
+    "floorName": "1",
+    "lat": 48.8616318,
+    "lon": 2.3360257,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3359479,
+     48.8621656
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8621656,
+    "lon": 2.3359479,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3356945,
+     48.8618554
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8618554,
+    "lon": 2.3356945,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3367554,
+     48.8615864
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8615864,
+    "lon": 2.3367554,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3367554,
+     48.8615864
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8615864,
+    "lon": 2.3367554,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3370933,
+     48.8614612
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8614612,
+    "lon": 2.3370933,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3378639,
+     48.8611049
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8611049,
+    "lon": 2.3378639,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3377969,
+     48.8612142
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8612142,
+    "lon": 2.3377969,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3377748,
+     48.8612193
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8612193,
+    "lon": 2.3377748,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3373917,
+     48.8616985
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8616985,
+    "lon": 2.3373917,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3376011,
+     48.860779
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.860779,
+    "lon": 2.3376011,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3376011,
+     48.860779
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.860779,
+    "lon": 2.3376011,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3376011,
+     48.860779
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "1",
+    "floorName": "1",
+    "lat": 48.860779,
+    "lon": 2.3376011,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3376011,
+     48.860779
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.860779,
+    "lon": 2.3376011,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3375345,
+     48.8613193
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8613193,
+    "lon": 2.3375345,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3353758,
+     48.8612419
+    ]
+   },
+   "properties": {
+    "kind": "dining",
+    "name": "Paul",
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8612419,
+    "lon": 2.3353758,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3352694,
+     48.8609194
+    ]
+   },
+   "properties": {
+    "kind": "shop",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8609194,
+    "lon": 2.3352694,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3354972,
+     48.860612
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.860612,
+    "lon": 2.3354972,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3357292,
+     48.8605565
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8605565,
+    "lon": 2.3357292,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3353811,
+     48.8604553
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8604553,
+    "lon": 2.3353811,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3353811,
+     48.8604553
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8604553,
+    "lon": 2.3353811,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3353471,
+     48.8603191
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8603191,
+    "lon": 2.3353471,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3353471,
+     48.8603191
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8603191,
+    "lon": 2.3353471,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3353471,
+     48.8603191
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "1",
+    "floorName": "1",
+    "lat": 48.8603191,
+    "lon": 2.3353471,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3355546,
+     48.8602687
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8602687,
+    "lon": 2.3355546,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3355546,
+     48.8602687
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8602687,
+    "lon": 2.3355546,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3355546,
+     48.8602687
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "1",
+    "floorName": "1",
+    "lat": 48.8602687,
+    "lon": 2.3355546,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3344682,
+     48.8606803
+    ]
+   },
+   "properties": {
+    "kind": "dining",
+    "name": "Café Mollien",
+    "floor": "1",
+    "floorName": "1",
+    "lat": 48.8606803,
+    "lon": 2.3344682,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3346523,
+     48.8627324
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "1",
+    "floorName": "1",
+    "lat": 48.8627324,
+    "lon": 2.3346523,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3346122,
+     48.8627479
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "1",
+    "floorName": "1",
+    "lat": 48.8627479,
+    "lon": 2.3346122,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3357734,
+     48.8614241
+    ]
+   },
+   "properties": {
+    "kind": "dining",
+    "name": "Bistrot Benoit",
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8614241,
+    "lon": 2.3357734,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3356077,
+     48.8613517
+    ]
+   },
+   "properties": {
+    "kind": "dining",
+    "name": "Comptoir du Louvre",
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8613517,
+    "lon": 2.3356077,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3376274,
+     48.8604884
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8604884,
+    "lon": 2.3376274,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3374491,
+     48.8599461
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8599461,
+    "lon": 2.3374491,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3374491,
+     48.8599461
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "1",
+    "floorName": "1",
+    "lat": 48.8599461,
+    "lon": 2.3374491,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3374491,
+     48.8599461
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8599461,
+    "lon": 2.3374491,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3384689,
+     48.8597109
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8597109,
+    "lon": 2.3384689,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3384689,
+     48.8597109
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8597109,
+    "lon": 2.3384689,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3369763,
+     48.8601423
+    ]
+   },
+   "properties": {
+    "kind": "shop",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8601423,
+    "lon": 2.3369763,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3384724,
+     48.8597543
+    ]
+   },
+   "properties": {
+    "kind": "information",
+    "name": "Accueil",
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8597543,
+    "lon": 2.3384724,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3384317,
+     48.8597196
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8597196,
+    "lon": 2.3384317,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3384317,
+     48.8597196
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8597196,
+    "lon": 2.3384317,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3392103,
+     48.8595097
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8595097,
+    "lon": 2.3392103,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.33815,
+     48.8598493
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "1",
+    "floorName": "1",
+    "lat": 48.8598493,
+    "lon": 2.33815,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3367372,
+     48.8608236
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8608236,
+    "lon": 2.3367372,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3367049,
+     48.8607684
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8607684,
+    "lon": 2.3367049,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3364546,
+     48.860708
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.860708,
+    "lon": 2.3364546,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3364814,
+     48.8607563
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8607563,
+    "lon": 2.3364814,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3387151,
+     48.8609523
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8609523,
+    "lon": 2.3387151,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3387151,
+     48.8609523
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8609523,
+    "lon": 2.3387151,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3387151,
+     48.8609523
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "1",
+    "floorName": "1",
+    "lat": 48.8609523,
+    "lon": 2.3387151,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3387151,
+     48.8609523
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8609523,
+    "lon": 2.3387151,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3390248,
+     48.8609445
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8609445,
+    "lon": 2.3390248,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3390444,
+     48.8609245
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8609245,
+    "lon": 2.3390444,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3389851,
+     48.8608906
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8608906,
+    "lon": 2.3389851,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3389851,
+     48.8608906
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8608906,
+    "lon": 2.3389851,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3389851,
+     48.8608906
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "1",
+    "floorName": "1",
+    "lat": 48.8608906,
+    "lon": 2.3389851,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3389851,
+     48.8608906
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8608906,
+    "lon": 2.3389851,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3394804,
+     48.8607692
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8607692,
+    "lon": 2.3394804,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3375019,
+     48.8601008
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8601008,
+    "lon": 2.3375019,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.338115,
+     48.8598676
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8598676,
+    "lon": 2.338115,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3380705,
+     48.859821
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.859821,
+    "lon": 2.3380705,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3383982,
+     48.8597384
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8597384,
+    "lon": 2.3383982,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3390469,
+     48.8596175
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8596175,
+    "lon": 2.3390469,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3393718,
+     48.8600879
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8600879,
+    "lon": 2.3393718,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3396843,
+     48.8606831
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8606831,
+    "lon": 2.3396843,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3358954,
+     48.8597613
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8597613,
+    "lon": 2.3358954,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.335864,
+     48.8597594
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8597594,
+    "lon": 2.335864,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3362146,
+     48.8600362
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8600362,
+    "lon": 2.3362146,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3356261,
+     48.8598148
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8598148,
+    "lon": 2.3356261,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3363151,
+     48.859736
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.859736,
+    "lon": 2.3363151,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3363151,
+     48.859736
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.859736,
+    "lon": 2.3363151,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3356694,
+     48.8603979
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8603979,
+    "lon": 2.3356694,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3356694,
+     48.8603979
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8603979,
+    "lon": 2.3356694,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3386919,
+     48.8610529
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8610529,
+    "lon": 2.3386919,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3387703,
+     48.8610556
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8610556,
+    "lon": 2.3387703,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3396379,
+     48.8607191
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8607191,
+    "lon": 2.3396379,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3396379,
+     48.8607191
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "1",
+    "floorName": "1",
+    "lat": 48.8607191,
+    "lon": 2.3396379,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3393045,
+     48.8600837
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8600837,
+    "lon": 2.3393045,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3393045,
+     48.8600837
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8600837,
+    "lon": 2.3393045,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3396221,
+     48.8602567
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8602567,
+    "lon": 2.3396221,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3396221,
+     48.8602567
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8602567,
+    "lon": 2.3396221,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.339459,
+     48.8602887
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "1",
+    "floorName": "1",
+    "lat": 48.8602887,
+    "lon": 2.339459,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3377591,
+     48.8602878
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8602878,
+    "lon": 2.3377591,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3385378,
+     48.8597628
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8597628,
+    "lon": 2.3385378,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3359256,
+     48.8614312
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8614312,
+    "lon": 2.3359256,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3362203,
+     48.8613551
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8613551,
+    "lon": 2.3362203,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3355369,
+     48.8604421
+    ]
+   },
+   "properties": {
+    "kind": "shop",
+    "name": null,
+    "floor": "1",
+    "floorName": "1",
+    "lat": 48.8604421,
+    "lon": 2.3355369,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3388969,
+     48.8608915
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8608915,
+    "lon": 2.3388969,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3390028,
+     48.8609364
+    ]
+   },
+   "properties": {
+    "kind": "restroom",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8609364,
+    "lon": 2.3390028,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3380902,
+     48.8598578
+    ]
+   },
+   "properties": {
+    "kind": "elevator",
+    "name": null,
+    "floor": "2",
+    "floorName": "2",
+    "lat": 48.8598578,
+    "lon": 2.3380902,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3369742,
+     48.8607337
+    ]
+   },
+   "properties": {
+    "kind": "shop",
+    "name": "Louvre",
+    "floor": "-1",
+    "floorName": "-1",
+    "lat": 48.8607337,
+    "lon": 2.3369742,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3351175,
+     48.8626433
+    ]
+   },
+   "properties": {
+    "kind": "entrance",
+    "name": "Carrousel",
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8626433,
+    "lon": 2.3351175,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3387937,
+     48.8624129
+    ]
+   },
+   "properties": {
+    "kind": "entrance",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8624129,
+    "lon": 2.3387937,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3365392,
+     48.8621898
+    ]
+   },
+   "properties": {
+    "kind": "entrance",
+    "name": "Passage Richelieu",
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8621898,
+    "lon": 2.3365392,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3356172,
+     48.8610732
+    ]
+   },
+   "properties": {
+    "kind": "entrance",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8610732,
+    "lon": 2.3356172,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3397115,
+     48.8629934
+    ]
+   },
+   "properties": {
+    "kind": "entrance",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8629934,
+    "lon": 2.3397115,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3360688,
+     48.8615601
+    ]
+   },
+   "properties": {
+    "kind": "entrance",
+    "name": null,
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.8615601,
+    "lon": 2.3360688,
+    "site": "louvre",
+    "closed": false
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     2.3356194,
+     48.861077
+    ]
+   },
+   "properties": {
+    "kind": "entrance",
+    "name": "Pyramide",
+    "floor": "0",
+    "floorName": "0",
+    "lat": 48.861077,
+    "lon": 2.3356194,
+    "site": "louvre",
+    "closed": false
+   }
+  }
+ ]
+}

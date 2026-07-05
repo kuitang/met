@@ -303,12 +303,20 @@ function evalCoverage(rooms: RoomFeature[]): Status {
   let dbConsistent = true;
   if (fs.existsSync(DB_PATH)) {
     const db = new Database(DB_PATH, { readonly: true });
-    const counts = JSON.parse(
-      (db.prepare("SELECT value FROM meta WHERE key='counts'").get() as { value: string }).value,
-    );
+    // v2 artifacts merge every registry museum — compare the Met's OWN rows
+    // against the Met snapshots (whole-artifact counts stopped matching when
+    // the second museum landed).
+    const metObjects = (
+      db.prepare("SELECT count(*) AS n FROM objects WHERE museum='met'").get() as { n: number }
+    ).n;
+    const metGalleries = (
+      db
+        .prepare("SELECT count(*) AS n FROM galleries WHERE site IN ('fifthAve','cloisters')")
+        .get() as { n: number }
+    ).n;
     db.close();
-    dbConsistent = counts.objects === objects.length && counts.galleries === galleryPolys.length;
-    dbNote = `met.sqlite counts: ${JSON.stringify(counts)} — ${dbConsistent ? "consistent with snapshots" : "STALE vs snapshots (rebuild with npm -w data run build-db)"}`;
+    dbConsistent = metObjects === objects.length && metGalleries === galleryPolys.length;
+    dbNote = `met.sqlite Met rows: ${metObjects} objects / ${metGalleries} galleries — ${dbConsistent ? "consistent with snapshots" : "STALE vs snapshots (rebuild with npm -w data run build-db)"}`;
   }
 
   const partial = meta.rows < 0.9 * meta.searchTotalOnView;

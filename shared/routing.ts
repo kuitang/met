@@ -294,6 +294,13 @@ function spaceSequence(g: RouteGraph, path: PathHop[]): SpaceVisit[] {
     if (!via) continue;
     if (via.kind === "walk") {
       if (via.room) enterSpace(via.room, path[i - 1].id);
+      else {
+        // repair/bridge walk edges join two spaces directly (no doorway node);
+        // the space being entered is a real visit — without this, a route whose
+        // final hop is a bridge edge would omit its own destination.
+        const n = g.nodeById.get(id);
+        if (n && n.kind !== "door") enterSpace(id);
+      }
     } else if (via.kind === "door") {
       // door↔space: only the space end is a visit (doorways are not rooms).
       const n = g.nodeById.get(id);

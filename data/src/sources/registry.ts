@@ -206,7 +206,11 @@ export const MUSEUMS: MuseumInfo[] = [
         floorOrder: ["-1", "0", "1", "2"],
       },
     ],
-    fidelity: "room-labels",
+    // D7: geometry + routing graph from OpenStreetMap indoor mapping
+    // (data/src/geometry-osm.ts). The routed-fidelity gate (evals-louvre.ts)
+    // passed: 500/500 random salle pairs routable, 1 gallery-bearing
+    // component, no stranded on-view salle.
+    fidelity: "routed",
     license: {
       text: "etalab-2.0",
       images: "", // restricted license — no image derivatives shipped
