@@ -37,6 +37,10 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.TIGRIS_AWS_SECRET_ACCESS_KEY }}
           AWS_ENDPOINT_URL_S3: ${{ secrets.TIGRIS_AWS_ENDPOINT }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          # Pipeline-only translation (data/src/translate.ts, DeepSeek via
+          # OpenRouter — Kui-approved exception; the product server stays
+          # Gemini-only). Missing key = translation top-up skipped, non-fatal.
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         run: npm -w data run nightly
 
       - uses: superfly/flyctl-actions/setup-flyctl@master

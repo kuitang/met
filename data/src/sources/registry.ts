@@ -47,6 +47,8 @@ export interface MuseumInfo {
   };
   /** Object deep-link template; "{sourceId}" is replaced per record. */
   objectUrlTemplate: string;
+  /** Source language needing index-time translation (data/src/translate.ts). */
+  translateFrom?: string;
 }
 
 export const MUSEUMS: MuseumInfo[] = [
@@ -212,6 +214,7 @@ export const MUSEUMS: MuseumInfo[] = [
       termsUrl: "https://collections.louvre.fr/en/page/cgu",
     },
     objectUrlTemplate: "https://collections.louvre.fr/en/ark:/53355/{sourceId}",
+    translateFrom: "fr",
   },
 ];
 

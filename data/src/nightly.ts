@@ -222,6 +222,18 @@ async function main(): Promise<void> {
     console.warn("synonyms top-up failed (non-fatal — synonyms go one day stale):", err);
   }
 
+  // ---- 3b. translation top-up (museums with translateFrom; incremental —
+  // only snapshot-NEW strings hit the API; DeepSeek via OpenRouter, the
+  // Kui-approved pipeline-only exception to the Gemini rule) ---------------
+  for (const m of MUSEUMS) {
+    if (!m.translateFrom) continue;
+    try {
+      await runPipeline("translate.ts", { MET_DATA_DIR: stage }, ["--museum", m.id]);
+    } catch (err) {
+      console.warn(`${m.id} translation top-up failed (non-fatal — new rows stay untranslated):`, err);
+    }
+  }
+
   // ---- 4. embeddings: compact (tombstones + stale twins) then embed delta --
   await runPipeline("embed-images.ts", { MET_DATA_DIR: stage }, ["--compact"]);
   await runPipeline("embed-images.ts", { MET_DATA_DIR: stage });
