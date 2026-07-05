@@ -62,7 +62,27 @@ export function createPoliteClient(opts: PoliteClientOptions): PoliteClient {
       }
       const setCookies = res.headers.getSetCookie();
       if (setCookies.length) cookie = setCookies.map((c) => c.split(";")[0]).join("; ");
-      if (res.ok) return res.json();
+      if (res.ok) {
+        // A 200 that isn't JSON is a bot-challenge/maintenance page in
+        // disguise (measured 2026-07-05: collections.louvre.fr served an
+        // HTML challenge with HTTP 200 ~12k requests into a hydration,
+        // which crashed the run via res.json()). Treat it exactly like a
+        // 403: long wait, keep retrying — the challenge lifts.
+        const text = await res.text();
+        try {
+          return JSON.parse(text);
+        } catch {
+          if (attempt >= maxAttempts)
+            throw new Error(`non-JSON 200 (bot challenge?) for ${url}: ${text.slice(0, 80)}`);
+          const wait = Math.max(delay, 120_000);
+          console.log(
+            `${label}: non-JSON 200 on ${url} (bot challenge?), retry ${attempt}/${maxAttempts} in ${wait / 1000}s`,
+          );
+          await sleep(wait);
+          delay = Math.min(delay * 2, 300_000);
+          continue;
+        }
+      }
       if (res.status === 404) return null; // invalid/removed record
       // 403 = WAF bot-block (transient, lifts in ~1 min) — wait it out like 429/5xx
       if ((res.status === 403 || res.status === 429 || res.status >= 500) && attempt < maxAttempts) {
