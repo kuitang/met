@@ -15,6 +15,7 @@ This file is updated in the same commit as any structural change.
                        │                                  │
                        ▼                                  ▼
    data/src/objects.ts ──► objects.json.gz   data/src/geometry.ts ─► galleries/amenities/routes.geojson
+   (driver CLI over data/src/sources/{id}.ts — per-museum source adapters)
    data/src/synonyms.ts ─► synonyms.json     data/src/graph.ts ────► graph.json (nodes/edges/doors)
                        └────────────┬─────────────────────┘
                                     ▼
@@ -503,6 +504,8 @@ loads whatever shards exist.
 | `server/src/embeddings.ts:searchByEmbedding` | in-RAM cosine over the sharded vector index |
 | `server/src/vocab.ts:getVocabulary` | DB-derived vocabulary for the interpret prompt |
 | `data/src/objects.ts` / `geometry.ts` / `graph.ts` / `synonyms.ts` / `build-db.ts` / `embed-images.ts` | pipelines (scripts; embed-images also does `--compact` tombstone/dedupe) |
+| `data/src/sources/types.ts:MuseumSource` / `sources/registry.ts` / `sources/met.ts` | per-museum source-adapter seam: the ONE copy of each museum's row mapper + hydration/delta logic (objects.ts is a thin driver; nightly.ts calls `sourceFor(id).delta`) |
+| `data/src/lib/politeFetch.ts:createPoliteClient` | shared WAF-aware paced fetch (cookie reuse, 403≥60s wait, 429/5xx backoff) — per-source etiquette via options |
 | `data/src/nightly.ts` | nightly delta → embed delta → build → Tigris upload + verified pointer commit + GC |
 | `data/src/artifacts.ts` / `fetch-artifacts.ts` | Tigris manifest helpers · sha256-verified artifact pull (Docker bake, CI) |
 | `Dockerfile` / `fly.toml` / `.github/workflows/` | image bake + Fly config + CI/deploy/preview/nightly automation |
