@@ -551,6 +551,19 @@ enumerated per gallery (the search API 403s past result 1,000 — ES window
 cap), ~190 requests nightly; per-record `imageLicense` gates derivatives on
 `is_public_domain`; per-museum goldens at `data/evals/aic/search-cases.json`
 (23/25 measured, 2 known synonyms-pending cases; Met set unaffected at 50/50).
+**Musée du Louvre** (D6; schema v2's third museum, and the first with no
+bulk on-view API): collections.louvre.fr serves one JSON per ark and no
+search/on-view endpoint at all, so enumeration comes from the public plan tool
+instead — `https://collections.louvre.fr/media/map/en/salles_{niveau}.json`
+for niveau in {-1,0,1,2} (measured 2026-07-05: 389 salles after dedupe, 26,653
+distinct on-view arks; raw floor JSONs committed under `data/raw/louvre/plan/`,
+one-time-ETL discipline like Living Map). Etalab Open Licence text (French,
+untranslated — `titleAlt` stays empty pending the gated translation
+milestone), restricted image rights (`imageLicense` always `""`). Per-ark
+hydration paced at ≤2 req/s with a custom research User-Agent — the full
+~26.6k-ark hydration runs hours in the background; `data/museums/louvre/
+snapshots/` ships a 500-record partial snapshot (`objects-meta.json.partial
+= true`) until the full run lands in a follow-up commit.
 
 **Cleveland Museum of Art** (D4): public Open Access API, no key, explicit
 per-record `share_license_status` (CC0 vs Copyrighted — CMA's own vocabulary,
@@ -641,7 +654,7 @@ loads whatever shards exist.
 | `server/src/embeddings.ts:searchByEmbedding` | in-RAM cosine over the sharded vector index |
 | `server/src/vocab.ts:getVocabulary` | DB-derived vocabulary for the interpret prompt |
 | `data/src/objects.ts` / `geometry.ts` / `graph.ts` / `synonyms.ts` / `build-db.ts` / `embed-images.ts` | pipelines (scripts; embed-images also does `--compact` tombstone/dedupe) |
-| `data/src/sources/types.ts:MuseumSource` / `sources/registry.ts` / `sources/met.ts` / `aic.ts` / `cleveland.ts` / `nga.ts` / `smk.ts` | per-museum source-adapter seam: the ONE copy of each museum's row mapper + hydration/delta logic (objects.ts is a thin driver; nightly.ts calls `sourceFor(id).delta`) |
+| `data/src/sources/types.ts:MuseumSource` / `sources/registry.ts` / `sources/met.ts` / `aic.ts` / `cleveland.ts` / `nga.ts` / `smk.ts` / `louvre.ts` | per-museum source-adapter seam: the ONE copy of each museum's row mapper + hydration/delta logic (objects.ts is a thin driver; nightly.ts prefers `sourceFor(id).delta` whenever the museum's rows survived from last night's artifact — critical for the Louvre, whose fullFetch is a ~26.6k-request hydration) |
 | `data/src/lib/politeFetch.ts:createPoliteClient` | shared WAF-aware paced fetch (cookie reuse, 403≥60s wait, 429/5xx backoff) — per-source etiquette via options |
 | `data/src/lib/csv.ts:parseCsv` | minimal RFC4180 CSV parser (quoted/embedded-newline fields) — only NGA's CSV-based source needs one, no dependency existed |
 | `data/src/nightly.ts` | nightly delta → embed delta → build → Tigris upload + verified pointer commit + GC |

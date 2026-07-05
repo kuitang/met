@@ -15,6 +15,7 @@ import { aicSource } from "./aic.ts";
 import { clevelandSource } from "./cleveland.ts";
 import { ngaSource } from "./nga.ts";
 import { smkSource } from "./smk.ts";
+import { louvreSource } from "./louvre.ts";
 
 const DATA_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 
@@ -184,6 +185,34 @@ export const MUSEUMS: MuseumInfo[] = [
     },
     objectUrlTemplate: "https://open.smk.dk/artwork/image/{sourceId}",
   },
+  {
+    id: "louvre",
+    name: "Musée du Louvre",
+    shortName: "Louvre",
+    city: "Paris",
+    country: "FR",
+    sites: [
+      {
+        siteId: "louvre",
+        name: "Musée du Louvre",
+        // Pyramide (main entrance).
+        entrance: { lat: 48.8611, lon: 2.3364 },
+        // Measured 2026-07-05: the plan tool serves salles_{-1,0,1,2}.json;
+        // a "-2" level exists only as free text inside some rooms' `etage`
+        // label (rooms spanning two levels) — no separate floor file 404s
+        // otherwise, so floorOrder stops at -1.
+        floorOrder: ["-1", "0", "1", "2"],
+      },
+    ],
+    fidelity: "room-labels",
+    license: {
+      text: "etalab-2.0",
+      images: "", // restricted license — no image derivatives shipped
+      attribution: "Musée du Louvre — collections.louvre.fr (Licence Ouverte / Open Licence)",
+      termsUrl: "https://collections.louvre.fr/en/page/cgu",
+    },
+    objectUrlTemplate: "https://collections.louvre.fr/en/ark:/53355/{sourceId}",
+  },
 ];
 
 export function museumInfo(id: string): MuseumInfo {
@@ -205,6 +234,7 @@ const SOURCES: Record<string, MuseumSource> = {
   cleveland: clevelandSource,
   nga: ngaSource,
   smk: smkSource,
+  louvre: louvreSource,
 };
 
 export function sourceFor(id: string): MuseumSource {
