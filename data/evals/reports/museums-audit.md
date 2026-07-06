@@ -1,16 +1,16 @@
 # Museums data-quality audit
 
 - Status: **WARN**
-- Generated: 2026-07-05T23:26:16.556Z by `data/src/museums-audit.ts`
-- Data version: 2026-07-05-730060e0 (built 2026-07-05T23:14:54.895Z)
-- Museums audited: met, aic, cleveland, nga, smk, louvre, vanda
+- Generated: 2026-07-06T15:00:56.639Z by `data/src/museums-audit.ts`
+- Data version: 2026-07-06-e2c3140e (built 2026-07-06T14:58:57.824Z)
+- Museums audited: met, aic, cleveland, nga, smk, louvre, vanda, harvard, rijksmuseum
 - Previous artifact for churn: none provided (PREV_DB unset, no data/met.sqlite.prev) — churn sections unavailable this run
 
 Per Kui's standing rule, this report is a north-star dashboard: only the
 structural invariants below can fail the process (exit 1); everything else
 is a WARN with numbers attached, never a guess.
 
-> Hard gate: **PASS** — 0 structural FAILs, 1 thresholded WARNs (join-rate tails) across 31 checks.
+> Hard gate: **PASS** — 0 structural FAILs, 1 thresholded WARNs (join-rate tails) across 39 checks.
 
 ## Hard-gate summary
 
@@ -41,12 +41,20 @@ is a WARN with numbers attached, never a guess.
 | every object joins a gallery row, site-scoped (smk) | PASS | 1481/1481 (100.00%) |
 | sourceId unique per museum (louvre) | PASS | 0 duplicate (museum, sourceId) groups |
 | objects.site ⊆ registry sites (louvre) | PASS | all objects.site values are registered |
-| license non-empty (louvre) | PASS | 0/500 objects with license='' |
-| every object joins a gallery row, site-scoped (louvre) | PASS | 500/500 (100.00%) |
+| license non-empty (louvre) | PASS | 0/11950 objects with license='' |
+| every object joins a gallery row, site-scoped (louvre) | PASS | 11950/11950 (100.00%) |
 | sourceId unique per museum (vanda) | PASS | 0 duplicate (museum, sourceId) groups |
 | objects.site ⊆ registry sites (vanda) | PASS | all objects.site values are registered |
 | license non-empty (vanda) | PASS | 0/58092 objects with license='' |
 | every object joins a gallery row, site-scoped (vanda) | PASS | 58092/58092 (100.00%) |
+| sourceId unique per museum (harvard) | PASS | 0 duplicate (museum, sourceId) groups |
+| objects.site ⊆ registry sites (harvard) | PASS | all objects.site values are registered |
+| license non-empty (harvard) | PASS | 0/1817 objects with license='' |
+| every object joins a gallery row, site-scoped (harvard) | PASS | 1817/1817 (100.00%) |
+| sourceId unique per museum (rijksmuseum) | PASS | 0 duplicate (museum, sourceId) groups |
+| objects.site ⊆ registry sites (rijksmuseum) | PASS | all objects.site values are registered |
+| license non-empty (rijksmuseum) | PASS | 0/379 objects with license='' |
+| every object joins a gallery row, site-scoped (rijksmuseum) | PASS | 379/379 (100.00%) |
 
 ## Cross-museum summary
 
@@ -57,8 +65,10 @@ is a WARN with numbers attached, never a guess.
 | Cleveland Museum | 6899 | room-labels | 100.0% | 49% | 100% | 100% | 100% | 100% | 93% | 93% | 100%/100% | PASS |
 | National Gallery | 2808 | room-labels | 100.0% | 100% | 98% | 100% | 100% | 36% | 0% | 0% | 100%/100% | PASS |
 | SMK | 1481 | room-labels | 100.0% | 100% | 99% | 100% | 99% | 100% | 91% | 59% | 0%/0% | PASS |
-| Louvre | 500 | routed | 100.0% | 64% | 96% | 60% | 100% | 100% | 100% | 0% | 100%/100% | PASS |
+| Louvre | 11950 | routed | 100.0% | 16% | 92% | 15% | 99% | 100% | 100% | 0% | 100%/100% | PASS |
 | V&A | 58092 | room-labels | 100.0% | 91% | 97% | 100% | 0% | 0% | 0% | 0% | 100%/0% | PASS |
+| Harvard | 1817 | room-labels | 100.0% | 48% | 44% | 100% | 99% | 0% | 0% | 0% | 100%/100% | PASS |
+| Rijksmuseum | 379 | room-labels | 100.0% | 92% | 99% | 100% | 100% | 64% | 98% | 98% | 100%/100% | PASS |
 
 ## Per-museum detail
 
@@ -276,24 +286,24 @@ No previous artifact provided (set PREV_DB=<path> to a prior met.sqlite) — chu
 
 Fidelity **routed** · sites: louvre · license `etalab-2.0` · translateFrom `fr`
 
-#### Fill rates (measured %, n=500)
+#### Fill rates (measured %, n=11950)
 
 | field | filled | % |
 |---|---|---|
-| artist | 320 | 64.0% |
-| period/date | 481 | 96.2% |
-| classification | 298 | 59.6% |
-| medium | 499 | 99.8% |
-| tags | 500 | 100.0% |
-| image (imageUrl set) | 499 | 99.8% |
+| artist | 1871 | 15.7% |
+| period/date | 10969 | 91.8% |
+| classification | 1738 | 14.5% |
+| medium | 11885 | 99.5% |
+| tags | 11949 | 100.0% |
+| image (imageUrl set) | 11916 | 99.7% |
 | image, license-allowed | 0 | 0.0% |
-| locationNote | 500 | 100.0% |
+| locationNote | 11950 | 100.0% |
 
 Room-label coverage (galleries table, 389 rows for this museum's sites): **389/389 titled (100.0%)**, **389/389 floored (100.0%)**.
 
 #### Structural invariants
 
-- object→gallery join: **500/500 (100.00%)** — PASS
+- object→gallery join: **11950/11950 (100.00%)** — PASS
 - sourceId duplicate groups: **0**
 - objects.site values outside the registry: **0**
 - objects with license='': **0**
@@ -301,15 +311,19 @@ Room-label coverage (galleries table, 389 rows for this museum's sites): **389/3
 #### Distribution sanity
 
 - Empty-title rows: **0.00%**
-- Rows per gallery: p50 **16**, p95 **108**, max **108** (15 distinct galleries)
-- titleAlt coverage (translateFrom fr): **95.0%**
-- License histogram: `etalab-2.0`/`(none)` ×500
+- Rows per gallery: p50 **43**, p95 **388**, max **733** (121 distinct galleries)
+- titleAlt coverage (translateFrom fr): **74.8%**
+- License histogram: `etalab-2.0`/`(none)` ×11950
 
-Catalog-noise clusters — (title, artist) pairs with >20 rows (top 5 of 1):
+Catalog-noise clusters — (title, artist) pairs with >20 rows (top 5 of 63):
 
 | title | artist | rows |
 |---|---|---|
-| serviteur funéraire momiforme | (none) | 26 |
+| vase | (none) | 1178 |
+| figurine | (none) | 1000 |
+| statue | (none) | 368 |
+| sceau cylindre | (none) | 291 |
+| amulette | (none) | 177 |
 
 #### Churn vs previous artifact
 
@@ -356,6 +370,87 @@ Catalog-noise clusters — (title, artist) pairs with >20 rows (top 5 of 240):
 | Vase | Unknown | 1121 |
 | Forlì pavement | Unknown | 1050 |
 | Tile | Unknown | 1032 |
+
+#### Churn vs previous artifact
+
+No previous artifact provided (set PREV_DB=<path> to a prior met.sqlite) — churn unavailable this run.
+
+### Harvard Art Museums (`harvard`)
+
+Fidelity **room-labels** · sites: harvard · license `harvard-nc-ttl14` (TTL 14d)
+
+#### Fill rates (measured %, n=1817)
+
+| field | filled | % |
+|---|---|---|
+| artist | 875 | 48.2% |
+| period/date | 807 | 44.4% |
+| classification | 1817 | 100.0% |
+| medium | 1802 | 99.2% |
+| tags | 0 | 0.0% |
+| image (imageUrl set) | 0 | 0.0% |
+| image, license-allowed | 0 | 0.0% |
+| locationNote | 0 | 0.0% |
+
+Room-label coverage (galleries table, 55 rows for this museum's sites): **55/55 titled (100.0%)**, **55/55 floored (100.0%)**.
+
+#### Structural invariants
+
+- object→gallery join: **1817/1817 (100.00%)** — PASS
+- sourceId duplicate groups: **0**
+- objects.site values outside the registry: **0**
+- objects with license='': **0**
+
+#### Distribution sanity
+
+- Empty-title rows: **0.00%**
+- Rows per gallery: p50 **19**, p95 **100**, max **287** (55 distinct galleries)
+- License histogram: `harvard-nc-ttl14`/`(none)` ×1817
+
+Catalog-noise clusters — (title, artist) pairs with >20 rows (top 5 of 0):
+
+None.
+
+#### Churn vs previous artifact
+
+No previous artifact provided (set PREV_DB=<path> to a prior met.sqlite) — churn unavailable this run.
+
+### Rijksmuseum (`rijksmuseum`)
+
+Fidelity **room-labels** · sites: rijksmuseum · license `CC0-1.0` · translateFrom `nl`
+
+#### Fill rates (measured %, n=379)
+
+| field | filled | % |
+|---|---|---|
+| artist | 349 | 92.1% |
+| period/date | 376 | 99.2% |
+| classification | 379 | 100.0% |
+| medium | 379 | 100.0% |
+| tags | 241 | 63.6% |
+| image (imageUrl set) | 373 | 98.4% |
+| image, license-allowed | 373 | 98.4% |
+| locationNote | 321 | 84.7% |
+
+Room-label coverage (galleries table, 40 rows for this museum's sites): **40/40 titled (100.0%)**, **40/40 floored (100.0%)**.
+
+#### Structural invariants
+
+- object→gallery join: **379/379 (100.00%)** — PASS
+- sourceId duplicate groups: **0**
+- objects.site values outside the registry: **0**
+- objects with license='': **0**
+
+#### Distribution sanity
+
+- Empty-title rows: **0.00%**
+- Rows per gallery: p50 **3**, p95 **51**, max **73** (40 distinct galleries)
+- titleAlt coverage (translateFrom nl): **0.0%**
+- License histogram: `CC0-1.0`/`PDM-1.0` ×375, `CC0-1.0`/`(none)` ×4
+
+Catalog-noise clusters — (title, artist) pairs with >20 rows (top 5 of 0):
+
+None.
 
 #### Churn vs previous artifact
 

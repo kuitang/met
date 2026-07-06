@@ -1,8 +1,8 @@
 # GPS mapping: synthetic fixes vs the wing-level resolver
 
 - Status: **PASS**
-- Generated: 2026-07-05T23:17:51.152Z by `data/src/evals.ts`
-- Data version: 2026-07-05-1040037f
+- Generated: 2026-07-06T15:00:53.724Z by `data/src/evals.ts`
+- Data version: 2026-07-06-e2c3140e
 
 The resolver under test is the reference implementation of the positioning
 design: GPS may only yield `{atMuseum, site, wing}` — its output type has no
