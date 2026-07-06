@@ -198,20 +198,26 @@ async function main(): Promise<void> {
         db.close();
       }
     }
+    if (prevRows.length === 0) {
+      // Museum not in the previous artifact: skip it — the nightly NEVER
+      // fullFetches. Onboarding is local-first (run the adapter's harvest on
+      // a dev machine, build, upload); once its rows are in an uploaded
+      // artifact the delta path above keeps them fresh. Measured 2026-07-06:
+      // the old first-night fullFetch fallback spent 3.8 h of the 6 h Actions
+      // job crawling the Louvre before dying on its bot wall — EVERY night —
+      // and a Rijksmuseum first night (~6 h) would have timed out the whole
+      // job, shipping nothing at all.
+      museumFailures.push(m.id);
+      console.error(
+        `${m.id}: no rows in the previous artifact — ships empty tonight (onboard locally: harvest + build + upload; the nightly only deltas)`,
+      );
+      continue;
+    }
     try {
-      if (prevRows.length > 0) {
-        await sourceFor(m.id).delta(mSnap, since);
-      } else {
-        // First night for this museum (or it shipped empty): full hydration.
-        await sourceFor(m.id).fullFetch({ snapDir: mSnap });
-      }
+      await sourceFor(m.id).delta(mSnap, since);
     } catch (err) {
       museumFailures.push(m.id);
-      if (prevRows.length > 0) {
-        console.error(`${m.id} refresh FAILED — shipping last night's rows (one day stale):`, err);
-      } else {
-        console.error(`${m.id} refresh FAILED and no previous rows — museum ships empty tonight:`, err);
-      }
+      console.error(`${m.id} refresh FAILED — shipping last night's rows (one day stale):`, err);
     }
   }
 

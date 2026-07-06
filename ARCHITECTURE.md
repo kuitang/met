@@ -643,7 +643,14 @@ Tigris s3://met-artifacts                           ▼
   measured and the compactor drops exactly them); `build-db.ts` runs its
   verify gate; then upload → verify → pointer commit → `flyctl deploy`.
   Failure anywhere exits non-zero and the pointer never moves; GitHub's
-  scheduled-workflow failure e-mail is the dead-man's switch.
+  scheduled-workflow failure e-mail is the dead-man's switch. Non-Met museums
+  refresh per-registry with failure isolation, and the nightly **only ever
+  deltas**: a museum with no rows in the previous artifact ships empty with a
+  loud log — onboarding a new museum is local-first (run its adapter harvest
+  on a dev machine → `build-db` → upload), never an in-job `fullFetch`
+  (measured 2026-07-06: the old first-night fallback burned 3.8 h/night
+  re-crawling the bot-walled Louvre, and any slow source risked timing out
+  the whole 6 h job, shipping nothing).
 - **The server has no refresh machinery** (parsimony: the old in-process
   scheduler + `POST /api/v1/admin/refresh` + `ADMIN_TOKEN` were deleted; data
   arrives via image rebuilds). The boot path simply reads the baked
