@@ -64,6 +64,20 @@ committed to git (≈100 MB at full scale) — regenerate with the incremental
 command below; in prod it is baked into the Docker image from the Tigris
 artifact bucket.
 
+### 4. Other registry museums (multi-museum fleet)
+
+Every non-Met museum enters through its source adapter in
+`data/src/sources/{id}.ts` (run: `npm -w data run objects -- --museum {id}`);
+each adapter's header comment is the provenance record — endpoints, measured
+politeness envelope, on-view semantics, license reading. Notable per-source
+etiquette: the Uffizi adapter queries the Italian ministry's ArCo SPARQL
+endpoint (`dati.beniculturali.it/sparql`, keyless) at ≤1 req/s with simple
+paged SELECTs only — the endpoint silently returns empty/partial results for
+heavy GROUP BY queries, so all aggregation happens client-side (≈25 requests
+for the full harvest, page cache under `data/raw/uffizi/`). Museums with
+`translateFrom` in the registry (Louvre fr, Rijksmuseum nl, Uffizi it) run
+`data/src/translate.ts` after hydration to fill `titleAlt` + English facets.
+
 ## Pipelines (all in `data/src/`, rerun with these commands)
 
 Prereq: `export PATH="$HOME/.nvm/versions/node/v24.14.0/bin:$PATH"` (Node ≥ 22).

@@ -1,7 +1,7 @@
 # Louvre geometry & routing (OSM, D7)
 
 - Status: **PASS** · Routed-fidelity gate: **PASS**
-- Generated: 2026-07-06T15:00:54.636Z by `data/src/evals-louvre.ts`
+- Generated: 2026-07-06T15:39:54.277Z by `data/src/evals-louvre.ts`
 - Source: OpenStreetMap (ODbL, © OpenStreetMap contributors), Overpass extract 2026-07-05 (committed)
 
 ## Geometry

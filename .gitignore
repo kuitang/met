@@ -55,6 +55,10 @@ data/raw/*/objects-cache.ndjson
 # NGA opendata CSVs (~82 MB objects.csv; re-downloaded from the upstream repo)
 data/raw/nga/
 
+# Uffizi SPARQL page cache (data/src/sources/uffizi.ts; ~25 requests to
+# re-fetch from dati.beniculturali.it)
+data/raw/uffizi/
+
 # Rijksmuseum OAI-PMH harvest state (data/src/sources/rijksmuseum.ts): the
 # on-view id list + resumption-token position, both fully re-fetchable from
 # data.rijksmuseum.nl (unlike Louvre's committed plan JSONs, there's no

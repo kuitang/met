@@ -947,6 +947,43 @@ new slugs hydrated, vanished slugs tombstoned; location changes on existing
 pages need a periodic full re-crawl (delete the ndjson cache). Goldens at
 `data/evals/egizio/search-cases.json`.
 
+**Galleria degli Uffizi** (Florence; D14, the fleet's first SPARQL source):
+the Italian ministry's ArCo national-catalog LOD at
+`dati.beniculturali.it/sparql` (Virtuoso, keyless, CC-BY-SA-4.0 text with a
+share-alike obligation recorded in the attribution string; NO image grant —
+photo reproduction is a per-request ministry concession, D.M. 161/2023).
+The endpoint's measured failure mode shapes the whole adapter: heavy
+GROUP BY/aggregate queries SILENTLY return empty or partial results, so
+`sources/uffizi.ts` issues only simple paged SELECTs (six `(?prop, ?v)`
+field queries × LIMIT/OFFSET 1000 ≈ 25 requests total at ≤1 req/s, page
+cache in `data/raw/uffizi/`) and does all merging/counting client-side.
+Scope = TITL with `a-loc:hasLocationType a-loc:CurrentPhysicalLocation`
+whose CIS `rdfs:label` is exactly "Galleria degli Uffizi" (this excludes
+the 4,358-record "Gabinetto Disegni e Stampe degli Uffizi" drawings
+cabinet); the room string is `core:specifications` on the TITL (the
+intuitive `a-loc:` namespace returns nothing — measured). No on-view
+boolean exists: on-view = a measured 316-distinct-spec census filter
+(rooms: numbered/lettered/named "sala", Vasari-corridor "tratto" sections,
+corridoio/crociera bays, scalone/vestibolo circulation, the S. Pier
+Scheraggio annex; storage: deposito/depositi, G.D.S.U, soffittone, admin
+spaces, facade "esterno") — 2,539 on-view of 3,448 spec-bearing records
+(877 storage, 32 other). The post-2021 lettered scheme "primo/secondo
+piano, sala A16" → galleryNumber "A16" + floor "1"/"2" (letter→floor is
+fully determined in the census: A* = secondo piano, B–E* = primo piano);
+older "sala N" specs keep NULL floors (no guessing); campata/soffitto
+position residue → locationNote. Composite ICCD titles ("Giove e Antiope
+(dipinto) di Paolo Veronese (scuola) (sec. XVI)") are split into
+title/classification/artist/culture/period only when the shape is
+unambiguous (96.3% split; the rest keep the full label — honest fallback);
+`dc:date`/`dc:type`/`pico:materialAndTechnique` fill period/classification/
+medium at 100%. Titles are Italian → `translateFrom: "it"` (DeepSeek
+titleAlt, 2,525/2,539 rows). Goldens at `data/evals/uffizi/search-cases.json`
+(12/12 measured: 6 Italian queries + 6 English-for-Italian titleAlt cases);
+Met goldens 50/50 unchanged on the merged 10-museum artifact;
+`coverage[uffizi]` 100% (2,539/2,539, 155 gallery rows, 72 floored).
+Delta = full re-pull (~25 cheap requests; ArCo exposes no per-record
+datestamps at this tier).
+
 ### Provenance & the license-TTL mechanism
 
 Harvard's 14-day cap coexists with the V&A's 28-day one — each museum's
@@ -1023,7 +1060,7 @@ loads whatever shards exist.
 | `server/src/vocab.ts:getVocabulary` | DB-derived vocabulary for the interpret prompt |
 | `data/src/objects.ts` / `geometry.ts` / `graph.ts` / `synonyms.ts` / `build-db.ts` / `embed-images.ts` | pipelines (scripts; embed-images also does `--compact` tombstone/dedupe) |
 | `data/src/geometry-osm.ts` / `lib/louvre-plan.ts` | Louvre geometry + routing graph from the committed OSM Overpass extract (D7): salle-code matching, door-node adapter, explicit-level vertical shafts (`npm -w data run geometry:louvre`) |
-| `data/src/sources/types.ts:MuseumSource` / `sources/registry.ts` / `sources/met.ts` / `aic.ts` / `cleveland.ts` / `nga.ts` / `smk.ts` / `louvre.ts` / `vanda.ts` / `harvard.ts` / `rijksmuseum.ts` / `brera.ts` / `egizio.ts` | per-museum source-adapter seam: the ONE copy of each museum's row mapper + hydration/delta logic (objects.ts is a thin driver; nightly.ts prefers `sourceFor(id).delta` whenever the museum's rows survived from last night's artifact — critical for the Louvre, whose fullFetch is a ~26.6k-request hydration) |
+| `data/src/sources/types.ts:MuseumSource` / `sources/registry.ts` / `sources/met.ts` / `aic.ts` / `cleveland.ts` / `nga.ts` / `smk.ts` / `louvre.ts` / `vanda.ts` / `harvard.ts` / `rijksmuseum.ts` / `brera.ts` / `egizio.ts` / `uffizi.ts` | per-museum source-adapter seam: the ONE copy of each museum's row mapper + hydration/delta logic (objects.ts is a thin driver; nightly.ts prefers `sourceFor(id).delta` whenever the museum's rows survived from last night's artifact — critical for the Louvre, whose fullFetch is a ~26.6k-request hydration) |
 | `shared/search.ts:computeExpiredMuseums` + `SearchFilters.expiredMuseums` | license-TTL mechanism (V&A 28-day cap): expiry date arithmetic + the `NOT IN` exclusion every query builder appends — see "Provenance & the license-TTL mechanism" |
 | `data/src/lib/politeFetch.ts:createPoliteClient` | shared WAF-aware paced fetch (cookie reuse, 403≥60s wait, 429/5xx backoff) — per-source etiquette via options |
 | `data/src/lib/csv.ts:parseCsv` | minimal RFC4180 CSV parser (quoted/embedded-newline fields) — only NGA's CSV-based source needs one, no dependency existed |

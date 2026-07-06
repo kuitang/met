@@ -1,8 +1,8 @@
 # Graph connectivity & routing sanity
 
 - Status: **WARN**
-- Generated: 2026-07-06T15:00:53.648Z by `data/src/evals.ts`
-- Data version: 2026-07-06-e2c3140e
+- Generated: 2026-07-06T15:39:53.660Z by `data/src/evals.ts`
+- Data version: 2026-07-06-71ac79b9
 
 ## Inventory
 

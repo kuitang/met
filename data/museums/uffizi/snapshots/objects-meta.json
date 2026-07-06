@@ -1,0 +1,14 @@
+{
+  "fetchedAt": "2026-07-06T15:20:15.716Z",
+  "propsWithSpec": 3448,
+  "onView": 2539,
+  "storageFiltered": 877,
+  "otherOffView": 32,
+  "rows": 2539,
+  "titleFill": 2539,
+  "splitTitles": 2446,
+  "distinctGalleryNumbers": 155,
+  "flooredGalleries": 72,
+  "requests": 25,
+  "runtimeSeconds": 35
+}

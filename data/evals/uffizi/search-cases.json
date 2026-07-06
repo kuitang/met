@@ -1,0 +1,17 @@
+{
+  "description": "Uffizi golden search cases (12): the per-museum accuracy north-star for the Uffizi rows in the merged artifact. Authored 2026-07-06 against the 2,539-row on-view harvest from the ArCo SPARQL endpoint (dati.beniculturali.it). 6 Italian-query cases exercise the source-language titles/artists; 6 English-for-Italian cases exercise the contentless-FTS titleAlt indexing (DeepSeek IT→EN). EN cases assert expectObjectIDs because search results return the Italian title (titleAlt is index-only in shared/search.ts) — ids are stable 48-bit hashes of uffizi/{sourceId}.",
+  "cases": [
+    { "query": "nascita di venere", "tier": "autocomplete", "expectTitleContains": "nascita di Venere", "note": "IT; Botticelli's Birth of Venus, sala A12 (sourceId 0900158551)" },
+    { "query": "tondo doni", "tier": "autocomplete", "expectTitleContains": "Tondo Doni", "note": "IT; Michelangelo, sala A38" },
+    { "query": "testa di medusa", "tier": "autocomplete", "expectTitleContains": "testa di Medusa", "note": "IT; Caravaggio's Medusa shield (plus its anonymous copy), sala E4" },
+    { "query": "la primavera", "tier": "autocomplete", "expectTitleContains": "Primavera", "note": "IT; Botticelli's Primavera, sala A11" },
+    { "query": "adorazione dei re magi", "tier": "full", "expectTitleContains": "adorazione dei Re Magi", "note": "IT; Leonardo's unfinished Adoration, sala A35" },
+    { "query": "botticelli", "tier": "autocomplete", "expectArtistContains": "Botticelli", "note": "IT artist form 'Filipepi Alessandro detto Botticelli' — the byname must still match" },
+    { "query": "birth of venus", "tier": "autocomplete", "expectObjectIDs": [212130296384343], "note": "EN-for-IT via titleAlt ('nascita di Venere' → 'birth of Venus'); result title stays Italian, so assert the id" },
+    { "query": "head of medusa", "tier": "autocomplete", "expectObjectIDs": [141055461282409, 163249968404632], "note": "EN-for-IT via titleAlt; Caravaggio original or the copy hanging beside it both acceptable (sala E4)" },
+    { "query": "drunken bacchus", "tier": "autocomplete", "expectObjectIDs": [195432948100426], "note": "EN-for-IT via titleAlt ('Bacco ebbro' → 'Drunken Bacchus'), Rubens, sala 55" },
+    { "query": "holy family doni", "tier": "full", "expectObjectIDs": [32949473976057], "note": "EN-for-IT via titleAlt ('Tondo Doni, Sacra Famiglia…' → 'Doni Tondo, Holy Family…')" },
+    { "query": "annunciation leonardo", "tier": "full", "expectObjectIDs": [23161997381483], "note": "EN-for-IT via titleAlt ('Annunciazione' → 'Annunciation') + artist term, sala A35" },
+    { "query": "sacrifice of isaac caravaggio", "tier": "full", "expectObjectIDs": [59716585422207], "note": "EN-for-IT via titleAlt ('sacrificio di Isacco' → 'sacrifice of Isaac'), sala E2" }
+  ]
+}

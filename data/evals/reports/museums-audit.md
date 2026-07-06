@@ -1,16 +1,16 @@
 # Museums data-quality audit
 
 - Status: **WARN**
-- Generated: 2026-07-06T15:30:33.459Z by `data/src/museums-audit.ts`
-- Data version: 2026-07-06-6b338ffb (built 2026-07-06T15:30:14.201Z)
-- Museums audited: met, aic, cleveland, nga, smk, louvre, vanda, harvard, rijksmuseum, brera, egizio
+- Generated: 2026-07-06T15:39:55.764Z by `data/src/museums-audit.ts`
+- Data version: 2026-07-06-71ac79b9 (built 2026-07-06T15:39:31.049Z)
+- Museums audited: met, aic, cleveland, nga, smk, louvre, vanda, harvard, rijksmuseum, brera, egizio, uffizi
 - Previous artifact for churn: none provided (PREV_DB unset, no data/met.sqlite.prev) — churn sections unavailable this run
 
 Per Kui's standing rule, this report is a north-star dashboard: only the
 structural invariants below can fail the process (exit 1); everything else
 is a WARN with numbers attached, never a guess.
 
-> Hard gate: **PASS** — 0 structural FAILs, 1 thresholded WARNs (join-rate tails) across 47 checks.
+> Hard gate: **PASS** — 0 structural FAILs, 1 thresholded WARNs (join-rate tails) across 51 checks.
 
 ## Hard-gate summary
 
@@ -63,6 +63,10 @@ is a WARN with numbers attached, never a guess.
 | objects.site ⊆ registry sites (egizio) | PASS | all objects.site values are registered |
 | license non-empty (egizio) | PASS | 0/278 objects with license='' |
 | every object joins a gallery row, site-scoped (egizio) | PASS | 278/278 (100.00%) |
+| sourceId unique per museum (uffizi) | PASS | 0 duplicate (museum, sourceId) groups |
+| objects.site ⊆ registry sites (uffizi) | PASS | all objects.site values are registered |
+| license non-empty (uffizi) | PASS | 0/2539 objects with license='' |
+| every object joins a gallery row, site-scoped (uffizi) | PASS | 2539/2539 (100.00%) |
 
 ## Cross-museum summary
 
@@ -79,6 +83,7 @@ is a WARN with numbers attached, never a guess.
 | Rijksmuseum | 379 | room-labels | 100.0% | 92% | 99% | 100% | 100% | 64% | 98% | 98% | 100%/100% | PASS |
 | Brera | 356 | room-labels | 100.0% | 100% | 99% | 15% | 98% | 100% | 0% | 0% | 0%/100% | PASS |
 | Museo Egizio | 278 | room-labels | 100.0% | 0% | 100% | 0% | 100% | 32% | 99% | 99% | 100%/100% | PASS |
+| Uffizi | 2539 | room-labels | 100.0% | 70% | 100% | 100% | 100% | 100% | 0% | 0% | 22%/46% | PASS |
 
 ## Per-museum detail
 
@@ -542,6 +547,53 @@ Room-label coverage (galleries table, 18 rows for this museum's sites): **18/18 
 Catalog-noise clusters — (title, artist) pairs with >20 rows (top 5 of 0):
 
 None.
+
+#### Churn vs previous artifact
+
+No previous artifact provided (set PREV_DB=<path> to a prior met.sqlite) — churn unavailable this run.
+
+### Galleria degli Uffizi (`uffizi`)
+
+Fidelity **room-labels** · sites: uffizi · license `CC-BY-SA-4.0` · translateFrom `it`
+
+#### Fill rates (measured %, n=2539)
+
+| field | filled | % |
+|---|---|---|
+| artist | 1768 | 69.6% |
+| period/date | 2539 | 100.0% |
+| classification | 2539 | 100.0% |
+| medium | 2539 | 100.0% |
+| tags | 2539 | 100.0% |
+| image (imageUrl set) | 0 | 0.0% |
+| image, license-allowed | 0 | 0.0% |
+| locationNote | 826 | 32.5% |
+
+Room-label coverage (galleries table, 155 rows for this museum's sites): **34/155 titled (21.9%)**, **72/155 floored (46.5%)**.
+
+#### Structural invariants
+
+- object→gallery join: **2539/2539 (100.00%)** — PASS
+- sourceId duplicate groups: **0**
+- objects.site values outside the registry: **0**
+- objects with license='': **0**
+
+#### Distribution sanity
+
+- Empty-title rows: **0.00%**
+- Rows per gallery: p50 **8**, p95 **43**, max **494** (155 distinct galleries)
+- titleAlt coverage (translateFrom it): **99.4%**
+- License histogram: `CC-BY-SA-4.0`/`(none)` ×2539
+
+Catalog-noise clusters — (title, artist) pairs with >20 rows (top 5 of 7):
+
+| title | artist | rows |
+|---|---|---|
+| cornice di dipinto - manifattura toscana | (none) | 242 |
+| cornice di dipinto - manifattura fiorentina | (none) | 104 |
+| ritratto d'uomo | (none) | 78 |
+| ritratto di donna | (none) | 49 |
+| cornice di dipinto - manifattura italiana | (none) | 46 |
 
 #### Churn vs previous artifact
 
