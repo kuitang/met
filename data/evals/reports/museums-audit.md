@@ -1,8 +1,8 @@
 # Museums data-quality audit
 
 - Status: **WARN**
-- Generated: 2026-07-06T15:39:55.764Z by `data/src/museums-audit.ts`
-- Data version: 2026-07-06-71ac79b9 (built 2026-07-06T15:39:31.049Z)
+- Generated: 2026-07-06T20:04:13.293Z by `data/src/museums-audit.ts`
+- Data version: 2026-07-06-f3945c4d (built 2026-07-06T20:03:53.152Z)
 - Museums audited: met, aic, cleveland, nga, smk, louvre, vanda, harvard, rijksmuseum, brera, egizio, uffizi
 - Previous artifact for churn: none provided (PREV_DB unset, no data/met.sqlite.prev) — churn sections unavailable this run
 
@@ -61,8 +61,8 @@ is a WARN with numbers attached, never a guess.
 | every object joins a gallery row, site-scoped (brera) | PASS | 356/356 (100.00%) |
 | sourceId unique per museum (egizio) | PASS | 0 duplicate (museum, sourceId) groups |
 | objects.site ⊆ registry sites (egizio) | PASS | all objects.site values are registered |
-| license non-empty (egizio) | PASS | 0/278 objects with license='' |
-| every object joins a gallery row, site-scoped (egizio) | PASS | 278/278 (100.00%) |
+| license non-empty (egizio) | PASS | 0/3228 objects with license='' |
+| every object joins a gallery row, site-scoped (egizio) | PASS | 3228/3228 (100.00%) |
 | sourceId unique per museum (uffizi) | PASS | 0 duplicate (museum, sourceId) groups |
 | objects.site ⊆ registry sites (uffizi) | PASS | all objects.site values are registered |
 | license non-empty (uffizi) | PASS | 0/2539 objects with license='' |
@@ -82,7 +82,7 @@ is a WARN with numbers attached, never a guess.
 | Harvard | 1817 | room-labels | 100.0% | 48% | 44% | 100% | 99% | 0% | 0% | 0% | 100%/100% | PASS |
 | Rijksmuseum | 379 | room-labels | 100.0% | 92% | 99% | 100% | 100% | 64% | 98% | 98% | 100%/100% | PASS |
 | Brera | 356 | room-labels | 100.0% | 100% | 99% | 15% | 98% | 100% | 0% | 0% | 0%/100% | PASS |
-| Museo Egizio | 278 | room-labels | 100.0% | 0% | 100% | 0% | 100% | 32% | 99% | 99% | 100%/100% | PASS |
+| Museo Egizio | 3228 | room-labels | 100.0% | 0% | 100% | 0% | 100% | 44% | 95% | 95% | 100%/100% | PASS |
 | Uffizi | 2539 | room-labels | 100.0% | 70% | 100% | 100% | 100% | 100% | 0% | 0% | 22%/46% | PASS |
 
 ## Per-museum detail
@@ -516,24 +516,24 @@ No previous artifact provided (set PREV_DB=<path> to a prior met.sqlite) — chu
 
 Fidelity **room-labels** · sites: egizio · license `egizio-unstated`
 
-#### Fill rates (measured %, n=278)
+#### Fill rates (measured %, n=3228)
 
 | field | filled | % |
 |---|---|---|
 | artist | 0 | 0.0% |
-| period/date | 278 | 100.0% |
+| period/date | 3227 | 100.0% |
 | classification | 0 | 0.0% |
-| medium | 278 | 100.0% |
-| tags | 90 | 32.4% |
-| image (imageUrl set) | 276 | 99.3% |
-| image, license-allowed | 276 | 99.3% |
-| locationNote | 276 | 99.3% |
+| medium | 3219 | 99.7% |
+| tags | 1409 | 43.6% |
+| image (imageUrl set) | 3056 | 94.7% |
+| image, license-allowed | 3056 | 94.7% |
+| locationNote | 3190 | 98.8% |
 
-Room-label coverage (galleries table, 18 rows for this museum's sites): **18/18 titled (100.0%)**, **18/18 floored (100.0%)**.
+Room-label coverage (galleries table, 28 rows for this museum's sites): **28/28 titled (100.0%)**, **28/28 floored (100.0%)**.
 
 #### Structural invariants
 
-- object→gallery join: **278/278 (100.00%)** — PASS
+- object→gallery join: **3228/3228 (100.00%)** — PASS
 - sourceId duplicate groups: **0**
 - objects.site values outside the registry: **0**
 - objects with license='': **0**
@@ -541,12 +541,18 @@ Room-label coverage (galleries table, 18 rows for this museum's sites): **18/18 
 #### Distribution sanity
 
 - Empty-title rows: **0.00%**
-- Rows per gallery: p50 **8**, p95 **112**, max **112** (18 distinct galleries)
-- License histogram: `egizio-unstated`/`CC0-1.0` ×276, `egizio-unstated`/`(none)` ×2
+- Rows per gallery: p50 **77**, p95 **303**, max **454** (28 distinct galleries)
+- License histogram: `egizio-unstated`/`CC0-1.0` ×3056, `egizio-unstated`/`(none)` ×172
 
-Catalog-noise clusters — (title, artist) pairs with >20 rows (top 5 of 0):
+Catalog-noise clusters — (title, artist) pairs with >20 rows (top 5 of 11):
 
-None.
+| title | artist | rows |
+|---|---|---|
+| Jar | (none) | 129 |
+| Bowl | (none) | 119 |
+| Model of grain sack | (none) | 66 |
+| Loincloth | (none) | 52 |
+| Bread loaf | (none) | 41 |
 
 #### Churn vs previous artifact
 

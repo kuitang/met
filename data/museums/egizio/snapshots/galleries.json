@@ -106,5 +106,65 @@
     "site": "egizio",
     "title": "Floor 1 / Room 08",
     "floor": "1"
+  },
+  {
+    "galleryNumber": "1-06 SDV",
+    "site": "egizio",
+    "title": "Floor 1 / Room 06 SDV",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "1-07",
+    "site": "egizio",
+    "title": "Floor 1 / Room 07",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "2-03 TdI",
+    "site": "egizio",
+    "title": "Floor 2 / Room 03 TdI",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "1-09",
+    "site": "egizio",
+    "title": "Floor 1 / Room 09",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "1-10 Ahmose",
+    "site": "egizio",
+    "title": "Floor 1 / Room 10 Ahmose",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "-1-War. -1 Area B Compact Storage",
+    "site": "egizio",
+    "title": "Floor -1 / War. -1 Area B Compact Storage",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "G-15",
+    "site": "egizio",
+    "title": "Ground floor / Room 15",
+    "floor": "G"
+  },
+  {
+    "galleryNumber": "2-03 IeN",
+    "site": "egizio",
+    "title": "Floor 2 / Room 03 IeN",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "2-03",
+    "site": "egizio",
+    "title": "Floor 2 / Room 03",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "-1-Exit",
+    "site": "egizio",
+    "title": "Floor -1 / Exit",
+    "floor": "-1"
   }
 ]
