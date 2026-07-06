@@ -54,6 +54,12 @@ data/raw/*/objects-cache.ndjson
 # NGA opendata CSVs (~82 MB objects.csv; re-downloaded from the upstream repo)
 data/raw/nga/
 
+# Rijksmuseum OAI-PMH harvest state (data/src/sources/rijksmuseum.ts): the
+# on-view id list + resumption-token position, both fully re-fetchable from
+# data.rijksmuseum.nl (unlike Louvre's committed plan JSONs, there's no
+# scraping-restriction reason to commit this raw data)
+data/raw/rijksmuseum/
+
 # Image-proxy disk cache (server/src/routes/img.ts; ephemeral in prod — it
 # refills from the Met CDN after each deploy)
 data/img-cache/

@@ -27,6 +27,8 @@ export interface PoliteClientOptions {
 
 export interface PoliteClient {
   fetchJson(url: string): Promise<any>;
+  /** Same pacing/retry/cookie behavior as fetchJson but returns raw text (e.g. OAI-PMH XML) instead of parsing JSON. */
+  fetchText(url: string): Promise<string | null>;
   /**
    * Run `fn` over items with the pool, pacing request starts at reqsPerSec.
    * Logs progress with rate + ETA every `progressEvery` completions (default 1000).
@@ -45,7 +47,14 @@ export function createPoliteClient(opts: PoliteClientOptions): PoliteClient {
   const label = opts.label ?? "politeFetch";
   let cookie = ""; // session cookies — reusing them keeps us one "visitor"
 
-  async function fetchJson(url: string): Promise<any> {
+  /**
+   * Shared retry/pacing/cookie loop; returns the parsed JSON (expectJson) or
+   * the raw body text, or null for a 404. The non-JSON-200 bot-challenge
+   * retry applies only when JSON is expected — text callers (OAI-PMH XML)
+   * legitimately receive non-JSON bodies and carry their own shape
+   * assertions instead.
+   */
+  async function fetchRaw(url: string, expectJson: boolean): Promise<any> {
     let delay = 2000;
     for (let attempt = 1; ; attempt++) {
       let res: Response;
@@ -63,12 +72,13 @@ export function createPoliteClient(opts: PoliteClientOptions): PoliteClient {
       const setCookies = res.headers.getSetCookie();
       if (setCookies.length) cookie = setCookies.map((c) => c.split(";")[0]).join("; ");
       if (res.ok) {
+        const text = await res.text();
+        if (!expectJson) return text;
         // A 200 that isn't JSON is a bot-challenge/maintenance page in
         // disguise (measured 2026-07-05: collections.louvre.fr served an
         // HTML challenge with HTTP 200 ~12k requests into a hydration,
         // which crashed the run via res.json()). Treat it exactly like a
         // 403: long wait, keep retrying — the challenge lifts.
-        const text = await res.text();
         try {
           return JSON.parse(text);
         } catch {
@@ -96,6 +106,14 @@ export function createPoliteClient(opts: PoliteClientOptions): PoliteClient {
       }
       throw new Error(`${res.status} ${res.statusText} for ${url}`);
     }
+  }
+
+  async function fetchJson(url: string): Promise<any> {
+    return fetchRaw(url, true);
+  }
+
+  async function fetchText(url: string): Promise<string | null> {
+    return fetchRaw(url, false);
   }
 
   async function pooledMap<T>(
@@ -129,5 +147,5 @@ export function createPoliteClient(opts: PoliteClientOptions): PoliteClient {
     );
   }
 
-  return { fetchJson, pooledMap };
+  return { fetchJson, fetchText, pooledMap };
 }

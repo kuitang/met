@@ -18,6 +18,7 @@ import { smkSource } from "./smk.ts";
 import { louvreSource } from "./louvre.ts";
 import { vandaSource } from "./vanda.ts";
 import { harvardSource } from "./harvard.ts";
+import { rijksmuseumSource } from "./rijksmuseum.ts";
 
 const DATA_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 
@@ -292,6 +293,46 @@ export const MUSEUMS: MuseumInfo[] = [
     },
     objectUrlTemplate: "https://harvardartmuseums.org/collections/object/{sourceId}",
   },
+  {
+    id: "rijksmuseum",
+    name: "Rijksmuseum",
+    shortName: "Rijksmuseum",
+    city: "Amsterdam",
+    country: "NL",
+    sites: [
+      {
+        siteId: "rijksmuseum",
+        name: "Rijksmuseum",
+        entrance: { lat: 52.36, lon: 4.8852, floor: "0" },
+        // Measured 2026-07-06: on-view room codes are "{floor}.{room}" (e.g.
+        // "2.16", "1.17", "0.10", "1.4") across every building sampled (HG
+        // main building, TV KPN wing) — floor is always the code's leading
+        // segment. Floor "3" reflects the museum's own numbering (top-floor
+        // print-room/study galleries) though not hit in the live sample —
+        // revisit if the full harvest never populates it.
+        floorOrder: ["0", "1", "2", "3"],
+      },
+    ],
+    // D9: gallery-label fidelity per the spike (rijksmuseum-spike.md) — room
+    // codes come from the Linked Art current_location, no floorplan/routing
+    // graph source exists publicly, same tier as AIC/Cleveland/NGA/SMK/V&A.
+    fidelity: "room-labels",
+    license: {
+      // Verified live 2026-07-06 (no dedicated prose terms page found; the
+      // machine-readable signal is stronger anyway): every sampled Linked Art
+      // record's own `subject_of` metadata node carries a CC0 `subject_to`
+      // rights statement, matching the spike's "CC0-leaning" call.
+      text: "CC0-1.0",
+      images: "", // per-record: sources/rijksmuseum.ts classifyRights() gates imageLicense to CC0-1.0/PDM-1.0 or "" from edm:rights
+      attribution: "Rijksmuseum (Amsterdam) open data — data.rijksmuseum.nl (OAI-PMH + Linked Art)",
+      termsUrl: "https://data.rijksmuseum.nl/docs",
+    },
+    // Verified live 2026-07-06: /en/collection/{accession} 301-redirects to
+    // the canonical slugged object page and resolves 200 (the numeric
+    // id.rijksmuseum.nl id 404s there instead — accession is the right key).
+    objectUrlTemplate: "https://www.rijksmuseum.nl/en/collection/{sourceId}",
+    translateFrom: "nl",
+  },
 ];
 
 export function museumInfo(id: string): MuseumInfo {
@@ -316,6 +357,7 @@ const SOURCES: Record<string, MuseumSource> = {
   louvre: louvreSource,
   vanda: vandaSource,
   harvard: harvardSource,
+  rijksmuseum: rijksmuseumSource,
 };
 
 export function sourceFor(id: string): MuseumSource {
