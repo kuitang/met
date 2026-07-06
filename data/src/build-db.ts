@@ -5,17 +5,31 @@
  * package name — the artifact has been multi-museum since schema v2.)
  *
  * Per museum (data/snapshots for the Met, data/museums/{id}/snapshots else):
- *   objects.json.gz    → objects + objects_fts rows
- *   synonyms.json      → (optional) LLM synonym expansion, FTS-indexed
- *   galleries.geojson  → galleries (centroids) — museums WITH geometry
- *   galleries.json     → gallery labels/floors — museums WITHOUT geometry
+ *   objects.json.gz     → objects + objects_fts rows
+ *   synonyms.json       → (optional) LLM synonym expansion, FTS-indexed
+ *   thumbs-index.json.gz → (optional) objects.thumbKey column: { objectID →
+ *                        "img/{objectID}/{hash12}" (met) | "img/{museum}/
+ *                        {sourceId}/{hash12}" (else) } from src/thumbnails.ts
+ *                        — the key prefix of the pre-generated t320/c1080
+ *                        derivatives in the public musewalk-images Tigris
+ *                        bucket. An entry is trusted ONLY when its hash
+ *                        segment still matches sha256(the snapshot's current
+ *                        imageUrl) — a catalog image change between the
+ *                        thumbnail run and this build must not bake a 404.
+ *                        Missing file/stale hash = empty column (clients fall
+ *                        back to the /api/v1/img proxy). CC0/PD-gated at the
+ *                        pipeline (thumbnails.ts): only met/aic/cleveland/smk
+ *                        ever have entries; nga/louvre/vanda never do.
+ *   galleries.geojson   → galleries (centroids) — museums WITH geometry
+ *   galleries.json      → gallery labels/floors — museums WITHOUT geometry
  *                        (else galleries are synthesized from distinct
  *                        object galleryNumbers with NULL title/floor)
  *   amenities.geojson / graph.json → amenities, routing graph (optional)
  *
  * Schema v2 (multi-museum, backward-compatible for readers):
  *   - objects gains museum, sourceId, locationNote, titleAlt, license,
- *     imageLicense (TEXT NOT NULL, '' defaults; license from the registry).
+ *     imageLicense (TEXT NOT NULL, '' defaults; license from the registry),
+ *     thumbKey (TEXT NOT NULL, '' when no thumbnail run has covered this row).
  *   - objects_fts is CONTENTLESS (content='') with explicit inserts: the
  *     indexed title is "title titleAlt" so bilingual titles match at full
  *     weight while `objects.title` stays the display form. Same 7 columns,
@@ -94,6 +108,7 @@ interface MuseumInputs {
   info: MuseumInfo;
   objects: ObjectRow[];
   synonyms: Synonyms;
+  thumbsIndex: Record<string, string>; // objectID (string) -> bucket keyPrefix; see thumbnails.ts
   galleriesGeo: { features: Feature[] } | null;
   galleryLabels: GalleryLabelRow[] | null;
   amenitiesGeo: { features: Feature[] } | null;
@@ -167,6 +182,7 @@ function loadMuseum(info: MuseumInfo): MuseumInputs | null {
 
   const objectsGz = read("objects.json.gz")!;
   const synonymsRaw = read("synonyms.json");
+  const thumbsIndexGz = read("thumbs-index.json.gz");
   const galleriesGeoRaw = read("galleries.geojson");
   const galleryLabelsRaw = read("galleries.json");
   const amenitiesRaw = read("amenities.geojson");
@@ -187,6 +203,7 @@ function loadMuseum(info: MuseumInfo): MuseumInputs | null {
     synonyms: synonymsRaw
       ? JSON.parse(synonymsRaw.toString("utf8"))
       : { vocab: {}, titles: {} },
+    thumbsIndex: thumbsIndexGz ? JSON.parse(zlib.gunzipSync(thumbsIndexGz).toString("utf8")) : {},
     galleriesGeo: galleriesGeoRaw ? JSON.parse(galleriesGeoRaw.toString("utf8")) : null,
     galleryLabels: galleryLabelsRaw ? JSON.parse(galleryLabelsRaw.toString("utf8")) : null,
     amenitiesGeo: amenitiesRaw ? JSON.parse(amenitiesRaw.toString("utf8")) : null,
@@ -235,7 +252,8 @@ function main(): void {
       locationNote   TEXT NOT NULL DEFAULT '',  -- sub-room detail (V&A case …)
       titleAlt       TEXT NOT NULL DEFAULT '',  -- English display title when title is not English
       license        TEXT NOT NULL,             -- per-record text license
-      imageLicense   TEXT NOT NULL DEFAULT ''   -- '' = no image derivatives allowed
+      imageLicense   TEXT NOT NULL DEFAULT '',  -- '' = no image derivatives allowed
+      thumbKey       TEXT NOT NULL DEFAULT ''   -- bucket key prefix (thumbnails.ts), '' = use /api/v1/img proxy
     );
     CREATE INDEX objects_gallery ON objects(galleryNumber);
     CREATE INDEX objects_museum ON objects(museum);
@@ -320,7 +338,7 @@ function main(): void {
     `INSERT INTO objects VALUES (@objectID, @accession, @title, @artist, @culture, @period,
      @classification, @medium, @tags, @galleryNumber, @site, @rotation, @isHighlight,
      @imageUrl, @metadataDate, @synonyms,
-     @museum, @sourceId, @locationNote, @titleAlt, @license, @imageLicense)`,
+     @museum, @sourceId, @locationNote, @titleAlt, @license, @imageLicense, @thumbKey)`,
   );
   const insFts = db.prepare(
     `INSERT INTO objects_fts (rowid, title, artist, culture, classification, medium, tags, synonyms)
@@ -334,7 +352,7 @@ function main(): void {
   const perMuseumCounts: Record<string, number> = {};
 
   for (const m of museums) {
-    const { info, objects, synonyms } = m;
+    const { info, objects, synonyms, thumbsIndex } = m;
     const synFor = (o: ObjectRow): string =>
       [
         ...new Set(
@@ -346,6 +364,21 @@ function main(): void {
           ].filter(Boolean),
         ),
       ].join(" ");
+    // thumbKey = the bucket key prefix of the pre-generated t320/c1080
+    // derivatives (see src/thumbnails.ts). Content-addressed safety: bake an
+    // entry only while its hash segment still equals sha256(current
+    // imageUrl)[:12] — a catalog image change since the last thumbnail run
+    // must not point clients at a 404 (empty thumbKey falls back to the
+    // /api/v1/img proxy, which always re-derives from the live imageUrl).
+    const thumbKeyPrefix = (museum: string, sourceId: string, imageUrl: string): string => {
+      const hash = createHash("sha256").update(imageUrl).digest("hex").slice(0, 12);
+      return museum === "met" ? `img/${sourceId}/${hash}` : `img/${museum}/${sourceId}/${hash}`;
+    };
+    const thumbFor = (o: ObjectRow, objectID: number, sourceId: string): string => {
+      const key = thumbsIndex[objectID];
+      if (!key || !o.imageUrl) return "";
+      return key === thumbKeyPrefix(info.id, sourceId, o.imageUrl) ? key : "";
+    };
 
     // Met-only: recompute site + canonicalize galleryNumber from the geometry
     // join (the Met API zero-pads Cloisters numbers; see v1 history). Other
@@ -396,6 +429,7 @@ function main(): void {
           titleAlt,
           license: o.license ?? info.license.text,
           imageLicense: o.imageLicense ?? info.license.images,
+          thumbKey: thumbFor(o, objectID, sourceId),
         });
         // Untitled-object convention (V&A: ~97% of rows display objectType as
         // the title) makes title === classification. Indexing that copy at
@@ -674,6 +708,20 @@ function main(): void {
     console.log(
       `coverage[${m.info.id}]: ${cov.matched}/${cov.total} objects (${((100 * cov.matched) / cov.total).toFixed(1)}%) have a galleries row`,
     );
+  }
+  // thumbKey coverage: only meaningful for the CC0/PD museums a thumbnails.ts
+  // run has actually covered (see data/src/thumbnails.ts IMAGE_DERIVATIVE_MUSEUMS).
+  for (const m of museums) {
+    const t = v
+      .prepare(
+        `SELECT count(*) AS withImg, sum(thumbKey != '') AS withThumb
+         FROM objects WHERE museum = ? AND imageUrl != ''`,
+      )
+      .get(m.info.id) as { withImg: number; withThumb: number };
+    if (t.withImg > 0)
+      console.log(
+        `thumbKey[${m.info.id}]: ${t.withThumb ?? 0}/${t.withImg} objects-with-imageUrl have a baked thumbKey`,
+      );
   }
   const orphanObjGalleries = v
     .prepare(`

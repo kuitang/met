@@ -29,17 +29,40 @@
  *     the current imageUrl hash (re-embedding 30k vectors to learn what we
  *     already have is exactly what the cache exists to avoid).
  *
+ * MULTI-MUSEUM (D11): `--museum <id>` (default `met`, same registry as
+ * synonyms.ts/thumbnails.ts/build-db.ts) selects another museum's snapshot.
+ * Caches and the output index are museum-keyed (data/raw/{museum}-images,
+ * {snapDir}/image-embeddings) so runs for different museums never collide.
+ * Same HARD GATE as thumbnails.ts (see its header): only
+ * IMAGE_DERIVATIVE_MUSEUMS (met/aic/cleveland/smk — the CC0/PD sources) are
+ * ever touched, and within an eligible non-Met museum only rows with
+ * `imageLicense === 'CC0-1.0'` are embedded (Met predates that column and is
+ * CC0 museum-wide, so its rows are gated on imageUrl alone). objectID for
+ * non-Met rows is build-db.ts's hashObjectID(museum, sourceId) so a future
+ * photo-locate index lines up with met.sqlite's objectID directly.
+ *
+ * PHOTO-LOCATE STAYS MET-ONLY THIS SPRINT: the pipeline below is
+ * museum-ready (verified with 50-image dry runs), but no non-Met museum has
+ * had its full embedding set generated or wired into server/src/embeddings.ts
+ * — that is deliberately deferred (projected ≈$4/museum at full scale,
+ * unchanged gemini-embedding-2 pricing/model; see data/evals/reports for the
+ * dry-run verification). Running a museum's full set is just
+ * `npx tsx data/src/embed-images.ts --museum <id>`; wiring photo-locate to
+ * read a non-Met index is future work.
+ *
  * Usage (Node 24):
  *   npx tsx data/src/embed-images.ts                 # all imageUrl rows in objects.json.gz (~34k, ≈$4, ~2.5h first time; only new/changed after)
- *   npx tsx data/src/embed-images.ts --compact       # tombstone + compaction only (no Gemini)
- *   npx tsx data/src/embed-images.ts --subset gatec  # Gate C eval subset (~1.6k, ≈$0.20)
+ *   npx tsx data/src/embed-images.ts --museum aic    # another registry museum (CC0/PD-gated)
+ *   npx tsx data/src/embed-images.ts --compact       # tombstone + compaction only (no Gemini); --museum applies
+ *   npx tsx data/src/embed-images.ts --subset gatec  # Gate C eval subset (~1.6k, ≈$0.20); Met only
  *   npx tsx data/src/embed-images.ts --ids ids.json  # explicit JSON array of objectIDs
  *   --limit N caps any of the above. MET_DATA_DIR overrides the data root
  *   (snapshots read/written under $MET_DATA_DIR/snapshots) like build-db.ts.
  *
- * Object metadata comes from data/snapshots/objects.json.gz (B1 pipeline) when
- * present; otherwise each id is hydrated from the Met API (cached under
- * data/raw/met-objects/{id}.json, ~30 req/s, well under the 80 req/s cap).
+ * Object metadata comes from {snapDir}/objects.json.gz when present;
+ * otherwise (Met only) each id is hydrated from the Met API (cached under
+ * data/raw/met-objects/{id}.json, ~30 req/s, well under the 80 req/s cap) —
+ * other museums have no such fallback and must ship a snapshot.
  */
 import { GoogleGenAI } from '@google/genai'
 import { createHash } from 'node:crypto'
@@ -47,18 +70,36 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { gunzipSync } from 'node:zlib'
+import { museumInfo, snapDirFor } from './sources/registry.ts'
+import type { ObjectRow } from './sources/types.ts'
 
 const ROOT = path.resolve(import.meta.dirname, '../..')
 // MET_DATA_DIR overrides the data root (same contract as build-db.ts /
-// synonyms.ts); the raw image/object caches stay repo-level — they are
-// content-keyed by objectID and shared across staging dirs.
-const DATA_ROOT = process.env.MET_DATA_DIR
-  ? path.resolve(process.env.MET_DATA_DIR)
-  : path.join(ROOT, 'data')
-const SNAPSHOT = path.join(DATA_ROOT, 'snapshots/objects.json.gz')
-const IMG_CACHE = path.join(ROOT, 'data/raw/met-images')
-const OBJ_CACHE = path.join(ROOT, 'data/raw/met-objects')
-const OUT_DIR = path.join(DATA_ROOT, 'snapshots/image-embeddings')
+// synonyms.ts); MUSEUM_ID keys every cache/output path so runs for different
+// museums never collide (same registry as thumbnails.ts).
+const args = process.argv.slice(2)
+const flag = (name: string) => {
+  const i = args.indexOf(name)
+  return i >= 0 ? args[i + 1] : undefined
+}
+export const MUSEUM_ID = flag('--museum') ?? 'met'
+
+/** HARD GATE, independent of any per-record field — same set thumbnails.ts
+ * uses: only CC0/PD sources are ever fetched/embedded. */
+export const IMAGE_DERIVATIVE_MUSEUMS = new Set(['met', 'aic', 'cleveland', 'smk'])
+if (!IMAGE_DERIVATIVE_MUSEUMS.has(MUSEUM_ID)) {
+  throw new Error(
+    `embed-images.ts: museum "${MUSEUM_ID}" is not in IMAGE_DERIVATIVE_MUSEUMS — its image license ` +
+      `(registry.ts) forbids redistributing derivatives/embeddings of its images.`,
+  )
+}
+
+const DATA_ROOT = process.env.MET_DATA_DIR ? path.resolve(process.env.MET_DATA_DIR) : path.join(ROOT, 'data')
+const SNAP_DIR = MUSEUM_ID === 'met' ? path.join(DATA_ROOT, 'snapshots') : snapDirFor(MUSEUM_ID)
+const SNAPSHOT = path.join(SNAP_DIR, 'objects.json.gz')
+const IMG_CACHE = path.join(ROOT, 'data/raw', `${MUSEUM_ID}-images`)
+const OBJ_CACHE = path.join(ROOT, 'data/raw/met-objects') // Met-only hydration fallback (see header)
+const OUT_DIR = path.join(SNAP_DIR, 'image-embeddings')
 const BENCH = path.join(ROOT, 'data/evals/planning-bench')
 const MET_API = 'https://collectionapi.metmuseum.org/public/collection/v1'
 const DIMS = 768
@@ -66,6 +107,15 @@ const SHARD_SIZE = 1024 // vectors per shard (= 3 MB)
 const SUBSET_CAP = 1600
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+/** 48-bit objectID from museum-scoped sourceId — MUST stay identical to
+ * build-db.ts's hashObjectID (duplicated, not imported, for the same reason
+ * thumbnails.ts duplicates it: build-db.ts runs its pipeline as an import
+ * side effect). Met keeps its native numeric objectID. */
+function hashObjectID(museum: string, sourceId: string): number {
+  const h = createHash('sha256').update(`${museum}/${sourceId}`).digest()
+  return h.readUIntBE(0, 6)
+}
 
 interface ObjMeta {
   objectID: number
@@ -97,35 +147,45 @@ export interface Index {
 export const imageHash = (imageUrl: string): string =>
   createHash('sha256').update(imageUrl).digest('hex')
 
-// ---------- args ----------
-const args = process.argv.slice(2)
-const flag = (name: string) => {
-  const i = args.indexOf(name)
-  return i >= 0 ? args[i + 1] : undefined
-}
+// ---------- remaining args (MUSEUM_ID parsed above, before the gate check) ----------
 const limit = flag('--limit') ? Number(flag('--limit')) : Infinity
 const subset = flag('--subset')
 const idsFile = flag('--ids')
+if (subset && MUSEUM_ID !== 'met') throw new Error('--subset gatec is a Met-only eval fixture')
 
 // ---------- metadata sources ----------
+/** Only imageUrl + (met OR imageLicense === 'CC0-1.0') rows pass — mirrors
+ * thumbnails.ts's per-record gate (see file header). */
+function eligible(o: ObjectRow): boolean {
+  if (!o.imageUrl) return false
+  if (MUSEUM_ID === 'met') return true
+  return o.imageLicense === 'CC0-1.0'
+}
+
 function loadSnapshot(): Map<number, ObjMeta> | null {
   if (!fs.existsSync(SNAPSHOT)) return null
-  const rows = JSON.parse(gunzipSync(fs.readFileSync(SNAPSHOT)).toString()) as Array<{
-    objectID: number
-    title: string
-    artist: string
-    galleryNumber: string
-    imageUrl: string
-  }>
+  const rows = JSON.parse(gunzipSync(fs.readFileSync(SNAPSHOT)).toString()) as ObjectRow[]
   const m = new Map<number, ObjMeta>()
-  for (const r of rows)
-    m.set(r.objectID, {
-      objectID: r.objectID,
+  let rejectedByLicense = 0
+  for (const r of rows) {
+    if (!r.imageUrl) continue
+    if (!eligible(r)) {
+      rejectedByLicense++
+      continue
+    }
+    const sourceId = r.sourceId ?? String(r.objectID)
+    const objectID = MUSEUM_ID === 'met' ? r.objectID : hashObjectID(MUSEUM_ID, sourceId)
+    m.set(objectID, {
+      objectID,
       title: r.title ?? '',
       artist: r.artist ?? '',
       gallery: r.galleryNumber ?? '',
       imageUrl: r.imageUrl ?? '',
     })
+  }
+  if (MUSEUM_ID !== 'met' && rejectedByLicense > 0) {
+    console.log(`imageLicense gate: ${rejectedByLicense} rows with an image but no CC0-1.0 imageLicense skipped`)
+  }
   return m
 }
 
@@ -162,6 +222,7 @@ async function metFetch(url: string): Promise<any> {
 }
 
 async function hydrate(id: number): Promise<ObjMeta | null> {
+  if (MUSEUM_ID !== 'met') return null // Met-API fallback only; other museums must ship a snapshot
   const cache = path.join(OBJ_CACHE, `${id}.json`)
   let j: any
   if (fs.existsSync(cache)) j = JSON.parse(fs.readFileSync(cache, 'utf8'))
@@ -446,6 +507,7 @@ function runCompaction(): void {
 }
 
 async function main() {
+  console.log(`museum: ${MUSEUM_ID} (${museumInfo(MUSEUM_ID).name})`)
   for (const d of [IMG_CACHE, OBJ_CACHE, OUT_DIR]) fs.mkdirSync(d, { recursive: true })
   const snapshot = loadSnapshot()
 

@@ -546,25 +546,43 @@ benchmarks showed retrieval at 90% top-1 / 95% top-5 on real guest photos vs
 17–65% for vision-LLM identification (`docs/llm-bench.md`). The index builder
 is `data/src/embed-images.ts` (incremental; ≈$4 one-time at 34k images).
 
+**Photo-locate stays Met-only (D11):** `embed-images.ts` supports `--museum
+<id>` (museum-keyed caches + output index, same CC0/PD hard gate as
+thumbnails.ts below — only met/aic/cleveland/smk are ever embeddable, and
+within aic/cleveland/smk only rows with `imageLicense === 'CC0-1.0'`), verified
+with 50-image dry runs, but no non-Met museum has had its full embedding set
+generated, and `server/src/embeddings.ts` still loads only the Met index —
+wiring a second museum's photo-locate is future work. Projected cost:
+≈$4/museum at full scale (same gemini-embedding-2 pricing, unchanged).
+
 ## Images: Tigris CDN first, server proxy as fallback
 
 Image bytes do NOT route through the app server on the happy path. The
-thumbnail pipeline (`data/src/thumbnails.ts`) pre-generates JPEG derivatives
-of every catalog image into the PUBLIC Tigris bucket `musewalk-images`
-(anonymous GET, CORS `GET/HEAD from *`), content-addressed as
-`img/{objectID}/{sha256(imageUrl)[:12]}/{t320,c1080}.jpg` and recorded in
-met.sqlite as `objects.thumbKey`. Clients (web AND native — the derivatives
-are smaller than the raw Met CDN files) load
+thumbnail pipeline (`data/src/thumbnails.ts`, `--museum <id>`, default `met`)
+pre-generates JPEG derivatives into the PUBLIC Tigris bucket
+`musewalk-images` (anonymous GET, CORS `GET/HEAD from *`), content-addressed
+and recorded in met.sqlite as `objects.thumbKey`:
+`img/{objectID}/{sha256(imageUrl)[:12]}/{t320,c1080}.jpg` for the Met (its
+pre-existing key format, unmigrated) and
+`img/{museum}/{sourceId}/{sha256(imageUrl)[:12]}/{t320,c1080}.jpg` for every
+other museum. **HARD GATE**: only CC0/PD sources ever have derivatives —
+`IMAGE_DERIVATIVE_MUSEUMS` (met, aic, cleveland, smk) at the museum level,
+plus a per-record `imageLicense === 'CC0-1.0'` check within aic/cleveland/smk
+(they mix CC0 and rights-reserved rows); nga/louvre/vanda images are under
+restricted licenses (registry.ts `license.images: ''`) and are never
+fetched or uploaded. Clients (web AND native — the derivatives are smaller
+than any source museum's own CDN files) load
 `https://musewalk-images.fly.storage.tigris.dev/{thumbKey}/{variant}.jpg`
 directly: `t320` for list rows (results, room sheet), `c1080` for the
-object-detail hero. The URL policy lives in ONE module,
-`apps/mobile/src/data/imageCdn.ts`; the components are
-`apps/mobile/src/components/ObjectImage.tsx` (hero `ObjectImage` + list-row
-`ObjectThumb`). On web the bucket `<img>` carries `crossorigin="anonymous"`:
-Tigris sends no CORP header, so under the app's COEP `require-corp` the
-response is only embeddable via a CORS load. The baked bucket base URL is
-origin-independent infra (identical for every deploy origin) and is
-allowlisted by `scripts/check-origin-portability.mjs`.
+object-detail hero — `thumbKey` is the full opaque bucket prefix baked per
+row, so the client never reconstructs it from museum/sourceId itself. The URL
+policy lives in ONE module, `apps/mobile/src/data/imageCdn.ts`; the
+components are `apps/mobile/src/components/ObjectImage.tsx` (hero
+`ObjectImage` + list-row `ObjectThumb`). On web the bucket `<img>` carries
+`crossorigin="anonymous"`: Tigris sends no CORP header, so under the app's
+COEP `require-corp` the response is only embeddable via a CORS load. The
+baked bucket base URL is origin-independent infra (identical for every
+deploy origin) and is allowlisted by `scripts/check-origin-portability.mjs`.
 
 Fallback (why the proxy stays): measured 2026-06-10, `images.metmuseum.org`
 sends **no** CORS/CORP headers, so under the server's cross-origin-isolated
