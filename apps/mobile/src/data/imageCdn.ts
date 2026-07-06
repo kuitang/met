@@ -31,18 +31,37 @@
  * Tigris does not send Cross-Origin-Resource-Policy, so under the app's
  * COEP `require-corp` the response is only embeddable via a CORS load
  * (which the bucket's `Access-Control-Allow-Origin: *` satisfies).
+ *
+ * AIC exception (measured 2026-07-06): www.artic.edu/iiif sits behind a
+ * Cloudflare tier that challenges every datacenter IP we control (dev
+ * sandbox, Fly prod, GitHub runners) — so the thumbnail pipeline cannot
+ * mirror AIC images to the bucket AND the server proxy 502s permanently.
+ * Real residential browsers are NOT challenged and the CDN serves
+ * `Access-Control-Allow-Origin: *` (verified from Kui's browser on the
+ * crossOriginIsolated prod app: CORS fetch 200, <img crossorigin> LOADED).
+ * Web therefore loads AIC images DIRECTLY from the IIIF CDN with
+ * crossorigin="anonymous", resized per variant via the IIIF size segment.
  */
 import { Platform } from 'react-native';
 
 import { apiBase } from './apiBase';
 
 export const IMAGE_CDN_BASE = 'https://musewalk-images.fly.storage.tigris.dev';
+const AIC_IIIF_BASE = 'https://www.artic.edu/iiif/';
 
 export type ImageVariant = 't320' | 'c1080';
 
 /** True when `src` needs crossorigin="anonymous" on a web <img> (see header). */
 export function needsCrossOrigin(src: string): boolean {
-  return src.startsWith(IMAGE_CDN_BASE);
+  return src.startsWith(IMAGE_CDN_BASE) || src.startsWith(AIC_IIIF_BASE);
+}
+
+/**
+ * Rewrite an AIC IIIF URL's size segment for the variant: t320 rows don't
+ * need the catalog's 843 px default. IIIF Image API 2.0 `/full/{w},/0/`.
+ */
+function aicIiifVariant(img: string, variant: ImageVariant): string {
+  return img.replace(/\/full\/\d+,\//, `/full/${variant === 't320' ? 320 : 843},/`);
 }
 
 /**
@@ -50,11 +69,17 @@ export function needsCrossOrigin(src: string): boolean {
  * with an image; the caller advances to the next entry on load error.
  */
 export function imageSources(
-  o: { objectID: number; img: string; thumbKey?: string },
+  o: { objectID: number; img: string; thumbKey?: string; museum?: string },
   variant: ImageVariant,
   dataVersion: string,
 ): string[] {
   if (dataVersion === 'stub') return [o.img]; // mockup: no server, no artifact
+  // AIC: no bucket derivatives can exist and the proxy is a guaranteed 502
+  // (see header) — the direct CORS-loaded IIIF URL is the only working
+  // source on web, and native loads the same URL like any museum CDN.
+  if (o.museum === 'aic' && o.img.startsWith(AIC_IIIF_BASE)) {
+    return [aicIiifVariant(o.img, variant)];
+  }
   const fallback =
     Platform.OS === 'web'
       ? `${apiBase()}/api/v1/img/${o.objectID}?v=${encodeURIComponent(dataVersion)}`

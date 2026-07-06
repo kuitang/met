@@ -51,6 +51,8 @@ const EXPECTED = [
   // origin-independent infra like the Met CDN — the same constant is correct
   // for every deploy origin, so baking it in is allowed by design.
   /^musewalk-images\.fly\.storage\.tigris\.dev$/i,
+  // AIC IIIF image CDN (imageCdn.ts direct-IIIF fallback) — same reasoning.
+  /(^|\.)artic\.edu$/i,
 ];
 
 const TEXT_EXT = new Set(['.js', '.mjs', '.css', '.html', '.json', '.txt', '.map', '.webmanifest']);
