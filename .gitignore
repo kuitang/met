@@ -69,6 +69,10 @@ data/raw/rijksmuseum/
 # fully re-fetchable from collezioni.museoegizio.it)
 data/raw/egizio/
 
+# Reina Sofía page-data hydration cache (data/src/sources/reinasofia.ts;
+# fully re-fetchable from museoreinasofia.es)
+data/raw/reinasofia/
+
 # Image-proxy disk cache (server/src/routes/img.ts; ephemeral in prod — it
 # refills from the Met CDN after each deploy)
 data/img-cache/

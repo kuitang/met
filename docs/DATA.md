@@ -75,8 +75,11 @@ endpoint (`dati.beniculturali.it/sparql`, keyless) at ≤1 req/s with simple
 paged SELECTs only — the endpoint silently returns empty/partial results for
 heavy GROUP BY queries, so all aggregation happens client-side (≈25 requests
 for the full harvest, page cache under `data/raw/uffizi/`). Museums with
-`translateFrom` in the registry (Louvre fr, Rijksmuseum nl, Uffizi it) run
-`data/src/translate.ts` after hydration to fill `titleAlt` + English facets.
+`translateFrom` in the registry (Louvre fr, Rijksmuseum nl, Uffizi it, Brera
+it, Reina Sofía es) run `data/src/translate.ts` after hydration to fill
+`titleAlt` + English facets. Reina Sofía enumerates on-view works from the
+museum's Gatsby `page-data.json` room pages (100% room fill by construction)
+and ships facts-only under its CC BY-NC-ND terms (no descriptions/images).
 
 ## Pipelines (all in `data/src/`, rerun with these commands)
 

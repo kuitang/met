@@ -1,0 +1,16 @@
+{
+  "description": "Museo Reina Sofía golden search cases (11): the per-museum accuracy north-star for the Reina Sofía rows in the merged artifact. Authored 2026-07-06 against the 1,208-row on-view set (room page-data enumeration → 100% room fill by construction). Spanish (+some Catalan/French) source titles preserved in `title`; DeepSeek es→en fills `titleAlt` for the contentless-FTS English index. 5 Spanish-query cases + 4 English-for-Spanish titleAlt cases (asserting expectObjectIDs, since search results return the source-language title) + 2 artist cases. License is CC BY-NC-ND: we ship short factual fields only (title/artist/date/room), no descriptions/images.",
+  "cases": [
+    { "query": "guernica", "tier": "autocomplete", "expectTitleContains": "Guernica", "note": "ES; the museum's icon (room 205.10) — also many preparatory-drawing rows carry the word" },
+    { "query": "gran masturbador", "tier": "autocomplete", "expectTitleContains": "masturbador", "note": "ES; Dalí icon" },
+    { "query": "autorretrato cubista", "tier": "autocomplete", "expectTitleContains": "Autorretrato cubista", "note": "ES; Dalí, room 202.01" },
+    { "query": "cabeza de toro", "tier": "full", "expectTitleContains": "Cabeza de toro", "note": "ES; Picasso Guernica study" },
+    { "query": "bailarina espanola", "tier": "full", "expectTitleContains": "Bailarina", "note": "ES typed without the tilde — unicode61 diacritic folding (Miró 'Danseuse espagnole / Bailarina española')" },
+    { "query": "self-portrait cubist", "tier": "autocomplete", "expectObjectIDs": [84362618531109], "note": "EN-for-ES via titleAlt ('Autorretrato cubista' → 'Cubist Self-Portrait'); result title stays Spanish, so assert the id" },
+    { "query": "horse's head guernica", "tier": "full", "expectObjectIDs": [8975464151050], "note": "EN-for-ES via titleAlt ('Cabeza de caballo … para Guernica')" },
+    { "query": "falling man", "tier": "full", "expectObjectIDs": [102063943269215], "note": "EN-for-ES via titleAlt ('Hombre cayendo')" },
+    { "query": "july 19 1936", "tier": "full", "expectObjectIDs": [224028345019094], "note": "EN-for-ES via titleAlt ('19 julio 1936'); date-title normalization" },
+    { "query": "dali", "tier": "autocomplete", "expectArtistContains": "Dalí", "note": "artist surname typed without the accent" },
+    { "query": "miro", "tier": "autocomplete", "expectArtistContains": "Miró", "note": "artist surname typed without the accent" }
+  ]
+}

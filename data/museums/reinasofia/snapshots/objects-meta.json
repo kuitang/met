@@ -1,0 +1,15 @@
+{
+  "fetchedAt": "2026-07-06T15:48:12.187Z",
+  "roomsDiscovered": 58,
+  "artworksDiscovered": 1219,
+  "hydrated": 1219,
+  "rows": 1208,
+  "skipped": {
+    "notFound": 1,
+    "notExposed": 10,
+    "noRoom": 0
+  },
+  "distinctGalleryNumbers": 58,
+  "structureRequests": 69,
+  "runtimeSeconds": 1253
+}
