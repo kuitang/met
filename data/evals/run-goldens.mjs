@@ -25,7 +25,12 @@ const matches = (rows, c) =>
     (r) =>
       (c.expectObjectIDs?.includes(r.objectID) ?? false) ||
       (c.expectTitleContains !== undefined &&
-        r.title.toLowerCase().includes(c.expectTitleContains.toLowerCase())) ||
+        // titleAlt is the English display/search title for translateFrom
+        // museums (Louvre FR, Rijksmuseum NL) — an English query legitimately
+        // lands on it rather than the source-language title.
+        `${r.title}\n${r.titleAlt ?? ""}`
+          .toLowerCase()
+          .includes(c.expectTitleContains.toLowerCase())) ||
       (c.expectArtistContains !== undefined &&
         r.artist.toLowerCase().includes(c.expectArtistContains.toLowerCase())),
   );

@@ -1,0 +1,17 @@
+{
+  "description": "Louvre golden search cases (12): the per-museum accuracy north-star for the Louvre rows in the merged artifact. Authored 2026-07-06 against the PARTIAL 11,950-row fold (45% of the 26,653-object on-view set — the collections.louvre.fr bot wall blocks the rest; Denon-wing paintings incl. La Joconde are not yet hydrated, so the famous-painting cases wait for the full corpus). 7 French-query cases exercise the source-language titles; 5 English-for-French cases exercise the contentless-FTS titleAlt indexing (DeepSeek translations). EN cases assert expectObjectIDs because search results return the French title (titleAlt is index-only in shared/search.ts) — ids are stable 48-bit hashes of louvre/{sourceId}.",
+  "cases": [
+    { "query": "vénus de milo", "tier": "autocomplete", "expectTitleContains": "Vénus de Milo", "note": "FR; the icon that IS in the partial corpus (Sully antiquities hydrated)" },
+    { "query": "code de hammurabi", "tier": "autocomplete", "expectTitleContains": "Code de Hammurabi", "note": "FR; Mesopotamian icon, salle 227" },
+    { "query": "hermaphrodite endormi", "tier": "autocomplete", "expectTitleContains": "Hermaphrodite endormi", "note": "FR; Borghese collection icon, salle 348" },
+    { "query": "milon de crotone", "tier": "autocomplete", "expectTitleContains": "Milon de Crotone", "note": "FR; Puget sculpture, cour Puget (salle 219)" },
+    { "query": "les trois graces", "tier": "autocomplete", "expectTitleContains": "Trois Grâces", "note": "FR typed WITHOUT accents — unicode61 diacritic folding must match the accented title" },
+    { "query": "toutankhamon", "tier": "full", "expectTitleContains": "Toutânkhamon", "note": "FR; accent-folded person name across Egyptian rows (salles 323-335)" },
+    { "query": "tête de hammurabi", "tier": "full", "expectTitleContains": "tête de Hammurabi", "note": "FR; quoted-title row (salle 227)" },
+    { "query": "venus de milo", "tier": "autocomplete", "expectTitleContains": "Vénus de Milo", "note": "EN spelling (no accent); must rank the Louvre statue even though other museums have 'Venus de Milo…' titled works" },
+    { "query": "sleeping hermaphrodite", "tier": "autocomplete", "expectObjectIDs": [239772466107682], "note": "EN-for-FR via titleAlt ('Hermaphrodite endormi' → 'Sleeping Hermaphrodite'); result title stays French, so assert the id" },
+    { "query": "code of hammurabi", "tier": "autocomplete", "expectObjectIDs": [252105867764566, 278266837723930], "note": "EN-for-FR via titleAlt; stele or its tablet copy both acceptable" },
+    { "query": "diana of versailles", "tier": "autocomplete", "expectObjectIDs": [116746791547527], "note": "EN-for-FR via titleAlt ('Diane de Versailles'), salle 348" },
+    { "query": "borghese gladiator", "tier": "autocomplete", "expectObjectIDs": [135661122083222, 8720638529937], "note": "EN-for-FR via titleAlt ('Le gladiateur Borghèse'), salle 106" }
+  ]
+}
