@@ -125,7 +125,12 @@ the 2026-06-10 run:
   eyes.
 
 The five reports above are Met-specific (Gate B, predating the multi-museum
-registry). Every OTHER registry museum's fill rates, structural invariants
+registry). Every other registry museum's source, measured access facts, and
+etiquette envelope live in its adapter's header comment
+(`data/src/sources/{id}.ts` — e.g. Museo Egizio is a robots-sanctioned
+sitemap crawl of collezioni.museoegizio.it at ≤1 req/s, resumable, with an
+explicit per-page on-view field) and in the per-museum sections of
+ARCHITECTURE.md. Every OTHER registry museum's fill rates, structural invariants
 (site-scoped object→gallery join, sourceId/objectID uniqueness, license/TTL
 consistency), catalog-noise clusters, and artifact-to-artifact churn are in
 **`data/evals/reports/museums-audit.md`** (`data/src/museums-audit.ts`,
