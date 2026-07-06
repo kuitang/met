@@ -21,6 +21,7 @@ import { harvardSource } from "./harvard.ts";
 import { rijksmuseumSource } from "./rijksmuseum.ts";
 import { breraSource } from "./brera.ts";
 import { egizioSource } from "./egizio.ts";
+import { uffiziSource } from "./uffizi.ts";
 
 const DATA_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 
@@ -405,6 +406,41 @@ export const MUSEUMS: MuseumInfo[] = [
     objectUrlTemplate: "https://collezioni.museoegizio.it/en-GB/material/{sourceId}",
     // en-GB pages are native English — no translateFrom.
   },
+  {
+    id: "uffizi",
+    name: "Galleria degli Uffizi",
+    shortName: "Uffizi",
+    city: "Florence",
+    country: "IT",
+    sites: [
+      {
+        siteId: "uffizi",
+        name: "Galleria degli Uffizi",
+        // Piazzale degli Uffizi (Door 1 visitor entrance).
+        entrance: { lat: 43.7678, lon: 11.2553 },
+        // Measured 2026-07-06 in the ArCo location specs: the current
+        // lettered room scheme is "primo piano" (B/C/D/E rooms) and
+        // "secondo piano" (A rooms) — floors "1"/"2". Older-vintage
+        // "sala N" specs carry no floor and stay NULL per gallery (same
+        // non-guessing convention as AIC/SMK).
+        floorOrder: ["1", "2"],
+      },
+    ],
+    fidelity: "room-labels",
+    license: {
+      // ICCD national-catalog LOD (dati.beniculturali.it): reuse requires
+      // attribution AND share-alike ("citarne la fonte e di condividerli con
+      // lo stesso tipo di licenza") — CC-BY-SA-4.0 is the conservative
+      // reading; the SA obligation travels in the attribution string.
+      text: "CC-BY-SA-4.0",
+      images: "", // no image grant — ministry per-request concession only (D.M. 161/2023)
+      attribution:
+        "ICCD — Catalogo generale dei Beni Culturali linked open data (dati.beniculturali.it), CC BY-SA: attribution required, derivatives share-alike",
+      termsUrl: "https://catalogo.beniculturali.it/termini-uso",
+    },
+    objectUrlTemplate: "https://catalogo.beniculturali.it/detail/HistoricOrArtisticProperty/{sourceId}",
+    translateFrom: "it",
+  },
 ];
 
 export function museumInfo(id: string): MuseumInfo {
@@ -432,6 +468,7 @@ const SOURCES: Record<string, MuseumSource> = {
   rijksmuseum: rijksmuseumSource,
   brera: breraSource,
   egizio: egizioSource,
+  uffizi: uffiziSource,
 };
 
 export function sourceFor(id: string): MuseumSource {

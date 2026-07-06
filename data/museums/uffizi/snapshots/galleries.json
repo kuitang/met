@@ -1,0 +1,728 @@
+[
+  {
+    "galleryNumber": "III corridoio",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "tratto Boboli",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "II corridoio",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "C1",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "96",
+    "site": "uffizi",
+    "title": "Scuola toscana del Seicento e Settecento: Pittura di storia"
+  },
+  {
+    "galleryNumber": "E3",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "43",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "99",
+    "site": "uffizi",
+    "title": "Scuola toscana dei Seicento e Settecento: Pittura di paesaggio"
+  },
+  {
+    "galleryNumber": "corridoio vasariano",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "35",
+    "site": "uffizi",
+    "title": "sala del Barocci e della Controriforma Toscana"
+  },
+  {
+    "galleryNumber": "45",
+    "site": "uffizi",
+    "title": "sala del Settecento"
+  },
+  {
+    "galleryNumber": "D17",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "D18",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "D16",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "E5",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "corridoio di levante",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "I corridoio",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "D7",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "D14",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "D15",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "65",
+    "site": "uffizi",
+    "title": "Bronzino e i Medici"
+  },
+  {
+    "galleryNumber": "38",
+    "site": "uffizi",
+    "title": "dell'Ermafrodito"
+  },
+  {
+    "galleryNumber": "tratto S. Felicita",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "tratto Ponte Vecchio",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "E8",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "97",
+    "site": "uffizi",
+    "title": "Scuola toscana del Seicento: I ritratti"
+  },
+  {
+    "galleryNumber": "C3",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "32",
+    "site": "uffizi",
+    "title": "del Bassano e del Tintoretto"
+  },
+  {
+    "galleryNumber": "33",
+    "site": "uffizi",
+    "title": "Corridoio del Cinquecento"
+  },
+  {
+    "galleryNumber": "A16",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "95",
+    "site": "uffizi",
+    "title": "Scuola fiorentina del Seicento: Figure allegoriche"
+  },
+  {
+    "galleryNumber": "C5",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "D12",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "61",
+    "site": "uffizi",
+    "title": "Pontormo"
+  },
+  {
+    "galleryNumber": "D27",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "D26",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "D20",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "63",
+    "site": "uffizi",
+    "title": "Pittori toscani del 500"
+  },
+  {
+    "galleryNumber": "64",
+    "site": "uffizi",
+    "title": "Bronzino"
+  },
+  {
+    "galleryNumber": "D10",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "tratto via de' Bardi",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "C4",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "51",
+    "site": "uffizi",
+    "title": "Pittori francesi XVIII secolo"
+  },
+  {
+    "galleryNumber": "48",
+    "site": "uffizi",
+    "title": "Pittori francesi XVII secolo"
+  },
+  {
+    "galleryNumber": "C6",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "C9",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "C11",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "17",
+    "site": "uffizi",
+    "title": "Stanzino delle Matematiche"
+  },
+  {
+    "galleryNumber": "A22",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "C10",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "D25",
+    "site": "uffizi",
+    "title": "Veronese",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "D23",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "A7",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "A8",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "D4",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "vestibolo dell'uscita",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "A38",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "D19",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "52",
+    "site": "uffizi",
+    "title": "Pittori fiamminghi XVII secolo"
+  },
+  {
+    "galleryNumber": "55",
+    "site": "uffizi",
+    "title": "Pittori fiamminghi XVII secolo"
+  },
+  {
+    "galleryNumber": "A39",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "E7",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "41",
+    "site": "uffizi",
+    "title": "sala di Rubens"
+  },
+  {
+    "galleryNumber": "E4",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "5-6",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "54",
+    "site": "uffizi",
+    "title": "Pittori Olandesi XVII secolo Haarlem Utrecht"
+  },
+  {
+    "galleryNumber": "53",
+    "site": "uffizi",
+    "title": "Pittori olandesi XVII–XVIII secolo Delft Rotterdam"
+  },
+  {
+    "galleryNumber": "49",
+    "site": "uffizi",
+    "title": "Pittori olandesi XVII-XVIII secolo Amsterdam"
+  },
+  {
+    "galleryNumber": "47",
+    "site": "uffizi",
+    "title": "Pittori olandesi XVII secolo Leida"
+  },
+  {
+    "galleryNumber": "sala di Gherardo delle Notti",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "E6",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "50",
+    "site": "uffizi",
+    "title": "Pittori olandesi XVII secolo L’Aja"
+  },
+  {
+    "galleryNumber": "44",
+    "site": "uffizi",
+    "title": "sala di Rembrandt"
+  },
+  {
+    "galleryNumber": "18",
+    "site": "uffizi",
+    "title": "Tribuna"
+  },
+  {
+    "galleryNumber": "D24",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "83",
+    "site": "uffizi",
+    "title": "Tiziano"
+  },
+  {
+    "galleryNumber": "A42",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "A4",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "2",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "corridoio",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "corridoio di ponente",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "20",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "D1",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "A11",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "A12",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "10-14",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "A10",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "9",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "A32",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "A20",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "A27",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "E2",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "A13",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "A1",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "sala dei Caravaggeschi",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "salone d'ingresso",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "D28",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "A15",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "corridoio meridionale",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "A19",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "D22",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "D9",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "A17",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "D2",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "19",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "sala delle Miniature",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "D13",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "Vestibolo d'uscita",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "A21",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "7",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "A5",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "24",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "A6",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "A9",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "8",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "A35",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "16",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "21",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "22",
+    "site": "uffizi",
+    "title": "dei Fiamminghi dei Tedeschi del Rinascimento"
+  },
+  {
+    "galleryNumber": "A18",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "D11",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "ex chiesa di S. Piero Scheraggio",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "23",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "crociera tra il corridoio di levante e il corridoio di mezzogiorno",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "36-37",
+    "site": "uffizi",
+    "title": "del Ricetto delle Iscrizioni"
+  },
+  {
+    "galleryNumber": "1",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "3",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "A26",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "A25",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "A28",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "A29",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "15",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "D6",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "A31",
+    "site": "uffizi",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "Sala di Saturno",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "26",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "25",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "66",
+    "site": "uffizi",
+    "title": "Raffaello"
+  },
+  {
+    "galleryNumber": "27",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "28",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "E1",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "34",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "29",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "D3",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "68",
+    "site": "uffizi",
+    "title": "Pittura a Roma nel primo Cinquecento"
+  },
+  {
+    "galleryNumber": "30",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "31",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "D21",
+    "site": "uffizi",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "62",
+    "site": "uffizi",
+    "title": "Vasari e Allori"
+  },
+  {
+    "galleryNumber": "90",
+    "site": "uffizi",
+    "title": "Caravaggio"
+  },
+  {
+    "galleryNumber": "scalone vasariano",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "corridoio di mezzogiorno",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "corridoi",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "ex chiesa di S. Pier Scheraggio",
+    "site": "uffizi"
+  },
+  {
+    "galleryNumber": "uscita verso Boboli",
+    "site": "uffizi"
+  }
+]

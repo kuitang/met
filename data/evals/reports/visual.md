@@ -1,8 +1,8 @@
 # Visual diff: per-floor SVG renders
 
 - Status: **PASS**
-- Generated: 2026-07-06T15:00:53.781Z by `data/src/evals.ts`
-- Data version: 2026-07-06-e2c3140e
+- Generated: 2026-07-06T15:39:53.737Z by `data/src/evals.ts`
+- Data version: 2026-07-06-71ac79b9
 
 Human-reviewable renders of the decoded geometry with the derived routing
 graph overlaid. Red dots/edges are doorway nodes and door connections; blue
