@@ -12,7 +12,7 @@ UI screenshots + eval reports on the tailnet review server —
 `http://100.87.13.37:8123`. J16 (multi-museum search) and J17 (Louvre
 walking navigation) are the new centerpieces.
 
-### Museums in the artifact (8 + Rijksmuseum landing; 119,949 on-view objects, 104.6 MB raw / 50.4 MB gz)
+### Museums in the artifact (8 + Rijksmuseum & Museo Egizio landings; 119,949 on-view objects, 104.6 MB raw / 50.4 MB gz)
 
 | Museum | Rows | Fidelity | Goldens | License posture |
 |---|---|---|---|---|
@@ -25,6 +25,7 @@ walking navigation) are the new centerpieces.
 | Harvard | 1,817 | room-labels | 10/10 | NC + **14-day TTL** (19 API calls/pull vs 2,500/day cap) |
 | Louvre | 500 partial → 26,653 (self-healing hydration vs their bot-wall) | **routed** (OSM/ODbL; gate: 1 component, 500/500 pairs, Joconde→Vénus 263 m) | FR/EN bilingual via titleAlt | Etalab (attribution) |
 | Rijksmuseum | landing (OAI-PMH harvest in flight, ~8k expected) | room-labels (case-level codes) | — | CC0-leaning metadata, per-record image rights |
+| Museo Egizio | landing — 278 smoke rows (sitemap crawl in flight; 5,483 pages, ~3.6k on-view expected) | room-labels (floor+room+showcase; incl. the Turin King List) | 12/12 on the smoke slice | images explicit CC0 (only image grant in the IT/ES survey); text unstated → facts-only |
 
 Measured excludes (memos in data/evals/reports/): **Paris Musées**
 (room-fill 0.40% vs the 60% criterion; Petit Palais flagged as a future

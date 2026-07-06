@@ -20,6 +20,7 @@ import { vandaSource } from "./vanda.ts";
 import { harvardSource } from "./harvard.ts";
 import { rijksmuseumSource } from "./rijksmuseum.ts";
 import { breraSource } from "./brera.ts";
+import { egizioSource } from "./egizio.ts";
 
 const DATA_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 
@@ -369,6 +370,41 @@ export const MUSEUMS: MuseumInfo[] = [
     objectUrlTemplate: "https://pinacotecabrera.org/?post_type=opera&p={sourceId}",
     translateFrom: "it",
   },
+  {
+    id: "egizio",
+    name: "Museo Egizio",
+    shortName: "Museo Egizio",
+    city: "Turin",
+    country: "IT",
+    sites: [
+      {
+        siteId: "egizio",
+        name: "Museo Egizio",
+        // Via Accademia delle Scienze 6 (main entrance).
+        entrance: { lat: 45.0678, lon: 7.777, floor: "G" },
+        // Measured 2026-07-06 across the 40-page location sample + the
+        // 500-page smoke harvest: floors in "Museum location:" strings are
+        // Floor -1 / Ground floor / Floor 1 / Floor 2 / Floor 2A (the
+        // mezzanine) / Floor 3 (the Writing Gallery, absent from the smaller
+        // sample) — see sources/egizio.ts.
+        floorOrder: ["-1", "G", "1", "2", "2A", "3"],
+      },
+    ],
+    fidelity: "room-labels",
+    license: {
+      // The site explicitly grants CC0 on IMAGES ("freely downloadable and
+      // reusable under a Creative Commons CC0 Public Domain licence" — every
+      // object page, verified 2026-07-06) but states no separate license for
+      // the metadata TEXT — "egizio-unstated" is the conservative marker; we
+      // ship short factual fields only (see sources/egizio.ts header).
+      text: "egizio-unstated",
+      images: "CC0-1.0", // per-record: pages without an image get imageLicense=''
+      attribution: "Museo Egizio (Turin) — collezioni.museoegizio.it (images CC0)",
+      termsUrl: "https://collezioni.museoegizio.it/",
+    },
+    objectUrlTemplate: "https://collezioni.museoegizio.it/en-GB/material/{sourceId}",
+    // en-GB pages are native English — no translateFrom.
+  },
 ];
 
 export function museumInfo(id: string): MuseumInfo {
@@ -395,6 +431,7 @@ const SOURCES: Record<string, MuseumSource> = {
   harvard: harvardSource,
   rijksmuseum: rijksmuseumSource,
   brera: breraSource,
+  egizio: egizioSource,
 };
 
 export function sourceFor(id: string): MuseumSource {

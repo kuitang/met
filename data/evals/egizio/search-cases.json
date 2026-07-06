@@ -1,0 +1,17 @@
+{
+  "description": "Museo Egizio golden search cases (12): the per-museum accuracy north-star for the Egizio rows in the merged artifact. Authored 2026-07-06 against the 278-row SMOKE snapshot (first ~500 sitemap slugs; the full ~3.6k-row harvest was in flight) — every case uses a row verified present in that snapshot, so the set stays valid as the harvest grows. Includes the museum's world icon that happened to land in the smoke slice: the Turin King List/Royal Canon (Cat_1874, Writing Gallery, floor 3). Note two upstream data quirks the cases deliberately avoid: the King List's medium is spelled 'Papyurs' (sic) and S_1146's title spells 'tatooed' (sic) — queries anchor on correctly-spelled title tokens instead. Tiers mirror the Met set: autocomplete = local FTS top-8; full = all-results; llm = relaxed-FTS stand-in for the interpret tier.",
+  "cases": [
+    { "query": "turin king list", "tier": "autocomplete", "expectTitleContains": "King List", "note": "the museum's most famous holding; Cat_1874, Writing Gallery (floor 3)" },
+    { "query": "royal canon", "tier": "autocomplete", "expectTitleContains": "Royal Canon", "note": "the King List's alternate name, second half of the same catalog title" },
+    { "query": "bust of drovetti", "tier": "autocomplete", "expectTitleContains": "Drovetti", "note": "Provv_3529; Drovetti assembled the founding collection — his name also appears in many Acquisition fields but only this title carries it" },
+    { "query": "statuette of sobek", "tier": "autocomplete", "expectTitleContains": "Sobek", "note": "Cat_935, Room 11 floor 1; 'statuette' disambiguates from the Sobeknakht/Sobekhotep stelae" },
+    { "query": "isis aphrodite", "tier": "autocomplete", "expectTitleContains": "Isis-Aphrodite", "note": "Cat_7215; hyphenated title must match the unhyphenated query (tokenizer splits on the hyphen)" },
+    { "query": "slab stela itjer", "tier": "autocomplete", "expectTitleContains": "Itjer", "note": "S_1849, Room 02 floor 2 (predynastic gallery)" },
+    { "query": "vizier iymeru statue", "tier": "full", "expectTitleContains": "Iymeru", "note": "S_1220; title is 'Statue of the vizier Iymeru, son of the vizier Ankhu' — word order differs from the query" },
+    { "query": "general callimachos stela", "tier": "full", "expectTitleContains": "Callimachos", "note": "Cat_1764, Writing Gallery; the title also names Cleopatra and Caesarion" },
+    { "query": "bowl with hunting scenes", "tier": "full", "expectTitleContains": "hunting scenes", "note": "S_1827 C-ware bowl (S_1823 double-jar also passes); Naqada I predynastic pottery" },
+    { "query": "the papyrus with the list of all the egyptian kings", "tier": "llm", "expectTitleContains": "King List", "note": "descriptive phrasing for the icon; 'king'+'list' survive relaxation — 'papyrus' has no title anchor and the row's medium spells it 'Papyurs' (upstream sic)" },
+    { "query": "prehistoric ivory tusk carved like a bearded man", "tier": "llm", "expectTitleContains": "bearded man", "note": "S_1068; 'bearded' stems to the title's 'bearded', 'ivory' lives in medium ('Organic animal / Ivory')" },
+    { "query": "rock carving of african animals", "tier": "llm", "expectTitleContains": "African animals", "note": "S_18006 rock graffito in the Roman Wall open-storage display (floor -1); 'carving' is not a title token — rock+african+animals must carry it through relaxation" }
+  ]
+}

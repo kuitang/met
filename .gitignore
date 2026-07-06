@@ -61,6 +61,10 @@ data/raw/nga/
 # scraping-restriction reason to commit this raw data)
 data/raw/rijksmuseum/
 
+# Museo Egizio sitemap-crawl cache + harvest log (data/src/sources/egizio.ts;
+# fully re-fetchable from collezioni.museoegizio.it)
+data/raw/egizio/
+
 # Image-proxy disk cache (server/src/routes/img.ts; ephemeral in prod — it
 # refills from the Met CDN after each deploy)
 data/img-cache/

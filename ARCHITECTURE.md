@@ -916,6 +916,37 @@ Goldens at `data/evals/harvard/search-cases.json` (10/10 measured); Met
 (11/12) all unchanged on the merged 8-museum artifact. `coverage[harvard]`
 100% (1,817/1,817).
 
+**Museo Egizio** (Turin; D12, and the fleet's first sitemap-enumerated HTML
+adapter): no API exists, but robots.txt publishes sitemap.xml and the
+`/en-GB/material/{slug}` object pages are expressly crawlable,
+server-rendered, native-English, with a stable `<label>Field:</label> …
+<span class="value">` markup (verified live 2026-07-06 across 40+ pages).
+Enumeration corrected the survey's count: the sitemap's 10,966
+en-GB/material `<loc>` entries are each listed exactly TWICE (the it-IT
+twin repeats the en-GB loc) → **5,483 unique objects**, ~65% on view ≈
+3,560 rows — reconciling the museum's public "~3,300 exhibited" figure the
+survey had flagged. On-view signal is explicit: "Museum location:" is
+exactly `Not on display` (skip) or a path like `Museum / Floor 2 / Room 04
+/ Showcase 01`; floor normalizes to `-1/G/1/2/2A` (registry `floorOrder`),
+galleryNumber is floor-qualified `"{floor}-{room}"` ("2-04", "G-14",
+"1-11 RET", "2A-Mezzanine" — suffixed rooms kept verbatim, merging them
+would be a guess), and sub-room segments (Showcase/Cabinet/Shelf/Wall/
+drawer) join into `locationNote` (V&A convention). Fields: Inv. no. →
+accession (URL slug = sourceId), Material → medium, Period (Date fallback)
+→ period, Provenance (a find-place, "Unknown" dropped) → culture, Dynasty +
+Reign → tags; no object-type field exists → classification stays "".
+License posture is split: images carry an EXPLICIT site-wide CC0 grant
+(og:image → `imageUrl` + `imageLicense: "CC0-1.0"`, the only image grant in
+the whole IT/ES survey), while the metadata text license is unstated →
+registry `license.text: "egizio-unstated"` with short factual fields only.
+Etiquette ≤1 req/s sequential (~1.6 h full crawl), resumable via
+`data/raw/egizio/objects-cache.ndjson` (gitignored), markup-drift guard
+throws if >10% of the first 50 fresh pages lack the location field. The
+sitemap has NO `<lastmod>`, so `delta()` is honestly a URL-set diff only —
+new slugs hydrated, vanished slugs tombstoned; location changes on existing
+pages need a periodic full re-crawl (delete the ndjson cache). Goldens at
+`data/evals/egizio/search-cases.json`.
+
 ### Provenance & the license-TTL mechanism
 
 Harvard's 14-day cap coexists with the V&A's 28-day one — each museum's
@@ -992,7 +1023,7 @@ loads whatever shards exist.
 | `server/src/vocab.ts:getVocabulary` | DB-derived vocabulary for the interpret prompt |
 | `data/src/objects.ts` / `geometry.ts` / `graph.ts` / `synonyms.ts` / `build-db.ts` / `embed-images.ts` | pipelines (scripts; embed-images also does `--compact` tombstone/dedupe) |
 | `data/src/geometry-osm.ts` / `lib/louvre-plan.ts` | Louvre geometry + routing graph from the committed OSM Overpass extract (D7): salle-code matching, door-node adapter, explicit-level vertical shafts (`npm -w data run geometry:louvre`) |
-| `data/src/sources/types.ts:MuseumSource` / `sources/registry.ts` / `sources/met.ts` / `aic.ts` / `cleveland.ts` / `nga.ts` / `smk.ts` / `louvre.ts` / `vanda.ts` / `harvard.ts` / `rijksmuseum.ts` / `brera.ts` | per-museum source-adapter seam: the ONE copy of each museum's row mapper + hydration/delta logic (objects.ts is a thin driver; nightly.ts prefers `sourceFor(id).delta` whenever the museum's rows survived from last night's artifact — critical for the Louvre, whose fullFetch is a ~26.6k-request hydration) |
+| `data/src/sources/types.ts:MuseumSource` / `sources/registry.ts` / `sources/met.ts` / `aic.ts` / `cleveland.ts` / `nga.ts` / `smk.ts` / `louvre.ts` / `vanda.ts` / `harvard.ts` / `rijksmuseum.ts` / `brera.ts` / `egizio.ts` | per-museum source-adapter seam: the ONE copy of each museum's row mapper + hydration/delta logic (objects.ts is a thin driver; nightly.ts prefers `sourceFor(id).delta` whenever the museum's rows survived from last night's artifact — critical for the Louvre, whose fullFetch is a ~26.6k-request hydration) |
 | `shared/search.ts:computeExpiredMuseums` + `SearchFilters.expiredMuseums` | license-TTL mechanism (V&A 28-day cap): expiry date arithmetic + the `NOT IN` exclusion every query builder appends — see "Provenance & the license-TTL mechanism" |
 | `data/src/lib/politeFetch.ts:createPoliteClient` | shared WAF-aware paced fetch (cookie reuse, 403≥60s wait, 429/5xx backoff) — per-source etiquette via options |
 | `data/src/lib/csv.ts:parseCsv` | minimal RFC4180 CSV parser (quoted/embedded-newline fields) — only NGA's CSV-based source needs one, no dependency existed |

@@ -1,16 +1,16 @@
 # Museums data-quality audit
 
 - Status: **WARN**
-- Generated: 2026-07-06T15:23:42.069Z by `data/src/museums-audit.ts`
-- Data version: 2026-07-06-c60bffa0 (built 2026-07-06T15:23:17.675Z)
-- Museums audited: met, aic, cleveland, nga, smk, louvre, vanda, harvard, rijksmuseum, brera
+- Generated: 2026-07-06T15:30:33.459Z by `data/src/museums-audit.ts`
+- Data version: 2026-07-06-6b338ffb (built 2026-07-06T15:30:14.201Z)
+- Museums audited: met, aic, cleveland, nga, smk, louvre, vanda, harvard, rijksmuseum, brera, egizio
 - Previous artifact for churn: none provided (PREV_DB unset, no data/met.sqlite.prev) — churn sections unavailable this run
 
 Per Kui's standing rule, this report is a north-star dashboard: only the
 structural invariants below can fail the process (exit 1); everything else
 is a WARN with numbers attached, never a guess.
 
-> Hard gate: **PASS** — 0 structural FAILs, 1 thresholded WARNs (join-rate tails) across 43 checks.
+> Hard gate: **PASS** — 0 structural FAILs, 1 thresholded WARNs (join-rate tails) across 47 checks.
 
 ## Hard-gate summary
 
@@ -59,6 +59,10 @@ is a WARN with numbers attached, never a guess.
 | objects.site ⊆ registry sites (brera) | PASS | all objects.site values are registered |
 | license non-empty (brera) | PASS | 0/356 objects with license='' |
 | every object joins a gallery row, site-scoped (brera) | PASS | 356/356 (100.00%) |
+| sourceId unique per museum (egizio) | PASS | 0 duplicate (museum, sourceId) groups |
+| objects.site ⊆ registry sites (egizio) | PASS | all objects.site values are registered |
+| license non-empty (egizio) | PASS | 0/278 objects with license='' |
+| every object joins a gallery row, site-scoped (egizio) | PASS | 278/278 (100.00%) |
 
 ## Cross-museum summary
 
@@ -74,6 +78,7 @@ is a WARN with numbers attached, never a guess.
 | Harvard | 1817 | room-labels | 100.0% | 48% | 44% | 100% | 99% | 0% | 0% | 0% | 100%/100% | PASS |
 | Rijksmuseum | 379 | room-labels | 100.0% | 92% | 99% | 100% | 100% | 64% | 98% | 98% | 100%/100% | PASS |
 | Brera | 356 | room-labels | 100.0% | 100% | 99% | 15% | 98% | 100% | 0% | 0% | 0%/100% | PASS |
+| Museo Egizio | 278 | room-labels | 100.0% | 0% | 100% | 0% | 100% | 32% | 99% | 99% | 100%/100% | PASS |
 
 ## Per-museum detail
 
@@ -493,6 +498,46 @@ Room-label coverage (galleries table, 30 rows for this museum's sites): **0/30 t
 - Rows per gallery: p50 **11**, p95 **34**, max **36** (30 distinct galleries)
 - titleAlt coverage (translateFrom it): **99.2%**
 - License histogram: `brera-unstated`/`(none)` ×356
+
+Catalog-noise clusters — (title, artist) pairs with >20 rows (top 5 of 0):
+
+None.
+
+#### Churn vs previous artifact
+
+No previous artifact provided (set PREV_DB=<path> to a prior met.sqlite) — churn unavailable this run.
+
+### Museo Egizio (`egizio`)
+
+Fidelity **room-labels** · sites: egizio · license `egizio-unstated`
+
+#### Fill rates (measured %, n=278)
+
+| field | filled | % |
+|---|---|---|
+| artist | 0 | 0.0% |
+| period/date | 278 | 100.0% |
+| classification | 0 | 0.0% |
+| medium | 278 | 100.0% |
+| tags | 90 | 32.4% |
+| image (imageUrl set) | 276 | 99.3% |
+| image, license-allowed | 276 | 99.3% |
+| locationNote | 276 | 99.3% |
+
+Room-label coverage (galleries table, 18 rows for this museum's sites): **18/18 titled (100.0%)**, **18/18 floored (100.0%)**.
+
+#### Structural invariants
+
+- object→gallery join: **278/278 (100.00%)** — PASS
+- sourceId duplicate groups: **0**
+- objects.site values outside the registry: **0**
+- objects with license='': **0**
+
+#### Distribution sanity
+
+- Empty-title rows: **0.00%**
+- Rows per gallery: p50 **8**, p95 **112**, max **112** (18 distinct galleries)
+- License histogram: `egizio-unstated`/`CC0-1.0` ×276, `egizio-unstated`/`(none)` ×2
 
 Catalog-noise clusters — (title, artist) pairs with >20 rows (top 5 of 0):
 

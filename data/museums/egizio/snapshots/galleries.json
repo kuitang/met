@@ -1,0 +1,110 @@
+[
+  {
+    "galleryNumber": "-1-01",
+    "site": "egizio",
+    "title": "Floor -1 / Room 01",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "2-02",
+    "site": "egizio",
+    "title": "Floor 2 / Room 02",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "1-12",
+    "site": "egizio",
+    "title": "Floor 1 / Room 12",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "3-Writing Gallery",
+    "site": "egizio",
+    "title": "Floor 3 / Writing Gallery",
+    "floor": "3"
+  },
+  {
+    "galleryNumber": "2-05",
+    "site": "egizio",
+    "title": "Floor 2 / Room 05",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "1-13",
+    "site": "egizio",
+    "title": "Floor 1 / Room 13",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "1-11",
+    "site": "egizio",
+    "title": "Floor 1 / Room 11",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "-1-Roman Wall Storage",
+    "site": "egizio",
+    "title": "Floor -1 / Roman Wall Storage",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "-1-18",
+    "site": "egizio",
+    "title": "Floor -1 / Room 18",
+    "floor": "-1"
+  },
+  {
+    "galleryNumber": "G-16",
+    "site": "egizio",
+    "title": "Ground floor / Room 16",
+    "floor": "G"
+  },
+  {
+    "galleryNumber": "G-16 mezzanine",
+    "site": "egizio",
+    "title": "Ground floor / Room 16 mezzanine",
+    "floor": "G"
+  },
+  {
+    "galleryNumber": "1-11 RET",
+    "site": "egizio",
+    "title": "Floor 1 / Room 11 RET",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "G-17",
+    "site": "egizio",
+    "title": "Ground floor / Room 17",
+    "floor": "G"
+  },
+  {
+    "galleryNumber": "2A-Mezzanine",
+    "site": "egizio",
+    "title": "Floor 2A / Mezzanine",
+    "floor": "2A"
+  },
+  {
+    "galleryNumber": "1-06 DEM",
+    "site": "egizio",
+    "title": "Floor 1 / Room 06 DEM",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "2-04",
+    "site": "egizio",
+    "title": "Floor 2 / Room 04",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "G-14",
+    "site": "egizio",
+    "title": "Ground floor / Room 14",
+    "floor": "G"
+  },
+  {
+    "galleryNumber": "1-08",
+    "site": "egizio",
+    "title": "Floor 1 / Room 08",
+    "floor": "1"
+  }
+]
