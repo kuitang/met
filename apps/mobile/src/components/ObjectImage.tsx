@@ -33,7 +33,7 @@ import { imageSources, needsCrossOrigin, type ImageVariant } from '@/data/imageC
 import { useData, type MetObject } from '@/data/provider';
 import { colors } from '@/theme';
 
-type ImgObject = Pick<MetObject, 'objectID' | 'img' | 'thumbKey'>;
+type ImgObject = Pick<MetObject, 'objectID' | 'img' | 'thumbKey' | 'museum'>;
 
 /** Walk the candidate chain (CDN derivative → proxy / Met CDN) on error. */
 function useImageChain(o: ImgObject, variant: ImageVariant) {
