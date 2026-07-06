@@ -19,6 +19,7 @@ import { louvreSource } from "./louvre.ts";
 import { vandaSource } from "./vanda.ts";
 import { harvardSource } from "./harvard.ts";
 import { rijksmuseumSource } from "./rijksmuseum.ts";
+import { reinasofiaSource } from "./reinasofia.ts";
 import { breraSource } from "./brera.ts";
 import { egizioSource } from "./egizio.ts";
 import { uffiziSource } from "./uffizi.ts";
@@ -441,6 +442,46 @@ export const MUSEUMS: MuseumInfo[] = [
     objectUrlTemplate: "https://catalogo.beniculturali.it/detail/HistoricOrArtisticProperty/{sourceId}",
     translateFrom: "it",
   },
+  {
+    id: "reinasofia",
+    name: "Museo Nacional Centro de Arte Reina Sofía",
+    shortName: "Reina Sofía",
+    city: "Madrid",
+    country: "ES",
+    sites: [
+      {
+        siteId: "reinasofia",
+        name: "Museo Nacional Centro de Arte Reina Sofía",
+        // Sabatini Building main entrance.
+        entrance: { lat: 40.408, lon: -3.6946 },
+        // Measured 2026-07-06: on view only spans Sabatini Floor 2
+        // ("avant-garde-territories" itinerary, codes 201.01-208.05) and
+        // Floor 4 ("collection-contemporary-art-1975-present", codes
+        // 401-421) during the 2024-2028 rehang, plus one stand-alone room
+        // with no numeric code (Nouvel Building Rooftop Terrace) bucketed
+        // under "Roof" — see sources/reinasofia.ts parseRoom. Building
+        // distinction (Sabatini vs Nouvel) is NOT modeled as a separate
+        // site (ONE site, per the milestone's no-multi-site-invention
+        // call) — galleries.json titles carry the room's own "Sala NNN"
+        // label; building name is implicit in the "Roof" bucket's sole
+        // occupant.
+        floorOrder: ["2", "4", "Roof"],
+      },
+    ],
+    fidelity: "room-labels",
+    license: {
+      // Museum legal notice (fetched 2026-07-06, /en/legal-notice): museum-
+      // authored texts/audiovisuals are CC BY-NC-ND 4.0. No stated caching-
+      // duration cap (unlike V&A/Harvard's API terms) — no ttlDays.
+      text: "cc-by-nc-nd-4.0",
+      images: "", // images explicitly NOT covered by the text/AV grant — no derivatives shipped
+      attribution:
+        "Museo Nacional Centro de Arte Reina Sofía collections (CC BY-NC-ND 4.0 — non-commercial, no derivatives)",
+      termsUrl: "https://www.museoreinasofia.es/en/legal-notice",
+    },
+    objectUrlTemplate: "https://www.museoreinasofia.es/en/collections/artwork/{sourceId}",
+    translateFrom: "es",
+  },
 ];
 
 export function museumInfo(id: string): MuseumInfo {
@@ -469,6 +510,7 @@ const SOURCES: Record<string, MuseumSource> = {
   brera: breraSource,
   egizio: egizioSource,
   uffizi: uffiziSource,
+  reinasofia: reinasofiaSource,
 };
 
 export function sourceFor(id: string): MuseumSource {

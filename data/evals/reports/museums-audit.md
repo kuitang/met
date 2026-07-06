@@ -1,16 +1,16 @@
 # Museums data-quality audit
 
 - Status: **WARN**
-- Generated: 2026-07-06T20:04:13.293Z by `data/src/museums-audit.ts`
-- Data version: 2026-07-06-f3945c4d (built 2026-07-06T20:03:53.152Z)
-- Museums audited: met, aic, cleveland, nga, smk, louvre, vanda, harvard, rijksmuseum, brera, egizio, uffizi
+- Generated: 2026-07-06T20:11:39.591Z by `data/src/museums-audit.ts`
+- Data version: 2026-07-06-487fa2d2 (built 2026-07-06T20:11:24.258Z)
+- Museums audited: met, aic, cleveland, nga, smk, louvre, vanda, harvard, rijksmuseum, brera, egizio, uffizi, reinasofia
 - Previous artifact for churn: none provided (PREV_DB unset, no data/met.sqlite.prev) — churn sections unavailable this run
 
 Per Kui's standing rule, this report is a north-star dashboard: only the
 structural invariants below can fail the process (exit 1); everything else
 is a WARN with numbers attached, never a guess.
 
-> Hard gate: **PASS** — 0 structural FAILs, 1 thresholded WARNs (join-rate tails) across 51 checks.
+> Hard gate: **PASS** — 0 structural FAILs, 1 thresholded WARNs (join-rate tails) across 55 checks.
 
 ## Hard-gate summary
 
@@ -67,6 +67,10 @@ is a WARN with numbers attached, never a guess.
 | objects.site ⊆ registry sites (uffizi) | PASS | all objects.site values are registered |
 | license non-empty (uffizi) | PASS | 0/2539 objects with license='' |
 | every object joins a gallery row, site-scoped (uffizi) | PASS | 2539/2539 (100.00%) |
+| sourceId unique per museum (reinasofia) | PASS | 0 duplicate (museum, sourceId) groups |
+| objects.site ⊆ registry sites (reinasofia) | PASS | all objects.site values are registered |
+| license non-empty (reinasofia) | PASS | 0/1208 objects with license='' |
+| every object joins a gallery row, site-scoped (reinasofia) | PASS | 1208/1208 (100.00%) |
 
 ## Cross-museum summary
 
@@ -84,6 +88,7 @@ is a WARN with numbers attached, never a guess.
 | Brera | 356 | room-labels | 100.0% | 100% | 99% | 15% | 98% | 100% | 0% | 0% | 0%/100% | PASS |
 | Museo Egizio | 3228 | room-labels | 100.0% | 0% | 100% | 0% | 100% | 44% | 95% | 95% | 100%/100% | PASS |
 | Uffizi | 2539 | room-labels | 100.0% | 70% | 100% | 100% | 100% | 100% | 0% | 0% | 22%/46% | PASS |
+| Reina Sofía | 1208 | room-labels | 100.0% | 100% | 100% | 0% | 95% | 20% | 0% | 0% | 100%/100% | PASS |
 
 ## Per-museum detail
 
@@ -600,6 +605,52 @@ Catalog-noise clusters — (title, artist) pairs with >20 rows (top 5 of 7):
 | ritratto d'uomo | (none) | 78 |
 | ritratto di donna | (none) | 49 |
 | cornice di dipinto - manifattura italiana | (none) | 46 |
+
+#### Churn vs previous artifact
+
+No previous artifact provided (set PREV_DB=<path> to a prior met.sqlite) — churn unavailable this run.
+
+### Museo Nacional Centro de Arte Reina Sofía (`reinasofia`)
+
+Fidelity **room-labels** · sites: reinasofia · license `cc-by-nc-nd-4.0` · translateFrom `es`
+
+#### Fill rates (measured %, n=1208)
+
+| field | filled | % |
+|---|---|---|
+| artist | 1208 | 100.0% |
+| period/date | 1203 | 99.6% |
+| classification | 0 | 0.0% |
+| medium | 1145 | 94.8% |
+| tags | 240 | 19.9% |
+| image (imageUrl set) | 0 | 0.0% |
+| image, license-allowed | 0 | 0.0% |
+| locationNote | 0 | 0.0% |
+
+Room-label coverage (galleries table, 54 rows for this museum's sites): **54/54 titled (100.0%)**, **54/54 floored (100.0%)**.
+
+#### Structural invariants
+
+- object→gallery join: **1208/1208 (100.00%)** — PASS
+- sourceId duplicate groups: **0**
+- objects.site values outside the registry: **0**
+- objects with license='': **0**
+
+#### Distribution sanity
+
+- Empty-title rows: **0.00%**
+- Rows per gallery: p50 **16**, p95 **62**, max **127** (54 distinct galleries)
+- titleAlt coverage (translateFrom es): **95.9%**
+- License histogram: `cc-by-nc-nd-4.0`/`(none)` ×1208
+
+Catalog-noise clusters — (title, artist) pairs with >20 rows (top 5 of 4):
+
+| title | artist | rows |
+|---|---|---|
+| Íntimo y personal | Ferrer, Esther | 43 |
+| Arthur Rimbaud in New York (Arthur Rimbaud en Nueva York) | Wojnarowicz, David | 36 |
+| Concierto de Invierno de agua y viento, bajo los auspicios horoscopales de Capricornio-Acuario-Piscis | Paz Muro | 30 |
+| Paz Muro, nuevamente desposada con el Arte Contemporáneo Transvanguardista | Paz Muro | 24 |
 
 #### Churn vs previous artifact
 
