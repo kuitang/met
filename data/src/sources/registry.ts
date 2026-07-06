@@ -19,6 +19,7 @@ import { louvreSource } from "./louvre.ts";
 import { vandaSource } from "./vanda.ts";
 import { harvardSource } from "./harvard.ts";
 import { rijksmuseumSource } from "./rijksmuseum.ts";
+import { breraSource } from "./brera.ts";
 
 const DATA_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 
@@ -333,6 +334,41 @@ export const MUSEUMS: MuseumInfo[] = [
     objectUrlTemplate: "https://www.rijksmuseum.nl/en/collection/{sourceId}",
     translateFrom: "nl",
   },
+  {
+    id: "brera",
+    name: "Pinacoteca di Brera",
+    shortName: "Brera",
+    city: "Milan",
+    country: "IT",
+    sites: [
+      {
+        siteId: "brera",
+        name: "Pinacoteca di Brera",
+        entrance: { lat: 45.472, lon: 9.188, floor: "1" },
+        // Measured 2026-07-06: Palazzo Brera's picture galleries occupy one
+        // piano nobile — no authoritative multi-floor mapping exists (nor is
+        // one needed), same single-floor convention as SMK/Harvard's floor 0.
+        floorOrder: ["1"],
+      },
+    ],
+    // D13: smallest adapter of the fleet — keyless WordPress REST
+    // (wp-json/wp/v2/opera), 91.3% opere-sala room fill among the 393
+    // exhibited records (see sources/brera.ts header for the full census).
+    fidelity: "room-labels",
+    license: {
+      // No explicit reuse statement found anywhere on the site (legal-notices
+      // page is privacy-only) — conservative "-unstated" marker. A written
+      // confirmation email to the museum is a tracked follow-up, not a gate.
+      text: "brera-unstated",
+      images: "", // Italian MiC non-profit-only rule — no image derivatives shipped
+      attribution: "Pinacoteca di Brera collection API",
+      termsUrl: "https://pinacotecabrera.org/",
+    },
+    // The WP shortlink form every opera record's own `guid` carries; 301-
+    // redirects to the canonical slugged page (verified live 2026-07-06).
+    objectUrlTemplate: "https://pinacotecabrera.org/?post_type=opera&p={sourceId}",
+    translateFrom: "it",
+  },
 ];
 
 export function museumInfo(id: string): MuseumInfo {
@@ -358,6 +394,7 @@ const SOURCES: Record<string, MuseumSource> = {
   vanda: vandaSource,
   harvard: harvardSource,
   rijksmuseum: rijksmuseumSource,
+  brera: breraSource,
 };
 
 export function sourceFor(id: string): MuseumSource {
