@@ -58,7 +58,7 @@ interface Translations {
 
 // Registry-driven: MuseumInfo.translateFrom carries the ISO code (louvre "fr",
 // rijksmuseum "nl", ...); this is just the display name for the prompt.
-const LANGUAGE_NAMES: Record<string, string> = { fr: "French", nl: "Dutch" };
+const LANGUAGE_NAMES: Record<string, string> = { fr: "French", nl: "Dutch", it: "Italian", es: "Spanish" };
 
 function systemPrompt(langCode: string): string {
   const lang = LANGUAGE_NAMES[langCode] ?? langCode;
