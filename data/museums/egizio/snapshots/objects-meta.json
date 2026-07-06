@@ -1,13 +1,11 @@
 {
-  "fetchedAt": "2026-07-06T15:23:32.056Z",
+  "fetchedAt": "2026-07-06T20:03:47.021Z",
   "sitemapUrls": 5483,
   "pagesFetchedThisRun": 0,
-  "pagesCached": 504,
-  "rows": 278,
-  "notOnDisplay": 226,
-  "roomlessOnView": 0,
-  "distinctGalleryNumbers": 18,
-  "runtimeSeconds": 1,
-  "partial": true,
-  "limit": 276
+  "pagesCached": 5483,
+  "rows": 3228,
+  "notOnDisplay": 2253,
+  "roomlessOnView": 2,
+  "distinctGalleryNumbers": 28,
+  "runtimeSeconds": 1
 }
