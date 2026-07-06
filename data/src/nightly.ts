@@ -172,7 +172,14 @@ async function main(): Promise<void> {
     if (m.id === "met") continue;
     const mSnap = path.join(stage, "museums", m.id, "snapshots");
     fs.mkdirSync(mSnap, { recursive: true });
-    // Reconstruct last night's rows + gallery labels FIRST: they are (a) the
+    // Layer 1: the git-committed snapshot dir — the local harvest that
+    // onboarded the museum plus its side files (vocab.json, and for
+    // translateFrom museums the translations.json cache, without which the
+    // 3b top-up would re-translate the whole corpus every night).
+    const gitMuseumSnap = path.join(REPO_ROOT, "data", "museums", m.id, "snapshots");
+    if (fs.existsSync(gitMuseumSnap)) fs.cpSync(gitMuseumSnap, mSnap, { recursive: true });
+    // Layer 2: reconstruct last night's rows + gallery labels from the pulled
+    // artifact, overwriting the (older) git baseline: they are (a) the
     // baseline a delta-capable source refreshes in place — critical for the
     // Louvre, whose fullFetch is a ~26.6k-request hydration — and (b) the
     // stale-but-present fallback if tonight's source pull fails.
@@ -198,23 +205,36 @@ async function main(): Promise<void> {
         db.close();
       }
     }
+    // The nightly NEVER fullFetches — measured 2026-07-06: the old
+    // first-night fullFetch fallback spent 3.8 h of the 6 h Actions job
+    // crawling the bot-walled Louvre before dying, EVERY night (the failure
+    // ships the museum empty, so prevRows stays 0), and a Rijksmuseum first
+    // night (~6 h) would have timed out the whole job, shipping nothing.
+    // Onboarding is local-first: run the adapter's harvest on a dev machine
+    // and COMMIT the snapshot (layer 1 above); the first nightly after that
+    // deltas from the committed harvest's own fetchedAt, and once its rows
+    // are in an uploaded artifact layer 2 takes over.
+    let deltaSince = since;
     if (prevRows.length === 0) {
-      // Museum not in the previous artifact: skip it — the nightly NEVER
-      // fullFetches. Onboarding is local-first (run the adapter's harvest on
-      // a dev machine, build, upload); once its rows are in an uploaded
-      // artifact the delta path above keeps them fresh. Measured 2026-07-06:
-      // the old first-night fullFetch fallback spent 3.8 h of the 6 h Actions
-      // job crawling the Louvre before dying on its bot wall — EVERY night —
-      // and a Rijksmuseum first night (~6 h) would have timed out the whole
-      // job, shipping nothing at all.
-      museumFailures.push(m.id);
-      console.error(
-        `${m.id}: no rows in the previous artifact — ships empty tonight (onboard locally: harvest + build + upload; the nightly only deltas)`,
-      );
-      continue;
+      if (!fs.existsSync(path.join(mSnap, "objects.json.gz"))) {
+        museumFailures.push(m.id);
+        console.error(
+          `${m.id}: no rows in the previous artifact and no committed snapshot — ships empty tonight (onboard locally: harvest + commit data/museums/${m.id}/snapshots)`,
+        );
+        continue;
+      }
+      try {
+        const meta = JSON.parse(
+          fs.readFileSync(path.join(mSnap, "objects-meta.json"), "utf8"),
+        ) as { fetchedAt?: string };
+        if (meta.fetchedAt) deltaSince = meta.fetchedAt.slice(0, 10);
+      } catch {
+        // no meta — delta since last night, same as an already-onboarded museum
+      }
+      console.log(`${m.id}: onboarding from the committed snapshot (delta since ${deltaSince})`);
     }
     try {
-      await sourceFor(m.id).delta(mSnap, since);
+      await sourceFor(m.id).delta(mSnap, deltaSince);
     } catch (err) {
       museumFailures.push(m.id);
       console.error(`${m.id} refresh FAILED — shipping last night's rows (one day stale):`, err);
