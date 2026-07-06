@@ -1,5 +1,7 @@
 # Node / Expo
-node_modules/
+# no trailing slash: the dir-only form let a stray node_modules SYMLINK get
+# committed by `git add -A` (apps/node_modules, snuck into main via #50)
+node_modules
 .expo/
 .expo-shared/
 dist/

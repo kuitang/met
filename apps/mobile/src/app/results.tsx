@@ -94,6 +94,8 @@ export default function ResultsScreen() {
   // Gallery browsing (?gallery=) is inherently single-site; scoping only
   // applies to text queries.
   const scopedMuseum = isMultiMuseum && scope === 'here' && !gallery ? activeMuseum.id : undefined;
+  // Ranking-only boost for the visitor's museum (see search.tsx).
+  const boostMuseum = isMultiMuseum ? activeMuseum.id : undefined;
   const showSections = isMultiMuseum && scope === 'all' && !gallery;
 
   const isInterpreted = interpreted === '1' && !!q;
@@ -152,9 +154,9 @@ export default function ResultsScreen() {
       ? interp.phase === 'done'
         ? hydrateResults(data, interp.body)
         : interp.phase === 'offline'
-          ? data.searchAll(q ?? '', scopedMuseum ? { museum: scopedMuseum } : undefined) // graceful degrade: local index still works
+          ? data.searchAll(q ?? '', scopedMuseum ? { museum: scopedMuseum } : undefined, boostMuseum) // graceful degrade: local index still works
           : []
-      : data.searchAll(q ?? '', scopedMuseum ? { museum: scopedMuseum } : undefined);
+      : data.searchAll(q ?? '', scopedMuseum ? { museum: scopedMuseum } : undefined, boostMuseum);
   const floorOf = (galleryId: string) => data.getGallery(galleryId)?.floor;
   const results = applyFilters(base, filters, floorOf);
   const heading = gallery

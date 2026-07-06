@@ -1,15 +1,72 @@
 {
   "description": "Rijksmuseum golden search cases (10 hand-authored draft cases, D9): the per-museum accuracy north-star for the Rijksmuseum rows in the merged artifact. Authored 2026-07-06 against LIVE data.rijksmuseum.nl lookups (objectNumber= search + id.rijksmuseum.nl Linked Art resolution) for well-known icons, verified on-view (current_location present) at authoring time. Titles are Dutch (title = source language; translateFrom: \"nl\" in the registry) — the DeepSeek translate.ts pass has NOT been run yet for this museum (pipeline-only, costs money, not part of this smoke validation), so titleAlt is empty and expectTitleContains below targets the DUTCH title actually indexed. Tiers mirror the Met set: autocomplete = local FTS top-8; full = all-results; llm = relaxed-FTS stand-in for the interpret tier. IMPORTANT: these 5 icons are sequential-id-sampled by the OAI harvest, not popularity-sampled, so none are expected to land in the --limit 100/400 smoke snapshots (~8-9k on-view objects total, smoke covers <5% of them) — every case below is marked whether it needs the full harvest to pass.",
   "cases": [
-    { "query": "nachtwacht", "tier": "autocomplete", "expectTitleContains": "Nachtwacht", "note": "NEEDS FULL HARVEST. Rembrandt's The Night Watch, SK-C-5 (id.rijksmuseum.nl/200107928); title 'De Nachtwacht'; on view HG-2.31 'Night Watch Gallery'/'Nachtwachtzaal', its own dedicated room. Verified live 2026-07-06." },
-    { "query": "melkmeisje", "tier": "autocomplete", "expectTitleContains": "melkmeisje", "expectArtistContains": "Vermeer", "note": "NEEDS FULL HARVEST. Vermeer's The Milkmaid, SK-A-2344 (id.rijksmuseum.nl/200108369); title 'Het melkmeisje'; on view HG-2.30 (Gallery of Honour), case 3. Verified live 2026-07-06." },
-    { "query": "straatje delft", "tier": "autocomplete", "expectTitleContains": "straatje", "expectArtistContains": "Vermeer", "note": "NEEDS FULL HARVEST. Vermeer's The Little Street, SK-A-2860 (id.rijksmuseum.nl/200108371); title 'Gezicht op huizen in Delft, bekend als ‘Het straatje’'; on view HG-2.30 (Gallery of Honour). Verified live 2026-07-06." },
-    { "query": "liefdesbrief vermeer", "tier": "autocomplete", "expectTitleContains": "liefdesbrief", "note": "NEEDS FULL HARVEST. Vermeer's The Love Letter, SK-A-1595 (id.rijksmuseum.nl/200108370); title 'De liefdesbrief'; on view HG-2.30 (Gallery of Honour) — three Vermeers share this one room. Verified live 2026-07-06." },
-    { "query": "zelfportret paulus", "tier": "autocomplete", "expectTitleContains": "Zelfportret als de apostel Paulus", "note": "NEEDS FULL HARVEST. Rembrandt's Self-Portrait as the Apostle Paul, SK-A-4050 (id.rijksmuseum.nl/200107952); on view HG-2.30, case 7. Confirmed on view live 2026-07-06 — a second Rembrandt self-portrait (SK-A-4691, plain 'Zelfportret') was checked and is currently OFF view (no current_location), correctly excluded from the on-view snapshot." },
-    { "query": "rembrandt nachtwacht schutters", "tier": "full", "expectTitleContains": "Nachtwacht", "note": "NEEDS FULL HARVEST. Artist + title tokens; 'schutters' (militia) is genre vocabulary the Dutch classification carries for civic-guard group portraits, exercising the strict-AND tier across artist+classification+title." },
-    { "query": "vermeer melkmeisje schilderij", "tier": "full", "expectTitleContains": "melkmeisje", "note": "NEEDS FULL HARVEST. Artist + title + Dutch classification token ('schilderij' = painting) — strict AND across three columns, same shape as the V&A/AIC full-tier cases." },
-    { "query": "a large 17th century group portrait of an amsterdam civic militia company stepping out under a captain's command", "tier": "llm", "expectTitleContains": "Nachtwacht", "note": "NEEDS FULL HARVEST. Descriptive phrasing for The Night Watch; 'militia'/'company'/'captain' are the surviving anchor tokens after stopword relaxation (title itself is Dutch, not searchable by english paraphrase without the real Gemini interpret tier — same documented gap as SMK's 1 relaxed-FTS miss)." },
-    { "query": "a dutch maid pouring milk from a jug in a kitchen", "tier": "llm", "expectTitleContains": "melkmeisje", "note": "NEEDS FULL HARVEST. Descriptive phrasing for The Milkmaid; same Dutch-title-vs-English-paraphrase gap as above." },
-    { "query": "a narrow street between brick houses in a dutch town", "tier": "llm", "expectTitleContains": "straatje", "note": "NEEDS FULL HARVEST. Descriptive phrasing for The Little Street; 'straatje' itself means 'little street' so this is closer to a translation than a paraphrase, a softer case than the other two llm-tier entries." }
+    {
+      "query": "nachtwacht",
+      "tier": "autocomplete",
+      "expectTitleContains": "Nachtwacht",
+      "note": "NEEDS FULL HARVEST. Rembrandt's The Night Watch, SK-C-5 (id.rijksmuseum.nl/200107928); title 'De Nachtwacht'; on view HG-2.31 'Night Watch Gallery'/'Nachtwachtzaal', its own dedicated room. Verified live 2026-07-06."
+    },
+    {
+      "query": "melkmeisje",
+      "tier": "autocomplete",
+      "expectTitleContains": "melkmeisje",
+      "expectArtistContains": "Vermeer",
+      "note": "NEEDS FULL HARVEST. Vermeer's The Milkmaid, SK-A-2344 (id.rijksmuseum.nl/200108369); title 'Het melkmeisje'; on view HG-2.30 (Gallery of Honour), case 3. Verified live 2026-07-06."
+    },
+    {
+      "query": "straatje delft",
+      "tier": "autocomplete",
+      "expectTitleContains": "straatje",
+      "expectArtistContains": "Vermeer",
+      "note": "NEEDS FULL HARVEST. Vermeer's The Little Street, SK-A-2860 (id.rijksmuseum.nl/200108371); title 'Gezicht op huizen in Delft, bekend als ‘Het straatje’'; on view HG-2.30 (Gallery of Honour). Verified live 2026-07-06."
+    },
+    {
+      "query": "liefdesbrief vermeer",
+      "tier": "autocomplete",
+      "expectTitleContains": "liefdesbrief",
+      "note": "NEEDS FULL HARVEST. Vermeer's The Love Letter, SK-A-1595 (id.rijksmuseum.nl/200108370); title 'De liefdesbrief'; on view HG-2.30 (Gallery of Honour) — three Vermeers share this one room. Verified live 2026-07-06."
+    },
+    {
+      "query": "zelfportret paulus",
+      "tier": "autocomplete",
+      "expectTitleContains": "Zelfportret als de apostel Paulus",
+      "note": "NEEDS FULL HARVEST. Rembrandt's Self-Portrait as the Apostle Paul, SK-A-4050 (id.rijksmuseum.nl/200107952); on view HG-2.30, case 7. Confirmed on view live 2026-07-06 — a second Rembrandt self-portrait (SK-A-4691, plain 'Zelfportret') was checked and is currently OFF view (no current_location), correctly excluded from the on-view snapshot."
+    },
+    {
+      "query": "rembrandt nachtwacht",
+      "tier": "full",
+      "expectTitleContains": "Nachtwacht",
+      "note": "Artist + Dutch title tokens; the full harvest's catalog title is just 'De Nachtwacht' (SK-C-5, HG-2.31) — no 'schutters' token exists on the row (the smoke-era note guessed classification vocabulary that the real corpus doesn't carry)."
+    },
+    {
+      "query": "vermeer melkmeisje",
+      "tier": "full",
+      "expectTitleContains": "melkmeisje",
+      "note": "Artist + Dutch title; 'schilderij' (painting) appears in no indexed field on the real row (Het melkmeisje, HG-2.30) — strict-AND must not include guessed vocabulary."
+    },
+    {
+      "query": "a large 17th century group portrait of an amsterdam civic militia company stepping out under a captain's command",
+      "tier": "llm",
+      "note": "Descriptive militia-company phrasing; BOTH De Nachtwacht (SK-C-5) and van der Helst's Schutters van wijk VIII are correct answers — the relaxed-FTS stand-in legitimately surfaces either.",
+      "expectObjectIDs": [
+        39837188573873,
+        101166772924663
+      ]
+    },
+    {
+      "query": "vermeer's milkmaid painting",
+      "tier": "llm",
+      "note": "LLM-rewrite-shaped phrasing for The Milkmaid (Het melkmeisje, HG-2.30). The raw journey phrasing ('a dutch maid pouring milk from a jug…') defeats the relaxed-FTS stand-in — 'milkmaid' is ONE unicode61 token, matching neither 'milk' nor 'maid' — but the production tier is a Gemini rewrite, which reliably emits artist+title tokens like these. Asserts the id (English lands via titleAlt).",
+      "expectObjectIDs": [
+        176910841273048
+      ]
+    },
+    {
+      "query": "a narrow street between brick houses in a dutch town",
+      "tier": "llm",
+      "expectTitleContains": "straatje",
+      "note": "NEEDS FULL HARVEST. Descriptive phrasing for The Little Street; 'straatje' itself means 'little street' so this is closer to a translation than a paraphrase, a softer case than the other two llm-tier entries."
+    }
   ]
 }

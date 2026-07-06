@@ -1,13 +1,11 @@
 {
-  "fetchedAt": "2026-07-05T23:47:10.417Z",
-  "oaiPagesProcessed": 165,
-  "oaiRecordsScanned": 8250,
+  "fetchedAt": "2026-07-06T21:43:33.244Z",
+  "oaiPagesProcessed": 16871,
+  "oaiRecordsScanned": 843508,
   "oaiCompleteListSize": 843035,
-  "onViewCandidates": 400,
-  "resolvedNoLocation": 21,
-  "rows": 379,
-  "distinctGalleryNumbers": 40,
-  "runtimeSeconds": 279,
-  "partial": true,
-  "limit": 400
+  "onViewCandidates": 8505,
+  "resolvedNoLocation": 69,
+  "rows": 8436,
+  "distinctGalleryNumbers": 77,
+  "runtimeSeconds": 26671
 }

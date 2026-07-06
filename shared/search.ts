@@ -115,13 +115,39 @@ export function relaxQuery(ftsQuery: string): string | null {
   return toks.map((t) => `"${t}"`).join(" OR ");
 }
 
-const SELECT_CORE = `SELECT o.objectID, o.title, o.artist, o.galleryNumber, o.site,
+/**
+ * bm25 magnitude subtracted from rows of the visitor's ACTIVE museum (the
+ * plan's anticipated merged-corpus mechanism, armed 2026-07-07 when the
+ * 13-museum corpus first regressed Met journeys: Dutch titleAlt values
+ * compete at full title weight — "Bloempiramide"→"Flower pyramid" filled the
+ * whole "pyramid" autocomplete top-8, "Radslotgeweer"→"Wheellock rifle"
+ * outranked the Met armory). Magnitude tuned against the per-museum goldens
+ * (2.5, the plan's ~2-3 band): Met back to 50/50 with every other museum's
+ * file still passing, and cross-museum discovery intact — an exact-title
+ * match from another museum ("venus de milo" at the Met) still wins, since
+ * exact-vs-partial bm25 gaps exceed the boost.
+ */
+export const ACTIVE_MUSEUM_BOOST = 2.5;
+
+/**
+ * Shared SELECT head. `activeMuseum` (a museum registry id) applies
+ * ACTIVE_MUSEUM_BOOST via a CASE on o.museum — its bind param comes BEFORE
+ * the MATCH param. v2-column caveat as with the `museum` filter: callers
+ * must feature-detect objects.museum before passing it.
+ */
+function selectCore(activeMuseum?: string): { sql: string; params: string[] } {
+  const boost = activeMuseum ? ` - (CASE WHEN o.museum = ? THEN ${ACTIVE_MUSEUM_BOOST} ELSE 0 END)` : "";
+  return {
+    sql: `SELECT o.objectID, o.title, o.artist, o.galleryNumber, o.site,
        g.floor AS floor, o.isHighlight, o.imageUrl,
-       ${BM25} - (o.isHighlight * ${HIGHLIGHT_BOOST}) AS score
+       ${BM25} - (o.isHighlight * ${HIGHLIGHT_BOOST})${boost} AS score
 FROM objects_fts
 JOIN objects o ON o.objectID = objects_fts.rowid
 LEFT JOIN galleries g ON g.galleryNumber = o.galleryNumber AND g.site = o.site
-WHERE objects_fts MATCH ?`;
+WHERE objects_fts MATCH ?`,
+    params: activeMuseum ? [activeMuseum] : [],
+  };
+}
 
 /**
  * `AND o.museum NOT IN (...)` clause + its bind params for a list of expired
@@ -179,11 +205,13 @@ export function buildAutocompleteQuery(
   input: string,
   museum?: string,
   expiredMuseums?: string[],
+  activeMuseum?: string,
 ): BuiltQuery | null {
   const match = toPrefixMatch(input);
   if (match === null) return null;
-  let sql = SELECT_CORE;
-  const params: Array<string | number> = [match];
+  const core = selectCore(activeMuseum);
+  let sql = core.sql;
+  const params: Array<string | number> = [...core.params, match];
   if (museum) {
     sql += `\n  AND o.museum = ?`;
     params.push(museum);
@@ -427,23 +455,25 @@ export function autocompleteFuzzy(
   input: string,
   museum?: string,
   expiredMuseums?: string[],
+  activeMuseum?: string,
 ): SearchRow[] {
-  const q = buildAutocompleteQuery(input, museum, expiredMuseums);
+  const q = buildAutocompleteQuery(input, museum, expiredMuseums, activeMuseum);
   if (q === null) return [];
   const rows = run(q.sql, q.params) as SearchRow[];
   if (rows.length > 0) return rows;
   try {
     const m = fuzzyPrefixMatch(run, input);
     if (m === null) return [];
-    let sql = SELECT_CORE;
+    const core = selectCore(activeMuseum);
+    let sql = core.sql;
     if (museum) sql += `\n  AND o.museum = ?`;
     const expired = expiredMuseumsClause(expiredMuseums);
     sql += expired.sql;
     sql += `\nORDER BY score\nLIMIT 8`;
     const museumParams = museum ? [museum] : [];
-    const primary = run(sql, [m.primary, ...museumParams, ...expired.params]) as SearchRow[];
+    const primary = run(sql, [...core.params, m.primary, ...museumParams, ...expired.params]) as SearchRow[];
     if (primary.length > 0 || m.expanded === null) return primary;
-    return run(sql, [m.expanded, ...museumParams, ...expired.params]) as SearchRow[];
+    return run(sql, [...core.params, m.expanded, ...museumParams, ...expired.params]) as SearchRow[];
   } catch {
     return [];
   }
@@ -454,6 +484,8 @@ export interface FullQueryOpts {
   relaxed?: boolean;
   /** Optional LIMIT; the All Results page passes none. */
   limit?: number;
+  /** Rank the visitor's museum first (ACTIVE_MUSEUM_BOOST; v2 artifacts only). */
+  activeMuseum?: string;
 }
 
 /**
@@ -468,8 +500,9 @@ export function buildFullQuery(
 ): BuiltQuery | null {
   const match = opts.relaxed ? relaxQuery(input) : toPrefixMatch(input);
   if (match === null) return null;
-  let sql = SELECT_CORE;
-  const params: Array<string | number> = [match];
+  const core = selectCore(opts.activeMuseum);
+  let sql = core.sql;
+  const params: Array<string | number> = [...core.params, match];
   if (filters.museum) {
     sql += `\n  AND o.museum = ?`;
     params.push(filters.museum);
@@ -689,8 +722,12 @@ export function amenityIntent(query: string): AmenityType | null {
 }
 
 /** Run autocomplete against a DB handle; empty input → empty result. */
-export async function autocomplete(db: DbHandle, input: string): Promise<SearchRow[]> {
-  const q = buildAutocompleteQuery(input);
+export async function autocomplete(
+  db: DbHandle,
+  input: string,
+  activeMuseum?: string,
+): Promise<SearchRow[]> {
+  const q = buildAutocompleteQuery(input, undefined, undefined, activeMuseum);
   if (q === null) return [];
   return await db.all(q.sql, q.params);
 }

@@ -238,5 +238,227 @@
     "site": "rijksmuseum",
     "title": "Amsterdam canal room 1748 / Painting",
     "floor": "1"
+  },
+  {
+    "galleryNumber": "HG-2.14",
+    "site": "rijksmuseum",
+    "title": "Painting",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "HG-2.17",
+    "site": "rijksmuseum",
+    "title": "Dutch painters in Italy",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "HG-1.4",
+    "site": "rijksmuseum",
+    "title": "European court art",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "HG-1.3",
+    "site": "rijksmuseum",
+    "title": "At the Ottoman court",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "HG-1.15",
+    "site": "rijksmuseum",
+    "title": "Historicism",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "HG-1.2",
+    "site": "rijksmuseum",
+    "title": "Rococo in the Netherlands / Stadtholder Willem IV",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "HG-2.19",
+    "site": "rijksmuseum",
+    "title": "The mansion",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "HG-2.18",
+    "site": "rijksmuseum",
+    "title": "Citizens in power",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "HG-2.4",
+    "site": "rijksmuseum",
+    "title": "Flemish influences",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "HG-2.25",
+    "site": "rijksmuseum",
+    "title": "Painting",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "HG-2.3",
+    "site": "rijksmuseum",
+    "title": "The art and wonder room",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "HG-1.9",
+    "site": "rijksmuseum",
+    "title": "European court art",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "HG-2.27",
+    "site": "rijksmuseum",
+    "title": "Painting",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "HG-1.1",
+    "site": "rijksmuseum",
+    "title": "Citizens and regents",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "HG-1.13",
+    "site": "rijksmuseum",
+    "title": "European court art",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "HG-0.9",
+    "site": "rijksmuseum",
+    "title": "Fashion and jewelry",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "HG-1.7",
+    "site": "rijksmuseum",
+    "title": "Haarlem reception room 1794 / Neoclassicism in the Netherlands",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "HG-2.24",
+    "site": "rijksmuseum",
+    "title": "Painting",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "HG-3.1",
+    "site": "rijksmuseum",
+    "title": "Men",
+    "floor": "3"
+  },
+  {
+    "galleryNumber": "HG-2.26",
+    "site": "rijksmuseum",
+    "title": "Sculpture",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "HG-2.7",
+    "site": "rijksmuseum",
+    "title": "Cabinet",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "HG-2.23",
+    "site": "rijksmuseum",
+    "title": "French court art",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "HG-2.2",
+    "site": "rijksmuseum",
+    "title": "Tapestries",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "HG-2.32",
+    "site": "rijksmuseum",
+    "title": "Sculpture gallery",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "HG-1.8",
+    "site": "rijksmuseum",
+    "title": "Cabinet",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "HG-1.16",
+    "site": "rijksmuseum",
+    "title": "Cabinet",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "HG-0.3",
+    "site": "rijksmuseum",
+    "title": "Cabinet",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "HG-0.13",
+    "site": "rijksmuseum",
+    "title": "Navy model room",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "HG-3.3",
+    "site": "rijksmuseum",
+    "title": "Freedom",
+    "floor": "3"
+  },
+  {
+    "galleryNumber": "HG-2.21",
+    "site": "rijksmuseum",
+    "title": "Cabinet",
+    "floor": "2"
+  },
+  {
+    "galleryNumber": "HG-0.38",
+    "site": "rijksmuseum",
+    "title": "Between room 0.5 and 0.6",
+    "floor": "0"
+  },
+  {
+    "galleryNumber": "TV-1.7",
+    "site": "rijksmuseum",
+    "title": "Room 1.7",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "TV-1.6",
+    "site": "rijksmuseum",
+    "title": "Room 1.6",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "TV-1.3",
+    "site": "rijksmuseum",
+    "title": "Room 1.3",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "TV-1.8",
+    "site": "rijksmuseum",
+    "title": "Room 1.8",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "TV-1.2",
+    "site": "rijksmuseum",
+    "title": "Room 1.2",
+    "floor": "1"
+  },
+  {
+    "galleryNumber": "TV-1.1",
+    "site": "rijksmuseum",
+    "title": "Room 1.1",
+    "floor": "1"
   }
 ]
