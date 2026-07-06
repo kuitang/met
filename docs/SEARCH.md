@@ -37,6 +37,20 @@ weights 2–3 measurably regressed "blue ming vases" (period-synonym noise
 outranking literal "vase" titles); weight 1 adds recall without ever outranking
 a literal match.
 
+Multi-museum ranking adds one term: **`ACTIVE_MUSEUM_BOOST` (2.5)** is
+subtracted from rows of the visitor's active museum (the venue's registry id,
+threaded from the UI through every search entry point). It ranks, never
+filters — cross-museum discovery stays intact because exact-title matches
+from another museum beat the boost ("venus de milo" at the Met still surfaces
+the Louvre statue). Armed 2026-07-07 when the 13-museum corpus first
+regressed Met journeys: translated `titleAlt` values compete at full title
+weight, so the Rijksmuseum's "Bloempiramide"→"Flower pyramid" tulip vases
+filled the whole "pyramid" autocomplete top-8 and "Radslotgeweer"→"Wheellock
+rifle" outranked the Met armory. Magnitude tuned against the per-museum
+goldens: Met 50/50 with every other museum's file ≥90% and each museum run
+as its own visitor (`run-goldens.mjs` infers the active museum from the
+cases path).
+
 Measured on the full 44k-row catalog: **p50 0.30 ms, p95 11.7 ms** per query
 (worst case is a 1-character prefix) — far inside a 10 ms keystroke budget.
 

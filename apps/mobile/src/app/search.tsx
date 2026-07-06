@@ -52,8 +52,16 @@ export default function SearchScreen() {
   // section (same as the single-museum case: a plain flat list).
   const showSections = isMultiMuseum && scope === 'all';
 
-  const suggestions = data.searchAutocomplete(query, 8, scopedMuseum);
-  const total = data.searchAll(query, scopedMuseum ? { museum: scopedMuseum } : undefined).length;
+  // activeMuseum ranks (never filters) the visitor's museum first — the
+  // "All museums" scope stays global but a Met visitor's "pyramid" is Met
+  // pyramids before the Rijksmuseum's Bloempiramide tulip vases.
+  const boostMuseum = isMultiMuseum ? activeMuseum.id : undefined;
+  const suggestions = data.searchAutocomplete(query, 8, scopedMuseum, boostMuseum);
+  const total = data.searchAll(
+    query,
+    scopedMuseum ? { museum: scopedMuseum } : undefined,
+    boostMuseum,
+  ).length;
   // Room rows above object rows: galleries (exact number → number prefixes →
   // title matches, ranked in shared/search.ts) then amenities nearest-first.
   // Room rows are always scoped to the active museum's sites (never show a

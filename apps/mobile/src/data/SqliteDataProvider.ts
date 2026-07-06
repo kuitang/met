@@ -529,7 +529,7 @@ export class SqliteDataProvider implements DataProvider {
     return this.galleryRooms.filter((r) => !r.site || !this.expiredSiteIds.has(r.site));
   }
 
-  searchAutocomplete(query: string, limit = 8, museum?: string): MetObject[] {
+  searchAutocomplete(query: string, limit = 8, museum?: string, activeMuseum?: string): MetObject[] {
     // exact prefix path first; on zero rows, trigram+edit-distance correction
     // over the vocab tables ("harlw" -> harlequin). Caps at top 8.
     const scoped = this.scopedMuseum(museum);
@@ -539,6 +539,7 @@ export class SqliteDataProvider implements DataProvider {
       query,
       scoped,
       expired,
+      this.scopedMuseum(activeMuseum),
     );
     const ids = this.withAccessionMatches(
       query,
@@ -550,12 +551,15 @@ export class SqliteDataProvider implements DataProvider {
     return this.hydrate(ids);
   }
 
-  searchAll(query: string, filters: SearchFilters = {}): MetObject[] {
+  searchAll(query: string, filters: SearchFilters = {}, activeMuseum?: string): MetObject[] {
     const scopedFilters: SearchFilters = {
       ...(this.hasMuseumColumn ? filters : { ...filters, museum: undefined }),
       expiredMuseums: this.scopedExpiredMuseums(),
     };
-    const q = buildFullQuery(query, scopedFilters, { limit: SEARCH_ALL_LIMIT });
+    const q = buildFullQuery(query, scopedFilters, {
+      limit: SEARCH_ALL_LIMIT,
+      activeMuseum: this.scopedMuseum(activeMuseum),
+    });
     const rows = q === null ? [] : this.met.allSync<{ objectID: number }>(q.sql, q.params);
     // Accession matches join the pool only for unfiltered searches — the
     // accession scan doesn't apply the SQL-level filters.

@@ -235,8 +235,17 @@ export interface DataProvider {
    * `museum` scopes to one museum registry id at the SQL level (ScopeChips
    * "AT {museum}" selection, schema v2 multi-museum artifacts) — the stub and
    * pre-v2 artifacts ignore it (single museum, nothing to scope).
+   * `activeMuseum` ranks (never filters) the visitor's museum first
+   * (shared/search.ts ACTIVE_MUSEUM_BOOST) — without it, another museum's
+   * translated titleAlt can swamp the home museum's rows ("pyramid" at the
+   * Met vs the Rijksmuseum's Bloempiramide tulip vases, measured 2026-07-07).
    */
-  searchAutocomplete(query: string, limit?: number, museum?: string): MetObject[];
+  searchAutocomplete(
+    query: string,
+    limit?: number,
+    museum?: string,
+    activeMuseum?: string,
+  ): MetObject[];
   /**
    * Gallery rooms matching the query, for the omnibar's room rows: digit
    * queries match gallery numbers (exact first, then prefixes), queries with
@@ -248,8 +257,9 @@ export interface DataProvider {
    * Full result list for the All Results screen. Optional SQL-level filters
    * (museum / site / floor / rotation / hasImage) — the stub ignores them;
    * the UI's SearchFilterChips post-filter still applies either way.
+   * `activeMuseum`: same ranking-only boost as searchAutocomplete.
    */
-  searchAll(query: string, filters?: SearchFilters): MetObject[];
+  searchAll(query: string, filters?: SearchFilters, activeMuseum?: string): MetObject[];
   getObject(objectID: number): MetObject | undefined;
   getGallery(id: string): Room | undefined;
   /**
@@ -351,13 +361,19 @@ export class StubDataProvider implements DataProvider {
   private objects = new Map(data.objects.map((o) => [o.objectID, o]));
   private nodes = new Map(data.nodes.map((n) => [n.id, n]));
 
-  // `museum`/`filters.museum` accepted for interface parity; the stub is
-  // always single-museum, so there is never anything to scope.
-  searchAutocomplete(query: string, limit = 8, _museum?: string): MetObject[] {
+  // `museum`/`filters.museum`/`activeMuseum` accepted for interface parity;
+  // the stub is always single-museum, so there is never anything to scope or
+  // boost.
+  searchAutocomplete(
+    query: string,
+    limit = 8,
+    _museum?: string,
+    _activeMuseum?: string,
+  ): MetObject[] {
     return this.searchAll(query).slice(0, limit);
   }
 
-  searchAll(query: string, _filters?: SearchFilters): MetObject[] {
+  searchAll(query: string, _filters?: SearchFilters, _activeMuseum?: string): MetObject[] {
     const q = norm(query.trim());
     if (!q) return [];
     const scored: { o: MetObject; score: number }[] = [];

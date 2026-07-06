@@ -35,7 +35,7 @@ import {
 } from '@/components/LocateState';
 import StalenessBadge from '@/components/StalenessBadge';
 import { apiBase } from '@/data/apiBase';
-import { MetObject, museumFreshness, scopedRoomId, useData } from '@/data/provider';
+import { MetObject, museumForSite, museumFreshness, scopedRoomId, useData } from '@/data/provider';
 import { colors, spacing, type } from '@/theme';
 
 type LocatePhotoResponse = components['schemas']['LocatePhotoResponse'];
@@ -213,7 +213,12 @@ export default function LocateScreen() {
 
   const locateArtifact = () => {
     const q = input.trim();
-    const hits = q ? data.searchAutocomplete(q, 6).filter((o) => o.gallery) : [];
+    // Rank the active venue's museum first — locating yourself by a nearby
+    // artifact is inherently about the building you're standing in.
+    const activeMuseumId = museumForSite(museums, venue.venue)?.id;
+    const hits = q
+      ? data.searchAutocomplete(q, 6, undefined, activeMuseumId).filter((o) => o.gallery)
+      : [];
     if (hits.length === 0) {
       setArtifactHits([]);
       setError(

@@ -1,8 +1,8 @@
 # Museums data-quality audit
 
 - Status: **WARN**
-- Generated: 2026-07-06T20:11:39.591Z by `data/src/museums-audit.ts`
-- Data version: 2026-07-06-487fa2d2 (built 2026-07-06T20:11:24.258Z)
+- Generated: 2026-07-06T22:34:40.336Z by `data/src/museums-audit.ts`
+- Data version: 2026-07-06-4a0ae0b9 (built 2026-07-06T22:17:53.232Z)
 - Museums audited: met, aic, cleveland, nga, smk, louvre, vanda, harvard, rijksmuseum, brera, egizio, uffizi, reinasofia
 - Previous artifact for churn: none provided (PREV_DB unset, no data/met.sqlite.prev) — churn sections unavailable this run
 
@@ -53,8 +53,8 @@ is a WARN with numbers attached, never a guess.
 | every object joins a gallery row, site-scoped (harvard) | PASS | 1817/1817 (100.00%) |
 | sourceId unique per museum (rijksmuseum) | PASS | 0 duplicate (museum, sourceId) groups |
 | objects.site ⊆ registry sites (rijksmuseum) | PASS | all objects.site values are registered |
-| license non-empty (rijksmuseum) | PASS | 0/379 objects with license='' |
-| every object joins a gallery row, site-scoped (rijksmuseum) | PASS | 379/379 (100.00%) |
+| license non-empty (rijksmuseum) | PASS | 0/8436 objects with license='' |
+| every object joins a gallery row, site-scoped (rijksmuseum) | PASS | 8436/8436 (100.00%) |
 | sourceId unique per museum (brera) | PASS | 0 duplicate (museum, sourceId) groups |
 | objects.site ⊆ registry sites (brera) | PASS | all objects.site values are registered |
 | license non-empty (brera) | PASS | 0/356 objects with license='' |
@@ -84,7 +84,7 @@ is a WARN with numbers attached, never a guess.
 | Louvre | 11950 | routed | 100.0% | 16% | 92% | 15% | 99% | 100% | 100% | 0% | 100%/100% | PASS |
 | V&A | 58092 | room-labels | 100.0% | 91% | 97% | 100% | 0% | 0% | 0% | 0% | 100%/0% | PASS |
 | Harvard | 1817 | room-labels | 100.0% | 48% | 44% | 100% | 99% | 0% | 0% | 0% | 100%/100% | PASS |
-| Rijksmuseum | 379 | room-labels | 100.0% | 92% | 99% | 100% | 100% | 64% | 98% | 98% | 100%/100% | PASS |
+| Rijksmuseum | 8436 | room-labels | 100.0% | 88% | 96% | 100% | 99% | 66% | 92% | 92% | 100%/100% | PASS |
 | Brera | 356 | room-labels | 100.0% | 100% | 99% | 15% | 98% | 100% | 0% | 0% | 0%/100% | PASS |
 | Museo Egizio | 3228 | room-labels | 100.0% | 0% | 100% | 0% | 100% | 44% | 95% | 95% | 100%/100% | PASS |
 | Uffizi | 2539 | room-labels | 100.0% | 70% | 100% | 100% | 100% | 100% | 0% | 0% | 22%/46% | PASS |
@@ -439,24 +439,24 @@ No previous artifact provided (set PREV_DB=<path> to a prior met.sqlite) — chu
 
 Fidelity **room-labels** · sites: rijksmuseum · license `CC0-1.0` · translateFrom `nl`
 
-#### Fill rates (measured %, n=379)
+#### Fill rates (measured %, n=8436)
 
 | field | filled | % |
 |---|---|---|
-| artist | 349 | 92.1% |
-| period/date | 376 | 99.2% |
-| classification | 379 | 100.0% |
-| medium | 379 | 100.0% |
-| tags | 241 | 63.6% |
-| image (imageUrl set) | 373 | 98.4% |
-| image, license-allowed | 373 | 98.4% |
-| locationNote | 321 | 84.7% |
+| artist | 7408 | 87.8% |
+| period/date | 8070 | 95.7% |
+| classification | 8435 | 100.0% |
+| medium | 8359 | 99.1% |
+| tags | 5586 | 66.2% |
+| image (imageUrl set) | 7764 | 92.0% |
+| image, license-allowed | 7764 | 92.0% |
+| locationNote | 7426 | 88.0% |
 
-Room-label coverage (galleries table, 40 rows for this museum's sites): **40/40 titled (100.0%)**, **40/40 floored (100.0%)**.
+Room-label coverage (galleries table, 77 rows for this museum's sites): **77/77 titled (100.0%)**, **77/77 floored (100.0%)**.
 
 #### Structural invariants
 
-- object→gallery join: **379/379 (100.00%)** — PASS
+- object→gallery join: **8436/8436 (100.00%)** — PASS
 - sourceId duplicate groups: **0**
 - objects.site values outside the registry: **0**
 - objects with license='': **0**
@@ -464,13 +464,19 @@ Room-label coverage (galleries table, 40 rows for this museum's sites): **40/40 
 #### Distribution sanity
 
 - Empty-title rows: **0.00%**
-- Rows per gallery: p50 **3**, p95 **51**, max **73** (40 distinct galleries)
-- titleAlt coverage (translateFrom nl): **0.0%**
-- License histogram: `CC0-1.0`/`PDM-1.0` ×375, `CC0-1.0`/`(none)` ×4
+- Rows per gallery: p50 **39**, p95 **483**, max **1516** (77 distinct galleries)
+- titleAlt coverage (translateFrom nl): **97.6%**
+- License histogram: `CC0-1.0`/`PDM-1.0` ×8147, `CC0-1.0`/`(none)` ×288, `CC0-1.0`/`CC0-1.0` ×1
 
-Catalog-noise clusters — (title, artist) pairs with >20 rows (top 5 of 0):
+Catalog-noise clusters — (title, artist) pairs with >20 rows (top 5 of 5):
 
-None.
+| title | artist | rows |
+|---|---|---|
+| Bord | anonymous | 56 |
+| Nazi-schaakspel | Georg Fuhg | 33 |
+| Schotel | anonymous | 29 |
+| Schotel, veelkleurig beschilderd met Deutsche Blumen, insekten en vruchten | Meissener Porzellan Manufaktur | 27 |
+| Vaas met deksel | Meissener Porzellan Manufaktur | 21 |
 
 #### Churn vs previous artifact
 

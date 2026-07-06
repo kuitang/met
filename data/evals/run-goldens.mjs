@@ -18,6 +18,17 @@ const CASES_PATH = process.argv[3] ?? p("./search-cases.json");
 const raw = new Database(DB_PATH, { readonly: true });
 const db = { all: (sql, params) => raw.prepare(sql).all(...params) };
 
+// Each museum's goldens run as THAT museum's visitor: the production search
+// always ranks with the active venue's museum (ACTIVE_MUSEUM_BOOST in
+// shared/search.ts), so the eval mirrors it. Inferred from the cases path
+// (data/evals/{museumId}/search-cases.json; the Met's file sits at the root).
+// argv[4] overrides. Pre-v2 artifacts (no objects.museum column) get no boost.
+const inferredMuseum = /evals[\\/]([a-z]+)[\\/]search-cases\.json$/.exec(CASES_PATH)?.[1] ?? "met";
+const hasMuseumCol =
+  raw.prepare(`SELECT count(*) AS n FROM pragma_table_info('objects') WHERE name = 'museum'`).get()
+    .n > 0;
+const ACTIVE = hasMuseumCol ? (process.argv[4] ?? inferredMuseum) : undefined;
+
 const goldens = JSON.parse(readFileSync(CASES_PATH, "utf8")).cases;
 
 const matches = (rows, c) =>
@@ -42,16 +53,23 @@ for (const c of goldens) {
   if (c.expectAmenity) {
     ok = amenityIntent(c.query) === c.expectAmenity;
   } else if (c.tier === "autocomplete") {
-    rows = await autocomplete(db, c.query);
+    rows = await autocomplete(db, c.query, ACTIVE);
     // Production falls back to trigram typo correction on zero rows
     // (SqliteDataProvider.searchAutocomplete → autocompleteFuzzy) — mirror it.
-    if (rows.length === 0) rows = autocompleteFuzzy((sql, params) => raw.prepare(sql).all(...params), c.query);
+    if (rows.length === 0)
+      rows = autocompleteFuzzy(
+        (sql, params) => raw.prepare(sql).all(...params),
+        c.query,
+        undefined,
+        undefined,
+        ACTIVE,
+      );
     ok = matches(rows, c);
   } else if (c.tier === "full") {
-    rows = await fullSearch(db, c.query, {}, { limit: 25 });
+    rows = await fullSearch(db, c.query, {}, { limit: 25, activeMuseum: ACTIVE });
     ok = matches(rows, c);
   } else {
-    rows = await fullSearch(db, c.query, {}, { relaxed: true, limit: 25 });
+    rows = await fullSearch(db, c.query, {}, { relaxed: true, limit: 25, activeMuseum: ACTIVE });
     ok = matches(rows, c);
   }
   const s = (stats[c.tier] ??= { pass: 0, total: 0 });
