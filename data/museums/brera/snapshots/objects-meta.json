@@ -1,0 +1,11 @@
+{
+  "fetchedAt": "2026-07-06T15:15:25.699Z",
+  "totalRecords": 637,
+  "skipped": {
+    "notExhibited": 244,
+    "noRoom": 37
+  },
+  "rows": 356,
+  "distinctGalleryNumbers": 30,
+  "runtimeSeconds": 11
+}
