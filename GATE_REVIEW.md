@@ -2,30 +2,40 @@
 
 ## Gate M — Universal Museum Navigator (multi-museum) — READY FOR REVIEW
 
-Shipped 2026-07-05/06 as squash PRs #21–#36 per the approved plan
+Shipped 2026-07-05/07 as squash PRs #21–#53 per the approved plan
 (`Universal Museum Navigator` brief; single merged artifact, sites are the
-museum dimension). Every number measured on this machine; reproduce with the
-inline commands.
+museum dimension) plus Kui's 2026-07-06 Italy/Spain extension directive.
+Every number measured on this machine; reproduce with the inline commands.
 
 **Watch:** 18 journey videos (J1–J17, 390×844, 20/20 specs passing) +
 UI screenshots + eval reports on the tailnet review server —
 `http://100.87.13.37:8123`. J16 (multi-museum search) and J17 (Louvre
 walking navigation) are the new centerpieces.
 
-### Museums in the artifact (8 + Rijksmuseum & Museo Egizio landings; 119,949 on-view objects, 104.6 MB raw / 50.4 MB gz)
+### Museums in the artifact (13; 147,166 on-view objects, 143.5 MB raw ≈ 61 MB gz)
 
 | Museum | Rows | Fidelity | Goldens | License posture |
 |---|---|---|---|---|
-| Met | 44,842 | routed (2 sites) | **50/50 — held through every milestone** | CC0 |
-| AIC | 3,510 | room-labels | 25/25 after PR #40's synonyms | CC0 machine-readable |
-| Cleveland | 6,899 | room-labels | 13/15 | CC0 + per-record image gate |
-| NGA DC | 2,808 | room-labels (2 sites) | 14/14 | CC0, images excluded from grant |
-| SMK | 1,481 | room-labels | 13/14 | PD-marked |
+| Met | 44,842 | routed (2 sites) | **50/50 — held through every milestone** (restored on the 13-museum corpus by the active-museum boost, #53) | CC0 |
 | V&A | 58,092 | room-labels | 11/12 | NC + **28-day license TTL (enforced in-client, live-verified)** |
+| Louvre | 11,950 partial of 26,653 (their bot-wall persists; self-healing retry continues; recommit-on-completion documented) | **routed** (OSM/ODbL; gate: 1 component, 500/500 pairs) | 12/12 (7 FR + 5 EN-for-FR via titleAlt) | Etalab (attribution) |
+| Rijksmuseum | 8,436 (full 843k-record OAI sweep) | room-labels (case-level codes; Nachtwacht → HG-2.31) | 10/10 | CC0 metadata, per-record image rights |
+| Cleveland | 6,899 | room-labels | 14/15 | CC0 + per-record image gate |
+| AIC | 3,510 | room-labels | 25/25 | CC0; images direct-IIIF on web (#50, residential-CORS-verified) |
+| Museo Egizio | 3,228 (full 5,483-page sitemap crawl) | room-labels (floor/room/showcase) | 12/12 | text unstated (facts-only); **images explicit CC0** |
+| NGA DC | 2,808 | room-labels (2 sites) | 14/14 | CC0, images excluded from grant |
+| Uffizi | 2,539 | room-labels (lettered salas w/ floors) | 12/12 | CC-BY-SA 4.0 (ArCo LOD, SA flagged) |
 | Harvard | 1,817 | room-labels | 10/10 | NC + **14-day TTL** (19 API calls/pull vs 2,500/day cap) |
-| Louvre | 500 partial → 26,653 (self-healing hydration vs their bot-wall) | **routed** (OSM/ODbL; gate: 1 component, 500/500 pairs, Joconde→Vénus 263 m) | FR/EN bilingual via titleAlt | Etalab (attribution) |
-| Rijksmuseum | landing (OAI-PMH harvest in flight, ~8k expected) | room-labels (case-level codes) | — | CC0-leaning metadata, per-record image rights |
-| Museo Egizio | landing — 278 smoke rows (sitemap crawl in flight; 5,483 pages, ~3.6k on-view expected) | room-labels (floor+room+showcase; incl. the Turin King List) | 12/12 on the smoke slice | images explicit CC0 (only image grant in the IT/ES survey); text unstated → facts-only |
+| SMK | 1,481 | room-labels | 13/14 | PD-marked |
+| Reina Sofía | 1,208 (100% room fill by construction) | room-labels | 11/11 | CC BY-NC-ND → facts-only, no images |
+| Brera | 356 | room-labels (rooms I–XXXVIII) | 10/10 | unstated (facts + attribution; confirmation email sent 2026-07-06) |
+
+Italy/Spain survey (Kui directive 2026-07-06, live-probed, report on the
+review server): 4 INCLUDEs above; excludes measured — Vatican (superb data,
+reuse prohibited), Prado (no data channel exists), Thyssen (license),
+CER.ES/Sorolla (0/100 location fill), Europeana aggregator route (room
+strings don't survive aggregation). Spikes deferred: Borghese, MNAC,
+Palatina/Pitti.
 
 Measured excludes (memos in data/evals/reports/): **Paris Musées**
 (room-fill 0.40% vs the 60% criterion; Petit Palais flagged as a future
@@ -37,11 +47,20 @@ fill rates, structural hard-gates (all PASS), churn dashboard fed by the
 nightly's previous-artifact pull.
 
 ### Search guarantees (the north star — plan requirement)
-- Met goldens **50/50 at every single milestone** including the 118k-row merge;
-  bm25 bit-identical across the contentless-FTS cutover (0.00% drift).
-- English queries match French Louvre titles at full title weight
-  ("funerary papyrus" → "papyrus funéraire"); French queries unaffected.
-- Typo evals ALL TARGETS MET on the merged corpus.
+- Met goldens **50/50 at every single milestone** including the 147k-row
+  13-museum merge; bm25 bit-identical across the contentless-FTS cutover
+  (0.00% drift). The one measured regression (48/50 when Dutch titleAlt
+  values landed: "Bloempiramide"→"Flower pyramid" filled the "pyramid"
+  top-8) armed the plan's **active-museum boost** (#53, `ACTIVE_MUSEUM_BOOST
+  2.5` — ranks, never filters; "venus de milo" at the Met still surfaces the
+  Louvre statue) and restored 50/50.
+- Every museum's goldens run as that museum's visitor; all 13 files ≥90%
+  (10 of 13 at 100%).
+- English queries match FR/NL/IT/ES titles at full title weight via
+  DeepSeek titleAlt ("sleeping hermaphrodite" → Hermaphrodite endormi).
+- Typo evals re-baselined on the multilingual corpus (82% recall/15% FP vs
+  85/10 Met-only — several "typos" are correct Dutch/Italian words now:
+  "sfinx", "afrodite"); tripwire assertions hold in shared vitest 152/152.
 - Room-code collisions (102 across museums, a live prod bug found mid-build)
   fixed via site-scoped room ids (#32) + 6 seam regressions caught by the
   video gate (#36) — `apps/mobile/scripts/check-room-scoping.mts` is the
@@ -54,14 +73,27 @@ nightly's previous-artifact pull.
   straddle null).
 - Synonyms + ALL runtime LLM: Gemini (unchanged locked rule).
 
+### Nightly + onboarding (redesigned 2026-07-06, #43/#44)
+The nightly NEVER fullFetches (the old first-night fallback burned 3.8 h/night
+re-crawling the bot-walled Louvre and risked timing out the whole 6 h job).
+Museums onboard by COMMITTING their local harvest snapshot — git is the
+onboarding channel; the first nightly deltas from the harvest's own fetchedAt.
+Root causes fixed same day: HARVARD_API_KEY secret was never set; PRs whose
+branches conflict with main get no merge ref so CI never fires ("no checks
+reported" — #34/#38/#40/#49 all hit it; rebase-before-PR is now doctrine).
+
 ### Known-partial / follow-ups
-- Louvre full snapshot lands after the overnight hydration (collections.louvre.fr
-  serves HTML bot-challenges with HTTP 200 at ≥2 req/s — politeFetch hardened
-  #34, pace 1 req/s) → `feat/mm-d6c-louvre-full` + final nightly.
-- Kui-action items: Harvard API key (form), Paris Musées token (signup),
-  Rijksmuseum inclusion (spike verdict: include; recommended next sprint).
-- Artifact size 49.5 MB gz vs ~35 MB planned (V&A's 58k rows) — accepted,
-  revisit trigger documented in ARCHITECTURE.md.
+- Louvre corpus capped at the shipped 11,950/26,653 by their bot wall
+  (HTML challenges on HTTP 200 from every vantage; self-healing retry loop
+  continues; the re-fold+recommit path is ~30 min mechanical work once it
+  lifts — documented in task 12).
+- Brera text license unstated — facts + attribution shipped; Kui's
+  confirmation email sent 2026-07-06 (ArCo CC-BY-SA fallback if declined).
+- AIC thumbnails can't be mirrored (Cloudflare challenges every datacenter
+  IP) — web loads direct IIIF with CORS (#50, verified from Kui's browser on
+  the isolated prod app); native unaffected.
+- Artifact 143.5 MB raw / ~61 MB gz vs ~35 MB planned (V&A 58k + 5 new
+  museums) — accepted, revisit trigger documented in ARCHITECTURE.md.
 
 ---
 # Historical gates below (Phase 1–2)
