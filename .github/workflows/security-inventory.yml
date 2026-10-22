@@ -39,7 +39,7 @@ jobs:
           while read -r image; do
             /tmp/trivy image --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 "$image"
           done < security-inventory/images.txt
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: deployed-security-inventory
