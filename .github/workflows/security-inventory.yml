@@ -33,6 +33,12 @@ jobs:
             /tmp/trivy image --scanners vuln --format json --output "security-inventory/image-$i.vulnerabilities.json" "$image"
             i=$((i + 1))
           done < security-inventory/images.txt
+      - name: Alert on fixable high or critical image vulnerabilities
+        run: |
+          # Complete reports above retain unfixed and lower-severity findings.
+          while read -r image; do
+            /tmp/trivy image --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 "$image"
+          done < security-inventory/images.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with:
