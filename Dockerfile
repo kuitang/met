@@ -18,7 +18,7 @@
 # ---------------------------------------------------------------------------
 # Stage 1: install + fetch artifacts + build server and web export
 # ---------------------------------------------------------------------------
-FROM node:24-slim AS build
+FROM node:24.22.1-trixie-slim AS build
 WORKDIR /app
 ENV CI=1 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 
@@ -62,7 +62,7 @@ RUN node scripts/check-origin-portability.mjs apps/mobile/dist
 # ---------------------------------------------------------------------------
 # Stage 2: runtime — server prod deps only, dists, baked artifacts, non-root
 # ---------------------------------------------------------------------------
-FROM node:24-slim
+FROM node:24.22.1-trixie-slim
 WORKDIR /app
 ENV NODE_ENV=production PORT=8787 DATA_DIR=/app/data
 
@@ -87,6 +87,10 @@ COPY --from=build /app/shared/package.json /app/shared/*.ts shared/
 COPY --from=build /app/server/dist/ server/dist/
 COPY --from=build /app/apps/mobile/dist/ apps/mobile/dist/
 COPY --from=build /artifacts/ /app/data/
+
+# Package managers are build tools; the serving image only executes Node.
+RUN rm -rf /usr/local/lib/node_modules/npm /opt/yarn-* \
+    /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/yarn /usr/local/bin/yarnpkg
 
 # Non-root; the image proxy's disk LRU lives at DATA_DIR/img-cache (ephemeral
 # in this design — it refills from the Met CDN after each deploy).
