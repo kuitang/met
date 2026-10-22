@@ -88,6 +88,10 @@ COPY --from=build /app/server/dist/ server/dist/
 COPY --from=build /app/apps/mobile/dist/ apps/mobile/dist/
 COPY --from=build /artifacts/ /app/data/
 
+# Package managers are build tools; the serving image only executes Node.
+RUN rm -rf /usr/local/lib/node_modules/npm /opt/yarn-* \
+    /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/yarn /usr/local/bin/yarnpkg
+
 # Non-root; the image proxy's disk LRU lives at DATA_DIR/img-cache (ephemeral
 # in this design — it refills from the Met CDN after each deploy).
 RUN chown -R node:node /app/data
