@@ -4,7 +4,7 @@ MuseWalk — an unofficial indoor-navigation web/mobile companion app for the Me
 
 ## Node version
 
-Use Node >= 22 (nvm has v24.14.0: `export PATH="$HOME/.nvm/versions/node/v24.14.0/bin:$PATH"`). System Node 20 cannot install: better-sqlite3 12.x ships no prebuild for ABI 115 and this machine has no g++. The committed lockfile/native binary were built under Node 24.
+Use the security-patched Node version in `.nvmrc` (24.22.1; `nvm use`). System Node 20 cannot install: better-sqlite3 12.x ships no prebuild for ABI 115 and this machine has no g++. The committed lockfile/native binary were built under Node 24.
 
 ## Run
 

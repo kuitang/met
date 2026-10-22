@@ -9,6 +9,10 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    # Runtime lane changes require explicit support/security review.
+    ignore:
+      - dependency-name: node
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:

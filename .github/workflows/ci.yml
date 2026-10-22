@@ -97,7 +97,21 @@ jobs:
         run: |
           EXPO_PUBLIC_DATA=stub npm -w apps/mobile exec -- expo export -p web
           cd e2e
-          npx playwright install-deps chromium webkit
+          # Azure's package mirror stalled for 28 minutes in run39865507080.
+          # Keep Ubuntu signature verification; use its official archive mirror.
+          sudo python3 - <<'PYTHON'
+          from pathlib import Path
+          paths = [Path('/etc/apt/apt-mirrors.txt'), Path('/etc/apt/sources.list'), *Path('/etc/apt/sources.list.d').glob('*.sources'), *Path('/etc/apt/sources.list.d').glob('*.list')]
+          for path in paths:
+              if path.exists():
+                  old = path.read_text()
+                  new = old.replace('http://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu').replace('https://azure.archive.ubuntu.com/ubuntu', 'https://archive.ubuntu.com/ubuntu')
+                  if old != new:
+                      path.write_text(new)
+                      print(f'Using official Ubuntu archive in {path}')
+          PYTHON
+          # Bound OS dependency provisioning as well as browser downloads.
+          timeout 360 npx playwright install-deps chromium webkit
           ok=""
           for i in 1 2 3; do
             if timeout 360 npx playwright install chromium webkit; then ok=1; break; fi
