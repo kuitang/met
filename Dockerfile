@@ -18,7 +18,7 @@
 # ---------------------------------------------------------------------------
 # Stage 1: install + fetch artifacts + build server and web export
 # ---------------------------------------------------------------------------
-FROM node:24-slim AS build
+FROM node:24.22.1-slim AS build
 WORKDIR /app
 ENV CI=1 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 
@@ -62,7 +62,7 @@ RUN node scripts/check-origin-portability.mjs apps/mobile/dist
 # ---------------------------------------------------------------------------
 # Stage 2: runtime — server prod deps only, dists, baked artifacts, non-root
 # ---------------------------------------------------------------------------
-FROM node:24-slim
+FROM node:24.22.1-slim
 WORKDIR /app
 ENV NODE_ENV=production PORT=8787 DATA_DIR=/app/data
 
