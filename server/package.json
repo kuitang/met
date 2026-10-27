@@ -16,7 +16,7 @@
     "@met/shared": "*",
     "better-sqlite3": "^12.11.1",
     "hono": "^4.13.11",
-    "zod": "^4.4.3"
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@types/node": "^25.9.2",
