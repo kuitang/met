@@ -21,6 +21,9 @@
 FROM node:24.22.1-trixie-slim AS build
 WORKDIR /app
 ENV CI=1 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+RUN apt-get update && apt-get install -y --no-install-recommends libbrotli1 \
+    && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libbrotli1)" ge 1.1.0-2+deb13u1 \
+    && rm -rf /var/lib/apt/lists/*
 
 # Workspace manifests first: npm ci layer survives source-only changes.
 COPY package.json package-lock.json ./
@@ -67,7 +70,8 @@ WORKDIR /app
 ENV NODE_ENV=production PORT=8787 DATA_DIR=/app/data
 
 # curl for the container healthcheck
-RUN apt-get update && apt-get install -y --no-install-recommends curl \
+RUN apt-get update && apt-get install -y --no-install-recommends curl libbrotli1 \
+    && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libbrotli1)" ge 1.1.0-2+deb13u1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Production node_modules for the server workspace (hono, better-sqlite3,
