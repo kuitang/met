@@ -145,7 +145,7 @@ jobs:
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - name: Deploy musewalk (bakes latest/ artifacts)
         run: |
-          flyctl deploy --remote-only \
+          flyctl deploy --remote-only --no-cache \
             --build-secret AWS_ACCESS_KEY_ID="${{ secrets.TIGRIS_AWS_ACCESS_KEY_ID }}" \
             --build-secret AWS_SECRET_ACCESS_KEY="${{ secrets.TIGRIS_AWS_SECRET_ACCESS_KEY }}" \
             --build-secret AWS_ENDPOINT_URL_S3="${{ secrets.TIGRIS_AWS_ENDPOINT }}" \

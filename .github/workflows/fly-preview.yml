@@ -50,6 +50,8 @@ jobs:
             AWS_ACCESS_KEY_ID=${{ secrets.TIGRIS_AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY=${{ secrets.TIGRIS_AWS_SECRET_ACCESS_KEY }}
             AWS_ENDPOINT_URL_S3=${{ secrets.TIGRIS_AWS_ENDPOINT }}
+          # The per-run build arg also invalidates BOTH OS install layers.
+          # This action version has no deploy_options/no-cache input.
           # Same cache-bust as the prod deploy job: without it the Docker
           # artifact-fetch layer cache-hits and previews keep serving the
           # artifact version from their FIRST build (observed live: a preview

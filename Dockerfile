@@ -13,15 +13,16 @@
 # Build args:
 #   ARTIFACT_VERSION    which bucket version to bake (default "latest")
 #   ARTIFACT_CACHE_BUST any new value re-pulls artifacts despite layer cache
-#                       (CI passes the run id so deploys never bake stale data)
+#                       (CI passes the run id; it refreshes OS layers too)
 
 # ---------------------------------------------------------------------------
 # Stage 1: install + fetch artifacts + build server and web export
 # ---------------------------------------------------------------------------
 FROM node:24.22.1-trixie-slim AS build
+ARG ARTIFACT_CACHE_BUST=0
 WORKDIR /app
 ENV CI=1 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
-RUN apt-get update && apt-get install -y --no-install-recommends libbrotli1 \
+RUN echo "OS package refresh (build=$ARTIFACT_CACHE_BUST)" && apt-get update && apt-get install -y --no-install-recommends libbrotli1 \
     && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libbrotli1)" ge 1.1.0-2+deb13u1 \
     && rm -rf /var/lib/apt/lists/*
 
@@ -39,7 +40,6 @@ RUN npm ci
 # met.sqlite, VERSION, snapshots/image-embeddings/*.
 COPY data/src/artifacts.ts data/src/fetch-artifacts.ts data/src/
 ARG ARTIFACT_VERSION=latest
-ARG ARTIFACT_CACHE_BUST=0
 RUN --mount=type=secret,id=AWS_ACCESS_KEY_ID \
     --mount=type=secret,id=AWS_SECRET_ACCESS_KEY \
     --mount=type=secret,id=AWS_ENDPOINT_URL_S3 \
@@ -66,11 +66,12 @@ RUN node scripts/check-origin-portability.mjs apps/mobile/dist
 # Stage 2: runtime — server prod deps only, dists, baked artifacts, non-root
 # ---------------------------------------------------------------------------
 FROM node:24.22.1-trixie-slim
+ARG ARTIFACT_CACHE_BUST=0
 WORKDIR /app
 ENV NODE_ENV=production PORT=8787 DATA_DIR=/app/data
 
 # curl for the container healthcheck
-RUN apt-get update && apt-get install -y --no-install-recommends curl libbrotli1 \
+RUN echo "OS package refresh (build=$ARTIFACT_CACHE_BUST)" && apt-get update && apt-get install -y --no-install-recommends curl libbrotli1 \
     && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libbrotli1)" ge 1.1.0-2+deb13u1 \
     && rm -rf /var/lib/apt/lists/*
 
