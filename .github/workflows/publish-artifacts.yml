@@ -11,7 +11,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Upload new version prefix, readback-verify, flip latest pointer
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.TIGRIS_AWS_ACCESS_KEY_ID }}

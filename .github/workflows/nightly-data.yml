@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 300 # delta is normally minutes; WAF backoff can stretch it
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # Match the security-patched CI and production runtime.
       - uses: actions/setup-node@v4
