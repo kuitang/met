@@ -20,6 +20,7 @@
  *    it is exact by construction. 404s are fine — imageless objects exist
  *    and render no hero image.
  */
+import { Script } from 'node:vm';
 import { loadJourneyFixtures } from './helpers/db';
 
 /** Bounded fetch helper: dev-mode Metro compiles can take a while. */
@@ -38,11 +39,15 @@ async function probeTarget(base: string): Promise<void> {
   // Compile/validate every entry bundle (dev Metro compiles on first request;
   // 5 min bound is for that compile, the static export answers in ms).
   const scripts = [...html.matchAll(/<script[^>]+src="([^"]+)"/g)].map((m) => m[1]);
+  let totalBytes = 0;
   for (const src of scripts) {
     const url = src.startsWith('http') ? src : `${base}${src}`;
     const js = await fetchOk(url, 300_000);
-    if (js.length < 10_000) throw new Error(`probe: bundle ${url} is ${js.length} B — truncated?`);
+    if (!js.trim()) throw new Error(`probe: empty bundle ${url}`);
+    new Script(js, { filename: url });
+    totalBytes += Buffer.byteLength(js);
   }
+  if (totalBytes < 10_000) throw new Error(`probe: combined bundle size is only ${totalBytes} bytes`);
   console.log(`[probe] ${base} shell + ${scripts.length} bundle(s) ready in ${Date.now() - t0} ms`);
 }
 
