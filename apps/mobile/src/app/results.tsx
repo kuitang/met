@@ -262,7 +262,7 @@ export default function ResultsScreen() {
                 />
               ))}
             </View>
-          ) : null
+          ) : undefined
         }
         renderItem={({ item }) =>
           item.kind === 'header' ? (
