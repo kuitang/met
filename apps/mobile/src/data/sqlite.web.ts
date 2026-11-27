@@ -65,7 +65,10 @@ function loadSqlite3(): Promise<Sqlite3Static> {
         print: () => {},
         printErr: (msg: string) => console.warn('[sqlite3]', msg),
       });
-    })();
+    })().catch((error) => {
+      sqlite3Promise = null;
+      throw error;
+    });
   }
   return sqlite3Promise;
 }
