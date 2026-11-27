@@ -18,11 +18,11 @@
 # ---------------------------------------------------------------------------
 # Stage 1: install + fetch artifacts + build server and web export
 # ---------------------------------------------------------------------------
-FROM node:24.22.1-trixie-slim AS build
+FROM node:24.22.3-trixie-slim AS build
 ARG ARTIFACT_CACHE_BUST=0
 WORKDIR /app
 ENV CI=1 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
-RUN echo "OS package refresh (build=$ARTIFACT_CACHE_BUST)" && apt-get update && apt-get install -y --no-install-recommends libbrotli1 \
+RUN echo "OS package refresh (build=$ARTIFACT_CACHE_BUST)" && apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends libbrotli1 \
     && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libbrotli1)" ge 1.1.0-2+deb13u1 \
     && rm -rf /var/lib/apt/lists/*
 
@@ -65,13 +65,13 @@ RUN node scripts/check-origin-portability.mjs apps/mobile/dist
 # ---------------------------------------------------------------------------
 # Stage 2: runtime — server prod deps only, dists, baked artifacts, non-root
 # ---------------------------------------------------------------------------
-FROM node:24.22.1-trixie-slim
+FROM node:24.22.3-trixie-slim
 ARG ARTIFACT_CACHE_BUST=0
 WORKDIR /app
 ENV NODE_ENV=production PORT=8787 DATA_DIR=/app/data
 
 # curl for the container healthcheck
-RUN echo "OS package refresh (build=$ARTIFACT_CACHE_BUST)" && apt-get update && apt-get install -y --no-install-recommends curl libbrotli1 \
+RUN echo "OS package refresh (build=$ARTIFACT_CACHE_BUST)" && apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends curl libbrotli1 \
     && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libbrotli1)" ge 1.1.0-2+deb13u1 \
     && rm -rf /var/lib/apt/lists/*
 

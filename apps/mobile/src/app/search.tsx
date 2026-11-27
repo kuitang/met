@@ -170,7 +170,7 @@ export default function SearchScreen() {
                 />
               ))}
             </View>
-          ) : null
+          ) : undefined
         }
         renderItem={({ item }) =>
           item.kind === 'header' ? (
@@ -232,7 +232,7 @@ export default function SearchScreen() {
         }
         ListEmptyComponent={
           hasQuery ? (
-            hasRoomRows ? null : (
+            hasRoomRows ? undefined : (
               <Text style={styles.empty}>No quick matches on view.</Text>
             )
           ) : (

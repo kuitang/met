@@ -10,7 +10,7 @@
     "e2e"
   ],
   "engines": {
-    "node": ">=24.22.1 <25"
+    "node": ">=24.22.3 <25"
   },
   "scripts": {
     "web": "npm -w apps/mobile run web",
@@ -26,5 +26,13 @@
     "esbuild": true,
     "protobufjs": true,
     "msgpackr-extract": true
+  },
+  "overrides": {
+    "@expo/fingerprint": {
+      "minimatch": "^11.0.1"
+    },
+    "react-native": "0.88.1",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
   }
 }
